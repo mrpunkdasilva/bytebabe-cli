@@ -4,6 +4,7 @@
 CYBER_BLUE="\033[38;5;45m"
 CYBER_PINK="\033[38;5;201m"
 CYBER_GREEN="\033[38;5;118m"
+CYBER_YELLOW="\033[38;5;227m"
 CYBER_ORANGE="\033[38;5;208m"
 RESET="\033[0m"
 
@@ -218,6 +219,121 @@ echo -e "${CYBER_PINK}Ferramentas prontas para uso:${RESET}"
 echo -e "- JetBrains Toolbox: execute 'jetbrains-toolbox'"
 echo -e "- VSCode: execute 'flatpak run com.visualstudio.code'"
 echo -e "\n${CYBER_BLUE}Dica: Adicione /usr/local/bin ao seu PATH se ainda não estiver${RESET}"
+
+
+
+
+
+
+
+#=========================== CHOSE STACK
+
+# Função para instalar Node via NVM
+install_node_nvm() {
+    echo -e "\n${CYBER_BLUE}▶ Instalando NVM e Node.js...${RESET}"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm install --lts
+    nvm use --lts
+    echo -e "${CYBER_GREEN}✔ Node.js $(node -v) via NVM instalado${RESET}"
+}
+
+# Menu de perfil
+echo -e "\n${CYBER_PINK}⚡ SELECIONE SEU PERFIL ⚡${RESET}"
+echo -e "${CYBER_BLUE}1) Frontend"
+echo -e "2) Backend"
+echo -e "3) Fullstack${RESET}"
+read -p "Escolha (1-3): " dev_type
+
+# Fluxo Frontend
+if [ "$dev_type" == "1" ]; then
+    echo -e "\n${CYBER_PINK}⚡ CONFIGURAÇÃO FRONTEND ⚡${RESET}"
+    
+    # Instala Node via NVM
+    install_node_nvm
+
+    # Gerenciador de pacotes
+    echo -e "\n${CYBER_YELLOW}● ESCOLHA SEU GERENCIADOR (ou 5 para todos):${RESET}"
+    echo -e "${CYBER_BLUE}1) npm"
+    echo -e "2) yarn"
+    echo -e "3) pnpm"
+    echo -e "4) bun"
+    echo -e "5) Todos${RESET}"
+    read -p "Opção (1-5): " pkg_manager
+
+    case $pkg_manager in
+        1) npm_list=("npm") ;;
+        2) npm_list=("yarn") ;;
+        3) npm_list=("pnpm") ;;
+        4) npm_list=("bun") ;;
+        5) npm_list=("npm" "yarn" "pnpm" "bun") ;;
+    esac
+
+    for pkg in "${npm_list[@]}"; do
+        case $pkg in
+            "yarn") 
+                npm install -g yarn
+                echo -e "${CYBER_GREEN}✔ Yarn $(yarn --version) instalado${RESET}" ;;
+            "pnpm") 
+                npm install -g pnpm
+                echo -e "${CYBER_GREEN}✔ pnpm $(pnpm --version) instalado${RESET}" ;;
+            "bun") 
+                curl -fsSL https://bun.sh/install | bash
+                echo -e "${CYBER_GREEN}✔ Bun instalado${RESET}" ;;
+            *) 
+                echo -e "${CYBER_GREEN}✔ npm $(npm --version) (pré-instalado)${RESET}" ;;
+        esac
+    done
+
+    # Frameworks (com opção TODOS)
+    echo -e "\n${CYBER_YELLOW}● ESCOLHA SEU FRAMEWORK (ou 5 para todos):${RESET}"
+    echo -e "${CYBER_BLUE}1) React"
+    echo -e "2) Vue"
+    echo -e "3) Angular"
+    echo -e "4) Next.js"
+    echo -e "5) Todos${RESET}"
+    read -p "Opção (1-5): " framework
+
+    case $framework in
+        1) frameworks=("react") ;;
+        2) frameworks=("vue") ;;
+        3) frameworks=("angular") ;;
+        4) frameworks=("next") ;;
+        5) frameworks=("react" "vue" "angular" "next") ;;
+    esac
+
+    for fw in "${frameworks[@]}"; do
+        case $fw in
+            "react")
+                npm install -g create-react-app create-vite
+                echo -e "${CYBER_GREEN}✔ React + Vite instalados${RESET}" ;;
+            "vue")
+                npm install -g @vue/cli
+                echo -e "${CYBER_GREEN}✔ Vue CLI $(vue --version) instalado${RESET}" ;;
+            "angular")
+                npm install -g @angular/cli
+                echo -e "${CYBER_GREEN}✔ Angular CLI instalado${RESET}" ;;
+            "next")
+                npm install -g create-next-app
+                echo -e "${CYBER_GREEN}✔ Next.js instalado${RESET}" ;;
+        esac
+    done
+
+    # Finalização
+    echo -e "\n${CYBER_PINK}⚡ CONFIGURAÇÃO COMPLETA! ⚡${RESET}"
+    echo -e "${CYBER_BLUE}Ferramentas instaladas:"
+    echo -e "• Node.js $(node -v) (via NVM)"
+    echo -e "• Gerenciadores: ${npm_list[*]}"
+    echo -e "• Frameworks: ${frameworks[*]}${RESET}"
+fi
+
+
+
+
+
+
+
 
 
 
