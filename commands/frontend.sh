@@ -1,13 +1,8 @@
 #!/bin/bash
 
-# Obter diretório absoluto do script atual
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASE_DIR="$SCRIPT_DIR/../.."
-
-
 # Importar cores
-source "$BASE_DIR/src/core/colors.sh"
-source "$BASE_DIR/src/core/helpers.sh"
+source "$(pwd)/lib/core/colors.sh"
+source "$(pwd)/lib/core/helpers.sh"
 
 
 # Verificar subcomandos
@@ -15,9 +10,6 @@ case $1 in
 setup)
     echo -e "${CYBER_PINK}⚡ Instalando Frontend Stack...${RESET}"
     echo -e "\n${CYBER_PINK}⚡ CONFIGURAÇÃO FRONTEND ⚡${RESET}"
-
-    # Instala Node via NVM
-    install_node_nvm
 
     # Gerenciador de pacotes
     echo -e "\n${CYBER_YELLOW}● ESCOLHA SEU GERENCIADOR (ou 5 para todos):${RESET}"

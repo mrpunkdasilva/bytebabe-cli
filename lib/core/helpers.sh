@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ./core/colors.sh
-
 # Verifica se é root
 check_root() {
     if [ "$(id -u)" -ne 0 ]; then

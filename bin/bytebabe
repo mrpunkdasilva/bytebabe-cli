@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source "$(dirname "$0")/../lib/core/colors.sh"
-source "$(dirname "$0")/../lib/core/helpers.sh"
-source "$(dirname "$0")/../lib/utils/headers.sh"
+source "$(pwd)/lib/core/colors.sh"
+source "$(pwd)/lib/core/helpers.sh"
+source "$(pwd)/lib/utils/headers.sh"
 
 
 
@@ -11,11 +11,14 @@ show_cyberpunk_header
 
 # Processar comandos
 case $1 in
+    init)
+        source "$(pwd)/commands/init.sh" "${@:2}"
+        ;;
     frontend)
-        source "$(dirname "$0")/../commands/frontend.sh" "${@:2}"
+        source "$(pwd)/commands/frontend.sh" "${@:2}"
         ;;
     backend)
-        source "$(dirname "$0")/../commands/backend.sh" "${@:2}"
+        source "$(pwd)/commands/backend.sh" "${@:2}"
         ;;
     *)
         echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
