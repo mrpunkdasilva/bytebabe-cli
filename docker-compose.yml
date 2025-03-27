@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: senhaadmin
+    networks:
+      - dev-network
+
+  mysql:
+    image: mysql
+    container_name: mysql-dev
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: senharoot
+      MYSQL_DATABASE: devdb
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: senhauser
+    networks:
+      - dev-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sqlserver-dev
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "SenhaSegura123"
+      MSSQL_PID: "Developer"
+    networks:
+      - dev-network
+
+  apache:
+    image: php:8.2-apache
+    container_name: apache-dev
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html
+    networks:
+      - dev-network
+
+volumes:
+  mongodb_data:
+  mysql_data:
+  sqlserver_data:
+
+networks:
+  dev-network:
+    driver: bridge
