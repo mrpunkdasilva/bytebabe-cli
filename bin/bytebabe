@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source "$(dirname "$0")/../lib/core/colors.sh"
+source "$(dirname "$0")/../lib/core/helpers.sh"
+source "$(dirname "$0")/../lib/utils/headers.sh"
+
+
+
+# Mostrar header
+show_cyberpunk_header
+
+# Processar comandos
+case $1 in
+    frontend)
+        source "$(dirname "$0")/../commands/frontend.sh" "${@:2}"
+        ;;
+    backend)
+        source "$(dirname "$0")/../commands/backend.sh" "${@:2}"
+        ;;
+    *)
+        echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
+        echo -e "${CYBER_BLUE}Uso:"
+        echo -e "  bytebabe frontend   Instala stack frontend"
+        echo -e "  bytebabe backend    Instala stack backend${RESET}"
+        ;;
+esac
