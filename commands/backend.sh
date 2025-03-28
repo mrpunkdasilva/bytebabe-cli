@@ -4,7 +4,7 @@
 # BACKEND COMMANDER - UNIVERSAL INSTALLER
 # ==========================================
 
-# Importar cores
+# Importar módulos
 source "$(pwd)/lib/core/colors.sh"
 source "$(pwd)/lib/core/helpers.sh"
 
@@ -40,6 +40,25 @@ detect_pkg_manager() {
 }
 
 PKG_MANAGER=$(detect_pkg_manager)
+
+# ==========================================
+# LISTA DE TECNOLOGIAS SUPORTADAS
+# ==========================================
+
+declare -A SUPPORTED_TECHS=(
+    ["node"]="Node.js"
+    ["php"]="PHP"
+    ["python"]="Python"
+    ["java"]="Java"
+    ["go"]="Go"
+    ["rust"]="Rust"
+    ["express"]="Express.js"
+    ["django"]="Django"
+    ["flask"]="Flask"
+    ["spring"]="Spring Boot"
+    ["nestjs"]="NestJS"
+    ["laravel"]="Laravel"
+)
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO UNIVERSAL
@@ -90,6 +109,38 @@ install_runtime() {
             fi
             nvm install --lts && nvm use --lts
             echo -e "${CYBER_GREEN}✔ Node.js $(node -v) configurado${RESET}"
+            ;;
+
+        "php")
+            echo -e "${CYBER_BLUE}▶ Configurando PHP...${RESET}"
+            if ! command -v php &> /dev/null; then
+                if ! install_with_fallback "php" "PHP"; then
+                    echo -e "${CYBER_PINK}⚡ Tentando instalar PHP from source...${RESET}"
+
+                    # Dependências para compilação
+                    sudo apt update
+                    sudo apt install -y build-essential libxml2-dev libssl-dev \
+                        zlib1g-dev libcurl4-openssl-dev libonig-dev libsqlite3-dev
+
+                    PHP_VERSION="8.2.10"
+                    wget https://www.php.net/distributions/php-${PHP_VERSION}.tar.gz
+                    tar -xzf php-${PHP_VERSION}.tar.gz
+                    cd php-${PHP_VERSION}
+                    ./configure --prefix=/usr/local/php \
+                                --with-openssl \
+                                --with-zlib \
+                                --enable-mbstring \
+                                --with-curl
+                    make -j$(nproc)
+                    sudo make install
+
+                    # Adiciona ao PATH
+                    echo 'export PATH="/usr/local/php/bin:$PATH"' >> ~/.bashrc
+                    source ~/.bashrc
+                    cd .. && rm -rf php-${PHP_VERSION}*
+                fi
+            fi
+            echo -e "${CYBER_GREEN}✔ PHP $(php -v | head -n 1 | cut -d' ' -f1-2) instalado${RESET}"
             ;;
 
         "python")
@@ -190,33 +241,26 @@ install_framework() {
             ;;
 
         "laravel")
-            echo -e "${CYBER_BLUE}▶ Verificando PHP...${RESET}"
+            echo -e "${CYBER_BLUE}▶ Verificando dependências para Laravel...${RESET}"
+
+            # Verifica PHP
             if ! command -v php &> /dev/null; then
-                echo -e "${CYBER_YELLOW}⚡ Instalando PHP...${RESET}"
-                if ! install_with_fallback "php" "PHP"; then
-                    echo -e "${CYBER_RED}✘ Falha ao instalar PHP. Instale manualmente e tente novamente.${RESET}"
-                    return 1
-                fi
+                echo -e "${CYBER_YELLOW}⚠ PHP não encontrado. Instale primeiro com:${RESET}"
+                echo -e "${CYBER_PINK}bytebabe backend install php${RESET}"
+                return 1
             fi
 
-            echo -e "${CYBER_GREEN}✔ PHP $(php -v | head -n 1) instalado${RESET}"
-
             echo -e "${CYBER_BLUE}▶ Verificando Composer...${RESET}"
+
             if ! command -v composer &> /dev/null; then
                 echo -e "${CYBER_YELLOW}⚡ Instalando Composer...${RESET}"
-                EXPECTED_CHECKSUM="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
+
                 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-                ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")"
+                php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+                php composer-setup.php
+                php -r "unlink('composer-setup.php');"
 
-                if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
-                    echo -e "${CYBER_RED}✘ Checksum do Composer inválido!${RESET}"
-                    rm composer-setup.php
-                    return 1
-                fi
-
-                php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-                RESULT=$?
-                rm composer-setup.php
+                sudo mv composer.phar /usr/local/bin/composer
 
                 if [ $RESULT -ne 0 ]; then
                     echo -e "${CYBER_RED}✘ Falha na instalação do Composer${RESET}"
@@ -228,17 +272,9 @@ install_framework() {
 
             echo -e "${CYBER_BLUE}▶ Instalando Laravel Installer...${RESET}"
             composer global require laravel/installer
+
             echo -e "${CYBER_GREEN}✔ Laravel Installer instalado${RESET}"
-
-            # Adiciona Composer ao PATH se não estiver
-            if [[ ":$PATH:" != *":$HOME/.config/composer/vendor/bin:"* ]]; then
-                echo -e "${CYBER_YELLOW}⚠ Adicionando Composer ao PATH...${RESET}"
-                echo 'export PATH="$PATH:$HOME/.config/composer/vendor/bin"' >> ~/.bashrc
-                source ~/.bashrc
-            fi
-
-            echo -e "${CYBER_PINK}⚡ Laravel configurado com sucesso!${RESET}"
-            echo -e "${CYBER_YELLOW}Execute: ${CYBER_PINK}laravel new projeto${RESET}"
+            echo -e "${CYBER_PINK}⚡ Use: ${CYBER_YELLOW}laravel new projeto${RESET} para criar um novo projeto"
             ;;
     esac
 }
@@ -262,30 +298,43 @@ show_backend_header() {
     cyber_divider
 }
 
+show_backend_menu() {
+    echo -e "${CYBER_BLUE}${CYBER_BOLD}  ⚡ MENU DE CONFIGURAÇÃO BACKEND ⚡${RESET}"
+    echo ""
+    echo -e "${CYBER_PINK}1) Configuração Interativa"
+    echo -e "2) Instalar Tecnologia Específica"
+    echo -e "3) Listar Tecnologias Suportadas"
+    echo -e "4) Ajuda"
+    echo -e "0) Voltar${RESET}"
+    echo ""
+    cyber_divider
+}
+
 select_runtimes() {
-    echo -e "${CYBER_YELLOW}● SELECIONE SEUS RUNTIMES (separados por vírgulas ou 6 para todos):${RESET}"
+    echo -e "${CYBER_YELLOW}● SELECIONE SEUS RUNTIMES (separados por vírgulas ou 7 para todos):${RESET}"
     echo -e "${CYBER_BLUE}1) Node.js"
-    echo -e "2) Python"
-    echo -e "3) Java"
-    echo -e "4) Go"
-    echo -e "5) Rust"
-    echo -e "6) Todos${RESET}"
+    echo -e "2) PHP"
+    echo -e "3) Python"
+    echo -e "4) Java"
+    echo -e "5) Go"
+    echo -e "6) Rust"
+    echo -e "7) Todos${RESET}"
     read -p "Opções (ex: 1,3,5): " runtime_choices
 
-    # Converter entrada em array
     IFS=',' read -ra choices <<< "$runtime_choices"
 
-    if [[ " ${choices[*]} " =~ "6" ]]; then
-      runtimes=("node" "python" "java" "go" "rust")
+    if [[ " ${choices[@]} " =~ "7" ]]; then
+        runtimes=("node" "php" "python" "java" "go" "rust")
     else
         runtimes=()
         for choice in "${choices[@]}"; do
             case $choice in
                 1) runtimes+=("node") ;;
-                2) runtimes+=("python") ;;
-                3) runtimes+=("java") ;;
-                4) runtimes+=("go") ;;
-                5) runtimes+=("rust") ;;
+                2) runtimes+=("php") ;;
+                3) runtimes+=("python") ;;
+                4) runtimes+=("java") ;;
+                5) runtimes+=("go") ;;
+                6) runtimes+=("rust") ;;
             esac
         done
     fi
@@ -296,7 +345,7 @@ select_runtimes() {
 }
 
 select_frameworks() {
-    echo -e "\n${CYBER_YELLOW}● SELECIONE SEUS FRAMEWORKS (separados por vírgulas ou 7 para todos):${RESET}"
+    echo -e "\n${CYBER_YELLOW}● SELECIONE SEUS FRAMEWORKS (separados por vírgulas ou 8 para todos):${RESET}"
     echo -e "${CYBER_BLUE}1) Express.js"
     echo -e "2) Django"
     echo -e "3) Flask"
@@ -306,10 +355,9 @@ select_frameworks() {
     echo -e "7) Todos${RESET}"
     read -p "Opções (ex: 2,4,6): " fw_choices
 
-    # Converter entrada em array
     IFS=',' read -ra choices <<< "$fw_choices"
 
-    if [[ " ${choices[*]} " == *"7"* ]]; then
+    if [[ " ${choices[*]} " =~ "7" ]]; then
         frameworks=("express" "django" "flask" "spring" "nestjs" "laravel")
     else
         frameworks=()
@@ -330,7 +378,6 @@ select_frameworks() {
     done
 }
 
-
 # ==========================================
 # PROCESSAMENTO DE COMANDOS
 # ==========================================
@@ -342,15 +389,10 @@ process_setup() {
     select_runtimes
 
     # Instalar frameworks (condicional)
-   for rt in "${runtimes[@]}"; do
-        if [[ "$rt" == "node" || "$rt" == "python" ]]; then
-            select_frameworks
-            break
-        fi
-    done
-
-    if [[ "$rt" != "node" && "$rt" != "python" ]]; then
-        echo -e "${CYBER_YELLOW}⚠ Frameworks disponíveis apenas para Node.js/Python${RESET}"
+    if [[ " ${runtimes[*]} " =~ "node" || " ${runtimes[*]} " =~ "python" || " ${runtimes[*]} " =~ "php" ]]; then
+        select_frameworks
+    else
+        echo -e "${CYBER_YELLOW}⚠ Frameworks disponíveis apenas para Node.js/Python/PHP${RESET}"
     fi
 
     # Finalização
@@ -361,15 +403,64 @@ process_setup() {
     echo -e "\n${CYBER_YELLOW}Dica: Use ${CYBER_PINK}bytebabe db${RESET} ${CYBER_YELLOW}para bancos de dados${RESET}"
 }
 
+process_direct_install() {
+    if [[ -z "$1" ]]; then
+        echo -e "${CYBER_RED}✘ Especifique uma tecnologia para instalar${RESET}"
+        echo -e "${CYBER_YELLOW}Exemplo: ${CYBER_PINK}bytebabe backend install node${RESET}"
+        return 1
+    fi
+
+    for tech in "$@"; do
+        case $tech in
+            node|php|python|java|go|rust)
+                install_runtime "$tech"
+                ;;
+            express|django|flask|spring|nestjs|laravel)
+                install_framework "$tech"
+                ;;
+            *)
+                echo -e "${CYBER_RED}✘ Tecnologia não suportada: $tech${RESET}"
+                echo -e "${CYBER_YELLOW}Use ${CYBER_PINK}bytebabe backend list${RESET} para ver as opções"
+                return 1
+                ;;
+        esac
+    done
+}
+
+list_supported_techs() {
+    show_backend_header
+    echo -e "${CYBER_BLUE}${CYBER_BOLD}  🛠️ TECNOLOGIAS SUPORTADAS:${RESET}"
+    echo ""
+    echo -e "${CYBER_YELLOW}${CYBER_BOLD}Runtimes:${RESET}"
+    echo -e "  ${CYBER_PINK}node${RESET}    - Node.js"
+    echo -e "  ${CYBER_PINK}php${RESET}     - PHP"
+    echo -e "  ${CYBER_PINK}python${RESET}  - Python"
+    echo -e "  ${CYBER_PINK}java${RESET}    - Java (via SDKMAN)"
+    echo -e "  ${CYBER_PINK}go${RESET}      - Go"
+    echo -e "  ${CYBER_PINK}rust${RESET}    - Rust"
+
+    echo -e "\n${CYBER_YELLOW}${CYBER_BOLD}Frameworks:${RESET}"
+    echo -e "  ${CYBER_PINK}express${RESET} - Express.js"
+    echo -e "  ${CYBER_PINK}django${RESET}  - Django"
+    echo -e "  ${CYBER_PINK}flask${RESET}   - Flask"
+    echo -e "  ${CYBER_PINK}spring${RESET}  - Spring Boot"
+    echo -e "  ${CYBER_PINK}nestjs${RESET}  - NestJS"
+    echo -e "  ${CYBER_PINK}laravel${RESET} - Laravel"
+    cyber_divider
+}
+
 show_help() {
     show_backend_header
     echo -e "${CYBER_BLUE}USO: bytebabe backend [comando]"
     echo -e "\nCOMANDOS DISPONÍVEIS:"
     echo -e "  ${CYBER_PINK}setup${RESET}    - Configura ambiente backend"
+    echo -e "  ${CYBER_PINK}install${RESET}  - Instala tecnologia específica"
+    echo -e "  ${CYBER_PINK}list${RESET}     - Lista tecnologias suportadas"
     echo -e "  ${CYBER_PINK}help${RESET}     - Mostra esta ajuda"
     echo -e "\nEXEMPLOS:"
     echo -e "  ${CYBER_YELLOW}bytebabe backend setup"
-    echo -e "  ${CYBER_YELLOW}bytebabe backend help${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe backend install php laravel"
+    echo -e "  ${CYBER_YELLOW}bytebabe backend list${RESET}"
     cyber_divider
 }
 
@@ -380,16 +471,62 @@ show_help() {
 main() {
     case $1 in
         "setup")
-            process_setup
+            if [[ -z "$2" ]]; then
+                # Modo interativo
+                while true; do
+                    show_backend_header
+                    show_backend_menu
+                    read -p $'\e[1;35m  ⌘ SELECIONE UMA OPÇÃO: \e[0m' choice
+
+                    case $choice in
+                        1)
+                            process_setup
+                            read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
+                            ;;
+                        2)
+                            read -p $'\e[1;36m  Digite a(s) tecnologia(s) separadas por espaços: \e[0m' techs
+                            process_direct_install $techs
+                            read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
+                            ;;
+                        3)
+                            list_supported_techs
+                            read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
+                            ;;
+                        4)
+                            show_help
+                            read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
+                            ;;
+                        0)
+                            break
+                            ;;
+                        *)
+                            echo -e "${CYBER_RED}✘ Opção inválida!${RESET}"
+                            sleep 1
+                            ;;
+                    esac
+                done
+            else
+                # Modo direto
+                process_direct_install "${@:2}"
+            fi
+            ;;
+        "install")
+            process_direct_install "${@:2}"
+            ;;
+        "list")
+            list_supported_techs
             ;;
         "help"|"--help"|"-h")
             show_help
             ;;
         *)
-            echo -e "${CYBER_RED}⚠ Comando inválido! Use 'help' para ver as opções${RESET}"
+            echo -e "${CYBER_RED}✘ Comando inválido! Use 'help' para ver as opções${RESET}"
             ;;
     esac
 }
 
-# Iniciar
+# ==========================================
+# INICIALIZAÇÃO
+# ==========================================
+
 main "$@"
