@@ -22,6 +22,9 @@ case $1 in
     servers)
       source "$(pwd)/../commands/servers.sh" "${@:2}"
       ;;
+    db)
+      source "$(pwd)/../commands/db.sh" "${@:2}"
+      ;;
     *)
         echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
         echo -e "${CYBER_BLUE}Uso:"

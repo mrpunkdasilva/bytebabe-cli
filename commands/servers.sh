@@ -13,10 +13,18 @@ source "$BASE_DIR/lib/docker/servers.sh"
 
 case "$1" in
     up|start)
-        start_servers
+        if [ -n "$2" ]; then
+            start_servers "$2"
+        else
+            start_servers
+        fi
         ;;
     down|stop)
-        stop_servers
+        if [ -n "$2" ]; then
+            stop_servers "$2"
+        else
+            stop_servers
+        fi
         ;;
     status)
         if [ -n "$2" ]; then

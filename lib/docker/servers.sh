@@ -27,6 +27,8 @@ COMPOSE_FILE="$BASE_DIR/docker-compose.yml"
 # FUNÇÕES UTILITÁRIAS
 # ======================
 
+# Esta função verifica se o Docker Compose está instalado e configurado corretamente.
+# Caso contrário, ela exibe instruções de instalação.
 check_docker_compose() {
     # Primeiro tenta docker compose (nova versão)
     if docker compose -v &> /dev/null; then
@@ -41,6 +43,7 @@ check_docker_compose() {
     fi
 }
 
+# Esta função cria um diretório, se ele ainda não existir.
 create_directory() {
     local dir="$1"
     if [ ! -d "$dir" ]; then
@@ -49,6 +52,7 @@ create_directory() {
     fi
 }
 
+# Esta função verifica se o Docker está instalado. Caso contrário, ela exibe uma mensagem de erro e sai.
 check_docker_installed() {
     if ! command -v docker &> /dev/null; then
         echo -e "${CYBER_RED}✘ Docker não está instalado!${RESET}"
@@ -62,6 +66,7 @@ check_docker_installed() {
 # FUNÇÕES PRINCIPAIS
 # ======================
 
+# Esta função verifica se o arquivo 'docker-compose.yml' existe. Caso contrário, ela exibe uma mensagem de erro e sai.
 check_compose_file() {
     if [ ! -f "$COMPOSE_FILE" ]; then
         echo -e "${CYBER_YELLOW}⚠ Arquivo docker-compose.yml não encontrado!${RESET}"
@@ -70,6 +75,7 @@ check_compose_file() {
     fi
 }
 
+# Esta função exibe uma mensagem de sucesso quando um servidor é iniciado com êxito.
 show_success_message() {
     local server_to_start="$1"
     echo -e "\n${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
@@ -77,6 +83,7 @@ show_success_message() {
     echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
 }
 
+# Esta função gera uma página HTML com um estilo ciberpunk para os servidores Apache e Nginx.
 generate_cyberpunk_html() {
     local server_name="$1"
     local output_file="$2"
@@ -130,6 +137,7 @@ EOF
     echo -e "${CYBER_GREEN}✔ Página HTML gerada para $server_name em ${CYBER_CYAN}$output_file${RESET}"
 }
 
+# Esta função gera a configuração padrão do Nginx.
 generate_nginx_config() {
     local nginx_conf="$DOCKER_DIR/nginx/nginx.conf"
     mkdir -p "$(dirname "$nginx_conf")"
@@ -178,6 +186,7 @@ EOF
     echo -e "${CYBER_GREEN}✔ Configuração do Nginx gerada em ${CYBER_CYAN}$nginx_conf${RESET}"
 }
 
+# Esta função gera o arquivo 'docker-compose.yml' com a configuração dos servidores Apache e Nginx.
 generate_docker_compose() {
     echo -e "\n${CYBER_BLUE}▶ Gerando configuração Docker Compose...${RESET}"
 
@@ -230,8 +239,7 @@ EOF
     echo -e "${CYBER_GREEN}✔ Configuração gerada em ${CYBER_CYAN}$COMPOSE_FILE${RESET}"
 }
 
-
-
+# Esta função inicia um servidor Docker (Apache ou Nginx) usando o Docker Compose.
 start_servers() {
     local server_to_start="$1"
 
@@ -250,8 +258,7 @@ start_servers() {
     fi
 }
 
-
-
+# Esta função para um servidor Docker (Apache ou Nginx) ou todos os servidores usando o Docker Compose.
 stop_servers() {
     check_docker_installed
 
@@ -282,6 +289,7 @@ stop_servers() {
     fi
 }
 
+# Esta função exibe o status dos servidores Docker em execução.
 server_status() {
     local server_to_check="$1"
 
