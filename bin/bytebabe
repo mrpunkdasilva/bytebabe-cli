@@ -7,7 +7,6 @@ source "$(pwd)/../lib/utils/headers.sh"
 
 show_cyberpunk_header
 
-
 # Processar comandos
 case $1 in
     init)
@@ -25,10 +24,15 @@ case $1 in
     db)
       source "$(pwd)/../commands/db.sh" "${@:2}"
       ;;
+    ide)
+      source "$(pwd)/../commands/ide.sh" "${@:2}"
+      ;;
     *)
-        echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
-        echo -e "${CYBER_BLUE}Uso:"
-        echo -e "  bytebabe frontend   Instala stack frontend"
-        echo -e "  bytebabe backend    Instala stack backend${RESET}"
+      echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
+      echo -e "${CYBER_BLUE}Uso:"
+      echo -e "  bytebabe frontend   Instala stack frontend"
+      echo -e "  bytebabe backend    Instala stack backend"
+      echo -e "  bytebabe ide        Instala IDEs de desenvolvimento"
+      echo -e "${RESET}"
         ;;
 esac

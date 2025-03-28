@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ../core/colors.sh
-
 show_cyberpunk_header() {
     clear
     echo -e "${CYBER_PINK}"
