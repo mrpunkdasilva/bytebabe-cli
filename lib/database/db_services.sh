@@ -93,11 +93,13 @@ create_db_directories() {
     done
 }
 
+
 save_db_config() {
     local dbs=("$@")
     mkdir -p "$(dirname "$DB_CONFIG_FILE")"
     printf '%s\n' "${dbs[@]}" | jq -R . | jq -s '{enabled: .}' > "$DB_CONFIG_FILE"
 }
+
 
 load_db_config() {
     if [ -f "$DB_CONFIG_FILE" ]; then
@@ -106,7 +108,6 @@ load_db_config() {
         echo ""
     fi
 }
-
 
 
 generate_db_compose() {
@@ -199,7 +200,9 @@ db_install() {
     }
 
     # Carrega e atualiza configuração
-    local current_config=($(load_db_config))
+    local -a current_config
+    mapfile -t current_config < <(load_db_config)
+
     if ! printf '%s\n' "${current_config[@]}" | grep -qx "$target_db"; then
         current_config+=("$target_db")
         save_db_config "${current_config[@]}"
@@ -212,18 +215,84 @@ db_install() {
 }
 
 db_start() {
+    # Verifica se o arquivo compose existe
     [ -f "$DB_COMPOSE_FILE" ] || {
-        echo -e "${CYBER_RED}✘ Execute 'bytebabe db setup' primeiro!${RESET}"
+        echo -e "\n${CYBER_RED}✘ Arquivo de configuração não encontrado!${RESET}"
+        echo -e "${CYBER_YELLOW}Execute 'bytebabe db setup' primeiro.${RESET}"
         return 1
     }
 
-    echo -e "\n${CYBER_BLUE}▶ Iniciando bancos...${RESET}"
-    sudo docker compose -f "$DB_COMPOSE_FILE" up -d
+    local target_db="$1"
+    local compose_cmd="docker-compose"
 
+    # Detecta a versão correta do compose
+    if docker compose version &>/dev/null; then
+        compose_cmd="docker compose"
+    elif ! command -v docker-compose &>/dev/null; then
+        echo -e "\n${CYBER_RED}✘ Docker Compose não está instalado!${RESET}"
+        echo -e "${CYBER_YELLOW}Instale com:"
+        echo -e "  sudo apt install docker-compose-plugin (para Docker v2+)"
+        echo -e "  ou sudo apt install docker-compose (para Docker v1)${RESET}"
+        return 1
+    fi
+
+    echo -e "\n${CYBER_BLUE}▶ Verificando ambiente Docker...${RESET}"
+
+    # Verifica se o Docker está rodando
+    if ! sudo docker info >/dev/null 2>&1; then
+        echo -e "${CYBER_RED}✘ Docker não está em execução!${RESET}"
+        echo -e "${CYBER_YELLOW}Inicie o serviço Docker antes de continuar.${RESET}"
+        return 1
+    fi
+
+    # Inicia os bancos
+    if [ -z "$target_db" ]; then
+        echo -e "\n${CYBER_BLUE}▶ Iniciando TODOS os bancos de dados...${RESET}"
+        sudo $compose_cmd -f "$DB_COMPOSE_FILE" up -d
+    else
+        # Verifica se o banco existe no compose
+        if ! grep -q "^  ${target_db}:" "$DB_COMPOSE_FILE"; then
+            echo -e "\n${CYBER_RED}✘ Banco '${target_db}' não configurado!${RESET}"
+            echo -e "${CYBER_YELLOW}Bancos disponíveis:"
+            grep "^  [a-z]" "$DB_COMPOSE_FILE" | awk '{print $1}' | tr -d ':'
+            echo -e "${RESET}"
+            return 1
+        fi
+
+        echo -e "\n${CYBER_BLUE}▶ Iniciando apenas ${CYBER_CYAN}${target_db}${CYBER_BLUE}...${RESET}"
+        sudo $compose_cmd -f "$DB_COMPOSE_FILE" up -d "$target_db"
+    fi
+
+    # Mostra status
+    show_db_status
+}
+
+show_db_status() {
     echo -e "\n${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
-    echo -e "${CYBER_GREEN} BANCOS INICIADOS:"
-    sudo docker compose -f "$DB_COMPOSE_FILE" ps --format "table {{.Service}}\t{{.Status}}\t{{.Ports}}"
+    echo -e "${CYBER_GREEN} STATUS ATUAL DOS BANCOS${RESET}"
     echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+
+    if sudo $compose_cmd -f "$DB_COMPOSE_FILE" ps | grep -q "Up"; then
+        sudo $compose_cmd -f "$DB_COMPOSE_FILE" ps --format "table {{.Service}}\t{{.Status}}\t{{.Ports}}" | \
+        while IFS= read -r line; do
+            if [[ "$line" == *"NAME"* ]]; then
+                echo -e "${CYBER_CYAN}${line}${RESET}"
+            elif [[ "$line" == *"Up"* ]]; then
+                echo -e "${CYBER_GREEN}${line}${RESET}"
+            else
+                echo -e "${CYBER_YELLOW}${line}${RESET}"
+            fi
+        done
+    else
+        echo -e "${CYBER_RED}Nenhum banco em execução!${RESET}"
+    fi
+
+    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+    echo -e "${CYBER_BLUE}╭─────────────────────────────────────────────╮"
+    echo -e "│ ${CYBER_YELLOW}Comandos Úteis:${RESET}"
+    echo -e "│ ${CYBER_GREEN}bytebabe db stop [nome]${RESET}  - Parar bancos"
+    echo -e "│ ${CYBER_GREEN}bytebabe db logs [nome]${RESET}  - Ver logs"
+    echo -e "╰─────────────────────────────────────────────╯${RESET}"
 }
 
 db_stop() {
@@ -242,11 +311,108 @@ db_stop() {
 }
 
 db_status() {
+    # Verifica se o arquivo de composição existe
     [ -f "$DB_COMPOSE_FILE" ] || {
-        echo -e "${CYBER_RED}✘ Nenhum banco configurado!${RESET}"
+        echo -e "\n${CYBER_RED}✘ Nenhum banco configurado!${RESET}"
+        echo -e "${CYBER_YELLOW}Execute 'bytebabe db setup' primeiro.${RESET}"
         return 1
     }
 
-    echo -e "\n${CYBER_BLUE}▶ Status dos bancos:${RESET}"
-    sudo docker compose -f "$DB_COMPOSE_FILE" ps
+    echo -e "\n${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+    echo -e "${CYBER_BLUE}▶ Status dos Bancos de Dados${RESET}"
+    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+
+    # Executa o comando de status com formatação colorida
+    sudo docker compose -f "$DB_COMPOSE_FILE" ps 2>&1 | while read -r line; do
+        if [[ "$line" == *"NAME"* ]] || [[ "$line" == *"CONTAINER ID"* ]]; then
+            echo -e "${CYBER_CYAN}${line}${RESET}"
+        elif [[ "$line" == *"Up"* ]]; then
+            echo -e "${CYBER_GREEN}${line}${RESET}"
+        elif [[ "$line" == *"Exit"* ]] || [[ "$line" == *"exited"* ]]; then
+            echo -e "${CYBER_RED}${line}${RESET}"
+        else
+            echo -e "${CYBER_YELLOW}${line}${RESET}"
+        fi
+    done
+
+    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+    echo -e "${CYBER_BLUE}╭─────────────────────────────────────────────╮"
+    echo -e "│ ${CYBER_YELLOW}Comandos Úteis:${RESET}"
+    echo -e "│ ${CYBER_GREEN}bytebabe db start${RESET}  - Iniciar bancos"
+    echo -e "│ ${CYBER_GREEN}bytebabe db stop${RESET}   - Parar bancos"
+    echo -e "╰─────────────────────────────────────────────╯${RESET}"
+}
+
+db_log() {
+    local target_db="$1"
+    local follow="${2:-false}"
+    local lines="${3:-100}"
+    local compose_cmd
+
+    # Detecção automática do comando compose
+    if docker compose version &>/dev/null; then
+        compose_cmd="docker compose"
+    elif command -v docker-compose &>/dev/null; then
+        compose_cmd="docker-compose"
+    else
+        echo -e "\n${CYBER_RED}✘ Docker Compose não está instalado!${RESET}"
+        echo -e "${CYBER_YELLOW}Instale com:"
+        echo -e "  sudo apt install docker-compose-plugin (para Docker v2+)"
+        echo -e "  ou sudo apt install docker-compose (para Docker v1)${RESET}"
+        return 1
+    fi
+
+    [ -f "$DB_COMPOSE_FILE" ] || {
+        echo -e "\n${CYBER_RED}✘ Arquivo de configuração não encontrado!${RESET}"
+        return 1
+    }
+
+    if ! sudo docker info >/dev/null 2>&1; then
+        echo -e "${CYBER_RED}✘ Docker não está em execução!${RESET}"
+        return 1
+    fi
+
+    echo -e "\n${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+    echo -e "${CYBER_BLUE}▶ LOGS DO BANCO DE DADOS${RESET}"
+    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+
+    if [ -z "$target_db" ]; then
+        echo -e "${CYBER_YELLOW}⚠ Mostrando logs para TODOS os bancos${RESET}"
+        echo -e "${CYBER_PINK}───────────────────────────────────────────────${RESET}"
+        sudo $compose_cmd -f "$DB_COMPOSE_FILE" logs --tail="$lines" --timestamps 2>/dev/null || {
+            echo -e "${CYBER_RED}Erro ao acessar logs. Verifique se os containers estão em execução.${RESET}"
+            return 1
+        }
+    else
+        if ! grep -q "^  ${target_db}:" "$DB_COMPOSE_FILE"; then
+            echo -e "${CYBER_RED}✘ Banco '${target_db}' não encontrado!${RESET}"
+            echo -e "${CYBER_YELLOW}Bancos disponíveis:"
+            grep "^  [a-z]" "$DB_COMPOSE_FILE" | awk '{print $1}' | tr -d ':'
+            return 1
+        fi
+
+        if [ "$follow" = "true" ]; then
+            echo -e "${CYBER_GREEN}▶ Monitorando logs de ${CYBER_CYAN}${target_db}${RESET} ${CYBER_GREEN}(CTRL+C para sair)${RESET}"
+            echo -e "${CYBER_PINK}───────────────────────────────────────────────${RESET}"
+            sudo $compose_cmd -f "$DB_COMPOSE_FILE" logs --follow --tail="$lines" "$target_db" 2>/dev/null || {
+                echo -e "${CYBER_RED}Erro ao monitorar logs. Verifique se o container está em execução.${RESET}"
+                return 1
+            }
+        else
+            echo -e "${CYBER_GREEN}▶ Últimas ${lines} linhas de ${CYBER_CYAN}${target_db}${RESET}"
+            echo -e "${CYBER_PINK}───────────────────────────────────────────────${RESET}"
+            sudo $compose_cmd -f "$DB_COMPOSE_FILE" logs --tail="$lines" "$target_db" 2>/dev/null || {
+                echo -e "${CYBER_RED}Erro ao acessar logs. Verifique se o container está em execução.${RESET}"
+                return 1
+            }
+        fi
+    fi
+
+    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
+    echo -e "${CYBER_BLUE}╭─────────────────────────────────────────────╮"
+    echo -e "│ ${CYBER_YELLOW}Opções Avançadas:${RESET}"
+    echo -e "│ ${CYBER_GREEN}bytebabe db log [nome]${RESET}         - Últimas 100 linhas"
+    echo -e "│ ${CYBER_GREEN}bytebabe db log [nome] true${RESET}    - Monitorar em tempo real"
+    echo -e "│ ${CYBER_GREEN}bytebabe db log [nome] false 50${RESET} - Últimas 50 linhas"
+    echo -e "╰─────────────────────────────────────────────╯${RESET}"
 }

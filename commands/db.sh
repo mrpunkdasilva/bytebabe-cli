@@ -23,13 +23,16 @@ case "$1" in
         db_install "$2"
         ;;
     start|up)
-        db_start
+        db_start "$2"
         ;;
     stop|down)
         db_stop "$2"
         ;;
     status)
-        db_status
+        db_status "$2"
+        ;;
+    log)
+        db_log "$2" "$3" "$4"
         ;;
     *)
         echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
