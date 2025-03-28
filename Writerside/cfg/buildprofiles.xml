@@ -3,11 +3,22 @@
 <buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <variables></variables>
+    <sitemap priority="0.35" change-frequency="monthly"/>
+
+    <variables>
+        <header-logo>logo-primary.svg</header-logo>
+        <custom-favicons>logo-primary.svg</custom-favicons>
+    </variables>
+
     <build-profile instance="b">
         <variables>
             <noindex-content>true</noindex-content>
         </variables>
     </build-profile>
 
+    <llms-txt single-file="true"/>
+
+    <footer>
+        <copyright>PunkDomus 2025</copyright>
+    </footer>
 </buildprofiles>

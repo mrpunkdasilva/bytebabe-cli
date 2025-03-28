@@ -8,7 +8,7 @@ if [[ -n $(git status -s) ]]; then
     echo "Há alterações no repositório. Preparando para subir para o GitHub..."
 
     # Adiciona todas as alterações ao staging area
-    git add ../.
+    git add ../../.
 
     # Cria um commit com a mensagem dinâmica
     git commit -m "$COMMIT_MESSAGE"
