@@ -1,25 +1,27 @@
 #!/bin/bash
 
-source "$(pwd)/lib/core/colors.sh"
-source "$(pwd)/lib/core/helpers.sh"
-source "$(pwd)/lib/utils/headers.sh"
+# Importar módulos
+source "$(pwd)/../lib/core/colors.sh"
+source "$(pwd)/../lib/core/helpers.sh"
+source "$(pwd)/../lib/utils/headers.sh"
 
-
-
-# Mostrar header
 show_cyberpunk_header
+
 
 # Processar comandos
 case $1 in
     init)
-        source "$(pwd)/commands/init.sh" "${@:2}"
+        source "$(pwd)/../commands/init.sh" "${@:2}"
         ;;
     frontend)
-        source "$(pwd)/commands/frontend.sh" "${@:2}"
+        source "$(pwd)/../commands/frontend.sh" "${@:2}"
         ;;
     backend)
-        source "$(pwd)/commands/backend.sh" "${@:2}"
+        source "$(pwd)/../commands/backend.sh" "${@:2}"
         ;;
+    servers)
+      source "$(pwd)/../commands/servers.sh" "${@:2}"
+      ;;
     *)
         echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
         echo -e "${CYBER_BLUE}Uso:"

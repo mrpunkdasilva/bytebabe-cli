@@ -9,16 +9,6 @@ source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/utils/config.sh"
 source "$BASE_DIR/lib/utils/headers.sh"
 
-show_cyberpunk_header
-load_config  # Carrega config antes de qualquer operação
-
-echo -e "\n${CYBER_PINK}⚡ INICIALIZANDO BYTEBABE CLI ⚡${RESET}"
-
-
-# ======================
-# VERIFICA DEPENDÊNCIAS
-# ======================
-check_dependencies curl wget git
 
 
 
@@ -54,7 +44,6 @@ configure_basics() {
         neofetch
 }
 
-configure_basics
 
 
 
@@ -81,27 +70,10 @@ configure_git_identity() {
     git config --global core.editor "code --wait"
 }
 
-configure_git_identity
 
 
 
 
-
-
-
-# ======================
-#  INSTALAÇÃO DO NVM
-# ======================
-install_nvm_if_needed() {
-    if [ ! -d "$HOME/.nvm" ]; then
-        echo -e "\n${CYBER_BLUE}▶ Instalando NVM...${RESET}"
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-        save_config "NVM_INSTALLED" "true"
-        echo -e "${CYBER_GREEN}✔ NVM instalado\nReinicie o terminal antes de usar${RESET}"
-    fi
-}
-
-install_nvm_if_needed
 
 
 
@@ -122,7 +94,8 @@ install_docker() {
     save_config "DOCKER_INSTALLED" "true"
 }
 
-install_docker
+
+
 
 
 
@@ -134,85 +107,22 @@ install_docker
 # ======================
 install_neovim_tools() {
    
-   echo -e "\n${CYBER_BLUE}▶ Instalando ferramentas extras...${RESET}"
+   echo -e "\n${CYBER_BLUE}▶ Instalando ferramentas neo vim e vim...${RESET}"
 
-    # Detectar gerenciador de pacotes
-    detect_pkg_manager() {
-        if command -v apt &> /dev/null; then
-            echo "apt"
-        elif command -v dnf &> /dev/null; then
-            echo "dnf"
-        elif command -v yum &> /dev/null; then
-            echo "yum"
-        elif command -v pacman &> /dev/null; then
-            echo "pacman"
-        elif command -v zypper &> /dev/null; then
-            echo "zypper"
-        else
-            echo "unknown"
-        fi
-    }
 
-    PKG_MANAGER=$(detect_pkg_manager)
+    mkdir -p ~/Apps && cd ~/Apps
+    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    chmod u+x nvim.appimage
+    sudo ln -sf ~/Apps/nvim.appimage /usr/local/bin/nvim
 
-    # Instalação de editores
-    case $PKG_MANAGER in
-        "apt")
-            sudo apt install -y -qq neovim vim
-            ;;
-        "dnf"|"yum")
-            sudo $PKG_MANAGER install -y neovim vim
-            ;;
-        "pacman")
-            sudo pacman -S --noconfirm neovim vim
-            ;;
-        "zypper")
-            sudo zypper install -y neovim vim
-            ;;
-        *)
-            echo -e "${CYBER_ORANGE}⚠ Instale o Neovim manualmente para sua distro${RESET}"
-            ;;
-    esac
 
-   
-    # Configuração do LazyVim (universal)
-    configure_lazyvim() {
-        NVIM_DIR="$HOME/.config/nvim"
-        LAZYVIM_REPO="https://github.com/LazyVim/starter.git"
+    # Remova a instalação anterior
+    rm -rf ~/.config/nvim
+    rm -rf ~/.local/share/nvim
+    rm -rf ~/.local/state/nvim
 
-        # Backup
-        if [ -d "$NVIM_DIR" ]; then
-            echo -e "${CYBER_ORANGE}⚠ Backup da configuração do Neovim em ${NVIM_DIR}.bak${RESET}"
-            mv "$NVIM_DIR" "${NVIM_DIR}.bak"
-        fi
-
-        # Instalação
-        git clone --depth 1 "$LAZYVIM_REPO" "$NVIM_DIR"
-    }
-    configure_lazyvim
-
- 
-    # Dependências para LazyVim
-    install_lazyvim_deps() {
-        case $PKG_MANAGER in
-            "apt")
-                sudo apt install -y -qq ripgrep fd-find python3-pip nodejs npm
-                ;;
-            "dnf"|"yum")
-                sudo $PKG_MANAGER install -y ripgrep fd-find python3-pip nodejs npm
-                ;;
-            "pacman")
-                sudo pacman -S --noconfirm ripgrep fd python-pip nodejs npm
-                ;;
-            "zypper")
-                sudo zypper install -y ripgrep fd python3-pip nodejs npm
-                ;;
-            *)
-                echo -e "${CYBER_ORANGE}⚠ Instale manualmente: ripgrep, fd, pip, nodejs${RESET}"
-                ;;
-        esac
-    }
-    install_lazyvim_deps
+    # Instale novamente
+    git clone https://github.com/LazyVim/starter ~/.config/nvim
 
 
     # Mensagem final de sucesso
@@ -220,21 +130,35 @@ install_neovim_tools() {
     echo -e "${CYBER_GREEN}           CONFIGURAÇÃO COMPLETA!"
     echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
     echo -e "${CYBER_BLUE}╭─────────────────────────────────────────────╮"
-    echo -e "│ ${CYBER_GREEN}✔ Neovim + LazyVim ${CYBER_BLUE}configurados com sucesso!  │"
-    echo -e "│                                                         │"
-    echo -e "│ ${CYBER_YELLOW}Próximos passos:${CYBER_BLUE}                                    │"
-    echo -e "│ 1. Abra o Neovim: ${CYBER_GREEN}nvim${CYBER_BLUE}                          │"
-    echo -e "│ 2. Aguarde a instalação automática dos plugins           │"
-    echo -e "│ 3. Reinicie o Neovim após a conclusão                   │"
+    echo -e "│ ${CYBER_GREEN}✔ Neovim + LazyVim ${CYBER_BLUE}configurados com sucesso!  "
+    echo -e "│                                                         "
+    echo -e "│ ${CYBER_YELLOW}Próximos passos:${CYBER_BLUE}                                    "
+    echo -e "│ 1. Abra o Neovim: ${CYBER_GREEN}nvim${CYBER_BLUE}                          "
+    echo -e "│ 2. Aguarde a instalação automática dos plugins           "
+    echo -e "│ 3. Reinicie o Neovim após a conclusão                   "
     echo -e "╰─────────────────────────────────────────────╯${RESET}"
     echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}\n"
 }
 
+
+
+show_cyberpunk_header
+load_config
+
+echo -e "\n${CYBER_PINK}⚡ INICIALIZANDO BYTEBABE CLI ⚡${RESET}"
+
+
+# ======================
+# VERIFICA DEPENDÊNCIAS
+# ======================
+check_dependencies curl wget git
+
+
+configure_basics
+configure_git_identity
+install_nvm_if_needed
+install_docker
 install_neovim_tools
-
-
-
-
 
 
 echo -e "\n${CYBER_GREEN}⚡ CONFIGURAÇÃO INICIAL COMPLETA! ⚡${RESET}"
