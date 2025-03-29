@@ -99,9 +99,7 @@ setup_repository() {
 show_main_menu() {
     clear
     # Show header
-    echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗${RESET}"
-    echo "${BOLD}${CYBER_PURPLE}  ║               ${CYBER_CYAN}▓▓▓ GIT NEXUS PRO ${CYBER_PURPLE}▓▓▓             ║${RESET}"
-    echo "${BOLD}${CYBER_PURPLE}  ╚══════════════════════════════════════════════╝${RESET}"
+    show_header
     echo
 
     # Menu options
@@ -186,9 +184,9 @@ show_main_menu() {
       *"Exit"*)
           clear
           echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"
-          echo "  ║                                                    ║"
-          echo "  ║          ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          ║"
-          echo "  ║                                                    ║"
+          echo "  ║                                                    "
+          echo "  ║    ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          "
+          echo "  ║                                                    "
           echo "  ╚══════════════════════════════════════════════╝${RESET}"
           echo
           exit 0

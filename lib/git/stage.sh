@@ -10,7 +10,7 @@ get_git_root() {
 show_staging_header() {
     clear
     echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"
-    echo "  ║               ${CYBER_CYAN}▓ SMART STAGING ${CYBER_PURPLE}▓                ║"
+    echo "  ║               ${CYBER_CYAN}▓▓▓ SMART STAGING ${CYBER_PURPLE}▓▓▓             ║"
     echo "  ╚══════════════════════════════════════════════╝${RESET}"
     echo
 }
@@ -26,21 +26,62 @@ show_file_status() {
     local display_file="${file#./}"
 
     case "$status" in
-        "M ") echo "  ${CYBER_YELLOW}● Modified:${RESET} $display_file" ;;
-        "A ") echo "  ${CYBER_GREEN}● Added:${RESET} $display_file" ;;
-        "??") echo "  ${CYBER_RED}● Untracked:${RESET} $display_file" ;;
-        "D ") echo "  ${CYBER_RED}● Deleted:${RESET} $display_file" ;;
-        "R ") echo "  ${CYBER_CYAN}● Renamed:${RESET} $display_file" ;;
-        "C ") echo "  ${CYBER_BLUE}● Copied:${RESET} $display_file" ;;
-        *)    echo "  ● $display_file" ;;
+        "M ") echo "${CYBER_YELLOW}● Modified:${RESET} $display_file" ;;
+        "A ") echo "${CYBER_GREEN}● Added:${RESET} $display_file" ;;
+        "??") echo "${CYBER_RED}● Untracked:${RESET} $display_file" ;;
+        "D ") echo "${CYBER_RED}● Deleted:${RESET} $display_file" ;;
+        "R ") echo "${CYBER_CYAN}● Renamed:${RESET} $display_file" ;;
+        "C ") echo "${CYBER_BLUE}● Copied:${RESET} $display_file" ;;
+        *)    echo "● $display_file" ;;
     esac
+}
+
+# Custom menu selector function for staging
+function choose_staging_option() {
+    local prompt="$1" outvar="$2"
+    shift
+    shift
+    local options=("$@") cur=0 count=${#options[@]} index=0
+    local esc=$(echo -en "\e")
+
+    while true; do
+        # List all options
+        index=0
+        for o in "${options[@]}"; do
+            if [ "$index" == "$cur" ]; then
+                echo -e "${CYBER_GREEN} > ${CYBER_CYAN}${BOLD}${o}${RESET}"  # Highlight current option
+            else
+                echo -e "   ${CYBER_YELLOW}${o}${RESET}"
+            fi
+            ((index++))
+        done
+
+        # Read single key
+        read -s -n3 key
+
+        if [[ $key == $esc[A ]]; then  # Up arrow
+            ((cur--))
+            [[ $cur -lt 0 ]] && cur=0
+        elif [[ $key == $esc[B ]]; then  # Down arrow
+            ((cur++))
+            [[ $cur -ge $count ]] && cur=$((count-1))
+        elif [[ $key == "" ]]; then  # Enter key
+            break
+        fi
+
+        # Move cursor up to re-render menu
+        echo -en "\e[${count}A"
+    done
+
+    # Return selection
+    printf -v "$outvar" "${options[$cur]}"
 }
 
 stage_files_interactive() {
     local git_root=$(get_git_root)
     if [ -z "$git_root" ]; then
         echo
-        echo "  ${CYBER_RED}Error: Not a git repository${RESET}"
+        echo "  ${CYBER_RED}✗ Error: Not a git repository${RESET}"
         echo
         read -p "  ${CYBER_BLUE}Press Enter to return...${RESET}"
         return 1
@@ -49,7 +90,7 @@ stage_files_interactive() {
     while true; do
         show_staging_header
 
-        # Obter lista de arquivos com alterações
+        # Get changed files
         local changed_files=()
         while IFS= read -r line; do
             local file=$(echo "$line" | awk '{print $2}')
@@ -64,71 +105,50 @@ stage_files_interactive() {
             return
         fi
 
-        # Obter arquivos staged
+        # Get staged files
         local staged_files=($(git -C "$git_root" diff --cached --name-only 2>/dev/null))
 
-        echo "  ${BOLD}${CYBER_GREEN}╔════════════════════════════════╗"
-        echo "  ║       ${CYBER_CYAN}SELECT FILES ${CYBER_GREEN}▓▓▓       ║"
-        echo "  ╚════════════════════════════════╝${RESET}"
-        echo
-
-        # Mostrar arquivos com status
+        # Prepare menu items
+        local menu_items=()
         local index=1
         for file in "${changed_files[@]}"; do
             local status=$(git -C "$git_root" status --porcelain "$file" 2>/dev/null | cut -c1-2)
-            local is_staged=" "
+            local is_staged=""
 
             if [[ " ${staged_files[@]} " =~ " ${file} " ]]; then
-                is_staged="${CYBER_GREEN}✓${RESET}"
+                is_staged="${CYBER_GREEN} ✓ ${RESET}"
             fi
 
-            printf "  ${CYBER_PURPLE}%2d)${RESET} " $index
-            show_file_status "$file" "$status"
-            echo "    $is_staged"
+            menu_items+=("$(printf "%2d) " $index)$(show_file_status "$file" "$status") $is_staged")
             ((index++))
         done
 
+        # Add actions to menu
+        menu_items+=("${CYBER_GREEN}Stage all changes${RESET}")
+        menu_items+=("${CYBER_CYAN}Unstage all changes${RESET}")
+        menu_items+=("${CYBER_BLUE}Show staged files${RESET}")
+        menu_items+=("${CYBER_PURPLE}Commit staged files${RESET}")
+        menu_items+=("${CYBER_RED}Return to main menu${RESET}")
+
+        # Show interactive menu
+        echo "${BOLD}${CYBER_PURPLE}▓▓▓ Select files to stage ▓▓▓${RESET}"
         echo
-        echo "  ${BOLD}${CYBER_GREEN}╔════════════════════════════════╗"
-        echo "  ║       ${CYBER_CYAN}ACTIONS ${CYBER_GREEN}▓▓▓▓▓▓▓▓▓▓▓▓▓▓║"
-        echo "  ╚════════════════════════════════╝${RESET}"
-        echo "  ${CYBER_YELLOW}[1-${#changed_files[@]}] Select file"
-        echo "  ${CYBER_GREEN}[a] Stage all"
-        echo "  ${CYBER_CYAN}[u] Unstage all"
-        echo "  ${CYBER_BLUE}[s] Show staged files"
-        echo "  ${CYBER_PURPLE}[c] Commit staged files"
-        echo "  ${CYBER_RED}[q] Quit${RESET}"
+        choose_staging_option "Select an option:" selected_choice "${menu_items[@]}"
         echo
 
-        read -p "  ${BOLD}${CYBER_PURPLE}⌘ Select option: ${RESET}" choice
-
-        case $choice in
-            [0-9]*)
-                if [ $choice -ge 1 ] && [ $choice -le ${#changed_files[@]} ]; then
-                    local selected_file="${changed_files[$((choice-1))]}"
-                    (cd "$git_root" && git add "$selected_file")
-                    echo
-                    echo "  ${CYBER_GREEN}✔ Staged: $selected_file${RESET}"
-                    sleep 1
-                else
-                    echo
-                    echo "  ${CYBER_RED}✖ Invalid selection${RESET}"
-                    sleep 1
-                fi
-                ;;
-            a|A)
+        # Process selection
+        case "$selected_choice" in
+            *"Stage all changes"*)
                 (cd "$git_root" && git add .)
-                echo
                 echo "  ${CYBER_GREEN}✔ All changes staged${RESET}"
                 sleep 1
                 ;;
-            u|U)
+            *"Unstage all changes"*)
                 (cd "$git_root" && git reset)
-                echo
                 echo "  ${CYBER_CYAN}✔ All changes unstaged${RESET}"
                 sleep 1
                 ;;
-            s|S)
+            *"Show staged files"*)
                 clear
                 echo
                 echo "  ${BOLD}${CYBER_BLUE}STAGED FILES:${RESET}"
@@ -136,7 +156,7 @@ stage_files_interactive() {
                 echo
                 read -p "  ${CYBER_BLUE}Press Enter to continue...${RESET}"
                 ;;
-            c|C)
+            *"Commit staged files"*)
                 echo
                 read -p "  ${CYBER_BLUE}Enter commit message: ${RESET}" msg
                 if [ -n "$msg" ]; then
@@ -147,13 +167,21 @@ stage_files_interactive() {
                 echo
                 read -p "  ${CYBER_BLUE}Press Enter to continue...${RESET}"
                 ;;
-            q|Q)
+            *"Return to main menu"*)
                 return 0
                 ;;
             *)
-                echo
-                echo "  ${CYBER_RED}✖ Invalid option${RESET}"
-                sleep 1
+                # Handle file selection (1-9)
+                if [[ "$selected_choice" =~ ^[0-9]+\) ]]; then
+                    local choice=$(echo "$selected_choice" | awk '{print $1}' | tr -d ')')
+                    if [ $choice -ge 1 ] && [ $choice -le ${#changed_files[@]} ]; then
+                        local selected_file="${changed_files[$((choice-1))]}"
+                        (cd "$git_root" && git add "$selected_file")
+                        echo
+                        echo "  ${CYBER_GREEN}✔ Staged: $selected_file${RESET}"
+                        sleep 1
+                    fi
+                fi
                 ;;
         esac
     done

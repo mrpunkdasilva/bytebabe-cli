@@ -37,7 +37,7 @@ show_footer() {
 
 show_menu_options() {
     echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗${RESET}"
-    echo "${BOLD}${CYBER_PURPLE}  ║                 ${CYBER_CYAN}▓ MAIN MENU ${CYBER_PURPLE}▓                 ║${RESET}"
+    echo "${BOLD}${CYBER_PURPLE}  ║ ${CYBER_CYAN}▓ MAIN MENU ${CYBER_PURPLE}▓                 ${RESET}"
     echo "${BOLD}${CYBER_PURPLE}  ╚══════════════════════════════════════════════╝${RESET}"
     echo
     echo "   ${BOLD}${CYBER_GREEN}1) Profile Dashboard       ${CYBER_YELLOW}» User identity & statistics${RESET}"
