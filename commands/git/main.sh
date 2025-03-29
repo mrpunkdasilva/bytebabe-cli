@@ -6,6 +6,18 @@ source "$BASE_DIR/lib/git/profile.sh"
 source "$BASE_DIR/lib/git/stage.sh"
 source "$BASE_DIR/lib/git/commit.sh"
 
+
+
+show_spinner() {
+    local -a spinner=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
+    for i in "${spinner[@]}"; do
+        echo -ne "\r$1 $i "
+        sleep 0.1
+    done
+    echo -ne "\r$1    \r"
+}
+
+
 # Custom menu selector function
 function choose_from_menu() {
     local prompt="$1" outvar="$2"
@@ -94,56 +106,94 @@ show_main_menu() {
 
     # Menu options
     local selections=(
-        "Profile Dashboard - User identity & stats"
-        "Smart Staging - Interactive file selection"
-        "Commit Wizard - Guided semantic commits"
-        "Branch Navigator - Visual branch management"
-        "Push Controller - Advanced push operations"
-        "Time Machine - Interactive history viewer"
-        "Repository Settings - Configuration options"
-        "Exit - Quit application"
+      "   ${BOLD}${CYBER_GREEN}1) Profile Dashboard       ${CYBER_YELLOW}» User identity & statistics${RESET}"
+      "   ${BOLD}${CYBER_GREEN}2) Smart Staging           ${CYBER_YELLOW}» Interactive file selection${RESET}"
+      "   ${BOLD}${CYBER_GREEN}3) Commit Wizard           ${CYBER_YELLOW}» Guided semantic commits${RESET}"
+      "   ${BOLD}${CYBER_GREEN}4) Branch Navigator        ${CYBER_YELLOW}» Visual branch management${RESET}"
+      "   ${BOLD}${CYBER_GREEN}5) Push Controller         ${CYBER_YELLOW}» Advanced push operations${RESET}"
+      "   ${BOLD}${CYBER_GREEN}6) Time Machine            ${CYBER_YELLOW}» Interactive commit history${RESET}"
+      "   ${BOLD}${CYBER_GREEN}7) Repository Settings     ${CYBER_YELLOW}» Git configuration options${RESET}"
+      "   ${BOLD}${CYBER_RED}0) Exit                    ${CYBER_YELLOW}» Quit the application${RESET}"
     )
 
     choose_from_menu "Select an option:" selected_choice "${selections[@]}"
     echo
 
-    case "$selected_choice" in
-        *"Profile Dashboard"*)
-            profile_dashboard
-            ;;
-        *"Smart Staging"*)
-            stage_files_interactive
-            ;;
-        *"Commit Wizard"*)
-            show_commit_wizard
-            ;;
-        *"Branch Navigator"*)
-            echo "${CYBER_CYAN}🌿 Launching Branch Navigator...${RESET}"
-            sleep 1
-            ;;
-        *"Push Controller"*)
-            echo "${CYBER_CYAN}🚀 Preparing Push Controller...${RESET}"
-            sleep 1
-            ;;
-        *"Time Machine"*)
-            echo "${CYBER_CYAN}⏳ Activating Time Machine...${RESET}"
-            sleep 1
-            ;;
-        *"Repository Settings"*)
-            echo "${CYBER_CYAN}⚙️ Opening Repo Settings...${RESET}"
-            sleep 1
-            ;;
-        *"Exit"*)
-            clear
-            echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"
-            echo "  ║                                                    ║"
-            echo "  ║          ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          ║"
-            echo "  ║                                                    ║"
-            echo "  ╚══════════════════════════════════════════════╝${RESET}"
-            echo
-            exit 0
-            ;;
-    esac
+   case "$selected_choice" in
+      *"Profile Dashboard"*)
+          echo -n "${CYBER_CYAN}🛠️  Opening Profile Dashboard"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          profile_dashboard
+          ;;
+      *"Smart Staging"*)
+          echo -n "${CYBER_CYAN}📁 Opening Smart Staging"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          stage_files_interactive
+          ;;
+      *"Commit Wizard"*)
+          echo -n "${CYBER_CYAN}✍️  Launching Commit Wizard"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          show_commit_wizard
+          ;;
+      *"Branch Navigator"*)
+          echo -n "${CYBER_CYAN}🌿 Initializing Branch Navigator"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          # branch_navigator_function
+          ;;
+      *"Push Controller"*)
+          echo -n "${CYBER_CYAN}🚀 Preparing Push Controller"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          # push_controller_function
+          ;;
+      *"Time Machine"*)
+          echo -n "${CYBER_CYAN}⏳ Activating Time Machine"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          # time_machine_function
+          ;;
+      *"Repository Settings"*)
+          echo -n "${CYBER_CYAN}⚙️  Loading Repository Settings"
+          for i in {1..3}; do
+              echo -n "."
+              sleep 0.5
+          done
+          echo "${RESET}"
+          # repo_settings_function
+          ;;
+      *"Exit"*)
+          clear
+          echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"
+          echo "  ║                                                    ║"
+          echo "  ║          ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          ║"
+          echo "  ║                                                    ║"
+          echo "  ╚══════════════════════════════════════════════╝${RESET}"
+          echo
+          exit 0
+          ;;
+  esac
 }
 
 show_quick_actions() {
