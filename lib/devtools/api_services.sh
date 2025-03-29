@@ -26,30 +26,63 @@ detect_pkg_manager() {
 }
 
 # ==========================================
-# LISTAS DE FERRAMENTAS (ORGANIZADAS POR CATEGORIA)
+# FUNÇÕES DE INSTALAÇÃO ESPECÍFICAS
+# ==========================================
+install_nodejs() {
+    echo -e "${CYBER_BLUE}Instalando Node.js...${RESET}"
+    case $(detect_pkg_manager) in
+        apt) sudo apt install -y nodejs npm ;;
+        dnf|yum) sudo dnf install -y nodejs ;;
+        pacman) sudo pacman -S nodejs npm ;;
+        brew) brew install node ;;
+        *) echo -e "${CYBER_RED}Não foi possível instalar Node.js automaticamente${RESET}"
+           return 1 ;;
+    esac
+}
+
+install_openapi_generator() {
+    if ! command -v npm &> /dev/null; then
+        install_nodejs || return 1
+    fi
+
+    echo -e "${CYBER_YELLOW}➜ Instalando OpenAPI Generator...${RESET}"
+    if sudo npm install -g @openapitools/openapi-generator-cli; then
+        echo -e "${CYBER_GREEN}✔ OpenAPI Generator instalado com sucesso${RESET}"
+        echo -e "${CYBER_BLUE}Versão: $(openapi-generator-cli version)${RESET}"
+        return 0
+    else
+        echo -e "${CYBER_RED}✖ Falha na instalação${RESET}"
+        return 1
+    fi
+}
+
+# ==========================================
+# LISTAS DE FERRAMENTAS
 # ==========================================
 declare -A TOOLS=(
     # Ferramentas de Teste
-    [curl]="sudo apt install curl"
-    [httpie]="sudo apt install httpie"
-    [jq]="sudo apt install jq"
-    [yq]="sudo apt install yq"
+    [curl]="sudo apt install -y curl"
+    [httpie]="sudo apt install -y httpie"
+    [jq]="sudo apt install -y jq"
+    [yq]="sudo apt install -y yq"
     [grpcurl]="go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest"
     [websocat]="cargo install websocat"
 
     # Ferramentas de Documentação
-    [swagger-cli]="npm install -g swagger-cli"
-    [openapi-generator-cli]="npm install -g @openapitools/openapi-generator-cli"
+    [swagger-cli]="sudo npm install -g swagger-cli"
+    [openapi-generator-cli]="install_openapi_generator"
+    [redoc-cli]="sudo npm install -g redoc-cli"
+    [spectral]="sudo npm install -g @stoplight/spectral-cli"
 
     # Ferramentas de Proxy/Debug
-    [mitmproxy]="python3 -m pip install mitmproxy"
-    [ngrok]="snap install ngrok"
-    [wireshark]="sudo apt install wireshark"
+    [mitmproxy]="sudo python3 -m pip install mitmproxy"
+    [ngrok]="sudo snap install ngrok --classic"
+    [wireshark]="sudo apt install -y wireshark"
 
     # Ferramentas GUI
-    [postman]="snap install postman"
-    [insomnia]="snap install insomnia"
-    [bruno]="npm install -g bruno"
+    [postman]="sudo snap install postman --classic"
+    [insomnia]="sudo snap install insomnia --classic"
+    [bruno]="sudo npm install -g bruno"
 )
 
 # ==========================================
@@ -60,75 +93,153 @@ install_tool() {
     echo -e "\n${CYBER_YELLOW}➜ Instalando $tool...${RESET}"
 
     if [[ -n "${TOOLS[$tool]}" ]]; then
-        eval "${TOOLS[$tool]}" 2>/dev/null && \
-        echo -e "${CYBER_GREEN}✔ $tool instalado com sucesso${RESET}" || \
-        echo -e "${CYBER_RED}✖ Falha ao instalar $tool${RESET}"
+        if eval "${TOOLS[$tool]}" 2>/dev/null; then
+            echo -e "${CYBER_GREEN}✔ $tool instalado com sucesso${RESET}"
+            return 0
+        else
+            echo -e "${CYBER_RED}✖ Falha ao instalar $tool${RESET}"
+            return 1
+        fi
     else
         echo -e "${CYBER_RED}✖ Ferramenta desconhecida: $tool${RESET}"
+        return 1
     fi
 }
 
 install_multiple_tools() {
-    local tools=(${1//,/ })
+    local tools=($@)
+    local failures=0
+
     for tool in "${tools[@]}"; do
-        install_tool "$tool"
+        install_tool "$tool" || ((failures++))
+    done
+
+    return $failures
+}
+
+# ==========================================
+# SISTEMA DE MENUS
+# ==========================================
+show_submenu() {
+    local title="$1"
+    local -a menu_options=("${!2}")
+    local -a menu_commands=("${!3}")
+
+    while true; do
+        clear
+        echo -e "\n${CYBER_PURPLE}$title${RESET}"
+        echo -e "${CYBER_BLUE}Opções disponíveis:${RESET}"
+
+        # Mostra opções numeradas
+        for i in "${!menu_options[@]}"; do
+            echo "$((i+1))) ${menu_options[$i]}"
+        done
+        echo "$(( ${#menu_options[@]} + 1 ))) Voltar"
+
+        read -p $'\e[1;35m⌘ Selecione uma opção: \e[0m' choice
+
+        # Verifica se quer voltar
+        if [[ "$choice" == $((${#menu_options[@]} + 1)) ]]; then
+            return 0
+        fi
+
+        # Valida escolha
+        if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#menu_options[@]} )); then
+            local selected="${menu_options[$choice-1]}"
+            local cmd="${menu_commands[$choice-1]}"
+
+            echo -e "\n${CYBER_YELLOW}➜ Executando: $selected${RESET}"
+            eval "$cmd"
+            read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
+        else
+            echo -e "${CYBER_RED}Opção inválida!${RESET}"
+            sleep 1
+        fi
     done
 }
 
 # ==========================================
-# SUBMENUS ESPECÍFICOS
+# MENUS ESPECÍFICOS
 # ==========================================
-show_gui_menu() {
-    echo -e "\n${CYBER_PURPLE}🖥️  Selecione as ferramentas GUI:${RESET}"
-    PS3=$'\e[1;35m⌘ Selecione (separar por vírgula): \e[0m'
-    options=(
-        "Postman"
-        "Insomnia"
-        "Bruno"
-        "Todas as GUI"
-        "Voltar"
-    )
-
-    select opt in "${options[@]}"; do
-        case $REPLY in
-            1) install_multiple_tools "postman"; break ;;
-            2) install_multiple_tools "insomnia"; break ;;
-            3) install_multiple_tools "bruno"; break ;;
-            4) install_multiple_tools "postman,insomnia,bruno"; break ;;
-            5) return ;;
-            *) echo -e "${CYBER_RED}Opção inválida!${RESET}"; break ;;
-        esac
-    done
-}
-
 show_test_menu() {
-    echo -e "\n${CYBER_PURPLE}🧪 Selecione as ferramentas de Teste:${RESET}"
-    PS3=$'\e[1;35m⌘ Selecione (separar por vírgula): \e[0m'
-    options=(
+    local -a options=(
         "curl"
         "httpie"
-        "jq + yq"
+        "jq"
+        "yq"
         "grpcurl"
         "websocat"
         "Todas de Teste"
-        "Voltar"
     )
 
-    select opt in "${options[@]}"; do
-        case $REPLY in
-            1) install_multiple_tools "curl"; break ;;
-            2) install_multiple_tools "httpie"; break ;;
-            3) install_multiple_tools "jq,yq"; break ;;
-            4) install_multiple_tools "grpcurl"; break ;;
-            5) install_multiple_tools "websocat"; break ;;
-            6) install_multiple_tools "curl,httpie,jq,yq,grpcurl,websocat"; break ;;
-            7) return ;;
-            *) echo -e "${CYBER_RED}Opção inválida!${RESET}"; break ;;
-        esac
-    done
+    local -a commands=(
+        "install_multiple_tools curl"
+        "install_multiple_tools httpie"
+        "install_multiple_tools jq"
+        "install_multiple_tools yq"
+        "install_multiple_tools grpcurl"
+        "install_multiple_tools websocat"
+        "install_multiple_tools curl httpie jq yq grpcurl websocat"
+    )
+
+    show_submenu "🧪 Ferramentas de Teste de API" options[@] commands[@]
 }
 
-# (Adicione menus similares para docs, proxy, etc...)
+show_docs_menu() {
+    local -a options=(
+        "Swagger CLI"
+        "OpenAPI Generator"
+        "Redoc CLI"
+        "Spectral"
+        "Todas de Documentação"
+    )
+
+    local -a commands=(
+        "install_multiple_tools swagger-cli"
+        "install_openapi_generator"
+        "install_multiple_tools redoc-cli"
+        "install_multiple_tools spectral"
+        "install_multiple_tools swagger-cli openapi-generator-cli redoc-cli spectral"
+    )
+
+    show_submenu "📚 Ferramentas de Documentação" options[@] commands[@]
+}
+
+show_proxy_menu() {
+    local -a options=(
+        "mitmproxy"
+        "ngrok"
+        "Wireshark"
+        "Todas de Proxy"
+    )
+
+    local -a commands=(
+        "install_multiple_tools mitmproxy"
+        "install_multiple_tools ngrok"
+        "install_multiple_tools wireshark"
+        "install_multiple_tools mitmproxy ngrok wireshark"
+    )
+
+    show_submenu "🔍 Ferramentas de Proxy/Debug" options[@] commands[@]
+}
+
+show_gui_menu() {
+    local -a options=(
+        "Postman"
+        "Insomnia"
+        "Bruno"
+        "Todas GUI"
+    )
+
+    local -a commands=(
+        "install_multiple_tools postman"
+        "install_multiple_tools insomnia"
+        "install_multiple_tools bruno"
+        "install_multiple_tools postman insomnia bruno"
+    )
+
+    show_submenu "🖥️  Ferramentas GUI" options[@] commands[@]
+}
 
 # ==========================================
 # MENU PRINCIPAL
@@ -137,10 +248,11 @@ show_main_menu() {
     PKG_MANAGER=$(detect_pkg_manager)
 
     while true; do
+        clear
         echo -e "\n${CYBER_CYAN}📦 Gerenciador detectado: $PKG_MANAGER${RESET}"
         echo -e "${CYBER_BLUE}Menu Principal:${RESET}"
 
-        PS3=$'\e[1;35m⌘ Selecione a categoria: \e[0m'
+        PS3=$'\e[1;35m⌘ Selecione uma categoria: \e[0m'
         options=(
             "Ferramentas de Teste de API"
             "Ferramentas de Documentação"
@@ -156,9 +268,14 @@ show_main_menu() {
                 2) show_docs_menu; break ;;
                 3) show_proxy_menu; break ;;
                 4) show_gui_menu; break ;;
-                5) install_multiple_tools "${!TOOLS[@]}"; break ;;
+                5)
+                    echo -e "\n${CYBER_YELLOW}⚠ Instalando TODAS as ferramentas...${RESET}"
+                    install_multiple_tools "${!TOOLS[@]}"
+                    read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
+                    break
+                    ;;
                 6) exit 0 ;;
-                *) echo -e "${CYBER_RED}Opção inválida!${RESET}"; break ;;
+                *) echo -e "${CYBER_RED}Opção inválida!${RESET}"; sleep 1; break ;;
             esac
         done
     done
@@ -168,14 +285,19 @@ show_main_menu() {
 # EXECUÇÃO PRINCIPAL
 # ==========================================
 if [[ $# -gt 0 ]]; then
-    # Modo não interativo (via parâmetros)
     case $1 in
-        --gui) install_multiple_tools "${2:-postman,insomnia,bruno}" ;;
-        --test) install_multiple_tools "${2:-curl,httpie,jq,yq}" ;;
-        # Adicione outros casos conforme necessário...
+        --test) install_multiple_tools "${@:2}" ;;
+        --docs)
+            if [[ "$2" == "all" ]]; then
+                install_multiple_tools swagger-cli openapi-generator-cli redoc-cli spectral
+            else
+                install_openapi_generator
+            fi
+            ;;
+        --proxy) install_multiple_tools "${@:2}" ;;
+        --gui) install_multiple_tools "${@:2}" ;;
         *) echo -e "${CYBER_RED}Opção desconhecida!${RESET}"; exit 1 ;;
     esac
 else
-    # Modo interativo
     show_main_menu
 fi
