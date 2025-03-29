@@ -37,16 +37,16 @@ show_footer() {
 
 show_menu_options() {
     echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗${RESET}"
-    echo "${BOLD}${CYBER_PURPLE}  ║                 ${CYBER_CYAN}▓ MAIN MENU ${CYBER_PURPLE}▓                 ${RESET}"
+    echo "${BOLD}${CYBER_PURPLE}  ║                 ${CYBER_CYAN}▓ MAIN MENU ${CYBER_PURPLE}▓                 ║${RESET}"
     echo "${BOLD}${CYBER_PURPLE}  ╚══════════════════════════════════════════════╝${RESET}"
-    echo ""
-    echo "   ${BOLD}${CYBER_GREEN}1) Profile Dashboard       ${CYBER_YELLOW}» User identity & stats${RESET}"
+    echo
+    echo "   ${BOLD}${CYBER_GREEN}1) Profile Dashboard       ${CYBER_YELLOW}» User identity & statistics${RESET}"
     echo "   ${BOLD}${CYBER_GREEN}2) Smart Staging           ${CYBER_YELLOW}» Interactive file selection${RESET}"
-    echo "   ${BOLD}${CYBER_GREEN}3) Commit Wizard           ${CYBER_YELLOW}» Guided commit creation${RESET}"
+    echo "   ${BOLD}${CYBER_GREEN}3) Commit Wizard           ${CYBER_YELLOW}» Guided semantic commits${RESET}"
     echo "   ${BOLD}${CYBER_GREEN}4) Branch Navigator        ${CYBER_YELLOW}» Visual branch management${RESET}"
-    echo "   ${BOLD}${CYBER_GREEN}5) Push Controller         ${CYBER_YELLOW}» Advanced push options${RESET}"
-    echo "   ${BOLD}${CYBER_GREEN}6) Time Machine            ${CYBER_YELLOW}» Interactive history viewer${RESET}"
-    echo "   ${BOLD}${CYBER_GREEN}7) Repository Settings     ${CYBER_YELLOW}» Configure git options${RESET}"
-    echo "   ${BOLD}${CYBER_RED}0) Exit Nexus              ${CYBER_YELLOW}» Quit the application${RESET}"
-    echo ""
+    echo "   ${BOLD}${CYBER_GREEN}5) Push Controller         ${CYBER_YELLOW}» Advanced push operations${RESET}"
+    echo "   ${BOLD}${CYBER_GREEN}6) Time Machine            ${CYBER_YELLOW}» Interactive commit history${RESET}"
+    echo "   ${BOLD}${CYBER_GREEN}7) Repository Settings     ${CYBER_YELLOW}» Git configuration options${RESET}"
+    echo "   ${BOLD}${CYBER_RED}0) Exit                    ${CYBER_YELLOW}» Quit the application${RESET}"
+    echo
 }
