@@ -13,6 +13,9 @@ case $1 in
     init)
         source "$(pwd)/../commands/init.sh" "${@:2}"
         ;;
+    git)
+        source "$(pwd)/../commands/git_ui.sh"
+        ;;
     frontend)
         source "$(pwd)/../commands/frontend.sh" "${@:2}"
         ;;
