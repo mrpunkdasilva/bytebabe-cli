@@ -72,14 +72,6 @@ configure_git_identity() {
 
 
 
-
-
-
-
-
-
-
-
 # ======================
 # INSTALAÇÃO DO DOCKER
 # ======================
@@ -109,12 +101,12 @@ install_neovim_tools() {
    
    echo -e "\n${CYBER_BLUE}▶ Instalando ferramentas neo vim e vim...${RESET}"
 
+   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
+   sudo rm -rf /opt/nvim
+   sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 
-    mkdir -p ~/Apps && cd ~/Apps
-    wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-    chmod u+x nvim.appimage
-    sudo ln -sf ~/Apps/nvim.appimage /usr/local/bin/nvim
-
+    export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+    export PATH="$PATH:/usr/local/bin"
 
     # Remova a instalação anterior
     rm -rf ~/.config/nvim
@@ -123,6 +115,12 @@ install_neovim_tools() {
 
     # Instale novamente
     git clone https://github.com/LazyVim/starter ~/.config/nvim
+
+    echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
+    echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.zshrc
+
+    source ~/.bashrc
+    source ~/.zshrc
 
 
     # Mensagem final de sucesso

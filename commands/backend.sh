@@ -5,8 +5,9 @@
 # ==========================================
 
 # Importar módulos
-source "$(pwd)/lib/core/colors.sh"
-source "$(pwd)/lib/core/helpers.sh"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
 
 # ==========================================
 # DETECÇÃO DE SISTEMA E PKG MANAGER
@@ -323,7 +324,7 @@ select_runtimes() {
 
     IFS=',' read -ra choices <<< "$runtime_choices"
 
-    if [[ " ${choices[@]} " =~ "7" ]]; then
+    if [[ " ${choices[*]} " =~ "7" ]]; then
         runtimes=("node" "php" "python" "java" "go" "rust")
     else
         runtimes=()
