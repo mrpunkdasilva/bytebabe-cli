@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Importar módulos
 source "$(pwd)/../lib/core/colors.sh"
 source "$(pwd)/../lib/core/helpers.sh"
 source "$(pwd)/../lib/utils/headers.sh"
 
+
 show_cyberpunk_header
+
 
 # Processar comandos
 case $1 in
@@ -27,14 +28,18 @@ case $1 in
     ide)
         source "$(pwd)/../commands/ide.sh" "${@:2}"
         ;;
-       *)
+    devtools)
+        source "$(pwd)/../commands/devtools.sh" "${@:2}"
+        ;;
+    *)
         echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
         echo -e "${CYBER_BLUE}Uso:"
-        echo -e "  bytebabe frontend   Instala stack frontend"
-        echo -e "  bytebabe backend    Instala stack backend"
-        echo -e "  bytebabe ide        Instala IDEs de desenvolvimento"
-        echo -e "  bytebabe db         Ferramentas de gerenciamento de bancos de dados"
-        echo -e "  bytebabe servers    Ferramentas para gerenciamento de servidores"
+        echo -e "  bytebabe frontend            Instala stack frontend"
+        echo -e "  bytebabe backend             Instala stack backend"
+        echo -e "  bytebabe ide                 Instala IDEs de desenvolvimento"
+        echo -e "  bytebabe db                  Ferramentas de gerenciamento de bancos de dados"
+        echo -e "  bytebabe servers             Ferramentas para gerenciamento de servidores"
+        echo -e "  bytebabe devtools terminal   Configuração do terminal"
         echo -e "${RESET}"
         ;;
 esac
