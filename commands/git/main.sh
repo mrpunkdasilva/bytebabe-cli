@@ -2,11 +2,13 @@
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 source "$BASE_DIR/lib/git/ui.sh"
+
 source "$BASE_DIR/lib/git/profile.sh"
 source "$BASE_DIR/lib/git/stage.sh"
 source "$BASE_DIR/lib/git/commit.sh"
 source "$BASE_DIR/lib/git/branch_navigator.sh"
 source "$BASE_DIR/lib/git/push_controller.sh"
+source "$BASE_DIR/lib/git/show_time_machine.sh"
 
 # Enhanced spinner with smooth animation
 show_spinner() {
@@ -162,13 +164,11 @@ show_main_menu() {
             ;;
         *"Time Machine"*)
             show_spinner "⏳ Activating Time Machine" &
-            # time_machine_function
-            sleep 1
+            show_time_machine
             ;;
         *"Repository Settings"*)
             show_spinner "⚙️  Loading Repository Settings" &
-            # repo_settings_function
-            sleep 1
+            show_repo_settings
             ;;
         *"Exit"*)
             clear
@@ -186,7 +186,7 @@ show_main_menu() {
 show_quick_actions() {
     echo
     echo "${BOLD}${CYBER_CYAN}  ╔════════════════════════════════╗"
-    echo "  ║       ${CYBER_PURPLE}▓▓▓ QUICK ACTIONS ${CYBER_CYAN}▓▓▓       ║"
+    echo "  ║       ${CYBER_PURPLE}▓▓▓ QUICK ACTIONS ${CYBER_CYAN}▓▓▓       "
     echo "  ╚════════════════════════════════╝${RESET}"
     echo "  ${CYBER_YELLOW}[s] Status  [c] Commit  [b] Branches  [p] Push${RESET}"
     echo "  ${CYBER_RED}[q] Back to Menu${RESET}"
