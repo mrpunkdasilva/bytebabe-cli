@@ -9,6 +9,8 @@ source "$BASE_DIR/lib/git/commit.sh"
 source "$BASE_DIR/lib/git/branch_navigator.sh"
 source "$BASE_DIR/lib/git/push_controller.sh"
 source "$BASE_DIR/lib/git/show_time_machine.sh"
+source "$BASE_DIR/lib/git/repo_settings.sh"
+
 
 # Enhanced spinner with smooth animation
 show_spinner() {
@@ -174,7 +176,7 @@ show_main_menu() {
             clear
             echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"
             echo "  ║                                                    "
-            echo "  ║          ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          "
+            echo "  ║  ${CYBER_CYAN}▓▓▓ THANKS FOR USING GIT NEXUS PRO ▓▓▓${CYBER_PURPLE}          "
             echo "  ║                                                    "
             echo "  ╚══════════════════════════════════════════════╝${RESET}"
             echo
@@ -186,7 +188,7 @@ show_main_menu() {
 show_quick_actions() {
     echo
     echo "${BOLD}${CYBER_CYAN}  ╔════════════════════════════════╗"
-    echo "  ║       ${CYBER_PURPLE}▓▓▓ QUICK ACTIONS ${CYBER_CYAN}▓▓▓       "
+    echo "  ║  ${CYBER_PURPLE}▓▓▓ QUICK ACTIONS ${CYBER_CYAN}▓▓▓       "
     echo "  ╚════════════════════════════════╝${RESET}"
     echo "  ${CYBER_YELLOW}[s] Status  [c] Commit  [b] Branches  [p] Push${RESET}"
     echo "  ${CYBER_RED}[q] Back to Menu${RESET}"
