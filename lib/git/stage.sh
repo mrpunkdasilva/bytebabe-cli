@@ -36,6 +36,16 @@ show_file_status() {
     esac
 }
 
+show_loading() {
+    local message=$1
+    echo -n "${CYBER_CYAN}${message}"
+    for i in {1..3}; do
+        echo -n "."
+        sleep 0.5
+    done
+    echo "${RESET}"
+}
+
 # Custom menu selector function for staging
 function choose_staging_option() {
     local prompt="$1" outvar="$2"
@@ -139,16 +149,19 @@ stage_files_interactive() {
         # Process selection
         case "$selected_choice" in
             *"Stage all changes"*)
+                show_loading "  🛠️  Staging all changes"
                 (cd "$git_root" && git add .)
                 echo "  ${CYBER_GREEN}✔ All changes staged${RESET}"
                 sleep 1
                 ;;
             *"Unstage all changes"*)
+                show_loading "  ⚙️  Unstaging all changes"
                 (cd "$git_root" && git reset)
                 echo "  ${CYBER_CYAN}✔ All changes unstaged${RESET}"
                 sleep 1
                 ;;
             *"Show staged files"*)
+                show_loading "  📂 Loading staged files"
                 clear
                 echo
                 echo "  ${BOLD}${CYBER_BLUE}STAGED FILES:${RESET}"
@@ -160,6 +173,7 @@ stage_files_interactive() {
                 echo
                 read -p "  ${CYBER_BLUE}Enter commit message: ${RESET}" msg
                 if [ -n "$msg" ]; then
+                    show_loading "  ✍️  Creating commit"
                     (cd "$git_root" && git commit -m "$msg")
                 else
                     echo "  ${CYBER_RED}Commit message cannot be empty${RESET}"
@@ -168,6 +182,7 @@ stage_files_interactive() {
                 read -p "  ${CYBER_BLUE}Press Enter to continue...${RESET}"
                 ;;
             *"Return to main menu"*)
+                show_loading "  🔄 Returning to main menu"
                 return 0
                 ;;
             *)
@@ -176,8 +191,8 @@ stage_files_interactive() {
                     local choice=$(echo "$selected_choice" | awk '{print $1}' | tr -d ')')
                     if [ $choice -ge 1 ] && [ $choice -le ${#changed_files[@]} ]; then
                         local selected_file="${changed_files[$((choice-1))]}"
+                        show_loading "  📁 Staging $selected_file"
                         (cd "$git_root" && git add "$selected_file")
-                        echo
                         echo "  ${CYBER_GREEN}✔ Staged: $selected_file${RESET}"
                         sleep 1
                     fi

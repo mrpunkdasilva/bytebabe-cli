@@ -5,6 +5,7 @@ source "$BASE_DIR/lib/git/ui.sh"
 source "$BASE_DIR/lib/git/profile.sh"
 source "$BASE_DIR/lib/git/stage.sh"
 source "$BASE_DIR/lib/git/commit.sh"
+source "$BASE_DIR/lib/git/branch_navigator.sh"
 
 
 
@@ -104,14 +105,14 @@ show_main_menu() {
 
     # Menu options
     local selections=(
-      "   ${BOLD}${CYBER_GREEN}1) Profile Dashboard       ${CYBER_YELLOW}» User identity & statistics${RESET}"
-      "   ${BOLD}${CYBER_GREEN}2) Smart Staging           ${CYBER_YELLOW}» Interactive file selection${RESET}"
-      "   ${BOLD}${CYBER_GREEN}3) Commit Wizard           ${CYBER_YELLOW}» Guided semantic commits${RESET}"
-      "   ${BOLD}${CYBER_GREEN}4) Branch Navigator        ${CYBER_YELLOW}» Visual branch management${RESET}"
-      "   ${BOLD}${CYBER_GREEN}5) Push Controller         ${CYBER_YELLOW}» Advanced push operations${RESET}"
-      "   ${BOLD}${CYBER_GREEN}6) Time Machine            ${CYBER_YELLOW}» Interactive commit history${RESET}"
-      "   ${BOLD}${CYBER_GREEN}7) Repository Settings     ${CYBER_YELLOW}» Git configuration options${RESET}"
-      "   ${BOLD}${CYBER_RED}0) Exit                    ${CYBER_YELLOW}» Quit the application${RESET}"
+        "   ${BOLD}${CYBER_GREEN}1) 🧑‍ Profile Dashboard       ${CYBER_YELLOW}» User identity & statistics${RESET}"
+        "   ${BOLD}${CYBER_GREEN}2) 📂 Smart Staging           ${CYBER_YELLOW}» Interactive file selection${RESET}"
+        "   ${BOLD}${CYBER_GREEN}3) ✍️ Commit Wizard           ${CYBER_YELLOW}» Guided semantic commits${RESET}"
+        "   ${BOLD}${CYBER_GREEN}4) 🌿 Branch Navigator        ${CYBER_YELLOW}» Visual branch management${RESET}"
+        "   ${BOLD}${CYBER_GREEN}5) 🚀 Push Controller         ${CYBER_YELLOW}» Advanced push operations${RESET}"
+        "   ${BOLD}${CYBER_GREEN}6) ⏳  Time Machine            ${CYBER_YELLOW}» Interactive commit history${RESET}"
+        "   ${BOLD}${CYBER_GREEN}7) ⚙️ Repository Settings     ${CYBER_YELLOW}» Git configuration options${RESET}"
+        "   ${BOLD}${CYBER_RED}0) 🚪 Exit                    ${CYBER_YELLOW}» Quit the application${RESET}"
     )
 
     choose_from_menu "Select an option:" selected_choice "${selections[@]}"
@@ -152,7 +153,7 @@ show_main_menu() {
               sleep 0.5
           done
           echo "${RESET}"
-          # branch_navigator_function
+          show_branch_navigator
           ;;
       *"Push Controller"*)
           echo -n "${CYBER_CYAN}🚀 Preparing Push Controller"
