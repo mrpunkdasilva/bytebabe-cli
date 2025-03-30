@@ -10,11 +10,9 @@ CYBER_BLUE=$(tput setaf 4)
 RESET=$(tput sgr0)
 BOLD=$(tput bold)
 
-show_header() {
+show_header_git_nexus() {
     clear
-    echo "${CYBER_PURPLE}
-${BOLD}
-
+    echo "${CYBER_PURPLE}${BOLD}
    █████████   ███   █████       ██████   █████                                            ███████████                    
   ███░░░░░███ ░░░   ░░███       ░░██████ ░░███                                            ░░███░░░░░███                   
  ███     ░░░  ████  ███████      ░███░███ ░███   ██████  █████ █████ █████ ████  █████     ░███    ░███ ████████   ██████ 
@@ -26,8 +24,7 @@ ${BOLD}
                                                                                                                           
                                                                                                                           
                                                                                                                           
-${RESET}"
-    echo "${CYBER_PURPLE}${BOLD}  Git Nexus Pro - The Ultimate Git Orchestration Tool${RESET}"
+${RESET}${CYBER_PURPLE}${BOLD}  Git Nexus Pro - The Ultimate Git Orchestration Tool${RESET}"
 }
 
 show_footer() {
