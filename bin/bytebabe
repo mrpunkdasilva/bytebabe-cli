@@ -1,38 +1,48 @@
 #!/bin/bash
 
-source "$(pwd)/../lib/core/colors.sh"
-source "$(pwd)/../lib/core/helpers.sh"
-source "$(pwd)/../lib/utils/headers.sh"
+# Resolve o diretório base do script, mesmo quando chamado via link simbólico
+if [ -L "$0" ]; then
+    REAL_SCRIPT_PATH=$(readlink -f "$0")
+    BASE_DIR=$(dirname "$(dirname "$REAL_SCRIPT_PATH")")
+else
+    BASE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+fi
 
+# Carrega as bibliotecas com caminhos absolutos
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/utils/headers.sh"
 
 show_cyberpunk_header
-
 
 # Processar comandos
 case $1 in
     init)
-        source "$(pwd)/../commands/init.sh" "${@:2}"
+        source "${BASE_DIR}/commands/init.sh" "${@:2}"
         ;;
     git)
-        source "$(pwd)/../commands/git/main.sh"
+        source "${BASE_DIR}/commands/git/main.sh"
         ;;
     frontend)
-        source "$(pwd)/../commands/frontend.sh" "${@:2}"
+        source "${BASE_DIR}/commands/frontend.sh" "${@:2}"
         ;;
     backend)
-        source "$(pwd)/../commands/backend.sh" "${@:2}"
+        source "${BASE_DIR}/commands/backend.sh" "${@:2}"
         ;;
     servers)
-        source "$(pwd)/../commands/servers.sh" "${@:2}"
+        source "${BASE_DIR}/commands/servers.sh" "${@:2}"
         ;;
     db)
-        source "$(pwd)/../commands/db.sh" "${@:2}"
+        source "${BASE_DIR}/commands/db.sh" "${@:2}"
         ;;
     ide)
-        source "$(pwd)/../commands/ide.sh" "${@:2}"
+        source "${BASE_DIR}/commands/ide.sh" "${@:2}"
         ;;
     devtools)
-        source "$(pwd)/../commands/devtools.sh" "${@:2}"
+        source "${BASE_DIR}/commands/devtools.sh" "${@:2}"
+        ;;
+    docker)
+        source "${BASE_DIR}/commands/docker.sh" "${@:2}"
         ;;
     *)
         echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"

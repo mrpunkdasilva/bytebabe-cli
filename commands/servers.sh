@@ -4,7 +4,7 @@
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/docker/servers.sh"
+source "$BASE_DIR/lib/server/servers_services.sh"
 
 
 # ======================
