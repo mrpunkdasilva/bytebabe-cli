@@ -246,6 +246,12 @@ list_installed_ides() {
     cyber_divider
 }
 
+
+# Executes a given IDE.
+    # Args:
+    #     ide: The name of the IDE to execute.
+    # Returns:
+    #     0 if the IDE was found and executed, 1 otherwise.
 run_ide() {
     local ide=$1
     local ide_id
@@ -278,6 +284,21 @@ run_ide() {
 # SERVIÇOS DE GERENCIAMENTO
 # ==========================================
 
+# Verifica se uma IDE específica está em execução.
+#
+# Argumentos:
+#
+#   $1: O nome da IDE a ser verificada.
+#
+# Exemplos:
+#
+#   bytebabe ide status vscode
+#   bytebabe ide status zed
+#
+# Saídas:
+#
+#   IDE em execução: ${CYBER_ICON_SUCCESS} ${CYBER_GREEN}<nome da IDE> está em execução${RESET}
+#   IDE não em execução: ${CYBER_ICON_INFO} ${CYBER_YELLOW}<nome da IDE> não está em execução${RESET}
 ide_status() {
     local ide=$1
     local ide_id
@@ -306,11 +327,12 @@ ide_status() {
 
 
 
-
 # ==========================================
 # VERIFICAÇÃO DE SISTEMA
 # ==========================================
 
+# Verifica se as dependências básicas do sistema estão instaladas.
+# Instala WGET e TAR se necessário.
 verify_system() {
     if ! command -v wget &>/dev/null; then
         echo -e "${CYBER_ICON_WARNING} ${CYBER_YELLOW}INSTALANDO WGET...${RESET}"
