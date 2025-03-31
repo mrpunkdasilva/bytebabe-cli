@@ -33,3 +33,15 @@ show_section_header() {
     local title=$1
     echo -e "\n${CYBER_PINK}⚡ ${title} ⚡${RESET}"
 }
+
+show_header_custom() {
+  local title=$1
+  local icon=$2
+  local color=$3
+
+  echo -e "${color}"
+  echo "╔═══════════════════════════════════════╗"
+  printf "  %-10s %2s \n" "${title}" "${icon}"
+  echo "╚═══════════════════════════════════════╝"
+  echo -e "${RESET}"
+}
