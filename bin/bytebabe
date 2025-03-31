@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Resolve o diretório base do script, mesmo quando chamado via link simbólico
+# Resolve script base directory, even when called via symlink
 if [ -L "$0" ]; then
     REAL_SCRIPT_PATH=$(readlink -f "$0")
     BASE_DIR=$(dirname "$(dirname "$REAL_SCRIPT_PATH")")
@@ -8,14 +8,26 @@ else
     BASE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 fi
 
-# Carrega as bibliotecas com caminhos absolutos
+# Load libraries with absolute paths
 source "${BASE_DIR}/lib/core/colors.sh"
 source "${BASE_DIR}/lib/core/helpers.sh"
 source "${BASE_DIR}/lib/utils/headers.sh"
 
+VERSION="3.1.337"
+
+# Show version information
+show_version() {
+    echo -e "${CYBER_PINK}╔════════════════════════════════════════════════╗       "
+    echo -e "║${CYBER_CYAN}       ▓▓▓ BYTEBABE CLI v${VERSION} ▓▓▓ ${CYBER_PINK}"
+    echo -e "║${CYBER_GREEN}   ░▓█►  System: $(uname -srm)${CYBER_PINK}               "
+    echo -e "║${CYBER_GREEN}   ░▓█►  Shell: $(basename $SHELL)${CYBER_PINK}           "
+    echo -e "║${CYBER_GREEN}   ░▓█►  Uptime: $(uptime -p)${CYBER_PINK}                "
+    echo -e "╚════════════════════════════════════════════════╝${RESET}"
+}
+
 show_cyberpunk_header
 
-# Processar comandos
+# Process commands
 case $1 in
     init)
         source "${BASE_DIR}/commands/init.sh" "${@:2}"
@@ -44,15 +56,39 @@ case $1 in
     docker)
         source "${BASE_DIR}/commands/docker.sh" "${@:2}"
         ;;
+    prime|pm)
+        source "${BASE_DIR}/commands/prime.sh" "${@:2}"
+        ;;
+    --version|-v)
+        show_version
+        exit 0
+        ;;
+    --help|-h)
+        show_help
+        exit 0
+        ;;
     *)
-        echo -e "${CYBER_PINK}⚡ ByteBabe CLI ⚡${RESET}"
-        echo -e "${CYBER_BLUE}Uso:"
-        echo -e "  bytebabe frontend            Instala stack frontend"
-        echo -e "  bytebabe backend             Instala stack backend"
-        echo -e "  bytebabe ide                 Instala IDEs de desenvolvimento"
-        echo -e "  bytebabe db                  Ferramentas de gerenciamento de bancos de dados"
-        echo -e "  bytebabe servers             Ferramentas para gerenciamento de servidores"
-        echo -e "  bytebabe devtools terminal   Configuração do terminal"
-        echo -e "${RESET}"
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CORE COMMANDS:${RESET}"
+        echo -e "  ${CYBER_GREEN}init${RESET}          Initialize development environment"
+        echo -e "  ${CYBER_GREEN}git${RESET}           Advanced Git tools"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}STACK COMMANDS:${RESET}"
+        echo -e "  ${CYBER_GREEN}frontend${RESET}      Install frontend stack (Node, React, etc)"
+        echo -e "  ${CYBER_GREEN}backend${RESET}       Install backend stack (Python, Java, etc)"
+        echo -e "  ${CYBER_GREEN}db${RESET}            Databases (PostgreSQL, MongoDB, etc)"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEV ENVIRONMENT:${RESET}"
+        echo -e "  ${CYBER_GREEN}ide${RESET}           IDEs (VSCode, IntelliJ, etc)"
+        echo -e "  ${CYBER_GREEN}devtools${RESET}      Development tools"
+        echo -e "    ${CYBER_GRAY}terminal${RESET}     Terminal configuration"
+        echo -e "  ${CYBER_GREEN}docker${RESET}       Docker tools"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
+        echo -e "  ${CYBER_GREEN}servers${RESET}       Server management"
+        echo -e "  ${CYBER_GREEN}docker${RESET}        Docker containers and images"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}UTILITIES:${RESET}"
+        echo -e "  ${CYBER_GREEN}--help | -h${RESET}   Show this message"
+        echo -e "  ${CYBER_GREEN}--version | -v${RESET} Show CLI version"
         ;;
 esac
