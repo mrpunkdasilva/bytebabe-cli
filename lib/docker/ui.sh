@@ -9,17 +9,63 @@ show_docker_header() {
     echo "  ║                                              ║"
     echo "  ║  🐋  Manage containers, images and volumes   ║"
     echo "  ║  🚀  Docker Compose utilities                ║"
-    echo "  ║  ⚡  System monitoring and cleanup           ║"
+    echo "  ║  ⚡  System monitoring and cleanup            ║"
     echo "  ╚══════════════════════════════════════════════╝"
     echo -e "${RESET}"
 }
 
-# Animação temática Docker
+
+show_poseidon_header() {
+    echo -e "$CYBER_BLUE
+                                                           #       
+                                                           ##      
+    ####### #######     #### ######## ### ####### #######  ###  ## 
+          ##      ##   ###            ###       ##      ## #### ## 
+     ######  ##   ##   ###    ####### ###  ###  ## ##   ## ####### 
+     ###     ##   ##   ###    ###     ###  ###  ## ##   ## ### ### 
+     ###      ##### #####     ####### ###  ######   #####  ###  ## 
+                                                                 # 
+
+    ${CYBER_CYAN}⊳ Poderes do Deus dos Mares sobre seus containers ⊲ $CYBER_BLUE $RESET
+    ══════════════════════════════════════════════════════════════
+
+    "
+}
+
+show_docker_help() {
+    show_poseidon_header
+
+    echo -e "${BOLD}${CYBER_GREEN}USO:${RESET}"
+    echo -e "  bytebabe docker ${CYBER_YELLOW}[comando] [opções]${RESET}"
+    echo
+
+    echo -e "${BOLD}${CYBER_GREEN}TRIDENTE DE COMANDOS:${RESET}"
+    echo -e "  ${CYBER_GREEN}containers${RESET}    🐳  Domine seus containers"
+    echo -e "  ${CYBER_GREEN}images${RESET}       📦  Controle as imagens como ondas"
+    echo -e "  ${CYBER_GREEN}volumes${RESET}      💾  Profundezas do armazenamento"
+    echo -e "  ${CYBER_GREEN}compose${RESET}      🌊  Comande frotas de serviços"
+    echo -e "  ${CYBER_GREEN}clean${RESET}        🧹  Limpeza do templo submarino"
+    echo -e "  ${CYBER_GREEN}stats${RESET}        📊  Visão do reino"
+    echo -e "  ${CYBER_GREEN}help${RESET}         ❓  Sabedoria de Poseidon"
+    echo
+
+    echo -e "${BOLD}${CYBER_GREEN}SACRIFÍCIOS (EXEMPLOS):${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe docker containers${RESET}    # Domine seus containers"
+    echo -e "  ${CYBER_YELLOW}bytebabe docker compose up${RESET}   # Libere a fúria dos mares"
+    echo
+
+    echo -e "${BOLD}${CYBER_GREEN}PROFECIAS (DICAS):${RESET}"
+    echo -e "  ${CYBER_BLUE}•${RESET} ${CYBER_YELLOW}--help${RESET} para invocar sabedoria específica"
+    echo -e "  ${CYBER_BLUE}•${RESET} O Tridente (TAB) completa seus comandos"
+    echo -e "  ${CYBER_BLUE}•${RESET} ${CYBER_YELLOW}Ctrl+C${RESET} para acalmar as tempestades (sair)"
+}
+
+# Animação temática
 show_docker_loading() {
     local pid=$!
     local message=$1
     local delay=0.15
-    local spin_chars=('🐳 ' '⚓ ' '🚢 ' '🌊 ' '🌀 ' '🔹 ' '🔷 ' '🔵 ')
+    local spin_chars=('🌊 ' '🐚 ' '⚡ ' '🔱 ' '🌪️ ' '🌀 ' '🐋 ' '⚓ ')
     local i=0
 
     printf "${CYBER_BLUE}${message}${RESET} "
@@ -30,6 +76,7 @@ show_docker_loading() {
     done
     printf "\b\b\b   \b\b\b\n"
 }
+
 
 # Menu principal
 show_main_menu() {
