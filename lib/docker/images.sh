@@ -985,11 +985,62 @@ sync_with_registry() {
     read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
 }
 
-
-
 cleanup_images_menu() {
-    echo "Cleanup functionality will be implemented here"
-    read -n 1 -s -r -p "Press any key to continue..."
+    while true; do
+        clear
+        show_docker_header
+        echo -e "${CYBER_PURPLE}▓▓ CYBER CLEANER v2.0 ▓▓${RESET}"
+        echo -e "${CYBER_BLUE}System Status:${RESET} $(sudo docker system df | grep Images | awk '{print $4}') used"
+
+        local actions=(
+            "🧹 Purge Dangling Images"
+            "💥 Full System Scrub"
+            "⏳ Time-Based Purge (>30d)"
+            "📊 Storage Diagnostics"
+            "🔙 Return to Mainframe"
+        )
+
+        choose_from_menu "Select cleanup action:" action "${actions[@]}"
+
+        case $action in
+            *Dangling*)
+                echo -e "\n${CYBER_CYAN}[ INITIATING DANGLING PURGE ]${RESET}"
+                sudo docker image prune -f | while read -r line; do
+                    echo -e "${CYBER_GRAY}⌁ $line${RESET}"
+                done
+                ;;
+            *Scrub*)
+                echo -e "\n${CYBER_CYAN}[ INITIATING FULL SYSTEM SCRUB ]${RESET}"
+                sudo docker system prune -a -f | while read -r line; do
+                    echo -e "${CYBER_GRAY}⌁ $line${RESET}"
+                done
+                ;;
+            *Time-Based*)
+                echo -e "\n${CYBER_CYAN}[ INITIATING CHRONO-PURGE ]${RESET}"
+                sudo docker image prune -a -f --filter "until=720h" | while read -r line; do
+                    echo -e "${CYBER_GRAY}⌁ $line${RESET}"
+                done
+                ;;
+            *Diagnostics*)
+                echo -e "\n${CYBER_CYAN}[ SYSTEM DIAGNOSTICS ]${RESET}"
+                echo -e "${CYBER_GREEN}"
+                sudo docker system df -v
+                echo -e "${RESET}"
+                ;;
+            *Mainframe*)
+                echo -e "${CYBER_RED}\n[ RETURNING TO MAINFRAME ]${RESET}"
+                return
+                ;;
+        esac
+
+        if [[ "$action" != *Mainframe* ]]; then
+            echo -e "\n${CYBER_CYAN}[ OPERATION COMPLETE ]${RESET}"
+            echo -e "${CYBER_GREEN}"
+            sudo docker system df
+            echo -e "${RESET}"
+            read -n 1 -s -r -p "${CYBER_GRAY}⌁ Press any key to continue...${RESET}"
+        fi
+    done
 }
 
 
