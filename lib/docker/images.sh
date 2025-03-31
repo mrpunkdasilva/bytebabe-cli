@@ -628,15 +628,495 @@ show_image_details() {
     }' | jq
 }
 
-push_management_menu() {
-    echo "Push management functionality will be implemented here"
-    read -n 1 -s -r -p "Press any key to continue..."
+
+
+select_docker_option() {
+    local prompt="$1" outvar="$2"
+    shift
+    shift
+    local options=("$@") cur=0 count=${#options[@]} index=0
+    local key
+
+    if [ $count -eq 0 ]; then
+        echo -e "${CYBER_RED}Nenhuma opção disponível${RESET}"
+        return 1
+    fi
+
+    echo -e "${BOLD}${CYBER_PURPLE}$prompt${RESET}"
+
+    while true; do
+        # Imprime todas as opções
+        for index in $(seq 0 $((count-1))); do
+            if [ $index -eq $cur ]; then
+                echo -e "${CYBER_GREEN} > ${CYBER_CYAN}${BOLD}${options[index]}${RESET}"
+            else
+                echo -e "   ${CYBER_YELLOW}${options[index]}${RESET}"
+            fi
+        done
+
+        # Lê apenas 1 caractere no modo silencioso
+        read -rsn1 key
+
+        # Se for uma sequência de escape (setas), lê mais 2 caracteres
+        if [[ "$key" == $'\x1b' ]]; then
+            read -rsn2 -t 0.1 key
+        fi
+
+        case "$key" in
+            '[A')  # Seta para cima
+                ((cur--))
+                ;;
+            '[B')  # Seta para baixo
+                ((cur++))
+                ;;
+            '')  # Enter - confirma seleção
+                break
+                ;;
+            [1-9])  # Seleção por número
+                if ((key <= count)); then
+                    ((cur=key-1))
+                    break
+                fi
+                ;;
+            q|Q)  # Tecla Q para sair
+                return 1
+                ;;
+        esac
+
+        # Ajusta os limites do cursor
+        ((cur = (cur < 0) ? 0 : (cur >= count) ? count-1 : cur))
+
+        # Move o cursor para reescrever o menu
+        printf "\033[%dA" "$count"
+    done
+
+    # Retorna a seleção
+    printf -v "$outvar" "%s" "${options[cur]}"
 }
+
+
+push_management_menu() {
+    while true; do
+        clear
+        show_docker_header
+        echo -e "${CYBER_PURPLE}▓▓ GESTÃO DE PUSH DE IMAGENS ▓▓${RESET}"
+
+        local options=(
+            "🚀 Push Direto"
+            "🏷️ Tag e Push"
+            "📜 Listar Tags"
+            "🔄 Sincronizar"
+            "🔐 Login Registry"
+            "⬅ Voltar"
+        )
+
+        select_docker_option "Selecione uma ação:" selected_action "${options[@]}"
+
+        case "$selected_action" in
+            *Direto*)
+                push_direct
+                ;;
+            *Tag\ e\ Push*)
+                tag_and_push
+                ;;
+            *Listar\ Tags*)
+                list_remote_tags
+                ;;
+            *Sincronizar*)
+                sync_with_registry
+                ;;
+            *Login*)
+                registry_login
+                ;;
+            *Voltar*)
+                return
+                ;;
+        esac
+    done
+}
+
+# Função para autenticação em registry
+registry_login() {
+    echo -e "\n${CYBER_BLUE}▓▓ AUTENTICAÇÃO NO REGISTRY ▓▓${RESET}"
+
+    read -p "Endereço do registry (ex: registry.example.com): " registry
+    read -p "Usuário: " username
+    read -s -p "Senha: " password
+    echo
+
+    if [[ -z "$registry" || -z "$username" ]]; then
+        echo -e "${CYBER_RED}Registry e usuário são obrigatórios${RESET}"
+    else
+        echo -e "\n${CYBER_YELLOW}Efetuando login...${RESET}"
+        if echo "$password" | $cmd_docker login -u "$username" --password-stdin "$registry"; then
+            echo -e "${CYBER_GREEN}✓ Login bem-sucedido!${RESET}"
+        else
+            echo -e "${CYBER_RED}✖ Falha no login${RESET}"
+        fi
+    fi
+
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+
+# Função melhorada para push direto
+push_direct() {
+    echo -e "\n${CYBER_BLUE}▓▓ PUSH DIRETO ▓▓${RESET}"
+
+    # Lista imagens com formatação colorida
+    echo -e "${CYBER_YELLOW}Imagens locais disponíveis:${RESET}"
+    $cmd_docker images --format "table {{.ID}}\t{{.Repository}}\t{{.Tag}}\t{{.Size}}" |
+    awk -v c1=${CYBER_CYAN} -v c2=${CYBER_WHITE} -v r=${RESET} '
+    BEGIN {printf "%s%-12s %-30s %-15s %-10s%s\n", c2, "ID", "REPOSITÓRIO", "TAG", "TAMANHO", r}
+    {printf "%s%-12s %s%-30s%s %s%-15s%s %s%-10s%s\n", c1, $1, c2, $2, r, c1, $3, r, c2, $4, r}' |
+    head -10
+
+    read -p "Digite o ID ou nome da imagem: " image_id
+    read -p "Digite o destino (registry/repo:tag): " destination
+
+    if [[ -z "$image_id" || -z "$destination" ]]; then
+        echo -e "${CYBER_RED}ID da imagem e destino são obrigatórios${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return
+    fi
+
+    # Verifica se a imagem existe
+    if ! $cmd_docker inspect "$image_id" &>/dev/null; then
+        echo -e "${CYBER_RED}Imagem não encontrada!${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return
+    fi
+
+    # Confirmação
+    if ! confirm "Confirmar push de '${image_id}' para '${destination}'?"; then
+        echo -e "${CYBER_YELLOW}Push cancelado${RESET}"
+        return
+    fi
+
+    # Processo de tag e push
+    echo -e "\n${CYBER_YELLOW}1. Aplicando tag...${RESET}"
+    if $cmd_docker tag "$image_id" "$destination"; then
+        echo -e "${CYBER_GREEN}✓ Tag aplicada${RESET}"
+    else
+        echo -e "${CYBER_RED}✖ Falha ao aplicar tag${RESET}"
+        return
+    fi
+
+    echo -e "\n${CYBER_YELLOW}2. Enviando imagem...${RESET}"
+    if $cmd_docker push "$destination"; then
+        echo -e "\n${CYBER_GREEN}✓ Push concluído com sucesso!${RESET}"
+
+        # Opção de limpar tag
+        if confirm "Deseja remover a tag temporária?"; then
+            $cmd_docker rmi "$destination"
+            echo -e "${CYBER_GREEN}✓ Tag removida${RESET}"
+        fi
+    else
+        echo -e "\n${CYBER_RED}✖ Falha no push${RESET}"
+    fi
+
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+tag_and_push() {
+    echo -e "\n${CYBER_BLUE}▓▓ TAG E PUSH DE IMAGEM ▓▓${RESET}"
+
+    # Lista imagens locais com formatação colorida
+    echo -e "${CYBER_YELLOW}Imagens locais disponíveis:${RESET}"
+    $cmd_docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" |
+    awk -v c1=${CYBER_CYAN} -v c2=${CYBER_WHITE} -v r=${RESET} '
+    BEGIN {printf "%s%-30s %-20s %-10s%s\n", c2, "REPOSITÓRIO", "TAG", "TAMANHO", r}
+    {printf "%s%-30s %s%-20s%s %s%-10s%s\n", c1, $1, c2, $2, r, c1, $3, r}' |
+    head -10
+
+    # Captura inputs do usuário
+    read -p "Digite o nome da imagem local (ex: minha-imagem:tag): " source_image
+    read -p "Digite o novo nome completo (ex: registry.com/user/repo:tag): " target_image
+
+    # Validações
+    if [[ -z "$source_image" || -z "$target_image" ]]; then
+        echo -e "${CYBER_RED}Erro: Nomes de imagem são obrigatórios${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return 1
+    fi
+
+    if ! $cmd_docker inspect "$source_image" &>/dev/null; then
+        echo -e "${CYBER_RED}Erro: Imagem local não encontrada${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return 1
+    fi
+
+    # Confirmação
+    if ! confirm "Confirmar operação?\n  De: ${CYBER_CYAN}$source_image${RESET}\n  Para: ${CYBER_GREEN}$target_image${RESET}"; then
+        echo -e "${CYBER_YELLOW}Operação cancelada${RESET}"
+        return
+    fi
+
+    # Processo de tag
+    echo -e "\n${CYBER_YELLOW}1. Aplicando tag...${RESET}"
+    if $cmd_docker tag "$source_image" "$target_image"; then
+        echo -e "${CYBER_GREEN}✓ Tag aplicada com sucesso${RESET}"
+    else
+        echo -e "${CYBER_RED}✖ Falha ao aplicar tag${RESET}"
+        return 1
+    fi
+
+    # Processo de push
+    echo -e "\n${CYBER_YELLOW}2. Enviando imagem...${RESET}"
+    if $cmd_docker push "$target_image"; then
+        echo -e "\n${CYBER_GREEN}✓ Push concluído com sucesso!${RESET}"
+
+        # Limpeza opcional
+        if confirm "Deseja remover a tag temporária?"; then
+            $cmd_docker rmi "$target_image"
+            echo -e "${CYBER_GREEN}✓ Tag removida${RESET}"
+        fi
+    else
+        echo -e "\n${CYBER_RED}✖ Falha no push${RESET}"
+        return 1
+    fi
+
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+list_remote_tags() {
+    echo -e "\n${CYBER_BLUE}▓▓ LISTAR TAGS REMOTAS ▓▓${RESET}"
+
+    # Mostra exemplos
+    echo -e "${CYBER_YELLOW}Exemplos de repositórios:${RESET}"
+    echo -e "  • library/nginx"
+    echo -e "  • ubuntu"
+    echo -e "  • seu-user/meu-repositorio"
+
+    read -p "Digite o nome do repositório: " repository
+
+    if [[ -z "$repository" ]]; then
+        echo -e "${CYBER_RED}Erro: Nome do repositório é obrigatório${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return 1
+    fi
+
+    # Verifica se é um registry customizado
+    if [[ "$repository" == *.* ]]; then
+        local registry="${repository%%/*}"
+        echo -e "${CYBER_YELLOW}Consultando registry customizado...${RESET}"
+
+        if ! curl -sSL "https://$registry/v2/" &>/dev/null; then
+            echo -e "${CYBER_RED}Erro: Registry inacessível ou não suportado${RESET}"
+            read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+            return 1
+        fi
+
+        # Usa API v2 para registry customizado
+        echo -e "\n${CYBER_GREEN}Tags disponíveis em ${CYBER_CYAN}$repository${CYBER_GREEN}:${RESET}"
+        curl -sSL "https://$registry/v2/$repository/tags/list" | jq -r '.tags[]' 2>/dev/null ||
+        echo -e "${CYBER_RED}Não foi possível listar as tags (API não suportada)${RESET}"
+    else
+        # Usa Docker Hub para repositórios padrão
+        echo -e "\n${CYBER_YELLOW}Consultando Docker Hub...${RESET}"
+
+        # Tentativa com API v2
+        local tags=$(curl -sSL "https://registry.hub.docker.com/v2/repositories/$repository/tags/?page_size=10" | jq -r '.results[].name' 2>/dev/null)
+
+        if [[ -n "$tags" ]]; then
+            echo -e "\n${CYBER_GREEN}Últimas 10 tags em ${CYBER_CYAN}$repository${CYBER_GREEN}:${RESET}"
+            echo "$tags" | column
+        else
+            # Fallback para API v1
+            echo -e "${CYBER_YELLOW}Tentando API mais antiga...${RESET}"
+            curl -sSL "https://registry.hub.docker.com/v1/repositories/$repository/tags" | jq -r '.[].name' | column ||
+            echo -e "${CYBER_RED}Não foi possível listar as tags${RESET}"
+        fi
+    fi
+
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+
+sync_with_registry() {
+    echo -e "\n${CYBER_BLUE}▓▓ SINCRONIZAR COM REGISTRY ▓▓${RESET}"
+
+    # Lista imagens locais
+    echo -e "${CYBER_YELLOW}Imagens locais disponíveis:${RESET}"
+    $cmd_docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" | head -10
+
+    # Captura inputs
+    read -p "Digite o nome da imagem local (ex: minha-imagem:tag): " local_image
+    read -p "Digite o destino no registry (ex: registry.com/user/repo:tag): " remote_image
+
+    # Validações
+    if [[ -z "$local_image" || -z "$remote_image" ]]; then
+        echo -e "${CYBER_RED}Erro: Nomes de imagem são obrigatórios${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return 1
+    fi
+
+    if ! $cmd_docker inspect "$local_image" &>/dev/null; then
+        echo -e "${CYBER_RED}Erro: Imagem local não encontrada${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return 1
+    fi
+
+    # Confirmação
+    if ! confirm "Confirmar sincronização?\n  Local: ${CYBER_CYAN}$local_image${RESET}\n  Remoto: ${CYBER_GREEN}$remote_image${RESET}"; then
+        echo -e "${CYBER_YELLOW}Operação cancelada${RESET}"
+        return
+    fi
+
+    # Fluxo completo
+    echo -e "\n${CYBER_YELLOW}1. Aplicando tag...${RESET}"
+    $cmd_docker tag "$local_image" "$remote_image" || {
+        echo -e "${CYBER_RED}✖ Falha ao aplicar tag${RESET}"
+        return 1
+    }
+
+    echo -e "\n${CYBER_YELLOW}2. Enviando imagem...${RESET}"
+    $cmd_docker push "$remote_image" || {
+        echo -e "${CYBER_RED}✖ Falha no push${RESET}"
+        return 1
+    }
+
+    echo -e "\n${CYBER_YELLOW}3. Limpando tag local...${RESET}"
+    $cmd_docker rmi "$remote_image" || {
+        echo -e "${CYBER_YELLOW}⚠ Aviso: Não foi possível remover a tag local${RESET}"
+    }
+
+    echo -e "\n${CYBER_GREEN}✓ Sincronização completa!${RESET}"
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+
 
 cleanup_images_menu() {
     echo "Cleanup functionality will be implemented here"
     read -n 1 -s -r -p "Press any key to continue..."
 }
+
+
+
+search_images_menu() {
+    while true; do
+        clear
+        show_docker_header
+        echo -e "${CYBER_PURPLE}▓▓ PESQUISA DE IMAGENS DOCKER ▓▓${RESET}"
+
+        local options=(
+            "🔍 Pesquisar por nome"
+            "📂 Buscar por categoria"
+            "⬅ Voltar"
+        )
+
+        choose_from_menu "Selecione o tipo de pesquisa:" search_type "${options[@]}"
+
+        case $search_type in
+            *nome*)
+                search_by_name
+                ;;
+            *categoria*)
+                search_by_category
+                ;;
+            *Voltar*)
+                return
+                ;;
+        esac
+    done
+}
+
+search_by_name() {
+    echo -e "\n${CYBER_BLUE}▓▓ PESQUISA POR NOME ▓▓${RESET}"
+    read -p "Digite o termo de pesquisa (ex: nginx, postgres): " search_term
+
+    if [[ -z "$search_term" ]]; then
+        echo -e "${CYBER_RED}Termo de pesquisa não pode ser vazio${RESET}"
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+        return
+    fi
+
+    echo -e "\n${CYBER_YELLOW}Procurando por '${CYBER_CYAN}$search_term${CYBER_YELLOW}'...${RESET}"
+
+    # Formatação personalizada sem dependências externas
+    {
+        echo -e "${CYBER_WHITE}--------------------------------------------------------------------------------"
+        printf "%-40s %-50s %-8s %-10s\n" "NOME" "DESCRIÇÃO" "ESTRELAS" "OFICIAL"
+        echo -e "--------------------------------------------------------------------------------${RESET}"
+
+        $cmd_docker search --format "{{.Name}}\t{{.Description}}\t{{.StarCount}}\t{{.IsOfficial}}" "$search_term" | while IFS=$'\t' read -r name desc stars official; do
+            # Trunca descrição se for muito longa
+            desc="${desc:0:50}"
+            [[ ${#desc} -eq 50 ]] && desc="${desc}..."
+
+            # Formata estrelas
+            if [[ $stars -gt 1000 ]]; then
+                stars="${CYBER_YELLOW}${stars}★${RESET}"
+            else
+                stars="${CYBER_WHITE}${stars}★${RESET}"
+            fi
+
+            # Formata flag oficial
+            if [[ "$official" == "[OK]" ]]; then
+                official="${CYBER_GREEN}✔${RESET}"
+            else
+                official="${CYBER_RED}✖${RESET}"
+            fi
+
+            printf "%-40s %-50s %-8b %-10b\n" "$name" "$desc" "$stars" "$official"
+        done
+
+        echo -e "${CYBER_WHITE}--------------------------------------------------------------------------------${RESET}"
+    } | tee /dev/tty | grep -q . || echo -e "${CYBER_YELLOW}Nenhum resultado encontrado.${RESET}"
+
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
+search_by_category() {
+    while true; do
+        clear
+        show_docker_header
+        echo -e "${CYBER_PURPLE}▓▓ CATEGORIAS DE IMAGENS ▓▓${RESET}"
+
+        # Categorias pré-definidas com exemplos (armazenadas como string)
+        local categories=(
+            "1) 🌐 Servidores Web|nginx apache httpd tomcat"
+            "2) 🛢️ Bancos de Dados|mysql postgres mongo redis"
+            "3) 💻 Sistemas Operacionais|ubuntu alpine debian centos"
+            "4) 🛠️ Ferramentas de Desenvolvimento|node python golang"
+            "5) 📊 Monitoramento|grafana prometheus influxdb"
+            "6) 🔒 Segurança|vault owasp/zap sonarqube"
+            "7) 🧪 CI/CD|jenkins gitlab-runner drone"
+            "8) ⬅ Voltar"
+        )
+
+        # Mostrar menu de categorias
+        for category in "${categories[@]}"; do
+            IFS='|' read -r title terms <<< "$category"
+            echo -e "${CYBER_CYAN}$title${RESET}"
+        done
+
+        read -p "Selecione uma categoria (1-8): " category_choice
+
+        case $category_choice in
+            1|2|3|4|5|6|7)
+                IFS='|' read -r category_title search_terms <<< "${categories[$((category_choice-1))]}"
+                echo -e "\n${CYBER_BLUE}▓▓ $category_title ▓▓${RESET}"
+
+                for term in $search_terms; do
+                    echo -e "\n${CYBER_YELLOW}▶ ${term^^}${RESET}"
+                    $cmd_docker search --format "table {{.Name}}\t{{.Description}}\t{{.StarCount}}" "$term" | head -5
+                done
+                ;;
+            8)
+                return
+                ;;
+            *)
+                echo -e "${CYBER_RED}Opção inválida!${RESET}"
+                ;;
+        esac
+
+        read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+    done
+}
+
+
 
 ### Image Listing Functions ###
 
