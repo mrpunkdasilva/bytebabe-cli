@@ -45,3 +45,31 @@ show_spinner() {
     done
     echo -e "\b${CYBER_GREEN}✔${RESET}"
 }
+
+show_invalid_command_prime() {
+  echo -e "${CYBER_RED}"
+  cat << "EOF"
+  ╔════════════════════════════════════════════╗
+  ║      ▓▓▓ INVALID COMMAND DETECTED ▓▓▓      ║
+  ╚════════════════════════════════════════════╝
+EOF
+  echo -e "${RESET}"
+
+  echo -e "${CYBER_YELLOW}⚠️  Unknown command:${RESET} ${CYBER_RED}$1${RESET}"
+  echo -e "${CYBER_BLUE}Available commands:${RESET}"
+
+  echo -e "\n${CYBER_GREEN}🛠️  System Commands:${RESET}"
+  echo -e "  ${CYBER_CYAN}upgrade    ${CYBER_GRAY}- ${CYBER_PURPLE}System upgrade${RESET}"
+  echo -e "  ${CYBER_CYAN}install    ${CYBER_GRAY}- ${CYBER_PURPLE}Install packages${RESET}"
+  echo -e "  ${CYBER_CYAN}remove     ${CYBER_GRAY}- ${CYBER_PURPLE}Remove packages${RESET}"
+
+  echo -e "\n${CYBER_RED}🛡️  Security:${RESET}"
+  echo -e "  ${CYBER_CYAN}scan       ${CYBER_GRAY}- ${CYBER_PURPLE}Security scan${RESET}"
+  echo -e "  ${CYBER_CYAN}firewall   ${CYBER_GRAY}- ${CYBER_PURPLE}Firewall control${RESET}"
+
+  echo -e "\n${CYBER_YELLOW}ℹ️  Try:${RESET}"
+  echo -e "  ${CYBER_BLUE}prime help${RESET} for full documentation"
+  echo -e "  ${CYBER_BLUE}prime upgrade${RESET} to start system update"
+
+  echo -e "\n${CYBER_PURPLE}╰┈➤ ${CYBER_GRAY}Report bugs at: ${CYBER_CYAN}https://github.com/mrpunkdasilva/bytebabe${RESET}"
+}
