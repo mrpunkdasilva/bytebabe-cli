@@ -56,12 +56,7 @@ sudo ln -s $(pwd)/bytebabe /usr/local/bin/bytebabe
 bytebabe docker containers          # Interactive container control
 bytebabe docker compose up         # Manage compose stacks
 
-# Git Operations
-bytebabe git branch-navigator      # Visual branch management
-bytebabe git smart-commit          # Guided commit messages
-
-# Environment Setup
-bytebabe devtools install-all      # Install complete dev stack
+[coming soon...]
 ```
 
 ## 🏗 Project Structure
