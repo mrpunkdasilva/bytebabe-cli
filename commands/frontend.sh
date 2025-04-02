@@ -4,9 +4,12 @@
 # FRONTEND COMMANDER - CYBERPUNK EDITION
 # ==========================================
 
-# Importar módulos
-source "$(pwd)/lib/core/colors.sh"
-source "$(pwd)/lib/core/helpers.sh"
+# Carrega paths absolutos
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Importa módulos
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO
@@ -31,19 +34,19 @@ install_package_manager() {
     local pkg=$1
     case $pkg in
         "yarn")
-            npm install -g yarn
+            sudo npm install -g yarn
             echo -e "${CYBER_GREEN}✔ Yarn $(yarn --version) instalado${RESET}"
             ;;
         "pnpm")
-            npm install -g pnpm
+            sudo npm install -g pnpm
             echo -e "${CYBER_GREEN}✔ pnpm $(pnpm --version) instalado${RESET}"
             ;;
         "bun")
-            curl -fsSL https://bun.sh/install | bash
+            sudo curl -fsSL https://bun.sh/install | bash
             echo -e "${CYBER_GREEN}✔ Bun $(bun --version) instalado${RESET}"
             ;;
         "npm")
-            echo -e "${CYBER_GREEN}✔ npm $(npm --version) (pré-instalado)${RESET}"
+            sudo echo -e "${CYBER_GREEN}✔ npm $(npm --version) (pré-instalado)${RESET}"
             ;;
     esac
 }
@@ -52,19 +55,19 @@ install_framework() {
     local fw=$1
     case $fw in
         "react")
-            npm install -g create-react-app create-vite
+            sudo npm install -g create-react-app create-vite
             echo -e "${CYBER_GREEN}✔ React + Vite instalados${RESET}"
             ;;
         "vue")
-            npm install -g @vue/cli
+            sudo npm install -g @vue/cli
             echo -e "${CYBER_GREEN}✔ Vue CLI $(vue --version) instalado${RESET}"
             ;;
         "angular")
-            npm install -g @angular/cli
+            sudo npm install -g @angular/cli
             echo -e "${CYBER_GREEN}✔ Angular CLI instalado${RESET}"
             ;;
         "next")
-            npm install -g create-next-app
+            sudo npm install -g create-next-app
             echo -e "${CYBER_GREEN}✔ Next.js instalado${RESET}"
             ;;
     esac
@@ -188,7 +191,7 @@ main() {
             show_help
             ;;
         *)
-            echo -e "${CYBER_RED}✘ Comando inválido! Use 'help' para ver as opções${RESET}"
+            show_help
             ;;
     esac
 }

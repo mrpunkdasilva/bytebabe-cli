@@ -521,7 +521,7 @@ main() {
             show_help
             ;;
         *)
-            echo -e "${CYBER_RED}✘ Comando inválido! Use 'help' para ver as opções${RESET}"
+            show_help
             ;;
     esac
 }

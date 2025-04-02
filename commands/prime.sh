@@ -70,16 +70,13 @@ case $1 in
   network|net)
     shift
     source "$BASE_DIR/lib/pkg/network/main.sh"
-    show_header_custom "NETWORK DIAGNOSTICS" "🌐" "${CYBER_BLUE}"
     run_network "$@"
     ;;
-  # TODO: FALTA SÓ ESSE
 
   # 📜 LOG MODULE
   log)
     shift
-    show_header_custom "SYSTEM LOGS" "📜" "${CYBER_YELLOW}"
-    run_log "$@"
+    source "$BASE_DIR/lib/pkg/log/main.sh"
     ;;
 
   # ⚙️ SERVICE CONTROL
@@ -93,19 +90,16 @@ case $1 in
     shift
     source "$BASE_DIR/lib/pkg/list/main.sh"
     ;;
-  # TODO: FALTA SÓ ESSE
 
   info)
     shift
-    show_header_custom "PACKAGE SPECS" "🔎" "${CYBER_BLUE}"
-    run_info "$@"
+    source "$BASE_DIR/lib/pkg/info/main.sh"
     ;;
-  # TODO: FALTA SÓ ESSE
 
   stats)
     shift
+    source "$BASE_DIR/lib/pkg/stats/main.sh"
     show_header_custom "SYSTEM VITALS" "📊" "${CYBER_PURPLE}"
-    run_stats "$@"
     ;;
 
   # 🆘 HELP SYSTEM
