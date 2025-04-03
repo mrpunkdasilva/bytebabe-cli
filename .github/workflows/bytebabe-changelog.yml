@@ -67,6 +67,7 @@ jobs:
       - name: 🤖 Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         uses: peter-evans/create-pull-request@v5
+        id: cpr
         with:
           commit-message: "docs: Update ByteBabe Changelog"
           title: "⚡ ByteBabe Changelog Update"
@@ -85,3 +86,11 @@ jobs:
             automated
             cyberpunk
           delete-branch: true
+
+      - name: 🔄 Auto-merge Pull Request
+        if: steps.cpr.outputs.pull-request-number
+        run: |
+          PR_NUMBER="${{ steps.cpr.outputs.pull-request-number }}"
+          gh pr merge --auto --merge "$PR_NUMBER"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
