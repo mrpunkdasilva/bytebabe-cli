@@ -4,10 +4,11 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <variables>
-        <header-logo>bytebBabe.svg</header-logo>
+        <header-logo>img.png</header-logo>
         <custom-favicons>bytebabe.svg</custom-favicons>
         <primary-color>strawberry</primary-color>
         <noindex-content>true</noindex-content>
+        <custom-css>custom.css</custom-css>
     </variables>
 
     <build-profile instance="b">
