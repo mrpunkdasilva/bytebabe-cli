@@ -8,6 +8,18 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 
 ### 2025-04-03 
+-  Merge remote-tracking branch 'origin/main'
+
+### 2025-04-03 
+-  action pulish bytebe
+
+### 2025-04-03 
+-  Merge pull request #5 from mrpunkdasilva/update-bytebabe-changelog
+
+### 2025-04-03 
+-  docs: Update ByteBabe Changelog
+
+### 2025-04-03 
 -  changes actions
 
 ### 2025-04-03 
