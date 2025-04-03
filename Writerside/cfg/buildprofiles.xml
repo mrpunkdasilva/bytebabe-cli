@@ -3,17 +3,16 @@
 <buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <sitemap priority="0.35" change-frequency="monthly"/>
-
     <variables>
-        <header-logo>logo-primary.svg</header-logo>
-        <custom-favicons>logo-primary.svg</custom-favicons>
+        <header-logo>bytebBabe.svg</header-logo>
+        <custom-favicons>bytebabe.svg</custom-favicons>
+        <primary-color>strawberry</primary-color>
+        <noindex-content>true</noindex-content>
     </variables>
 
     <build-profile instance="b">
         <variables>
             <noindex-content>true</noindex-content>
-            <primary-color>strawberry</primary-color>
         </variables>
     </build-profile>
 

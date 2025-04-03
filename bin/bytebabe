@@ -29,6 +29,9 @@ show_cyberpunk_header
 
 # Process commands
 case $1 in
+    hello)
+        source "${BASE_DIR}/commands/hello.sh" "${@:2}"
+        ;;
     init)
         source "${BASE_DIR}/commands/init.sh" "${@:2}"
         ;;
@@ -69,6 +72,7 @@ case $1 in
         ;;
     *)
         echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CORE COMMANDS:${RESET}"
+        echo -e "  ${CYBER_GREEN}hello${RESET}         Receba uma mensagem cyberpunk aleatória"
         echo -e "  ${CYBER_GREEN}init${RESET}          Initialize development environment"
         echo -e "  ${CYBER_GREEN}git${RESET}           Advanced Git tools"
         echo -e ""
