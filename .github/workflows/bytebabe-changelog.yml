@@ -19,36 +19,14 @@ jobs:
 
       - name: 🚀 Generate Changelog
         run: |
-          # Função para categorizar commits por módulo
-          get_module() {
-            commit_msg="$1"
-            case "$commit_msg" in
-              *"docker"*|*"container"*) echo "🐋 Docker (Poseidon)" ;;
-              *"git"*) echo "🌿 Git" ;;
-              *"frontend"*|*"react"*|*"vue"*|*"angular"*) echo "🎨 Frontend" ;;
-              *"backend"*|*"api"*|*"server"*) echo "⚙️ Backend" ;;
-              *"db"*|*"database"*) echo "🗃️ Database" ;;
-              *"ide"*) echo "💻 IDE" ;;
-              *"config"*|*"settings"*) echo "⚡ Core" ;;
-              *"cli"*|*"command"*) echo "🔧 CLI" ;;
-              *"ui"*|*"interface"*) echo "✨ UI" ;;
-              *) echo "🔮 General" ;;
-            esac
-          }
-
-          # Função para emoji do tipo de commit
-          get_type_emoji() {
-            case "$1" in
-              feat*) echo "+" ;;
-              fix*) echo "●" ;;
-              docs*) echo "◆" ;;
-              style*) echo "○" ;;
-              refactor*) echo "◇" ;;
-              perf*) echo "△" ;;
-              *) echo "■" ;;
-            esac
-          }
-
+          # Debug info
+          echo "Current directory: $(pwd)"
+          echo "Git status:"
+          git status
+          echo "Recent commits:"
+          git log -n 5 --oneline
+          
+          # Create changelog
           {
             echo "╔══════════════════════════════════════════════╗"
             echo "║             BYTEBABE CHANGELOG               ║"
@@ -56,45 +34,35 @@ jobs:
             echo
             echo "All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled changelog."
             echo
+            echo "## Latest Changes"
+            echo
             
-            # Variáveis para controle
-            current_date=""
-            current_module=""
-            
-            # Processa os commits
-            git log --pretty=format:'%ad | %s' --date=short | while read line; do
+            # Simplified commit processing for debugging
+            git log --pretty=format:'%ad | %s' --date=short | while read -r line; do
+              echo "Processing line: $line" >&2  # Debug output
               date=$(echo "$line" | cut -d'|' -f1)
               msg=$(echo "$line" | cut -d'|' -f2-)
-              type=$(echo "$msg" | grep -oP '^\s*\K(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(?=:)' || echo "other")
-              module=$(get_module "$msg")
-              type_emoji=$(get_type_emoji "$type")
-              
-              # Nova data
-              if [[ "$current_date" != "$date" ]]; then
-                echo
-                echo "┌─────────────────────────────────────────────┐"
-                echo "│ $date"
-                echo "└─────────────────────────────────────────────┘"
-                current_date="$date"
-                current_module=""
-              fi
-              
-              # Novo módulo
-              if [[ "$current_module" != "$module" ]]; then
-                echo
-                echo "$module"
-                current_module="$module"
-              fi
-              
-              # Formata a mensagem do commit
-              echo "$type_emoji ${msg#*: }"
+              echo
+              echo "### $date"
+              echo "- $msg"
             done
           } > CHANGELOG.md
+          
+          # Show generated content
+          echo "Generated CHANGELOG.md content:"
+          cat CHANGELOG.md
 
       - name: 🔍 Check for Changes
         id: check_changes
         run: |
-          git diff --quiet CHANGELOG.md || echo "changes=true" >> $GITHUB_OUTPUT
+          if git diff --quiet CHANGELOG.md; then
+            echo "No changes detected in CHANGELOG.md"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected in CHANGELOG.md"
+            echo "changes=true" >> $GITHUB_OUTPUT
+            git diff CHANGELOG.md
+          fi
 
       - name: 🤖 Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
@@ -110,17 +78,6 @@ jobs:
             ```
             
             This PR was automatically generated to update the ByteBabe CLI changelog.
-            
-            Changes are categorized by module and include:
-            - Docker (Poseidon) 🐋
-            - Git Operations 🌿
-            - Frontend Tools 🎨
-            - Backend Services ⚙️
-            - Database Management 🗃️
-            - IDE Integration 💻
-            - Core Features ⚡
-            - CLI Updates 🔧
-            - UI Enhancements ✨
           branch: update-bytebabe-changelog
           base: main
           labels: |
