@@ -1,87 +1,111 @@
 
-<center>
-  <p align="center">
+<div align="center">
   <img height="300" src="https://github.com/user-attachments/assets/924b4161-f63a-4ec3-bebb-00d74eff7b73" />
   <br/>
-    
-  <img height="50" src="https://github.com/mrpunkdasilva/bitebaby/blob/b3e789d5c73fa01f291c761a4a63f6f1ce2dcae0/.github/ByteBabe.svg" />
-  </p>
-</center>
+  <img height="50" src=".github/ByteBabe.svg" />
 
----
+  <h1>ByteBabe CLI</h1>
+  <p>A cyberpunk-themed developer toolkit for supercharged workflows 🚀</p>
+</div>
 
-# ByteBabe CLI 🚀
+## ⚡ Overview
 
-ByteBabe is a powerful, modular CLI tool designed to supercharge developer workflows with an intuitive interface and cyberpunk aesthetics. It provides centralized control for development environments, Docker management, Git operations, and infrastructure tools.
+ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your development workflow. It provides a unified interface for managing development environments, containers, Git operations, and more.
 
-## 🌟 Key Features
+## 🎯 Key Features
 
-- **Unified Developer Toolkit** - Manage all your dev tools from one place  
-- **Cyberpunk UI** - Stylish interface with ASCII art and animations  
-- **Docker Control** - Full container/image/volume management (Poseidon Module)  
-- **Git Supercharged** - Visual branch management and smart commits  
-- **Environment Wizard** - One-click dev environment setup  
-- **Extensible Architecture** - Easy to add new modules and commands  
+- **Docker Management (Poseidon Module)**
+  - Container/image/volume management
+  - Compose stack handling
+  - Visual container stats
 
-## 🚀 Getting Started
+- **Development Environment**
+  - Frontend tooling (Node.js, React, etc)
+  - Backend setup (Python, Java, Go, etc)
+  - Database management
+  - IDE configuration
+
+- **Git Supercharged**
+  - Visual branch navigation
+  - Smart commit system
+  - Time machine visualization
+
+- **Server Management**
+  - Apache/Nginx setup
+  - SSL configuration
+  - Docker integration
+
+## 🚀 Quick Start
 
 ### Prerequisites
-
-- Bash (Linux/macOS/WSL)
+- Bash 4+
+- Git
+- Docker (optional)
 
 ### Installation
 
 ```bash
-# Clone with cyberpunk style!
-git clone https://github.com/yourrepo/bytebabe.git && cd bytebabe
+# Clone the repository
+git clone https://github.com/yourrepo/bytebabe.git
 
 # Make it executable
-chmod +x bytebabe
+cd bytebabe && chmod +x bin/bytebabe
 
-# Install to your PATH (optional)
-sudo ln -s $(pwd)/bytebabe /usr/local/bin/bytebabe
+# Optional: Add to PATH
+sudo ln -s $(pwd)/bin/bytebabe /usr/local/bin/bytebabe
 ```
 
-### First Run
+### Basic Usage
 
 ```bash
-./bytebabe init     # Set up your environment
-./bytebabe --help   # Discover all commands
+# Initialize development environment
+bytebabe init
+
+# Start Docker containers
+bytebabe docker up
+
+# Setup backend environment
+bytebabe backend setup
+
+# Configure frontend tools
+bytebabe frontend setup
 ```
 
-## 💻 Usage Examples
+## 📦 Module Overview
 
-```bash
-# Docker Management (Poseidon Module)
-bytebabe docker containers          # Interactive container control
-bytebabe docker compose up         # Manage compose stacks
+- `bytebabe init` - First-time setup
+- `bytebabe docker` - Container management
+- `bytebabe git` - Git operations
+- `bytebabe backend` - Backend environment
+- `bytebabe frontend` - Frontend tooling
+- `bytebabe servers` - Web server management
+- `bytebabe db` - Database operations
+- `bytebabe ide` - IDE configuration
+- `bytebabe devtools` - Development utilities
 
-# Git Operations
-bytebabe git branch-navigator      # Visual branch management
-bytebabe git smart-commit          # Guided commit messages
-
-# Environment Setup
-bytebabe devtools install-all      # Install complete dev stack
-```
-
-## 🏗 Project Structure
+## 🛠️ Architecture
 
 ```
 bytebabe/
-├── commands/          # Main command modules
-│   ├── docker.sh      # Poseidon Docker manager
-│   ├── git.sh         # Git utilities
-│   └── ...            # Other modules
-├── lib/               # Core libraries
-│   ├── core/          # Base functions
-│   └── docker/        # Docker-specific helpers
-├── install.sh         # Setup script
-└── README.md          # This file
+├── bin/                # Main executable
+├── commands/          # Command modules
+├── lib/              # Shared libraries
+│   ├── core/         # Core functionality
+│   ├── docker/       # Docker helpers
+│   ├── git/          # Git utilities
+│   └── server/       # Server management
+├── docs/             # Documentation
+└── scripts/          # Utility scripts
 ```
 
-## 🤝 Contributing
+## 🎨 Customization (Futures Plan)
 
-We welcome contributions! Here's how:
+ByteBabe can be customized through:
+- `~/.config/bytebabe/config.json` - General settings
+- `~/.config/bytebabe/themes/` - Custom themes
+- `~/.config/bytebabe/plugins/` - User plugins
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -89,56 +113,18 @@ We welcome contributions! Here's how:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-Please follow our [Code of Conduct](CODE_OF_CONDUCT.md).
-
-## 🛠 Built With
-
-- **Bash 4+** - Core scripting language  
-- **jq** - For JSON processing  
-- **Docker CLI** - Container management  
-- **ASCII Art** - For that cyberpunk vibe  
-
-## 📜 License
+## 📝 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 🌌 Acknowledgments
+## 🌟 Acknowledgments
 
-- Inspired by Oh-My-Zsh and Spacefish  
-- ASCII art generators for the cyberpunk aesthetic  
-- The open source community for endless inspiration  
+- Inspired by modern developer workflows
+- Built with cyberpunk aesthetics in mind
+- Powered by the open source community
 
 ---
 
-### Key Improvements:
-
-1. **Visual Enhancements**:
-   - Added emojis for better visual scanning
-   - Section headers with icons
-   - Placeholder for logo
-
-2. **Detailed Features**:
-   - Clear value proposition upfront
-   - Specific module highlights
-   - Practical examples
-
-3. **Better Organization**:
-   - Logical flow from installation to usage
-   - Clean project structure visualization
-   - Contribution guidelines
-
-4. **Personality**:
-   - Cyberpunk theme throughout
-   - Playful but professional tone
-   - Inspirational quote
-
-5. **Practical Details**:
-   - Explicit prerequisites
-   - Copy-paste friendly commands
-   - License information
-
-Would you like me to:
-1. Add a more detailed FAQ section?
-2. Include screenshots/ASCII art examples?
-3. Expand the contribution guidelines?
-4. Add a troubleshooting section?
+<div align="center">
+  <sub>Built with ❤️ by P</sub>
+</div>
