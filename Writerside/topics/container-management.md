@@ -7,7 +7,7 @@
 bytebabe docker containers [comando] [opções]
 ```
 
-### Estilo Curto
+### Estilo Curto {id="estilo-curto_1"}
 ```bash
 bytebabe docker c [cmd] [opts]
 ```
@@ -33,7 +33,7 @@ O Container Commander oferece:
 
 ## Exemplos
 
-### Estilo Verboso
+### Estilo Verboso {id="estilo-verboso_1"}
 ```bash
 # Listar todos os containers
 bytebabe docker containers list --all

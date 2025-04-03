@@ -7,7 +7,7 @@
 bytebabe docker stats [comando] [opções]
 ```
 
-### Estilo Curto
+### Estilo Curto {id="estilo-curto_1"}
 ```bash
 bytebabe docker st [cmd] [opts]
 ```
@@ -32,7 +32,7 @@ bytebabe docker st [cmd] [opts]
 
 ## Exemplos
 
-### Estilo Verboso
+### Estilo Verboso {id="estilo-verboso_1"}
 ```bash
 # Ver todas as métricas
 bytebabe docker stats show --all

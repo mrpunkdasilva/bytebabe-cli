@@ -68,5 +68,4 @@ Parabéns! Você está pronto para hackear com estilo!
 ## Próximos Passos
 
 - [🚀 Quick Start](quick-start.md)
-- [⚙️ Configuração](configuration.md)
 - [📚 Core Modules](core-modules.md)

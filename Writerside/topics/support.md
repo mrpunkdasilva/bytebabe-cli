@@ -38,9 +38,6 @@ bytebabe doctor --report
 
 ### 📚 Documentation
 - [Guia de Início](quick-start.md)
-- [Referência API](api-reference.md)
-- [Exemplos](examples.md)
-- [Best Practices](best-practices.md)
 
 ### 🎓 Learning
 - Video Tutorials

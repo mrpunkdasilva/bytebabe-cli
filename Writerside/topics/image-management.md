@@ -7,7 +7,7 @@
 bytebabe docker images [comando] [opções]
 ```
 
-### Estilo Curto
+### Estilo Curto {id="estilo-curto_1"}
 ```bash
 bytebabe docker i [cmd] [opts]
 ```
@@ -33,7 +33,7 @@ bytebabe docker i [cmd] [opts]
 
 ## Exemplos
 
-### Estilo Verboso
+### Estilo Verboso {id="estilo-verboso_1"}
 ```bash
 # Listar todas as imagens
 bytebabe docker images list --all

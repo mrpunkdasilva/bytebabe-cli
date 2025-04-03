@@ -7,7 +7,7 @@
 bytebabe docker compose [comando] [opções]
 ```
 
-### Estilo Curto
+### Estilo Curto {id="estilo-curto_1"}
 ```bash
 bytebabe docker co [cmd] [opts]
 ```
@@ -32,7 +32,7 @@ bytebabe docker co [cmd] [opts]
 
 ## Exemplos
 
-### Estilo Verboso
+### Estilo Verboso {id="estilo-verboso_1"}
 ```bash
 # Iniciar todos os serviços
 bytebabe docker compose up --detach

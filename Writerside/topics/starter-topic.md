@@ -58,4 +58,3 @@ Chega de CLIs que parecem saídas do MS-DOS dos anos 80. ByteBabe traz:
 Pronto para mergulhar no cyberpunk? Confira:
 - [Instalação](installation.md)
 - [Quick Start](quick-start.md)
-- [Configuração](configuration.md)

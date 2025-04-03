@@ -100,6 +100,5 @@ bytebabe git commit
 
 ## Próximos Passos
 
-- [⚙️ Configuração](configuration.md)
 - [🔧 Core Modules](core-modules.md)
 - [🛠️ Dev Tools](dev-tools.md)

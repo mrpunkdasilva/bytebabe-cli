@@ -37,7 +37,6 @@ Certifique-se de ter:
 
 - [📥 Instalação](installation.md)
 - [🚀 Quick Start](quick-start.md)
-- [⚙️ Configuração](configuration.md)
 
 ```ascii
          ,----------------,              ,---------,

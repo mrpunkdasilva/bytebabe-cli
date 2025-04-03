@@ -9,7 +9,7 @@ bytebabe firewall setup
 > Select profile: 1
 ```
 
-### Portas Permitidas
+### Portas Permitidas {id="portas-permitidas_1"}
 - HTTP (80)
 - HTTPS (443)
 - React/Node (3000-3999)
