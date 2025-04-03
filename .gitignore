@@ -7,5 +7,3 @@
 out
 gen
 
-# Ignore o CHANGELOG gerado localmente
-CHANGELOG.md
