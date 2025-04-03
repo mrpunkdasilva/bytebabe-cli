@@ -1,0 +1,134 @@
+name: ByteBabe Changelog
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'CHANGELOG.md'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-changelog:
+    name: 📝 Update ByteBabe Changelog
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🔄 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🚀 Generate Changelog
+        run: |
+          # Função para categorizar commits por módulo
+          get_module() {
+            commit_msg="$1"
+            case "$commit_msg" in
+              *"docker"*|*"container"*) echo "🐋 Docker (Poseidon)" ;;
+              *"git"*) echo "🌿 Git" ;;
+              *"frontend"*|*"react"*|*"vue"*|*"angular"*) echo "🎨 Frontend" ;;
+              *"backend"*|*"api"*|*"server"*) echo "⚙️ Backend" ;;
+              *"db"*|*"database"*) echo "🗃️ Database" ;;
+              *"ide"*) echo "💻 IDE" ;;
+              *"config"*|*"settings"*) echo "⚡ Core" ;;
+              *"cli"*|*"command"*) echo "🔧 CLI" ;;
+              *"ui"*|*"interface"*) echo "✨ UI" ;;
+              *) echo "🔮 General" ;;
+            esac
+          }
+
+          # Função para emoji do tipo de commit
+          get_type_emoji() {
+            case "$1" in
+              feat*) echo "+" ;;
+              fix*) echo "●" ;;
+              docs*) echo "◆" ;;
+              style*) echo "○" ;;
+              refactor*) echo "◇" ;;
+              perf*) echo "△" ;;
+              *) echo "■" ;;
+            esac
+          }
+
+          {
+            echo "╔══════════════════════════════════════════════╗"
+            echo "║             BYTEBABE CHANGELOG               ║"
+            echo "╚══════════════════════════════════════════════╝"
+            echo
+            echo "All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled changelog."
+            echo
+            
+            # Variáveis para controle
+            current_date=""
+            current_module=""
+            
+            # Processa os commits
+            git log --pretty=format:'%ad | %s' --date=short | while read line; do
+              date=$(echo "$line" | cut -d'|' -f1)
+              msg=$(echo "$line" | cut -d'|' -f2-)
+              type=$(echo "$msg" | grep -oP '^\s*\K(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(?=:)' || echo "other")
+              module=$(get_module "$msg")
+              type_emoji=$(get_type_emoji "$type")
+              
+              # Nova data
+              if [[ "$current_date" != "$date" ]]; then
+                echo
+                echo "┌─────────────────────────────────────────────┐"
+                echo "│ $date"
+                echo "└─────────────────────────────────────────────┘"
+                current_date="$date"
+                current_module=""
+              fi
+              
+              # Novo módulo
+              if [[ "$current_module" != "$module" ]]; then
+                echo
+                echo "$module"
+                current_module="$module"
+              fi
+              
+              # Formata a mensagem do commit
+              echo "$type_emoji ${msg#*: }"
+            done
+          } > CHANGELOG.md
+
+      - name: 🔍 Check for Changes
+        id: check_changes
+        run: |
+          git diff --quiet CHANGELOG.md || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: 🤖 Create Pull Request
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "docs: Update ByteBabe Changelog"
+          title: "⚡ ByteBabe Changelog Update"
+          body: |
+            ```
+            ╔══════════════════════════════════════════════╗
+            ║        AUTOMATED CHANGELOG UPDATE            ║
+            ╚══════════════════════════════════════════════╝
+            ```
+            
+            This PR was automatically generated to update the ByteBabe CLI changelog.
+            
+            Changes are categorized by module and include:
+            - Docker (Poseidon) 🐋
+            - Git Operations 🌿
+            - Frontend Tools 🎨
+            - Backend Services ⚙️
+            - Database Management 🗃️
+            - IDE Integration 💻
+            - Core Features ⚡
+            - CLI Updates 🔧
+            - UI Enhancements ✨
+          branch: update-bytebabe-changelog
+          base: main
+          labels: |
+            documentation
+            automated
+            cyberpunk
+          delete-branch: true
