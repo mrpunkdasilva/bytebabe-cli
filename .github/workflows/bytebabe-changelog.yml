@@ -1,10 +1,6 @@
-name: ByteBabe Changelog
+name: Manual Changelog Update
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'CHANGELOG.md'
+  workflow_dispatch:
 
 permissions:
   contents: write
