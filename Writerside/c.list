@@ -2,5 +2,12 @@
 <!DOCTYPE categories
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/categories.dtd">
 <categories>
-    <category id="wrs" name="Writerside documentation" order="1"/>
+    <category id="getting-started" name="Getting Started" order="1"/>
+    <category id="core" name="Core Modules" order="2"/>
+    <category id="devtools" name="Development Tools" order="3"/>
+    <category id="sysadmin" name="System Administration" order="4"/>
+    <category id="security" name="Security" order="5"/>
+    <category id="api" name="API Reference" order="6"/>
+    <category id="troubleshooting" name="Troubleshooting" order="7"/>
+    <category id="contributing" name="Contributing" order="8"/>
 </categories>

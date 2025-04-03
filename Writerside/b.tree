@@ -3,8 +3,102 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
 <instance-profile id="b"
-                 name="ByteBabe"
+                 name="ByteBabe CLI"
                  start-page="starter-topic.md">
 
     <toc-element topic="starter-topic.md"/>
+    
+    <!-- Getting Started -->
+    <toc-element topic="getting-started.md">
+        <toc-element topic="installation.md"/>
+        <toc-element topic="quick-start.md"/>
+        <!-- Removido configuration.md temporariamente -->
+    </toc-element>
+    
+    <!-- Windows Support - Coming Soon -->
+    <toc-element topic="windows-support.md"/>
+    
+    <!-- Core Modules -->
+    <toc-element topic="core-modules.md">
+        <!-- Docker Management -->
+        <toc-element topic="docker-module.md">
+            <toc-element topic="container-management.md"/>
+            <toc-element topic="image-management.md"/>
+            <toc-element topic="volume-management.md"/>
+            <toc-element topic="compose-operations.md"/>
+            <toc-element topic="docker-monitoring.md"/>
+        </toc-element>
+        
+        <!-- Database Tools -->
+        <toc-element topic="database-module.md">
+            <toc-element topic="supported-databases.md"/>
+            <toc-element topic="backup-restore.md"/>
+            <toc-element topic="migration-tools.md"/>
+            <toc-element topic="database-monitoring.md"/>
+        </toc-element>
+        
+        <!-- Firewall Management -->
+        <toc-element topic="firewall-module.md">
+            <toc-element topic="security-profiles.md"/>
+            <toc-element topic="rule-management.md"/>
+            <toc-element topic="advanced-features.md"/>
+            <toc-element topic="firewall-monitoring.md"/>
+        </toc-element>
+        
+        <!-- Git Tools -->
+        <toc-element topic="git-module.md">
+            <toc-element topic="branch-management.md"/>
+            <toc-element topic="staging-operations.md"/>
+            <toc-element topic="git-workflows.md"/>
+            <toc-element topic="git-hooks.md"/>
+        </toc-element>
+    </toc-element>
+    
+    <!-- Development Tools -->
+    <toc-element topic="dev-tools.md">
+        <toc-element topic="project-scaffolding.md"/>
+        <toc-element topic="code-generators.md"/>
+        <toc-element topic="testing-tools.md"/>
+        <toc-element topic="debugging-tools.md"/>
+    </toc-element>
+    
+    <!-- Web Servers -->
+    <toc-element topic="servers.md">
+        <toc-element topic="apache-server.md"/>
+        <toc-element topic="nginx-server.md"/>
+        <toc-element topic="ssl-configuration.md"/>
+        <toc-element topic="docker-integration.md"/>
+    </toc-element>
+    
+    <!-- Security -->
+    <toc-element topic="security.md">
+        <toc-element topic="access-control.md"/>
+        <toc-element topic="encryption.md"/>
+        <toc-element topic="security-best-practices.md"/>
+        <toc-element topic="vulnerability-scanning.md"/>
+    </toc-element>
+    
+    <!-- Flux - API Management -->
+    <toc-element topic="flux.md">
+        <toc-element topic="flux-testing.md"/>
+        <toc-element topic="flux-docs.md"/>
+        <toc-element topic="flux-monitor.md"/>
+        <toc-element topic="flux-security.md"/>
+    </toc-element>
+    
+    <!-- Troubleshooting -->
+    <toc-element topic="troubleshooting.md">
+        <toc-element topic="common-issues.md"/>
+        <toc-element topic="error-messages.md"/>
+        <toc-element topic="debugging-guide.md"/>
+        <toc-element topic="support.md"/>
+    </toc-element>
+    
+    <!-- Contributing -->
+    <toc-element topic="contributing.md">
+        <toc-element topic="development-setup.md"/>
+        <toc-element topic="coding-standards.md"/>
+        <toc-element topic="testing-guidelines.md"/>
+        <toc-element topic="documentation-guidelines.md"/>
+    </toc-element>
 </instance-profile>
