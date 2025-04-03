@@ -1,0 +1,52 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.686909011"><title>Git Workflows 🔄 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"workflows-suportados","level":0,"title":"Workflows Suportados","anchor":"#workflows-suportados"},{"id":"commit-patterns","level":0,"title":"Commit Patterns","anchor":"#commit-patterns"},{"id":"automa-es","level":0,"title":"Automações","anchor":"#automa-es"},{"id":"boas-pr-ticas","level":0,"title":"Boas Práticas","anchor":"#boas-pr-ticas"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Git Workflows 🔄 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/git-workflows.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Git Workflows 🔄 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/git-workflows.html#webpage",
+    "url": "writerside-documentation/git-workflows.html",
+    "name": "Git Workflows 🔄 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="git-workflows" data-main-title="Git Workflows 🔄" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="core-modules.md|Core Modules 🛠️///git-module.md|Git Module 🔄"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="git-workflows" id="git-workflows.md">Git Workflows 🔄</h1><section class="chapter"><h2 id="workflows-suportados" data-toc="workflows-suportados">Workflows Suportados</h2><aside class="prompt" data-type="tip" data-title="" id="-52sur3_7"><p id="-52sur3_10">Em desenvolvimento</p></aside><section class="chapter"><h3 id="gitflow" data-toc="gitflow">GitFlow</h3><div class="code-block" data-lang="bash">
+# Iniciar GitFlow
+bytebabe git flow init
+
+# Nova feature
+bytebabe git flow feature start
+</div></section><section class="chapter"><h3 id="trunk-based" data-toc="trunk-based">Trunk-Based</h3><div class="code-block" data-lang="bash">
+# Setup inicial
+bytebabe git trunk setup
+
+# Nova branch curta
+bytebabe git trunk feature
+</div></section></section><section class="chapter"><h2 id="commit-patterns" data-toc="commit-patterns">Commit Patterns</h2><section class="chapter"><h3 id="commits-sem-nticos" data-toc="commits-sem-nticos">Commits Sem&acirc;nticos</h3><div class="code-block" data-lang="bash">
+# Commit guiado
+bytebabe git commit
+
+Tipos disponíveis:
+- feat: Nova feature
+- fix: Correção de bug
+- docs: Documentação
+- style: Formatação
+- refactor: Refatoração
+- test: Testes
+- chore: Tarefas
+</div></section></section><section class="chapter"><h2 id="automa-es" data-toc="automa-es">Automa&ccedil;&otilde;es</h2><aside class="prompt" data-type="tip" data-title="" id="-52sur3_15"><p id="-52sur3_18">Em desenvolvimento</p></aside><section class="chapter"><h3 id="auto-branch" data-toc="auto-branch">Auto-Branch</h3><div class="code-block" data-lang="bash">
+# Branch por ticket
+bytebabe git auto-branch TICKET-123
+
+# Branch por tipo
+bytebabe git auto-branch feature/descricao
+</div></section><section class="chapter"><h3 id="auto-merge" data-toc="auto-merge">Auto-Merge</h3><div class="code-block" data-lang="bash">
+# Merge automático
+bytebabe git auto-merge develop
+
+# Com testes
+bytebabe git auto-merge --with-tests
+</div></section></section><section class="chapter"><h2 id="boas-pr-ticas" data-toc="boas-pr-ticas">Boas Pr&aacute;ticas</h2><ol class="list _decimal" id="-52sur3_21" type="1"><li class="list__item" id="-52sur3_22"><p id="-52sur3_26">Use commits sem&acirc;nticos</p></li><li class="list__item" id="-52sur3_23"><p id="-52sur3_27">Mantenha branches atualizadas</p></li><li class="list__item" id="-52sur3_24"><p id="-52sur3_28">Fa&ccedil;a merge frequente</p></li><li class="list__item" id="-52sur3_25"><p id="-52sur3_29">Revise antes do push</p></li></ol></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="staging-operations.html" class="navigation-links__prev">Staging Operations 📂</a><a href="git-hooks.html" class="navigation-links__next">Git Hooks 🪝</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

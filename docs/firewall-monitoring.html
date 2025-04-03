@@ -1,0 +1,37 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.731522323"><title>Monitoramento do Firewall 📊 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"dashboard-em-tempo-real","level":0,"title":"Dashboard em Tempo Real","anchor":"#dashboard-em-tempo-real"},{"id":"m-tricas-dispon-veis","level":0,"title":"Métricas Disponíveis","anchor":"#m-tricas-dispon-veis"},{"id":"alertas","level":0,"title":"Alertas","anchor":"#alertas"},{"id":"logs","level":0,"title":"Logs","anchor":"#logs"},{"id":"integra-o","level":0,"title":"Integração","anchor":"#integra-o"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Monitoramento do Firewall 📊 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/firewall-monitoring.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Monitoramento do Firewall 📊 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/firewall-monitoring.html#webpage",
+    "url": "writerside-documentation/firewall-monitoring.html",
+    "name": "Monitoramento do Firewall 📊 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="firewall-monitoring" data-main-title="Monitoramento do Firewall 📊" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="core-modules.md|Core Modules 🛠️///firewall-module.md|Firewall Module 🛡️"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="firewall-monitoring" id="firewall-monitoring.md">Monitoramento do Firewall 📊</h1><section class="chapter"><h2 id="dashboard-em-tempo-real" data-toc="dashboard-em-tempo-real">Dashboard em Tempo Real</h2><div class="code-block" data-lang="bash">
+# Iniciar dashboard
+bytebabe firewall monitor
+
+# Modo detalhado
+bytebabe firewall monitor --detailed
+</div></section><section class="chapter"><h2 id="m-tricas-dispon-veis" data-toc="m-tricas-dispon-veis">M&eacute;tricas Dispon&iacute;veis</h2><div class="table-wrapper"><table class="wide" id="-taui17_9"><thead><tr class="ijRowHead" id="-taui17_10"><th id="-taui17_15"><p>M&eacute;trica</p></th><th id="-taui17_16"><p>Descri&ccedil;&atilde;o</p></th></tr></thead><tbody><tr id="-taui17_11"><td id="-taui17_17"><p>Conex&otilde;es</p></td><td id="-taui17_18"><p>Conex&otilde;es ativas</p></td></tr><tr id="-taui17_12"><td id="-taui17_19"><p>Pacotes</p></td><td id="-taui17_20"><p>Pacotes processados</p></td></tr><tr id="-taui17_13"><td id="-taui17_21"><p>Drops</p></td><td id="-taui17_22"><p>Conex&otilde;es bloqueadas</p></td></tr><tr id="-taui17_14"><td id="-taui17_23"><p>Bandwidth</p></td><td id="-taui17_24"><p>Uso de banda</p></td></tr></tbody></table></div></section><section class="chapter"><h2 id="alertas" data-toc="alertas">Alertas</h2><p id="-taui17_25">Configure alertas para:</p><ul class="list _bullet" id="-taui17_26"><li class="list__item" id="-taui17_28"><p id="-taui17_32">Tentativas de invas&atilde;o</p></li><li class="list__item" id="-taui17_29"><p id="-taui17_33">Portas n&atilde;o autorizadas</p></li><li class="list__item" id="-taui17_30"><p id="-taui17_34">Tr&aacute;fego anormal</p></li><li class="list__item" id="-taui17_31"><p id="-taui17_35">Falhas de regras</p></li></ul><div class="code-block" data-lang="yaml">
+alerts:
+  brute_force: true
+  port_scan: true
+  ddos: true
+  threshold: 1000
+</div></section><section class="chapter"><h2 id="logs" data-toc="logs">Logs</h2><div class="code-block" data-lang="bash">
+# Ver logs em tempo real
+bytebabe firewall log --follow
+
+# Filtrar por tipo
+bytebabe firewall log --type blocked
+
+# Exportar relatório
+bytebabe firewall report export
+</div></section><section class="chapter"><h2 id="integra-o" data-toc="integra-o">Integra&ccedil;&atilde;o</h2><p id="-taui17_37">Suporte a exporta&ccedil;&atilde;o para:</p><ul class="list _bullet" id="-taui17_38"><li class="list__item" id="-taui17_39"><p id="-taui17_43">Grafana</p></li><li class="list__item" id="-taui17_40"><p id="-taui17_44">ELK Stack</p></li><li class="list__item" id="-taui17_41"><p id="-taui17_45">Prometheus</p></li><li class="list__item" id="-taui17_42"><p id="-taui17_46">Nagios</p></li></ul></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="advanced-features.html" class="navigation-links__prev">Recursos Avan&ccedil;ados ⚙️</a><a href="git-module.html" class="navigation-links__next">Git Module 🔄</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

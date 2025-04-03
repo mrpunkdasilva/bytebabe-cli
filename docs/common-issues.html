@@ -1,0 +1,52 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.966923849"><title>Common Issues 🔧 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"docker-issues","level":0,"title":"Docker Issues","anchor":"#docker-issues"},{"id":"git-issues","level":0,"title":"Git Issues","anchor":"#git-issues"},{"id":"database-issues","level":0,"title":"Database Issues","anchor":"#database-issues"},{"id":"network-issues","level":0,"title":"Network Issues","anchor":"#network-issues"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Common Issues 🔧 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/common-issues.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Common Issues 🔧 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/common-issues.html#webpage",
+    "url": "writerside-documentation/common-issues.html",
+    "name": "Common Issues 🔧 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="common-issues" data-main-title="Common Issues 🔧" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="troubleshooting.md|Troubleshooting"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="common-issues" id="common-issues.md">Common Issues 🔧</h1><section class="chapter"><h2 id="docker-issues" data-toc="docker-issues">Docker Issues</h2><section class="chapter"><h3 id="container-n-o-inicia" data-toc="container-n-o-inicia">🔴 Container n&atilde;o inicia</h3><div class="code-block" data-lang="bash">
+# Erro: Error response from daemon: port is already allocated
+</div><p id="-7d4d1u_10"><span class="control" id="-7d4d1u_12">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_11" type="1"><li class="list__item" id="-7d4d1u_13"><p id="-7d4d1u_16">Verifique portas em uso:</p><div class="code-block" data-lang="bash">
+sudo lsof -i -P -n | grep LISTEN
+</div></li><li class="list__item" id="-7d4d1u_14"><p id="-7d4d1u_18">Altere a porta no docker-compose.yml</p></li><li class="list__item" id="-7d4d1u_15"><p id="-7d4d1u_19">Pare o servi&ccedil;o usando a porta</p></li></ol></section><section class="chapter"><h3 id="problemas-de-permiss-o" data-toc="problemas-de-permiss-o">🔴 Problemas de permiss&atilde;o</h3><div class="code-block" data-lang="bash">
+# Erro: Permission denied
+</div><p id="-7d4d1u_21"><span class="control" id="-7d4d1u_23">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_22" type="1"><li class="list__item" id="-7d4d1u_24"><p id="-7d4d1u_27">Adicione seu usu&aacute;rio ao grupo docker:</p><div class="code-block" data-lang="bash">
+sudo usermod -aG docker $USER
+</div></li><li class="list__item" id="-7d4d1u_25"><p id="-7d4d1u_29">Fa&ccedil;a logout e login</p></li><li class="list__item" id="-7d4d1u_26"><p id="-7d4d1u_30">Verifique com: <code class="code" id="-7d4d1u_31">groups</code></p></li></ol></section></section><section class="chapter"><h2 id="git-issues" data-toc="git-issues">Git Issues</h2><section class="chapter"><h3 id="conflitos-de-merge" data-toc="conflitos-de-merge">🔴 Conflitos de merge</h3><div class="code-block" data-lang="bash">
+# Erro: CONFLICT (content): Merge conflict in &lt;file&gt;
+</div><p id="-7d4d1u_35"><span class="control" id="-7d4d1u_37">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_36" type="1"><li class="list__item" id="-7d4d1u_38"><p id="-7d4d1u_41">Use <code class="code" id="-7d4d1u_42">bytebabe git status</code> para ver arquivos</p></li><li class="list__item" id="-7d4d1u_39"><p id="-7d4d1u_43">Resolva conflitos com <code class="code" id="-7d4d1u_44">bytebabe git merge --tool</code></p></li><li class="list__item" id="-7d4d1u_40"><p id="-7d4d1u_45">Commit as altera&ccedil;&otilde;es</p></li></ol></section><section class="chapter"><h3 id="branch-errada" data-toc="branch-errada">🔴 Branch errada</h3><div class="code-block" data-lang="bash">
+# Situação: Commits na branch errada
+</div><p id="-7d4d1u_47"><span class="control" id="-7d4d1u_49">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_48" type="1"><li class="list__item" id="-7d4d1u_50"><p id="-7d4d1u_52">Crie nova branch do ponto atual:</p><div class="code-block" data-lang="bash">
+bytebabe git branch correct-branch
+</div></li><li class="list__item" id="-7d4d1u_51"><p id="-7d4d1u_54">Reset da branch antiga:</p><div class="code-block" data-lang="bash">
+bytebabe git reset --hard HEAD~n
+</div></li></ol></section></section><section class="chapter"><h2 id="database-issues" data-toc="database-issues">Database Issues</h2><section class="chapter"><h3 id="conex-o-falha" data-toc="conex-o-falha">🔴 Conex&atilde;o falha</h3><div class="code-block" data-lang="bash">
+# Erro: Connection refused
+</div><p id="-7d4d1u_59"><span class="control" id="-7d4d1u_61">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_60" type="1"><li class="list__item" id="-7d4d1u_62"><p id="-7d4d1u_65">Verifique se o servi&ccedil;o est&aacute; rodando</p></li><li class="list__item" id="-7d4d1u_63"><p id="-7d4d1u_66">Confira credenciais</p></li><li class="list__item" id="-7d4d1u_64"><p id="-7d4d1u_67">Teste conectividade:</p><div class="code-block" data-lang="bash">
+bytebabe db test-connection
+</div></li></ol></section><section class="chapter"><h3 id="backup-falha" data-toc="backup-falha">🔴 Backup falha</h3><div class="code-block" data-lang="bash">
+# Erro: Backup failed
+</div><p id="-7d4d1u_70"><span class="control" id="-7d4d1u_72">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_71" type="1"><li class="list__item" id="-7d4d1u_73"><p id="-7d4d1u_76">Verifique permiss&otilde;es</p></li><li class="list__item" id="-7d4d1u_74"><p id="-7d4d1u_77">Espa&ccedil;o em disco</p></li><li class="list__item" id="-7d4d1u_75"><p id="-7d4d1u_78">Use modo verbose:</p><div class="code-block" data-lang="bash">
+bytebabe db backup --verbose
+</div></li></ol></section></section><section class="chapter"><h2 id="network-issues" data-toc="network-issues">Network Issues</h2><section class="chapter"><h3 id="firewall-bloqueando" data-toc="firewall-bloqueando">🔴 Firewall bloqueando</h3><div class="code-block" data-lang="bash">
+# Erro: Connection timed out
+</div><p id="-7d4d1u_83"><span class="control" id="-7d4d1u_85">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_84" type="1"><li class="list__item" id="-7d4d1u_86"><p id="-7d4d1u_88">Verifique regras:</p><div class="code-block" data-lang="bash">
+bytebabe firewall list
+</div></li><li class="list__item" id="-7d4d1u_87"><p id="-7d4d1u_90">Adicione exce&ccedil;&atilde;o:</p><div class="code-block" data-lang="bash">
+bytebabe firewall allow &lt;port&gt;
+</div></li></ol></section><section class="chapter"><h3 id="ssl-tls" data-toc="ssl-tls">🔴 SSL/TLS</h3><div class="code-block" data-lang="bash">
+# Erro: SSL certificate error
+</div><p id="-7d4d1u_93"><span class="control" id="-7d4d1u_95">Solu&ccedil;&atilde;o:</span></p><ol class="list _decimal" id="-7d4d1u_94" type="1"><li class="list__item" id="-7d4d1u_96"><p id="-7d4d1u_98">Verifique certificado:</p><div class="code-block" data-lang="bash">
+bytebabe ssl check
+</div></li><li class="list__item" id="-7d4d1u_97"><p id="-7d4d1u_100">Renove se necess&aacute;rio:</p><div class="code-block" data-lang="bash">
+bytebabe ssl renew
+</div></li></ol></section></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="troubleshooting.html" class="navigation-links__prev">Troubleshooting</a><a href="error-messages.html" class="navigation-links__next">Error Messages 📝</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.965696827"><title>Coding Standards 📝 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"estilo-de-c-digo","level":0,"title":"Estilo de Código","anchor":"#estilo-de-c-digo"},{"id":"organiza-o-de-c-digo","level":0,"title":"Organização de Código","anchor":"#organiza-o-de-c-digo"},{"id":"documenta-o","level":0,"title":"Documentação","anchor":"#documenta-o"},{"id":"boas-pr-ticas","level":0,"title":"Boas Práticas","anchor":"#boas-pr-ticas"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Coding Standards 📝 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/coding-standards.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Coding Standards 📝 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/coding-standards.html#webpage",
+    "url": "writerside-documentation/coding-standards.html",
+    "name": "Coding Standards 📝 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="coding-standards" data-main-title="Coding Standards 📝" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="contributing.md|Contributing 🤝"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="coding-standards" id="coding-standards.md">Coding Standards 📝</h1><section class="chapter"><h2 id="estilo-de-c-digo" data-toc="estilo-de-c-digo">Estilo de C&oacute;digo</h2><section class="chapter"><h3 id="shell-script-guidelines" data-toc="shell-script-guidelines">Shell Script Guidelines</h3><div class="code-block" data-lang="bash">
+# ✅ Bom
+function install_package() {
+    local package_name=&quot;$1&quot;
+    if ! command -v &quot;$package_name&quot; &amp;&gt; /dev/null; then
+        echo &quot;Instalando $package_name...&quot;
+    fi
+}
+
+# ❌ Evitar
+function installPackage {
+    packageName=$1
+    which $packageName &gt; /dev/null
+    if [ $? -ne 0 ]; then
+        echo &quot;Instalando $packageName...&quot;
+    fi
+}
+</div></section><section class="chapter"><h3 id="nomenclatura" data-toc="nomenclatura">Nomenclatura</h3><ul class="list _bullet" id="pqucgd_10"><li class="list__item" id="pqucgd_11"><p id="pqucgd_15">Fun&ccedil;&otilde;es: <code class="code" id="pqucgd_16">snake_case</code></p></li><li class="list__item" id="pqucgd_12"><p id="pqucgd_17">Vari&aacute;veis: <code class="code" id="pqucgd_18">snake_case</code></p></li><li class="list__item" id="pqucgd_13"><p id="pqucgd_19">Constantes: <code class="code" id="pqucgd_20">SCREAMING_SNAKE_CASE</code></p></li><li class="list__item" id="pqucgd_14"><p id="pqucgd_21">Arquivos: <code class="code" id="pqucgd_22">kebab-case.sh</code></p></li></ul></section></section><section class="chapter"><h2 id="organiza-o-de-c-digo" data-toc="organiza-o-de-c-digo">Organiza&ccedil;&atilde;o de C&oacute;digo</h2><section class="chapter"><h3 id="estrutura-de-arquivos" data-toc="estrutura-de-arquivos">Estrutura de Arquivos</h3><div class="code-block" data-lang="bash">
+# Módulos separados por funcionalidade
+commands/
+  ├── hello.sh
+  ├── init.sh
+  └── git/
+      ├── main.sh
+      └── utils.sh
+</div></section><section class="chapter"><h3 id="imports" data-toc="imports">Imports</h3><div class="code-block" data-lang="bash">
+# Carregar dependências
+BASE_DIR=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/..&quot; &amp;&amp; pwd)&quot;
+source &quot;$BASE_DIR/lib/common.sh&quot;
+source &quot;$BASE_DIR/lib/utils.sh&quot;
+</div></section></section><section class="chapter"><h2 id="documenta-o" data-toc="documenta-o">Documenta&ccedil;&atilde;o</h2><section class="chapter"><h3 id="headers" data-toc="headers">Headers</h3><div class="code-block" data-lang="bash">
+#!/bin/bash
+#
+# Nome do Script: hello.sh
+# Descrição: Implementa o comando hello do ByteBabe
+# Uso: bytebabe hello [nome]
+#
+# Argumentos:
+#   $1 - Nome do usuário (opcional)
+</div></section></section><section class="chapter"><h2 id="boas-pr-ticas" data-toc="boas-pr-ticas">Boas Pr&aacute;ticas</h2><section class="chapter"><h3 id="error-handling" data-toc="error-handling">Error Handling</h3><div class="code-block" data-lang="bash">
+# ✅ Bom
+if ! command -v docker &amp;&gt; /dev/null; then
+    echo &quot;Erro: Docker não encontrado&quot;
+    exit 1
+fi
+
+# ❌ Evitar
+docker ps
+if [ $? -ne 0 ]; then
+    echo &quot;Erro&quot;
+    exit 1
+fi
+</div></section><section class="chapter"><h3 id="vari-veis" data-toc="vari-veis">Vari&aacute;veis</h3><div class="code-block" data-lang="bash">
+# ✅ Bom
+local user_name=&quot;${1:-}&quot;
+readonly MAX_RETRIES=3
+
+# ❌ Evitar
+name=$1
+MAXRETRIES=3
+</div></section></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="development-setup.html" class="navigation-links__prev">Development Setup 🛠️</a><a href="testing-guidelines.html" class="navigation-links__next">Testing Guidelines 🧪</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

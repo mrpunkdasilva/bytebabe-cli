@@ -1,0 +1,40 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.719712638"><title>Monitoramento de Bancos 📊 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"dashboard-em-tempo-real","level":0,"title":"Dashboard em Tempo Real","anchor":"#dashboard-em-tempo-real"},{"id":"m-tricas-dispon-veis","level":0,"title":"Métricas Disponíveis","anchor":"#m-tricas-dispon-veis"},{"id":"alertas","level":0,"title":"Alertas","anchor":"#alertas"},{"id":"logs","level":0,"title":"Logs","anchor":"#logs"},{"id":"integra-o","level":0,"title":"Integração","anchor":"#integra-o"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Monitoramento de Bancos 📊 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/database-monitoring.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Monitoramento de Bancos 📊 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/database-monitoring.html#webpage",
+    "url": "writerside-documentation/database-monitoring.html",
+    "name": "Monitoramento de Bancos 📊 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="database-monitoring" data-main-title="Monitoramento de Bancos 📊" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="core-modules.md|Core Modules 🛠️///database-module.md|Database Module 🗄️"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="database-monitoring" id="database-monitoring.md">Monitoramento de Bancos 📊</h1><section class="chapter"><h2 id="dashboard-em-tempo-real" data-toc="dashboard-em-tempo-real">Dashboard em Tempo Real</h2><div class="code-block" data-lang="bash">
+# Iniciar dashboard
+bytebabe db monitor
+
+# Monitorar banco específico
+bytebabe db monitor mysql
+
+# Modo detalhado
+bytebabe db monitor postgres --detailed
+</div></section><section class="chapter"><h2 id="m-tricas-dispon-veis" data-toc="m-tricas-dispon-veis">M&eacute;tricas Dispon&iacute;veis</h2><div class="table-wrapper"><table class="wide" id="n30lm8_9"><thead><tr class="ijRowHead" id="n30lm8_10"><th id="n30lm8_16"><p>M&eacute;trica</p></th><th id="n30lm8_17"><p>Descri&ccedil;&atilde;o</p></th></tr></thead><tbody><tr id="n30lm8_11"><td id="n30lm8_18"><p>CPU</p></td><td id="n30lm8_19"><p>Uso de processador</p></td></tr><tr id="n30lm8_12"><td id="n30lm8_20"><p>RAM</p></td><td id="n30lm8_21"><p>Consumo de mem&oacute;ria</p></td></tr><tr id="n30lm8_13"><td id="n30lm8_22"><p>Disco</p></td><td id="n30lm8_23"><p>Espa&ccedil;o em disco</p></td></tr><tr id="n30lm8_14"><td id="n30lm8_24"><p>Conex&otilde;es</p></td><td id="n30lm8_25"><p>Conex&otilde;es ativas</p></td></tr><tr id="n30lm8_15"><td id="n30lm8_26"><p>Queries</p></td><td id="n30lm8_27"><p>Queries por segundo</p></td></tr></tbody></table></div></section><section class="chapter"><h2 id="alertas" data-toc="alertas">Alertas</h2><p id="n30lm8_28">Configure alertas para:</p><ul class="list _bullet" id="n30lm8_29"><li class="list__item" id="n30lm8_31"><p id="n30lm8_35">Alto uso de recursos</p></li><li class="list__item" id="n30lm8_32"><p id="n30lm8_36">Queries lentas</p></li><li class="list__item" id="n30lm8_33"><p id="n30lm8_37">Erros de conex&atilde;o</p></li><li class="list__item" id="n30lm8_34"><p id="n30lm8_38">Espa&ccedil;o em disco baixo</p></li></ul><div class="code-block" data-lang="yaml">
+alerts:
+  cpu_high: 80%
+  ram_high: 90%
+  disk_low: 10%
+  slow_query: 5s
+</div></section><section class="chapter"><h2 id="logs" data-toc="logs">Logs</h2><div class="code-block" data-lang="bash">
+# Ver logs em tempo real
+bytebabe db log mysql --follow
+
+# Filtrar logs por tipo
+bytebabe db log postgres --type error
+
+# Exportar logs
+bytebabe db log mongodb --export logs.txt
+</div></section><section class="chapter"><h2 id="integra-o" data-toc="integra-o">Integra&ccedil;&atilde;o</h2><p id="n30lm8_40">Suporte a exporta&ccedil;&atilde;o de m&eacute;tricas para:</p><ul class="list _bullet" id="n30lm8_41"><li class="list__item" id="n30lm8_42"><p id="n30lm8_46">Prometheus</p></li><li class="list__item" id="n30lm8_43"><p id="n30lm8_47">Grafana</p></li><li class="list__item" id="n30lm8_44"><p id="n30lm8_48">DataDog</p></li><li class="list__item" id="n30lm8_45"><p id="n30lm8_49">NewRelic</p></li></ul></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="migration-tools.html" class="navigation-links__prev">Ferramentas de Migra&ccedil;&atilde;o 🔄</a><a href="firewall-module.html" class="navigation-links__next">Firewall Module 🛡️</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

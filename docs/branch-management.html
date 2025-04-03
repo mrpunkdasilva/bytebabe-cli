@@ -1,0 +1,36 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.871886392"><title>Branch Management 🌿 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"branch-navigator","level":0,"title":"Branch Navigator","anchor":"#branch-navigator"},{"id":"opera-es-comuns","level":0,"title":"Operações Comuns","anchor":"#opera-es-comuns"},{"id":"prote-es","level":0,"title":"Proteções","anchor":"#prote-es"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Branch Management 🌿 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/branch-management.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Branch Management 🌿 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/branch-management.html#webpage",
+    "url": "writerside-documentation/branch-management.html",
+    "name": "Branch Management 🌿 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="branch-management" data-main-title="Branch Management 🌿" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="core-modules.md|Core Modules 🛠️///git-module.md|Git Module 🔄"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="branch-management" id="branch-management.md">Branch Management 🌿</h1><section class="chapter"><h2 id="branch-navigator" data-toc="branch-navigator">Branch Navigator</h2><p id="z8g58_6">Interface visual para gerenciar branches:</p><div class="code-block" data-lang="bash">
+bytebabe git branch
+</div><section class="chapter"><h3 id="a-es-dispon-veis" data-toc="a-es-dispon-veis">A&ccedil;&otilde;es Dispon&iacute;veis</h3><div class="table-wrapper"><table class="wide" id="z8g58_9"><thead><tr class="ijRowHead" id="z8g58_10"><th id="z8g58_15"><p>A&ccedil;&atilde;o</p></th><th id="z8g58_16"><p>Descri&ccedil;&atilde;o</p></th><th id="z8g58_17"><p>Comando R&aacute;pido</p></th></tr></thead><tbody><tr id="z8g58_11"><td id="z8g58_18"><p>Switch Branch</p></td><td id="z8g58_19"><p>Mudar de branch</p></td><td id="z8g58_20"><p><code class="code" id="z8g58_21">switch</code></p></td></tr><tr id="z8g58_12"><td id="z8g58_22"><p>Create Branch</p></td><td id="z8g58_23"><p>Nova feature branch</p></td><td id="z8g58_24"><p><code class="code" id="z8g58_25">new</code></p></td></tr><tr id="z8g58_13"><td id="z8g58_26"><p>Merge Branch</p></td><td id="z8g58_27"><p>Combinar branches</p></td><td id="z8g58_28"><p><code class="code" id="z8g58_29">merge</code></p></td></tr><tr id="z8g58_14"><td id="z8g58_30"><p>Delete Branch</p></td><td id="z8g58_31"><p>Remover branch local</p></td><td id="z8g58_32"><p><code class="code" id="z8g58_33">delete</code></p></td></tr></tbody></table></div></section></section><section class="chapter"><h2 id="opera-es-comuns" data-toc="opera-es-comuns">Opera&ccedil;&otilde;es Comuns</h2><section class="chapter"><h3 id="criar-branch" data-toc="criar-branch">Criar Branch</h3><div class="code-block" data-lang="bash">
+# Interativo
+bytebabe git branch new
+
+# Direto
+bytebabe git branch new feature/nome
+</div></section><section class="chapter"><h3 id="merge-de-branches" data-toc="merge-de-branches">Merge de Branches</h3><div class="code-block" data-lang="bash">
+# Merge interativo
+bytebabe git branch merge
+
+# Com confirmação visual
+bytebabe git branch merge develop --visual
+</div></section><section class="chapter"><h3 id="deletar-branches" data-toc="deletar-branches">Deletar Branches</h3><div class="code-block" data-lang="bash">
+# Com validação
+bytebabe git branch delete feature/old
+
+# Força deleção
+bytebabe git branch delete feature/old --force
+</div></section></section><section class="chapter"><h2 id="prote-es" data-toc="prote-es">Prote&ccedil;&otilde;es</h2><ul class="list _bullet" id="z8g58_40"><li class="list__item" id="z8g58_41"><p id="z8g58_45">Valida&ccedil;&atilde;o antes de deletar</p></li><li class="list__item" id="z8g58_42"><p id="z8g58_46">Verifica&ccedil;&atilde;o de merges</p></li><li class="list__item" id="z8g58_43"><p id="z8g58_47">Prote&ccedil;&atilde;o de branches principais</p></li><li class="list__item" id="z8g58_44"><p id="z8g58_48">Detec&ccedil;&atilde;o de conflitos</p></li></ul></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="git-module.html" class="navigation-links__prev">Git Module 🔄</a><a href="staging-operations.html" class="navigation-links__next">Staging Operations 📂</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

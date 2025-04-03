@@ -1,0 +1,46 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.883016302"><title>Development Setup 🛠️ | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"requisitos","level":0,"title":"Requisitos","anchor":"#requisitos"},{"id":"setup-do-ambiente","level":0,"title":"Setup do Ambiente","anchor":"#setup-do-ambiente"},{"id":"comandos-de-desenvolvimento","level":0,"title":"Comandos de Desenvolvimento","anchor":"#comandos-de-desenvolvimento"},{"id":"ides-e-editores","level":0,"title":"IDEs e Editores","anchor":"#ides-e-editores"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Development Setup 🛠️ | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/development-setup.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Development Setup 🛠️ | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/development-setup.html#webpage",
+    "url": "writerside-documentation/development-setup.html",
+    "name": "Development Setup 🛠️ | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="development-setup" data-main-title="Development Setup 🛠️" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="contributing.md|Contributing 🤝"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="development-setup" id="development-setup.md">Development Setup 🛠️</h1><section class="chapter"><h2 id="requisitos" data-toc="requisitos">Requisitos</h2><section class="chapter"><h3 id="sistema" data-toc="sistema">Sistema</h3><ul class="list _bullet" id="-3zmpvl_9"><li class="list__item" id="-3zmpvl_10"><p id="-3zmpvl_14">Linux/macOS</p></li><li class="list__item" id="-3zmpvl_11"><p id="-3zmpvl_15">Bash 4+</p></li><li class="list__item" id="-3zmpvl_12"><p id="-3zmpvl_16">Git</p></li><li class="list__item" id="-3zmpvl_13"><p id="-3zmpvl_17">curl ou wget</p></li></ul></section><section class="chapter"><h3 id="ferramentas-recomendadas" data-toc="ferramentas-recomendadas">Ferramentas Recomendadas</h3><ul class="list _bullet" id="-3zmpvl_18"><li class="list__item" id="-3zmpvl_19"><p id="-3zmpvl_22">shellcheck (para linting)</p></li><li class="list__item" id="-3zmpvl_20"><p id="-3zmpvl_23">shfmt (para formata&ccedil;&atilde;o)</p></li><li class="list__item" id="-3zmpvl_21"><p id="-3zmpvl_24">VSCode ou Neovim</p></li></ul></section></section><section class="chapter"><h2 id="setup-do-ambiente" data-toc="setup-do-ambiente">Setup do Ambiente</h2><section class="chapter"><h3 id="1-depend-ncias-b-sicas" data-toc="1-depend-ncias-b-sicas">1. Depend&ecirc;ncias B&aacute;sicas</h3><div class="code-block" data-lang="bash">
+# Ubuntu/Debian
+sudo apt update
+sudo apt install git curl wget shellcheck
+
+# macOS
+brew install git curl wget shellcheck
+</div></section><section class="chapter"><h3 id="2-projeto-setup" data-toc="2-projeto-setup">2. Projeto Setup</h3><div class="code-block" data-lang="bash">
+# Clone o repositório
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+cd bytebabe
+
+# Dê permissão de execução
+chmod +x bin/bytebabe
+
+# Teste a instalação
+./bin/bytebabe --version
+</div></section></section><section class="chapter"><h2 id="comandos-de-desenvolvimento" data-toc="comandos-de-desenvolvimento">Comandos de Desenvolvimento</h2><section class="chapter"><h3 id="testes-manuais" data-toc="testes-manuais">Testes Manuais</h3><div class="code-block" data-lang="bash">
+# Teste um comando específico
+./bin/bytebabe hello
+./bin/bytebabe init
+
+# Teste o modo interativo
+./bin/bytebabe
+</div></section><section class="chapter"><h3 id="lint-com-shellcheck" data-toc="lint-com-shellcheck">Lint (com shellcheck)</h3><div class="code-block" data-lang="bash">
+# Verificar um arquivo
+shellcheck bin/bytebabe
+
+# Verificar todos os scripts
+find . -type f -name &quot;*.sh&quot; -exec shellcheck {} \;
+</div></section></section><section class="chapter"><h2 id="ides-e-editores" data-toc="ides-e-editores">IDEs e Editores</h2><section class="chapter"><h3 id="vscode" data-toc="vscode">VSCode</h3><p id="-3zmpvl_35">Extens&otilde;es recomendadas:</p><ul class="list _bullet" id="-3zmpvl_36"><li class="list__item" id="-3zmpvl_37"><p id="-3zmpvl_40">Shell-format</p></li><li class="list__item" id="-3zmpvl_38"><p id="-3zmpvl_41">ShellCheck</p></li><li class="list__item" id="-3zmpvl_39"><p id="-3zmpvl_42">Bash Debug</p></li></ul></section><section class="chapter"><h3 id="neovim" data-toc="neovim">Neovim</h3><p id="-3zmpvl_43">Plugins recomendados:</p><ul class="list _bullet" id="-3zmpvl_44"><li class="list__item" id="-3zmpvl_45"><p id="-3zmpvl_47">ale (para shellcheck)</p></li><li class="list__item" id="-3zmpvl_46"><p id="-3zmpvl_48">vim-shell-format</p></li></ul></section></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="contributing.html" class="navigation-links__prev">Contributing 🤝</a><a href="coding-standards.html" class="navigation-links__next">Coding Standards 📝</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.915040587"><title>Quick Start | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"primeiros-comandos","level":0,"title":"Primeiros Comandos","anchor":"#primeiros-comandos"},{"id":"m-dulos-principais","level":0,"title":"Módulos Principais","anchor":"#m-dulos-principais"},{"id":"exemplos-pr-ticos","level":0,"title":"Exemplos Práticos","anchor":"#exemplos-pr-ticos"},{"id":"dicas-pro","level":0,"title":"Dicas Pro","anchor":"#dicas-pro"},{"id":"atalhos-do-teclado","level":0,"title":"Atalhos do Teclado","anchor":"#atalhos-do-teclado"},{"id":"pr-ximos-passos","level":0,"title":"Próximos Passos","anchor":"#pr-ximos-passos"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Quick Start | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/quick-start.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Quick Start | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/quick-start.html#webpage",
+    "url": "writerside-documentation/quick-start.html",
+    "name": "Quick Start | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="quick-start" data-main-title="Quick Start" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="getting-started.md|Getting Started"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="quick-start" id="quick-start.md">Quick Start</h1><aside class="prompt" data-type="tip" data-title="" id="z1seq4o_3"><p id="z1seq4o_10">&quot;A vida &eacute; curta demais para CLIs complicadas&quot;</p></aside><section class="chapter"><h2 id="primeiros-comandos" data-toc="primeiros-comandos">Primeiros Comandos</h2><section class="chapter"><h3 id="hello-world" data-toc="hello-world">Hello World!</h3><div class="code-block" data-lang="bash">
+bytebabe hello
+</div></section><section class="chapter"><h3 id="ver-todos-os-comandos" data-toc="ver-todos-os-comandos">Ver todos os comandos</h3><div class="code-block" data-lang="bash">
+bytebabe --help
+</div></section></section><section class="chapter"><h2 id="m-dulos-principais" data-toc="m-dulos-principais">M&oacute;dulos Principais</h2><section class="chapter"><h3 id="docker" data-toc="docker">🐳 Docker</h3><div class="code-block" data-lang="bash">
+# Iniciar containers
+bytebabe docker up
+
+# Ver status
+bytebabe docker ps
+
+# Parar tudo
+bytebabe docker down
+</div></section><section class="chapter"><h3 id="git" data-toc="git">🔧 Git</h3><div class="code-block" data-lang="bash">
+# Status estiloso
+bytebabe git status
+
+# Commit interativo
+bytebabe git commit
+
+# Push com proteção
+bytebabe git push
+</div></section><section class="chapter"><h3 id="servers" data-toc="servers">🌐 Servers</h3><div class="code-block" data-lang="bash">
+# Iniciar servidor de desenvolvimento
+bytebabe servers dev
+
+# Configurar proxy reverso
+bytebabe servers proxy
+</div></section></section><section class="chapter"><h2 id="exemplos-pr-ticos" data-toc="exemplos-pr-ticos">Exemplos Pr&aacute;ticos</h2><section class="chapter"><h3 id="configurar-ambiente-de-desenvolvimento" data-toc="configurar-ambiente-de-desenvolvimento">Configurar Ambiente de Desenvolvimento</h3><div class="code-block" data-lang="bash">
+# Configurar ambiente
+bytebabe init
+
+# Configurar ambiente Docker
+bytebabe docker init
+
+# Iniciar serviços
+bytebabe docker up
+</div></section><section class="chapter"><h3 id="workflow-git" data-toc="workflow-git">Workflow Git</h3><div class="code-block" data-lang="bash">
+# Ver status do repo
+bytebabe git status
+
+# Staging interativo
+bytebabe git stage
+
+# Commit com mensagem formatada
+bytebabe git commit
+</div></section></section><section class="chapter"><h2 id="dicas-pro" data-toc="dicas-pro">Dicas Pro</h2><div class="code-block" data-lang="none">
+    /\___/\
+   (  o o  )
+   (  =^=  ) 
+    (______)
+</div><ol class="list _decimal" id="z1seq4o_26" type="1"><li class="list__item" id="z1seq4o_27"><p id="z1seq4o_31">Use TAB para autocompletar</p></li><li class="list__item" id="z1seq4o_28"><p id="z1seq4o_32">Setas &uarr;&darr; para hist&oacute;rico</p></li><li class="list__item" id="z1seq4o_29"><p id="z1seq4o_33"><code class="code" id="z1seq4o_34">--help</code> em qualquer comando</p></li><li class="list__item" id="z1seq4o_30"><p id="z1seq4o_35"><code class="code" id="z1seq4o_36">Ctrl+C</code> sempre funciona</p></li></ol></section><section class="chapter"><h2 id="atalhos-do-teclado" data-toc="atalhos-do-teclado">Atalhos do Teclado</h2><div class="table-wrapper"><table class="wide" id="z1seq4o_37"><thead><tr class="ijRowHead" id="z1seq4o_38"><th id="z1seq4o_43"><p>Atalho</p></th><th id="z1seq4o_44"><p>A&ccedil;&atilde;o</p></th></tr></thead><tbody><tr id="z1seq4o_39"><td id="z1seq4o_45"><p><code class="code" id="z1seq4o_47">Ctrl+C</code></p></td><td id="z1seq4o_46"><p>Cancelar opera&ccedil;&atilde;o</p></td></tr><tr id="z1seq4o_40"><td id="z1seq4o_48"><p><code class="code" id="z1seq4o_50">Ctrl+D</code></p></td><td id="z1seq4o_49"><p>Sair do modo interativo</p></td></tr><tr id="z1seq4o_41"><td id="z1seq4o_51"><p><code class="code" id="z1seq4o_53">Tab</code></p></td><td id="z1seq4o_52"><p>Autocompletar</p></td></tr><tr id="z1seq4o_42"><td id="z1seq4o_54"><p><code class="code" id="z1seq4o_56">&uarr;&darr;</code></p></td><td id="z1seq4o_55"><p>Navegar hist&oacute;rico</p></td></tr></tbody></table></div></section><section class="chapter"><h2 id="pr-ximos-passos" data-toc="pr-ximos-passos">Pr&oacute;ximos Passos</h2><ul class="list _bullet" id="z1seq4o_57"><li class="list__item" id="z1seq4o_58"><p id="z1seq4o_60"><a href="core-modules.html" id="z1seq4o_61" data-tooltip="&quot;Um módulo para cada necessidade, uma solução para cada problema&quot;">🔧 Core Modules</a></p></li><li class="list__item" id="z1seq4o_59"><p id="z1seq4o_62"><a href="dev-tools.html" id="z1seq4o_63" data-tooltip="O módulo DevTools do ByteBabe oferece instalação e configuração automatizada de ferramentas essenciais para desenvolvimento.">🛠️ Dev Tools</a></p></li></ul></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="installation.html" class="navigation-links__prev">Instala&ccedil;&atilde;o</a><a href="windows-support.html" class="navigation-links__next">Suporte Windows (Em Breve)</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

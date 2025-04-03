@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.727263924"><title>Docker Integration 🐳 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"compose-configuration","level":0,"title":"Compose Configuration","anchor":"#compose-configuration"},{"id":"recursos-docker","level":0,"title":"Recursos Docker","anchor":"#recursos-docker"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Docker Integration 🐳 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/docker-integration.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Docker Integration 🐳 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/docker-integration.html#webpage",
+    "url": "writerside-documentation/docker-integration.html",
+    "name": "Docker Integration 🐳 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="docker-integration" data-main-title="Docker Integration 🐳" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="servers.md|Web Servers 🌐"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="docker-integration" id="docker-integration.md">Docker Integration 🐳</h1><section class="chapter"><h2 id="compose-configuration" data-toc="compose-configuration">Compose Configuration</h2><p id="-3sqch3_5">O ByteBabe usa Docker Compose para gerenciar os servidores web:</p><div class="code-block" data-lang="yaml">
+services:
+  apache:
+    image: httpd:latest
+    container_name: &quot;bytebabe_servers_apache&quot;
+    ports:
+      - &quot;8080:80&quot;
+    volumes:
+      - &quot;./docker/apache:/usr/local/apache2/htdocs&quot;
+    networks:
+      - bytebabe_net
+
+  nginx:
+    image: nginx:latest
+    container_name: &quot;bytebabe_servers_nginx&quot;
+    ports:
+      - &quot;8081:80&quot;
+      - &quot;4430:443&quot;
+    volumes:
+      - &quot;./docker/nginx:/usr/share/nginx/html&quot;
+    networks:
+      - bytebabe_net
+
+networks:
+  bytebabe_net:
+    driver: bridge
+</div></section><section class="chapter"><h2 id="recursos-docker" data-toc="recursos-docker">Recursos Docker</h2><ul class="list _bullet" id="-3sqch3_7"><li class="list__item" id="-3sqch3_8"><p id="-3sqch3_13">Containers isolados</p></li><li class="list__item" id="-3sqch3_9"><p id="-3sqch3_14">Rede dedicada</p></li><li class="list__item" id="-3sqch3_10"><p id="-3sqch3_15">Volumes persistentes</p></li><li class="list__item" id="-3sqch3_11"><p id="-3sqch3_16">Health checks</p></li><li class="list__item" id="-3sqch3_12"><p id="-3sqch3_17">Restart policies</p></li></ul></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="ssl-configuration.html" class="navigation-links__prev">SSL Configuration 🔒</a><a href="security.html" class="navigation-links__next">Security 🔐</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

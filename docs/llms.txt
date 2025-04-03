@@ -1,4 +1,4568 @@
-# About ByteBabe
+# ByteBabe CLI
+
+```
+888888b.          888           888888b.          888              
+888  "88b         888           888  "88b         888              
+888  .88P         888           888  .88P         888              
+8888888K. 888  888888888 .d88b. 8888888K.  8888b. 88888b.  .d88b.  
+888  "Y88b888  888888   d8P  Y8b888  "Y88b    "88b888 "88bd8P  Y8b 
+888    888888  888888   88888888888    888.d888888888  88888888888 
+888   d88PY88b 888Y88b. Y8b.    888   d88P888  888888 d88PY8b.     
+8888888P"  "Y88888 "Y888 "Y8888 8888888P" "Y88888888888P"  "Y8888  
+               888                                                 
+          Y8b d88P                                                 
+           "Y88P"                                                  
+```
+
+Tip:
+
+"Por que usar uma CLI normal quando você pode ter uma waifu digital te ajudando?"
+
+— Algum dev às 3 da manhã
+
+ByteBabe é sua assistente CLI cyberpunk para desenvolvimento. Ela transforma tarefas tediosas em interações divertidas, sem sacrificar a funcionalidade profissional.
+
+## Por que ByteBabe? 🤔
+
+* 🎨 Interface cyberpunk estilosa
+
+* 🚀 Automação inteligente de tarefas
+
+* 🐳 Gerenciamento Docker simplificado
+
+* 🔒 Segurança com estilo
+
+* 🛠️ Ferramentas de desenvolvimento integradas
+
+* 🌈 Experiência única de usuário
+
+## Feita para Devs Reais
+
+```
+ ╱|、
+(˚ˎ 。7  
+ |、˜〵          
+ じしˍ,)ノ
+```
+
+Chega de CLIs que parecem saídas do MS-DOS dos anos 80. ByteBabe traz:
+
+* Menus interativos coloridos
+
+* Feedback visual moderno
+
+* Comandos intuitivos
+
+* Easter eggs para descobrir
+
+## Principais Recursos
+
+| Módulo |O que faz |Nível de Coolness |
+----------------------------------------
+| Git |Gerenciamento Git com estilo |🔥🔥🔥 |
+| Docker |Container management para humanos |🔥🔥🔥🔥 |
+| DevTools |Suite completa de desenvolvimento |🔥🔥🔥 |
+| Servers |Servidores web com um comando |🔥🔥🔥🔥 |
+
+## Próximos Passos
+
+Pronto para mergulhar no cyberpunk? Confira:
+
+* [Instalação](installation.html)
+
+* [Quick Start](quick-start.html)
+
+
+
+# Getting Started
+
+Tip:
+
+"A jornada de mil commits começa com um único git clone"
+— Provérbio Dev
+
+## O que você precisa
+
+```
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿Requirements⣿⣿⣿⣿⣿⣿⣿
+⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+```
+
+* 🐧 Linux/Unix (sorry Windows-chan)
+
+* 🐚 Bash 4+
+
+* 📦 Git (opcional, mas sério?)
+
+* 🌐 curl ou wget
+
+* 🐳 Docker (opcional)
+
+## Compatibilidade
+
+ByteBabe roda em:
+
+* Ubuntu/Debian 💜
+
+* Fedora/RHEL ❤️
+
+* Arch Linux 💙
+
+* macOS 🤍
+
+## Antes de Começar
+
+Certifique-se de ter:
+
+1. Terminal com suporte a cores
+
+2. Permissões de sudo (quando necessário)
+
+3. Conexão com internet
+
+4. Café ☕
+
+## Próximos Passos
+
+* [📥 Instalação](installation.html)
+
+* [🚀 Quick Start](quick-start.html)
+
+```
+         ,----------------,              ,---------,
+        ,-----------------------,          ,"        ",
+      ,"                      ,"|        ,"        ,"
+     +-----------------------+  |      ,"        ,"
+     |  .-----------------.  |  |     +---------+
+     |  |                 |  |  |     | -==----'|
+     |  |  $>ByteBabe    |  |  |     |         |
+     |  |  install       |  |  |/----|`---=    |
+     |  |  C:\>_         |  |  |   ,/|==== ooo |
+     |  |                 |  |  |  // |(((( [33]|
+     |  `-----------------'  |," .;'| |((((     |
+     +-----------------------+  ;;  | |         /
+        /_)______________(_/  //'   | +---------
+   ___________________________/___  `,
+  /  oooooooooooooooo  .o.  oooo /,   \,"-----------
+ / ==ooooooooooooooo==.o.  ooo= //   ,`\--{)B     ,"
+/_==__==========__==_ooo__ooo=_/'   /___________,"
+```
+
+
+
+# Instalação
+
+Tip:
+
+"Instalar software é como montar LEGO: siga as instruções e não perca as peças"
+
+## Instalação Rápida (Modo Cyberpunk)
+
+```
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀
+⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀
+⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀
+⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀
+⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀
+⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀
+⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀
+⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀
+⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀
+⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀
+⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+```
+
+### One-liner (Modo Hacker)
+
+```BASH
+curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
+```
+
+### Instalação Manual (Modo Tradicional)
+
+1. Clone o repositório:
+
+```BASH
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+cd bytebabe
+```
+
+1. Execute o instalador:
+
+```BASH
+./install.sh
+```
+
+## Verificando a Instalação
+
+```BASH
+bytebabe --version
+```
+
+Se você ver algo como:
+
+```
+ByteBabe CLI v1.0.0 (⌐■_■)
+```
+
+Parabéns! Você está pronto para hackear com estilo!
+
+## Possíveis Problemas
+
+| Problema |Solução |
+---------------------
+| `Command not found` |Adicione `~/.bytebabe/bin` ao seu PATH |
+| `Permission denied` |Execute com `sudo` ou verifique permissões |
+| `Dependencies missing` |Execute `bytebabe doctor` para verificar |
+
+## Próximos Passos
+
+* [🚀 Quick Start](quick-start.html)
+
+* [📚 Core Modules](core-modules.html)
+
+
+
+# Quick Start
+
+Tip:
+
+"A vida é curta demais para CLIs complicadas"
+
+## Primeiros Comandos
+
+### Hello World!
+
+```BASH
+bytebabe hello
+```
+
+### Ver todos os comandos
+
+```BASH
+bytebabe --help
+```
+
+## Módulos Principais
+
+### 🐳 Docker
+
+```BASH
+# Iniciar containers
+bytebabe docker up
+
+# Ver status
+bytebabe docker ps
+
+# Parar tudo
+bytebabe docker down
+```
+
+### 🔧 Git
+
+```BASH
+# Status estiloso
+bytebabe git status
+
+# Commit interativo
+bytebabe git commit
+
+# Push com proteção
+bytebabe git push
+```
+
+### 🌐 Servers
+
+```BASH
+# Iniciar servidor de desenvolvimento
+bytebabe servers dev
+
+# Configurar proxy reverso
+bytebabe servers proxy
+```
+
+## Exemplos Práticos
+
+### Configurar Ambiente de Desenvolvimento
+
+```BASH
+# Configurar ambiente
+bytebabe init
+
+# Configurar ambiente Docker
+bytebabe docker init
+
+# Iniciar serviços
+bytebabe docker up
+```
+
+### Workflow Git
+
+```BASH
+# Ver status do repo
+bytebabe git status
+
+# Staging interativo
+bytebabe git stage
+
+# Commit com mensagem formatada
+bytebabe git commit
+```
+
+## Dicas Pro
+
+```
+ /\___/\
+(  o o  )
+(  =^=  ) 
+ (______)
+```
+
+1. Use TAB para autocompletar
+
+2. Setas ↑↓ para histórico
+
+3. `--help` em qualquer comando
+
+4. `Ctrl+C` sempre funciona
+
+## Atalhos do Teclado
+
+| Atalho |Ação |
+----------------
+| `Ctrl+C` |Cancelar operação |
+| `Ctrl+D` |Sair do modo interativo |
+| `Tab` |Autocompletar |
+| `↑↓` |Navegar histórico |
+
+## Próximos Passos
+
+* [🔧 Core Modules](core-modules.html)
+
+* [🛠️ Dev Tools](dev-tools.html)
+
+
+
+# Suporte Windows (Em Breve)
+
+Tip:
+
+"Por enquanto, Windows-chan só pode nos observar de longe... (╥﹏╥)"
+
+## Status Atual
+
+🚧 Sem Suporte Nativo 🚧
+
+Atualmente, o ByteBabe CLI é desenvolvido exclusivamente para ambientes Unix-like (Linux/macOS).
+
+## Alternativas Disponíveis
+
+### 1. Windows Subsystem for Linux (WSL)
+
+* Instale o WSL2
+
+* Use uma distribuição Linux compatível (Ubuntu recomendado)
+
+* Instale o ByteBabe normalmente dentro do WSL
+
+### 2. Git Bash
+
+* Instale o Git for Windows
+
+* Use o Git Bash como terminal
+
+* Algumas funcionalidades podem não funcionar corretamente
+
+## Limitações Conhecidas
+
+* Sem suporte nativo para PowerShell
+
+* Sem instalador Windows (.exe/.msi)
+
+* Alguns comandos podem falhar no Git Bash
+
+* Dependências específicas do Linux necessárias
+
+## Próximos Passos
+
+Por enquanto, recomendamos fortemente o uso do WSL2 para a melhor experiência possível no Windows.
+
+## Precisa de Ajuda?
+
+* Consulte nossa [documentação de instalação](installation.html)
+
+* Veja o guia de [troubleshooting](troubleshooting.html)
+
+* Reporte problemas no [GitHub](https://github.com/mrpunkdasilva/bytebabe/issues)
+
+
+
+# Core Modules 🛠️
+
+Tip:
+
+"Um módulo para cada necessidade, uma solução para cada problema"
+
+## Visão Geral
+
+ByteBabe oferece um conjunto poderoso de módulos core, cada um projetado para simplificar aspectos específicos do desenvolvimento.
+
+## Módulos Disponíveis
+
+### 🐳 Docker Module
+
+* Gerenciamento completo de containers
+
+* Operações com imagens e volumes
+
+* Orquestração via Compose
+
+* [Saiba mais](docker-module.html)
+
+### 🗄️ Database Module
+
+* Suporte a múltiplos bancos de dados
+
+* Backup e restore simplificados
+
+* Ferramentas de migração
+
+* [Saiba mais](database-module.html)
+
+### 🛡️ Firewall Module
+
+* Gerenciamento de regras
+
+* Perfis de segurança
+
+* Monitoramento em tempo real
+
+* [Saiba mais](firewall-module.html)
+
+### 🔄 Git Module
+
+* Workflows otimizados
+
+* Gerenciamento de branches
+
+* Hooks personalizados
+
+* [Saiba mais](git-module.html)
+
+## Características Comuns
+
+| Característica |Descrição |
+-----------------------------
+| Interface CLI |Comandos intuitivos e consistentes |
+| Modo Cyberpunk |Visual estilizado e feedback colorido |
+| Documentação |Help detalhado e exemplos práticos |
+| Extensibilidade |Plugins e customizações |
+
+## Integração
+
+Todos os módulos core:
+
+* Compartilham a mesma base de configuração
+
+* Podem ser usados independentemente
+
+* Oferecem interfaces consistentes
+
+* Suportam automação via scripts
+
+## Próximos Passos
+
+* [🐳 Docker Module](docker-module.html)
+
+* [🗄️ Database Module](database-module.html)
+
+* [🛡️ Firewall Module](firewall-module.html)
+
+* [🔄 Git Module](git-module.html)
+
+
+
+# Docker Module 🐳
+
+Tip:
+
+"Onde Poseidon encontra o cyberpunk para domar seus containers"
+
+## Visão Geral
+
+O módulo Docker do ByteBabe oferece uma interface cyberpunk para gerenciar todos os aspectos do Docker, desde containers individuais até complexos stacks de serviços.
+
+## Estilos de Comando
+
+### Estilo Verboso (Explícito)
+
+```BASH
+bytebabe docker containers list --all
+bytebabe docker images pull nginx
+```
+
+### Estilo Curto (Cyberpunk)
+
+```BASH
+bytebabe docker c ls -a
+bytebabe docker i p nginx
+```
+
+## Subcomandos
+
+| Comando |Alias |Descrição |Modo Cyberpunk |
+---------------------------------------------
+| `containers` |`c` |Gerencia containers |Container Commander 🎮 |
+| `images` |`i` |Controla imagens |Image Harbor 🏴‍☠️ |
+| `volumes` |`v` |Administra volumes |Volume Bay 💾 |
+| `compose` |`co` |Orquestra serviços |Compose Captain 🎭 |
+| `stats` |`st` |Monitora recursos |System Watcher 📊 |
+
+## Navegação
+
+* [Container Management](container-management.html)
+
+* [Image Management](image-management.html)
+
+* [Volume Management](volume-management.html)
+
+* [Compose Operations](compose-operations.html)
+
+* [Docker Monitoring](docker-monitoring.html)
+
+
+
+# Container Management 🎮
+
+## Comandos Disponíveis
+
+### Estilo Verboso
+
+```BASH
+bytebabe docker containers [comando] [opções]
+```
+
+### Estilo Curto
+
+```BASH
+bytebabe docker c [cmd] [opts]
+```
+
+## Operações Básicas
+
+| Operação |Verboso |Curto |Descrição |
+---------------------------------------
+| Listar |`containers list` |`c ls` |Lista containers |
+| Iniciar |`containers start` |`c up` |Inicia containers |
+| Parar |`containers stop` |`c down` |Para containers |
+| Reiniciar |`containers restart` |`c rs` |Reinicia containers |
+| Remover |`containers remove` |`c rm` |Remove containers |
+
+## Menu Interativo
+
+O Container Commander oferece:
+
+* 📋 Listagem de containers
+
+* 🟢 Containers em execução
+
+* 🔍 Pesquisa de containers
+
+* 🆕 Criação de containers
+
+* 📊 Estatísticas do sistema
+
+## Exemplos
+
+### Estilo Verboso
+
+```BASH
+# Listar todos os containers
+bytebabe docker containers list --all
+
+# Iniciar container específico
+bytebabe docker containers start my-container
+
+# Remover container com volumes
+bytebabe docker containers remove --volumes my-container
+```
+
+### Estilo Curto
+
+```BASH
+# Listar todos os containers
+bytebabe docker c ls -a
+
+# Iniciar container específico
+bytebabe docker c up my-container
+
+# Remover container com volumes
+bytebabe docker c rm -v my-container
+```
+
+## Opções Comuns
+
+| Opção |Verboso |Curto |Descrição |
+------------------------------------
+| Todos |`--all` |`-a` |Inclui parados |
+| Detach |`--detach` |`-d` |Roda em background |
+| Force |`--force` |`-f` |Força operação |
+| Volumes |`--volumes` |`-v` |Include volumes |
+
+
+
+# Image Management 🏴‍☠️
+
+## Comandos Disponíveis
+
+### Estilo Verboso
+
+```BASH
+bytebabe docker images [comando] [opções]
+```
+
+### Estilo Curto
+
+```BASH
+bytebabe docker i [cmd] [opts]
+```
+
+## Operações Básicas
+
+| Operação |Verboso |Curto |Descrição |
+---------------------------------------
+| Listar |`images list` |`i ls` |Lista imagens |
+| Pull |`images pull` |`i p` |Baixa imagens |
+| Push |`images push` |`i ps` |Envia imagens |
+| Build |`images build` |`i b` |Constrói imagens |
+| Remove |`images remove` |`i rm` |Remove imagens |
+
+## Categorias de Imagens
+
+* 🌐 Web Servers: nginx, apache, httpd
+
+* 🛢️ Databases: mysql, postgres, mongo
+
+* 💻 OS Base: ubuntu, alpine, debian
+
+* 🛠️ Dev Tools: node, python, golang
+
+* 📊 Monitoring: grafana, prometheus
+
+* 🔒 Security: vault, owasp/zap
+
+## Exemplos
+
+### Estilo Verboso
+
+```BASH
+# Listar todas as imagens
+bytebabe docker images list --all
+
+# Pull de imagem específica
+bytebabe docker images pull nginx:latest
+
+# Build com tag
+bytebabe docker images build --tag myapp:1.0 .
+```
+
+### Estilo Curto
+
+```BASH
+# Listar todas as imagens
+bytebabe docker i ls -a
+
+# Pull de imagem específica
+bytebabe docker i p nginx:latest
+
+# Build com tag
+bytebabe docker i b -t myapp:1.0 .
+```
+
+## Opções Comuns
+
+| Opção |Verboso |Curto |Descrição |
+------------------------------------
+| Todos |`--all` |`-a` |Mostra intermediárias |
+| Tag |`--tag` |`-t` |Define tag |
+| Force |`--force` |`-f` |Força operação |
+| Quiet |`--quiet` |`-q` |Só IDs |
+
+
+
+# Volume Management 💾
+
+## Comandos Disponíveis
+
+### Estilo Verboso
+
+```BASH
+bytebabe docker volumes [comando] [opções]
+```
+
+### Estilo Curto
+
+```BASH
+bytebabe docker v [cmd] [opts]
+```
+
+## Operações Básicas
+
+| Operação |Verboso |Curto |Descrição |
+---------------------------------------
+| Listar |`volumes list` |`v ls` |Lista volumes |
+| Criar |`volumes create` |`v new` |Cria volume |
+| Inspecionar |`volumes inspect` |`v i` |Detalhes do volume |
+| Remove |`volumes remove` |`v rm` |Remove volume |
+| Prune |`volumes prune` |`v p` |Limpa não usados |
+
+## Tipos de Volume
+
+* 🔧 Local
+
+* 🌐 NFS
+
+* ☁️ Cloud Storage
+
+* 🔒 Encrypted
+
+* 📦 Plugin Volumes
+
+## Exemplos
+
+### Estilo Verboso
+
+```BASH
+# Criar volume
+bytebabe docker volumes create --name dbdata
+
+# Listar volumes
+bytebabe docker volumes list
+
+# Remover volume
+bytebabe docker volumes remove dbdata
+```
+
+### Estilo Curto
+
+```BASH
+# Criar volume
+bytebabe docker v new -n dbdata
+
+# Listar volumes
+bytebabe docker v ls
+
+# Remover volume
+bytebabe docker v rm dbdata
+```
+
+## Opções Comuns
+
+| Opção |Verboso |Curto |Descrição |
+------------------------------------
+| Nome |`--name` |`-n` |Nome do volume |
+| Driver |`--driver` |`-d` |Driver do volume |
+| Force |`--force` |`-f` |Força operação |
+| Quiet |`--quiet` |`-q` |Modo silencioso |
+
+
+
+# Compose Operations 🎭
+
+## Comandos Disponíveis
+
+### Estilo Verboso
+
+```BASH
+bytebabe docker compose [comando] [opções]
+```
+
+### Estilo Curto
+
+```BASH
+bytebabe docker co [cmd] [opts]
+```
+
+## Operações Básicas
+
+| Operação |Verboso |Curto |Descrição |
+---------------------------------------
+| Up |`compose up` |`co up` |Inicia serviços |
+| Down |`compose down` |`co down` |Para serviços |
+| Logs |`compose logs` |`co logs` |Mostra logs |
+| PS |`compose ps` |`co ps` |Lista serviços |
+| Build |`compose build` |`co b` |Build serviços |
+
+## Recursos Avançados
+
+* 🔄 Auto-restart policies
+
+* 🌐 Network management
+
+* 📊 Resource limits
+
+* 🔒 Secrets handling
+
+* 🎯 Health checks
+
+## Exemplos
+
+### Estilo Verboso
+
+```BASH
+# Iniciar todos os serviços
+bytebabe docker compose up --detach
+
+# Ver logs
+bytebabe docker compose logs --follow
+
+# Parar e remover
+bytebabe docker compose down --volumes
+```
+
+### Estilo Curto
+
+```BASH
+# Iniciar todos os serviços
+bytebabe docker co up -d
+
+# Ver logs
+bytebabe docker co logs -f
+
+# Parar e remover
+bytebabe docker co down -v
+```
+
+## Opções Comuns
+
+| Opção |Verboso |Curto |Descrição |
+------------------------------------
+| Detach |`--detach` |`-d` |Background |
+| Follow |`--follow` |`-f` |Follow logs |
+| Build |`--build` |`-b` |Force build |
+| Volumes |`--volumes` |`-v` |With volumes |
+
+
+
+# Docker Monitoring 📊
+
+## Comandos Disponíveis
+
+### Estilo Verboso
+
+```BASH
+bytebabe docker stats [comando] [opções]
+```
+
+### Estilo Curto
+
+```BASH
+bytebabe docker st [cmd] [opts]
+```
+
+## Métricas Disponíveis
+
+| Métrica |Verboso |Curto |Descrição |
+--------------------------------------
+| CPU |`stats cpu` |`st cpu` |Uso de CPU |
+| Memory |`stats mem` |`st mem` |Uso de memória |
+| Network |`stats net` |`st net` |I/O de rede |
+| Disk |`stats disk` |`st disk` |I/O de disco |
+| All |`stats all` |`st all` |Todas métricas |
+
+## Visualizações
+
+* 📈 Gráficos em tempo real
+
+* 📊 Tabelas de recursos
+
+* 🎯 Alertas configuráveis
+
+* 📱 Dashboard móvel
+
+* 📥 Export de dados
+
+## Exemplos
+
+### Estilo Verboso
+
+```BASH
+# Ver todas as métricas
+bytebabe docker stats show --all
+
+# Monitorar container específico
+bytebabe docker stats watch --container webapp
+
+# Exportar métricas
+bytebabe docker stats export --format json
+```
+
+### Estilo Curto
+
+```BASH
+# Ver todas as métricas
+bytebabe docker st show -a
+
+# Monitorar container específico
+bytebabe docker st watch -c webapp
+
+# Exportar métricas
+bytebabe docker st exp -f json
+```
+
+## Opções de Visualização
+
+| Opção |Verboso |Curto |Descrição |
+------------------------------------
+| Live |`--live` |`-l` |Atualização ao vivo |
+| Format |`--format` |`-f` |Formato de saída |
+| Interval |`--interval` |`-i` |Intervalo de update |
+| NoColor |`--no-color` |`-nc` |Sem cores |
+
+
+
+# Database Module 🗄️
+
+Tip:
+
+"Gerenciamento de bancos de dados com estilo cyberpunk"
+
+## Visão Geral
+
+O módulo Database do ByteBabe oferece uma interface unificada para gerenciar diferentes bancos de dados através de containers Docker, com suporte a operações comuns e monitoramento.
+
+## Comandos Principais
+
+```BASH
+# Configuração inicial
+bytebabe db setup
+
+# Iniciar banco específico
+bytebabe db start mysql
+
+# Parar todos os bancos
+bytebabe db stop
+
+# Ver status
+bytebabe db status
+
+# Acompanhar logs
+bytebabe db log mongodb
+```
+
+## Recursos Principais
+
+* Suporte a múltiplos bancos de dados
+
+* Backup e restore automatizados
+
+* Ferramentas de migração integradas
+
+* Monitoramento em tempo real
+
+* Interface visual para gestão
+
+## Subcomandos
+
+| Comando |Descrição |
+----------------------
+| `setup` |Configuração inicial |
+| `start` |Inicia banco(s) |
+| `stop` |Para banco(s) |
+| `status` |Mostra status atual |
+| `log` |Exibe logs |
+
+## Próximos Passos
+
+* [📚 Bancos Suportados](supported-databases.html)
+
+* [💾 Backup e Restore](backup-restore.html)
+
+* [🔄 Ferramentas de Migração](migration-tools.html)
+
+* [📊 Monitoramento](database-monitoring.html)
+
+
+
+# Bancos Suportados 📚
+
+## Bancos Disponíveis
+
+### MySQL 8.0
+
+```YAML
+Porta: 3306
+Usuário: byteuser
+Senha: bytepass
+Database: bytebabe_db
+```
+
+### PostgreSQL 15
+
+```YAML
+Porta: 5432
+Usuário: byteuser
+Senha: bytepass
+Database: bytebabe_db
+```
+
+### MongoDB 6
+
+```YAML
+Porta: 27017
+Usuário: root
+Senha: example
+```
+
+### Redis 7
+
+```YAML
+Porta: 6379
+```
+
+## Ferramentas de Gestão
+
+ByteBabe oferece integração com várias ferramentas GUI:
+
+* TablePlus
+
+* DBeaver
+
+* MongoDB Compass
+
+* pgAdmin
+
+* MySQL Workbench
+
+## Instalação
+
+```BASH
+# Instalar banco específico
+bytebabe db install mysql
+
+# Instalar múltiplos bancos
+bytebabe db setup
+```
+
+## Configuração
+
+Cada banco pode ser customizado através do arquivo `config.yaml`:
+
+```YAML
+mysql:
+  port: 3306
+  version: "8.0"
+  custom_config: "/path/to/my.cnf"
+
+postgres:
+  port: 5432
+  version: "15"
+  custom_config: "/path/to/postgresql.conf"
+```
+
+
+
+# Backup e Restore 💾
+
+## Backup Automático
+
+### Configuração
+
+```YAML
+backup:
+  schedule: "0 0 * * *"  # Todo dia à meia-noite
+  retention: 7           # Manter últimos 7 backups
+  compress: true        # Compactar automaticamente
+```
+
+### Comandos
+
+```BASH
+# Backup manual
+bytebabe db backup mysql
+
+# Backup de todos os bancos
+bytebabe db backup all
+
+# Backup com timestamp customizado
+bytebabe db backup postgres --timestamp "pre-deploy"
+```
+
+## Restore
+
+### Restauração Simples
+
+```BASH
+# Restaurar último backup
+bytebabe db restore mysql
+
+# Restaurar backup específico
+bytebabe db restore postgres --file backup-20231225.sql
+```
+
+### Restauração Seletiva
+
+```BASH
+# Restaurar apenas uma database
+bytebabe db restore mysql --database users_db
+
+# Restaurar tabelas específicas
+bytebabe db restore postgres --tables "users,orders"
+```
+
+## Boas Práticas
+
+1. Configure backups automáticos
+
+2. Teste seus backups regularmente
+
+3. Mantenha cópias em locais diferentes
+
+4. Documente procedimentos de restore
+
+
+
+# Ferramentas de Migração 🔄
+
+## Visão Geral
+
+ByteBabe oferece ferramentas para:
+
+* Migração de esquema
+
+* Migração de dados
+
+* Versionamento de banco
+
+* Rollback seguro
+
+## Comandos Básicos
+
+```BASH
+# Criar nova migração
+bytebabe db migrate create "add_users_table"
+
+# Executar migrações pendentes
+bytebabe db migrate up
+
+# Reverter última migração
+bytebabe db migrate down
+
+# Ver status
+bytebabe db migrate status
+```
+
+## Estrutura de Migrações
+
+```SQL
+-- 20231225120000_add_users_table.sql
+-- Up
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Down
+DROP TABLE users;
+```
+
+## Boas Práticas
+
+1. Uma mudança por migração
+
+2. Sempre inclua `down` migration
+
+3. Use timestamps consistentes
+
+4. Teste migrações em ambiente de dev
+
+5. Faça backup antes de migrar
+
+
+
+# Monitoramento de Bancos 📊
+
+## Dashboard em Tempo Real
+
+```BASH
+# Iniciar dashboard
+bytebabe db monitor
+
+# Monitorar banco específico
+bytebabe db monitor mysql
+
+# Modo detalhado
+bytebabe db monitor postgres --detailed
+```
+
+## Métricas Disponíveis
+
+| Métrica |Descrição |
+----------------------
+| CPU |Uso de processador |
+| RAM |Consumo de memória |
+| Disco |Espaço em disco |
+| Conexões |Conexões ativas |
+| Queries |Queries por segundo |
+
+## Alertas
+
+Configure alertas para:
+
+* Alto uso de recursos
+
+* Queries lentas
+
+* Erros de conexão
+
+* Espaço em disco baixo
+
+```YAML
+alerts:
+  cpu_high: 80%
+  ram_high: 90%
+  disk_low: 10%
+  slow_query: 5s
+```
+
+## Logs
+
+```BASH
+# Ver logs em tempo real
+bytebabe db log mysql --follow
+
+# Filtrar logs por tipo
+bytebabe db log postgres --type error
+
+# Exportar logs
+bytebabe db log mongodb --export logs.txt
+```
+
+## Integração
+
+Suporte a exportação de métricas para:
+
+* Prometheus
+
+* Grafana
+
+* DataDog
+
+* NewRelic
+
+
+
+# Firewall Module 🛡️
+
+Tip:
+
+"Segurança com estilo cyberpunk"
+
+## Visão Geral
+
+O módulo Firewall do ByteBabe oferece uma interface intuitiva para gerenciar o UFW (Uncomplicated Firewall) com perfis predefinidos e monitoramento em tempo real.
+
+## Comandos Principais
+
+```BASH
+# Ver status do firewall
+bytebabe firewall status
+
+# Ativar firewall
+bytebabe firewall enable
+
+# Configurar perfil
+bytebabe firewall setup
+
+# Adicionar regra
+bytebabe firewall add
+```
+
+## Recursos Principais
+
+* Perfis predefinidos (Dev, DevOps, Security)
+
+* Gerenciamento visual de regras
+
+* Monitoramento em tempo real
+
+* Backup e restore de configurações
+
+* Interface CLI intuitiva
+
+## Perfis Disponíveis
+
+| Perfil |Descrição |
+---------------------
+| Developer |Portas para desenvolvimento web |
+| DevOps |Configuração para Docker, K8s, etc |
+| Security |Regras restritas de segurança |
+
+## Próximos Passos
+
+* [🔒 Perfis de Segurança](security-profiles.html)
+
+* [📋 Gerenciamento de Regras](rule-management.html)
+
+* [⚙️ Recursos Avançados](advanced-features.html)
+
+* [📊 Monitoramento](firewall-monitoring.html)
+
+
+
+# Perfis de Segurança 🔒
+
+## Developer Profile
+
+Ideal para desenvolvimento web local.
+
+```BASH
+bytebabe firewall setup
+> Select profile: 1
+```
+
+### Portas Permitidas
+
+* HTTP (80)
+
+* HTTPS (443)
+
+* React/Node (3000-3999)
+
+* Django/Spring (8000-8999)
+
+* Angular (4200)
+
+* Vite (5173)
+
+## DevOps Profile
+
+Configurado para ambientes de DevOps.
+
+```BASH
+bytebabe firewall setup
+> Select profile: 2
+```
+
+### Portas Permitidas
+
+* Docker (2375-2377)
+
+* Kubernetes (6443, 10250-10252)
+
+* Jenkins (8080)
+
+* Prometheus (9090)
+
+* Grafana (3000)
+
+## Security Profile
+
+Configuração restritiva para máxima segurança.
+
+```BASH
+bytebabe firewall setup
+> Select profile: 3
+```
+
+### Características
+
+* Logging completo
+
+* Deny por padrão
+
+* Rate limiting
+
+* Apenas serviços essenciais
+
+* Monitoramento avançado
+
+
+
+# Gerenciamento de Regras 📋
+
+## Comandos Básicos
+
+```BASH
+# Listar regras
+bytebabe firewall list
+
+# Adicionar regra
+bytebabe firewall add
+
+# Remover regra
+bytebabe firewall remove
+
+# Resetar regras
+bytebabe firewall reset
+```
+
+## Adicionando Regras
+
+### Interface Interativa
+
+```BASH
+bytebabe firewall add
+> Enter port number: 80
+> Enter protocol (tcp/udp): tcp
+> Enter action (allow/deny): allow
+```
+
+### Exemplos Comuns
+
+```BASH
+# Permitir SSH
+Port: 22
+Protocol: tcp
+Action: allow
+
+# Bloquear porta
+Port: 3306
+Protocol: tcp
+Action: deny
+```
+
+## Gerenciamento em Lote
+
+```BASH
+# Backup de regras
+bytebabe firewall backup
+
+# Restaurar regras
+bytebabe firewall restore
+
+# Importar regras
+bytebabe firewall import rules.conf
+```
+
+## Boas Práticas
+
+1. Documente todas as regras
+
+2. Use perfis predefinidos
+
+3. Faça backup regularmente
+
+4. Teste antes de aplicar
+
+
+
+# Recursos Avançados ⚙️
+
+## Rate Limiting
+
+Controle de taxa de conexões:
+
+```BASH
+# Configurar rate limit para SSH
+bytebabe firewall limit ssh
+
+# Limite personalizado
+bytebabe firewall limit 80/tcp --rate 100/min
+```
+
+## Port Forwarding
+
+```BASH
+# Configurar redirecionamento
+bytebabe firewall forward
+> Source port: 80
+> Destination IP: 192.168.1.100
+> Destination port: 8080
+```
+
+## Bloqueio de IP
+
+```BASH
+# Bloquear range de IPs
+bytebabe firewall block
+> Enter IP range: 192.168.1.0/24
+
+# Whitelist
+bytebabe firewall allow 10.0.0.0/8
+```
+
+## Backup e Restore
+
+```BASH
+# Backup completo
+bytebabe firewall backup rules.conf
+
+# Restore seletivo
+bytebabe firewall restore --rules "ssh,http"
+```
+
+## Logging Avançado
+
+```BASH
+# Ativar log detalhado
+bytebabe firewall log --level full
+
+# Exportar logs
+bytebabe firewall log export
+```
+
+
+
+# Monitoramento do Firewall 📊
+
+## Dashboard em Tempo Real
+
+```BASH
+# Iniciar dashboard
+bytebabe firewall monitor
+
+# Modo detalhado
+bytebabe firewall monitor --detailed
+```
+
+## Métricas Disponíveis
+
+| Métrica |Descrição |
+----------------------
+| Conexões |Conexões ativas |
+| Pacotes |Pacotes processados |
+| Drops |Conexões bloqueadas |
+| Bandwidth |Uso de banda |
+
+## Alertas
+
+Configure alertas para:
+
+* Tentativas de invasão
+
+* Portas não autorizadas
+
+* Tráfego anormal
+
+* Falhas de regras
+
+```YAML
+alerts:
+  brute_force: true
+  port_scan: true
+  ddos: true
+  threshold: 1000
+```
+
+## Logs
+
+```BASH
+# Ver logs em tempo real
+bytebabe firewall log --follow
+
+# Filtrar por tipo
+bytebabe firewall log --type blocked
+
+# Exportar relatório
+bytebabe firewall report export
+```
+
+## Integração
+
+Suporte a exportação para:
+
+* Grafana
+
+* ELK Stack
+
+* Prometheus
+
+* Nagios
+
+
+
+# Git Module 🔄
+
+Tip:
+
+"Git com interface cyberpunk: onde o controle de versão encontra o futuro"
+
+## Visão Geral
+
+O módulo Git do ByteBabe transforma o Git tradicional em uma experiência cyberpunk interativa, com menus coloridos e workflows otimizados.
+
+## Interface Principal
+
+```BASH
+# Iniciar interface principal
+bytebabe git
+
+# Modo rápido
+bytebabe git quick
+```
+
+## Componentes Principais
+
+| Componente |Comando |Descrição |
+----------------------------------
+| Profile Dashboard |`profile` |Identidade e estatísticas |
+| Smart Staging |`stage` |Seleção interativa de arquivos |
+| Commit Wizard |`commit` |Commits semânticos guiados |
+| Branch Navigator |`branch` |Gerenciamento visual de branches |
+| Push Controller |`push` |Operações avançadas de push |
+| Time Machine |`time` |Histórico interativo |
+
+## Quick Actions
+
+```BASH
+[s] Status    - Ver estado do repositório
+[c] Commit    - Commit rápido
+[b] Branches  - Listar branches
+[p] Push      - Push para remote
+[q] Quit      - Sair do menu
+```
+
+## Características
+
+* Interface cyberpunk colorida
+
+* Menus interativos
+
+* Validações de segurança
+
+* Atalhos de teclado
+
+* Feedback visual
+
+* Easter eggs
+
+## Próximos Passos
+
+* [🌿 Branch Management](branch-management.html)
+
+* [📂 Staging Operations](staging-operations.html)
+
+* [🔄 Git Workflows](git-workflows.html)
+
+* [🪝 Git Hooks](git-hooks.html)
+
+
+
+# Branch Management 🌿
+
+## Branch Navigator
+
+Interface visual para gerenciar branches:
+
+```BASH
+bytebabe git branch
+```
+
+### Ações Disponíveis
+
+| Ação |Descrição |Comando Rápido |
+-----------------------------------
+| Switch Branch |Mudar de branch |`switch` |
+| Create Branch |Nova feature branch |`new` |
+| Merge Branch |Combinar branches |`merge` |
+| Delete Branch |Remover branch local |`delete` |
+
+## Operações Comuns
+
+### Criar Branch
+
+```BASH
+# Interativo
+bytebabe git branch new
+
+# Direto
+bytebabe git branch new feature/nome
+```
+
+### Merge de Branches
+
+```BASH
+# Merge interativo
+bytebabe git branch merge
+
+# Com confirmação visual
+bytebabe git branch merge develop --visual
+```
+
+### Deletar Branches
+
+```BASH
+# Com validação
+bytebabe git branch delete feature/old
+
+# Força deleção
+bytebabe git branch delete feature/old --force
+```
+
+## Proteções
+
+* Validação antes de deletar
+
+* Verificação de merges
+
+* Proteção de branches principais
+
+* Detecção de conflitos
+
+
+
+# Staging Operations 📂
+
+## Smart Staging
+
+Interface interativa para staging de arquivos:
+
+```BASH
+bytebabe git stage
+```
+
+### Características
+
+* Seleção múltipla
+
+* Preview de mudanças
+
+* Filtros por tipo
+
+* Staging parcial
+
+* Undo/Redo
+
+## Comandos Principais
+
+```BASH
+# Staging interativo
+bytebabe git stage
+
+# Staging rápido
+bytebabe git stage all
+
+# Unstage
+bytebabe git unstage
+```
+
+## Modos de Visualização
+
+| Modo |Descrição |Atalho |
+---------------------------
+| List |Lista simples |`l` |
+| Tree |Visualização em árvore |`t` |
+| Detail |Detalhes completos |`d` |
+
+## Operações Avançadas
+
+### Staging Parcial
+
+```BASH
+# Selecionar hunks
+bytebabe git stage --partial
+
+# Review de mudanças
+bytebabe git stage --review
+```
+
+### Filtros
+
+```BASH
+# Por extensão
+bytebabe git stage "*.js"
+
+# Por diretório
+bytebabe git stage src/
+```
+
+## Dicas Pro
+
+1. Use espaço para selecionar
+
+2. Enter para confirmar
+
+3. Tab para navegação
+
+4. ? para ajuda
+
+
+
+# Git Workflows 🔄
+
+## Workflows Suportados
+
+Tip:
+
+Em desenvolvimento
+
+### GitFlow
+
+```BASH
+# Iniciar GitFlow
+bytebabe git flow init
+
+# Nova feature
+bytebabe git flow feature start
+```
+
+### Trunk-Based
+
+```BASH
+# Setup inicial
+bytebabe git trunk setup
+
+# Nova branch curta
+bytebabe git trunk feature
+```
+
+## Commit Patterns
+
+### Commits Semânticos
+
+```BASH
+# Commit guiado
+bytebabe git commit
+
+Tipos disponíveis:
+- feat: Nova feature
+- fix: Correção de bug
+- docs: Documentação
+- style: Formatação
+- refactor: Refatoração
+- test: Testes
+- chore: Tarefas
+```
+
+## Automações
+
+Tip:
+
+Em desenvolvimento
+
+### Auto-Branch
+
+```BASH
+# Branch por ticket
+bytebabe git auto-branch TICKET-123
+
+# Branch por tipo
+bytebabe git auto-branch feature/descricao
+```
+
+### Auto-Merge
+
+```BASH
+# Merge automático
+bytebabe git auto-merge develop
+
+# Com testes
+bytebabe git auto-merge --with-tests
+```
+
+## Boas Práticas
+
+1. Use commits semânticos
+
+2. Mantenha branches atualizadas
+
+3. Faça merge frequente
+
+4. Revise antes do push
+
+
+
+# Git Hooks 🪝
+
+Tip:
+
+Em desenvolvimento
+
+## Hooks Disponíveis
+
+### Pre-Commit
+
+```BASH
+# Instalar hook
+bytebabe git hooks add pre-commit
+
+# Configurar
+bytebabe git hooks config pre-commit
+```
+
+### Commit-Msg
+
+```BASH
+# Validação de mensagem
+bytebabe git hooks add commit-msg
+
+# Template personalizado
+bytebabe git hooks template commit-msg
+```
+
+## Hooks Customizados
+
+### Criar Hook
+
+```BASH
+# Novo hook
+bytebabe git hooks create meu-hook
+
+# Editar hook
+bytebabe git hooks edit meu-hook
+```
+
+### Gerenciar Hooks
+
+```BASH
+# Listar hooks
+bytebabe git hooks list
+
+# Remover hook
+bytebabe git hooks remove hook-name
+```
+
+## Templates Prontos
+
+| Template |Uso |Comando |
+--------------------------
+| Lint |Validação de código |`lint` |
+| Tests |Execução de testes |`test` |
+| Format |Formatação de código |`format` |
+| Verify |Validações diversas |`verify` |
+
+## Configuração
+
+```YAML
+hooks:
+  pre-commit:
+    - lint
+    - test
+  commit-msg:
+    - semantic
+    - jira
+```
+
+## Integração
+
+* CI/CD pipelines
+
+* Linters
+
+* Test runners
+
+* Code formatters
+
+
+
+# Development Tools 🛠️
+
+O módulo DevTools do ByteBabe oferece instalação e configuração automatizada de ferramentas essenciais para desenvolvimento.
+
+## Categorias de Ferramentas
+
+### Terminal Tools
+
+* Zsh + Oh My Zsh
+
+* Spaceship Prompt
+
+* Plugins (autosuggestions, syntax highlighting, etc)
+
+### Database Tools
+
+* TablePlus
+
+* DBeaver
+
+* MongoDB Compass
+
+* pgAdmin
+
+* MySQL Workbench
+
+### API Tools
+
+* Ferramentas de Teste (curl, httpie, jq, yq, grpcurl, websocat)
+
+* Documentação (Swagger CLI, OpenAPI Generator, Redoc CLI, Spectral)
+
+* Proxy/Debug (mitmproxy, ngrok, wireshark)
+
+* GUI (Postman, Insomnia, Bruno)
+
+### Browser Tools
+
+* Google Chrome
+
+* Firefox
+
+* Brave
+
+* Microsoft Edge
+
+* Vivaldi
+
+## Uso
+
+```BASH
+# Modo interativo
+bytebabe devtools
+
+# Instalação direta
+bytebabe devtools [categoria] [ferramenta]
+
+# Exemplos:
+bytebabe devtools terminal all      # Instala todas as ferramentas de terminal
+bytebabe devtools database dbeaver  # Instala apenas o DBeaver
+bytebabe devtools api --test        # Instala ferramentas de teste de API
+```
+
+## Características
+
+* Instalação automatizada
+
+* Detecção do gerenciador de pacotes (apt, dnf, pacman)
+
+* Configuração pré-otimizada
+
+* Interface cyberpunk interativa
+
+
+
+# Terminal Tools
+
+## Ferramentas Disponíveis
+
+### Zsh + Oh My Zsh
+
+* Shell avançado com framework de customização
+
+* Temas e plugins pré-configurados
+
+* Spaceship Prompt para visual cyberpunk
+
+### Plugins Incluídos
+
+* zsh-autosuggestions (sugestões baseadas no histórico)
+
+* zsh-syntax-highlighting (highlight de sintaxe)
+
+* zsh-completions (autocomplete aprimorado)
+
+* colorize (highlight para arquivos)
+
+* colored-man-pages (páginas de manual coloridas)
+
+## Instalação
+
+```BASH
+# Instalar tudo
+bytebabe devtools terminal all
+
+# Instalações individuais
+bytebabe devtools terminal zsh
+bytebabe devtools terminal ohmyzsh
+bytebabe devtools terminal spaceship
+bytebabe devtools terminal plugins
+```
+
+## Configurações
+
+O ByteBabe configura automaticamente:
+
+* Temas e cores cyberpunk
+
+* Aliases úteis
+
+* Integração com Git
+
+* Autocomplete inteligente
+
+* Histórico aprimorado
+
+
+
+# Database Tools
+
+## Ferramentas Suportadas
+
+### GUI Clients
+
+* TablePlus: Cliente SQL moderno e eficiente
+
+* DBeaver: Cliente universal de banco de dados
+
+* MongoDB Compass: GUI oficial para MongoDB
+
+* pgAdmin: Ferramenta de administração para PostgreSQL
+
+* MySQL Workbench: IDE oficial para MySQL
+
+## Instalação
+
+```BASH
+# Instalar todas as ferramentas
+bytebabe devtools db all
+
+# Instalações individuais
+bytebabe devtools db tableplus
+bytebabe devtools db dbeaver
+bytebabe devtools db compass
+bytebabe devtools db pgadmin
+bytebabe devtools db mysql
+```
+
+## Gerenciamento
+
+```BASH
+# Listar ferramentas instaladas
+bytebabe devtools db list
+
+# Modo interativo
+bytebabe devtools db
+```
+
+## Compatibilidade
+
+O ByteBabe detecta automaticamente:
+
+* Sistema operacional
+
+* Arquitetura do sistema
+
+* Gerenciador de pacotes
+
+* Dependências necessárias
+
+
+
+# API Tools
+
+## Categorias
+
+### Ferramentas de Teste
+
+* curl: Cliente HTTP via linha de comando
+
+* httpie: Cliente HTTP amigável
+
+* jq: Processador JSON
+
+* yq: Processador YAML
+
+* grpcurl: Cliente gRPC
+
+* websocat: Cliente WebSocket
+
+### Documentação
+
+* Swagger CLI: Ferramentas Swagger/OpenAPI
+
+* OpenAPI Generator: Gerador de código
+
+* Redoc CLI: Documentação interativa
+
+* Spectral: Linting OpenAPI
+
+### Proxy/Debug
+
+* mitmproxy: Proxy HTTP interceptador
+
+* ngrok: Túnel para localhost
+
+* Wireshark: Analisador de pacotes
+
+### GUI Clients
+
+* Postman: Plataforma de API colaborativa
+
+* Insomnia: Cliente REST e GraphQL
+
+* Bruno: Cliente API open-source
+
+## Instalação
+
+```BASH
+# Instalar por categoria
+bytebabe devtools api --test
+bytebabe devtools api --docs
+bytebabe devtools api --proxy
+bytebabe devtools api --gui
+
+# Instalação específica
+bytebabe devtools api postman
+```
+
+
+
+# Browser Tools
+
+## Navegadores Suportados
+
+### Principais
+
+* Google Chrome: Navegador do Google
+
+* Firefox: Navegador da Mozilla
+
+* Brave: Focado em privacidade
+
+* Microsoft Edge: Navegador da Microsoft
+
+* Vivaldi: Navegador customizável
+
+## Instalação
+
+```BASH
+# Instalar todos os navegadores
+bytebabe devtools browser all
+
+# Instalações individuais
+bytebabe devtools browser chrome
+bytebabe devtools browser firefox
+bytebabe devtools browser brave
+bytebabe devtools browser edge
+bytebabe devtools browser vivaldi
+```
+
+## Gerenciamento
+
+```BASH
+# Listar navegadores instalados
+bytebabe devtools browser list
+
+# Modo interativo
+bytebabe devtools browser
+```
+
+## Características
+
+* Instalação automatizada
+
+* Detecção de versão mais recente
+
+* Configuração de repositórios
+
+* Suporte a diferentes distribuições Linux
+
+
+
+# Web Servers 🌐
+
+O módulo de servidores web do ByteBabe permite gerenciar instâncias Docker do Apache e Nginx de forma simplificada.
+
+## Configuração Padrão
+
+* Apache: porta 8080
+
+* Nginx: porta 8081
+
+* SSL: porta 4430
+
+## Comandos Básicos
+
+```BASH
+# Configuração inicial
+bytebabe servers setup
+
+# Iniciar servidores
+bytebabe servers up [apache|nginx]
+
+# Parar servidores
+bytebabe servers down [apache|nginx]
+
+# Ver status
+bytebabe servers status
+```
+
+## Estrutura de Diretórios
+
+```
+docker/
+├── apache/
+│   └── index.html
+├── nginx/
+│   ├── nginx.conf
+│   └── index.html
+└── ssl/
+```
+
+
+
+# Apache Server 🚀
+
+## Configuração
+
+O servidor Apache é configurado automaticamente com as seguintes especificações:
+
+```YAML
+apache:
+  image: httpd:latest
+  ports:
+    - "8080:80"
+  volumes:
+    - "./docker/apache:/usr/local/apache2/htdocs"
+    - "./docker/ssl:/ssl"
+```
+
+## Comandos
+
+```BASH
+# Iniciar Apache
+bytebabe servers up apache
+
+# Parar Apache
+bytebabe servers down apache
+
+# Ver status
+bytebabe servers status apache
+```
+
+## Diretório de Conteúdo
+
+O conteúdo web deve ser colocado em:
+
+```
+docker/apache/
+```
+
+
+
+# Nginx Server 🔄
+
+## Configuração
+
+O Nginx é configurado com as seguintes especificações:
+
+```YAML
+nginx:
+  image: nginx:latest
+  ports:
+    - "8081:80"
+    - "4430:443"
+  volumes:
+    - "./docker/nginx:/usr/share/nginx/html"
+    - "./docker/ssl:/ssl"
+    - "./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+```
+
+## Comandos
+
+```BASH
+# Iniciar Nginx
+bytebabe servers up nginx
+
+# Parar Nginx
+bytebabe servers down nginx
+
+# Ver status
+bytebabe servers status nginx
+```
+
+## Arquivo de Configuração
+
+O Nginx usa uma configuração padrão otimizada que inclui:
+
+* Worker processes automáticos
+
+* Buffer sizes otimizados
+
+* Configuração de logs
+
+* Timeouts adequados
+
+
+
+# SSL Configuration 🔒
+
+## Configuração SSL
+
+O suporte SSL está disponível na porta 4430 e pode ser configurado para ambos os servidores.
+
+## Diretório SSL
+
+Os certificados devem ser colocados em:
+
+```
+docker/ssl/
+```
+
+## Volumes SSL
+
+Os certificados são montados automaticamente:
+
+```YAML
+volumes:
+  - "./docker/ssl:/ssl"
+```
+
+## Próximos Passos
+
+1. Gerar certificados SSL
+
+2. Configurar virtual hosts
+
+3. Testar conexões HTTPS
+
+
+
+# Docker Integration 🐳
+
+## Compose Configuration
+
+O ByteBabe usa Docker Compose para gerenciar os servidores web:
+
+```YAML
+services:
+  apache:
+    image: httpd:latest
+    container_name: "bytebabe_servers_apache"
+    ports:
+      - "8080:80"
+    volumes:
+      - "./docker/apache:/usr/local/apache2/htdocs"
+    networks:
+      - bytebabe_net
+
+  nginx:
+    image: nginx:latest
+    container_name: "bytebabe_servers_nginx"
+    ports:
+      - "8081:80"
+      - "4430:443"
+    volumes:
+      - "./docker/nginx:/usr/share/nginx/html"
+    networks:
+      - bytebabe_net
+
+networks:
+  bytebabe_net:
+    driver: bridge
+```
+
+## Recursos Docker
+
+* Containers isolados
+
+* Rede dedicada
+
+* Volumes persistentes
+
+* Health checks
+
+* Restart policies
+
+
+
+# Security 🔐
+
+Tip:
+
+"Segurança é um estilo de vida, não uma feature"
+
+## Status: Em Desenvolvimento 🚧
+
+Este módulo está atualmente em desenvolvimento. As funcionalidades descritas aqui representam o roadmap planejado. Por enquanto, apenas o [módulo de firewall](firewall-module.html) está totalmente implementado.
+
+## Visão Geral
+
+O módulo de segurança do ByteBabe irá oferecer um conjunto abrangente de ferramentas para proteger seu ambiente de desenvolvimento e produção.
+
+## Roadmap de Recursos
+
+### 🛡️ Controle de Acesso (Planejado)
+
+* Gerenciamento de usuários e permissões
+
+* Autenticação de dois fatores
+
+* Controle de acesso baseado em roles
+
+* [Detalhes futuros](access-control.html)
+
+### 🔒 Criptografia (Planejado)
+
+* Gerenciamento de chaves
+
+* Criptografia de dados sensíveis
+
+* SSL/TLS automático
+
+* [Detalhes futuros](encryption.html)
+
+### ✅ Boas Práticas (Planejado)
+
+* Hardening de servidores
+
+* Configurações seguras
+
+* Políticas de senha
+
+* [Detalhes futuros](security-best-practices.html)
+
+### 🔍 Varredura de Vulnerabilidades (Planejado)
+
+* Scans automáticos
+
+* Relatórios detalhados
+
+* Mitigação guiada
+
+* [Detalhes futuros](vulnerability-scanning.html)
+
+## Recursos Disponíveis Atualmente
+
+No momento, a segurança é gerenciada através do módulo de firewall, que oferece:
+
+```BASH
+# Gerenciamento do Firewall
+bytebabe firewall status
+bytebabe firewall setup
+bytebabe firewall enable
+```
+
+## Contribuindo
+
+Interessado em ajudar no desenvolvimento?
+
+* Verifique nossas issues no GitHub
+
+* Consulte o guia de contribuição
+
+* Entre em contato com a equipe
+
+## Próximos Passos
+
+* [🛡️ Firewall Module](firewall-module.html) (Implementado)
+
+* [🔑 Access Control](access-control.html) (Em desenvolvimento)
+
+* [🔒 Encryption](encryption.html) (Planejado)
+
+* [✅ Security Best Practices](security-best-practices.html) (Planejado)
+
+
+
+# Access Control 🔑
+
+Tip:
+
+Status: Em Desenvolvimento 🚧
+
+## Visão Geral
+
+O módulo de Controle de Acesso irá fornecer uma camada robusta de gerenciamento de usuários e permissões para todo o ecossistema ByteBabe.
+
+## Recursos Planejados
+
+### 👥 Gerenciamento de Usuários
+
+* Criação e gestão de contas
+
+* Perfis de usuário
+
+* Integração com LDAP/AD
+
+* Single Sign-On (SSO)
+
+### 🔐 Autenticação de Dois Fatores
+
+* TOTP (Google Authenticator)
+
+* SMS/Email verification
+
+* Hardware keys (Yubikey)
+
+* Backup codes
+
+### 👮 RBAC (Role-Based Access Control)
+
+* Definição de roles
+
+* Permissões granulares
+
+* Herança de roles
+
+* Auditoria de acessos
+
+## Comandos Futuros
+
+```BASH
+# Gerenciamento de usuários
+bytebabe auth user add
+bytebabe auth user remove
+bytebabe auth user list
+
+# Gerenciamento de roles
+bytebabe auth role create
+bytebabe auth role assign
+
+# 2FA
+bytebabe auth 2fa setup
+bytebabe auth 2fa status
+```
+
+## Implementação Futura
+
+Este módulo está atualmente em desenvolvimento. Acompanhe o progresso em nosso GitHub.
+
+
+
+# Encryption 🔒
+
+Tip:
+
+Status: Planejado 🚧
+
+## Visão Geral
+
+O módulo de Criptografia fornecerá ferramentas para proteger dados sensíveis e gerenciar certificados SSL/TLS de forma automatizada.
+
+## Recursos Planejados
+
+### 🔑 Gerenciamento de Chaves
+
+* Geração de chaves
+
+* Rotação automática
+
+* Backup seguro
+
+* Hardware Security Module (HSM) support
+
+### 🛡️ Criptografia de Dados
+
+* Criptografia em repouso
+
+* Criptografia em trânsito
+
+* Chaves mestras
+
+* Integração com KMS
+
+### 📜 SSL/TLS Automático
+
+* Let's Encrypt integration
+
+* Auto-renewal
+
+* Multi-domain support
+
+* Wildcard certificates
+
+## Comandos Futuros
+
+```BASH
+# Gerenciamento de chaves
+bytebabe crypto keys generate
+bytebabe crypto keys rotate
+
+# SSL/TLS
+bytebabe crypto ssl setup
+bytebabe crypto ssl renew
+
+# Criptografia
+bytebabe crypto encrypt
+bytebabe crypto decrypt
+```
+
+## Implementação Futura
+
+Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso GitHub.
+
+
+
+# Security Best Practices ✅
+
+Tip:
+
+Status: Planejado 🚧
+
+## Visão Geral
+
+O módulo de Boas Práticas de Segurança irá automatizar a implementação de configurações seguras e políticas de segurança recomendadas.
+
+## Recursos Planejados
+
+### 🛡️ Hardening de Servidores
+
+* Configurações seguras do sistema
+
+* Desativação de serviços desnecessários
+
+* Atualizações automáticas
+
+* Proteção contra malware
+
+### ⚙️ Configurações Seguras
+
+* Baseline de segurança
+
+* Compliance checks
+
+* Remediação automática
+
+* Relatórios de conformidade
+
+### 🔑 Políticas de Senha
+
+* Requisitos complexos
+
+* Histórico de senhas
+
+* Expiração automática
+
+* Blacklist de senhas comuns
+
+## Comandos Futuros
+
+```BASH
+# Hardening
+bytebabe secure harden
+bytebabe secure audit
+
+# Políticas
+bytebabe secure policy set
+bytebabe secure policy check
+
+# Compliance
+bytebabe secure compliance scan
+bytebabe secure compliance report
+```
+
+## Implementação Futura
+
+Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso GitHub.
+
+
+
+# Vulnerability Scanning 🔍
+
+Tip:
+
+Status: Planejado 🚧
+
+## Visão Geral
+
+O módulo de Varredura de Vulnerabilidades irá realizar scans automáticos de segurança e fornecer relatórios detalhados com recomendações de mitigação.
+
+## Recursos Planejados
+
+### 🔎 Scans Automáticos
+
+* Varredura de portas
+
+* Análise de vulnerabilidades
+
+* Detecção de malware
+
+* Verificação de configurações
+
+### 📊 Relatórios Detalhados
+
+* Resumo executivo
+
+* Detalhes técnicos
+
+* Níveis de severidade
+
+* Histórico de scans
+
+### 🛠️ Mitigação Guiada
+
+* Recomendações práticas
+
+* Passos de remediação
+
+* Automação de correções
+
+* Verificação pós-mitigação
+
+## Comandos Futuros
+
+```BASH
+# Scans
+bytebabe scan start
+bytebabe scan schedule
+
+# Relatórios
+bytebabe scan report
+bytebabe scan history
+
+# Mitigação
+bytebabe scan fix
+bytebabe scan verify
+```
+
+## Implementação Futura
+
+Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso GitHub.
+
+
+
+# Flux - Terminal API Studio 🌊
+
+Tip:
+
+Em desenvolvimento 🚧
+
+Tip:
+
+"Seu estúdio de APIs direto no terminal. Simples. Poderoso. Cyberpunk."
+
+## Visão Geral
+
+Flux é um estúdio de APIs completo em interface terminal, combinando a velocidade da CLI com a intuitividade de ferramentas GUI como Insomnia e Postman.
+
+## Quick Start
+
+```BASH
+# Iniciar interface Flux
+bytebabe flux
+
+# Modo rápido com último workspace
+bytebabe flux quick
+
+# Abrir workspace específico
+bytebabe flux open my-api
+```
+
+## Interface Principal
+
+```
+┌─ 🌊 FLUX API STUDIO ──────────────────────────┐
+│ [1] Collections  [2] Environment  [3] Console  │
+├────────────────────────────────────────────────┤
+│ GET  https://api.example.com/users            │
+│ Headers                                       │
+│ Authorization: Bearer {{token}}               │
+│                                              │
+│ Body                                         │
+│ {                                            │
+│   "name": "{{user.name}}"                    │
+│ }                                            │
+├────────────────────────────────────────────────┤
+│ Response: 200 OK (45ms)                       │
+└────────────────────────────────────────────────┘
+```
+
+## Características Principais
+
+### 🗂️ Organização
+
+* Collections em árvore
+
+* Ambientes múltiplos
+
+* Variáveis globais/locais
+
+* Tags e favoritos
+
+### ⚡ Edição Rápida
+
+* Atalhos vim-style
+
+* Autocompleção inteligente
+
+* Syntax highlighting
+
+* Formatação automática
+
+### 🔄 Requests
+
+* REST/GraphQL/gRPC
+
+* WebSocket/SSE
+
+* Autenticação múltipla
+
+* Chain de requests
+
+### 🎨 Visual
+
+* Temas cyberpunk
+
+* Cores customizáveis
+
+* Layouts flexíveis
+
+* Modo compacto
+
+## Atalhos do Teclado
+
+| Atalho |Ação |
+----------------
+| `Ctrl+S` |Salvar request |
+| `Ctrl+Space` |Autocompletar |
+| `Ctrl+Enter` |Enviar request |
+| `Ctrl+/` |Busca global |
+| `F5` |Recarregar |
+| `Esc` |Menu principal |
+
+## Modos de Visualização
+
+| Modo |Descrição |Atalho |
+---------------------------
+| Split |Editor + Response |`F2` |
+| Editor |Apenas editor |`F3` |
+| Preview |Visualização |`F4` |
+| Console |Debug mode |`F5` |
+
+## Próximos Passos
+
+* [🧪 Testing](flux-testing.html)
+
+* [📚 Documentation](flux-docs.html)
+
+* [📊 Monitoring](flux-monitor.html)
+
+* [🔒 Security](flux-security.html)
+
+
+
+# Testing Module 🧪
+
+## Test Runner
+
+```
+┌─ Test Suite: Users API ──────────────────────┐
+│ ✓ Should authenticate user                   │
+│ ✓ Should list all users                      │
+│ ✓ Should create new user                     │
+│ ✗ Should validate email format               │
+│   Error: Invalid email format                │
+└───────────────────────────────────────────────┘
+```
+
+## Testes Automatizados
+
+### Sintaxe de Teste
+
+```JAVASCRIPT
+test("Create user", async () => {
+    // Setup
+    const userData = {
+        name: "John Doe",
+        email: "john@cyber.net"
+    };
+
+    // Execute
+    const response = await request("POST", "/users")
+        .withJson(userData)
+        .expectStatus(201);
+
+    // Validate
+    expect(response.data.id).toBeDefined();
+    expect(response.data.name).toBe(userData.name);
+});
+```
+
+### Assertions Disponíveis
+
+* Status code
+
+* Response body
+
+* Headers
+
+* Response time
+
+* JSON schema
+
+* Custom validations
+
+## Test Collections
+
+### Organização
+
+* Suites de teste
+
+* Casos de teste
+
+* Setup/Teardown
+
+* Dados de teste
+
+### Execução
+
+```BASH
+# Rodar todos os testes
+flux test run
+
+# Rodar suite específica
+flux test run users-api
+
+# Modo watch
+flux test watch
+```
+
+## Relatórios
+
+### Formatos
+
+* CLI Summary
+
+* HTML Report
+
+* JSON Export
+
+* JUnit XML
+
+### Métricas
+
+* Success rate
+
+* Response times
+
+* Coverage
+
+* Trends
+
+
+
+# Documentation Module 📚
+
+## Documentação Automática
+
+```
+┌─ API Documentation Generator ─────────────────┐
+│ 📁 Users API                                 │
+│ ├─ 📘 Authentication                         │
+│ │  ├─ POST /auth/login                      │
+│ │  └─ POST /auth/refresh                    │
+│ │                                           │
+│ ├─ 📘 User Management                       │
+│ │  ├─ GET /users                           │
+│ │  ├─ POST /users                          │
+│ │  └─ PUT /users/{id}                      │
+└───────────────────────────────────────────────┘
+```
+
+## Formatos Suportados
+
+### Export
+
+* OpenAPI/Swagger
+
+* Markdown
+
+* HTML
+
+* PDF
+
+* Postman Collection
+
+### Import
+
+* Swagger/OpenAPI
+
+* Postman Collections
+
+* HAR files
+
+* cURL commands
+
+## Features
+
+### Auto-Documentation
+
+* Request/Response examples
+
+* Schema detection
+
+* Parameter description
+
+* Authentication details
+
+### Markdown Enhancement
+
+```MARKDOWN
+### Get User [GET /users/{id}]
+
+Parameters:
+- id: string (required) - User ID
+
+Response:
+```json
+{
+"id": "123",
+"name": "John Doe"
+}
+```
+
+
+
+
+```
+
+### Live Preview
+
+- Real-time rendering
+- Syntax highlighting
+- Interactive examples
+- Search/Filter
+
+## Publicação
+
+### Export Options
+
+- Static site
+- Single page
+- Dark/Light theme
+- Custom branding
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# Monitoring Module 📊
+
+## Dashboard
+
+```
+┌─ API Monitor ──────────────────────────────┐
+│ Status: 🟢 All Systems Operational         │
+│                                           │
+│ Uptime: 99.9%    Latency: 145ms          │
+│ Errors: 0.1%     Requests: 1.2K/min      │
+└───────────────────────────────────────────┘
+```
+
+## Métricas em Tempo Real
+
+### Performance
+
+* Response time
+
+* Request rate
+
+* Error rate
+
+* Bandwidth usage
+
+### Health Checks
+
+```BASH
+# Status check
+flux monitor health
+
+# Detailed report
+flux monitor report
+```
+
+## Alertas
+
+### Configuração
+
+```YAML
+alerts:
+  - name: High Latency
+    condition: response_time > 1000ms
+    channels: 
+      - slack
+      - email
+
+  - name: Error Spike
+    condition: error_rate > 5%
+    channels:
+      - webhook
+      - telegram
+```
+
+### Canais
+
+* Slack
+
+* Email
+
+* Webhook
+
+* Telegram
+
+* Discord
+
+## Visualização
+
+### Gráficos
+
+* Line charts
+
+* Heat maps
+
+* Status boards
+
+* Error logs
+
+### Timeframes
+
+* Real-time
+
+* Last hour
+
+* Last 24h
+
+* Last 7 days
+
+* Custom range
+
+
+
+# Security Module 🔒
+
+## Security Scanner
+
+```
+┌─ Security Check ────────────────────────────┐
+│ 🔍 Scanning API endpoints...                │
+│                                            │
+│ ✓ Authentication                           │
+│ ✓ Rate limiting                            │
+│ ⚠️ CORS configuration                      │
+│ ✗ SSL certificate expiring soon            │
+└────────────────────────────────────────────┘
+```
+
+## Verificações de Segurança
+
+### Authentication
+
+* Token validation
+
+* OAuth flows
+
+* API keys
+
+* JWT handling
+
+### Authorization
+
+* Role checking
+
+* Scope validation
+
+* Permission matrix
+
+* Access patterns
+
+### Data Protection
+
+* PII detection
+
+* Data masking
+
+* Encryption check
+
+* Sensitive data
+
+## Análise de Vulnerabilidades
+
+### Scans
+
+```BASH
+# Quick scan
+flux security scan
+
+# Deep scan
+flux security scan --deep
+
+# Custom rules
+flux security scan --rules custom.yaml
+```
+
+### Checklist
+
+* SQL Injection
+
+* XSS
+
+* CSRF
+
+* Rate limiting
+
+* Input validation
+
+* API versioning
+
+## Relatórios
+
+### Security Report
+
+* Vulnerabilities
+
+* Risk levels
+
+* Recommendations
+
+* Compliance status
+
+### Compliance
+
+* OWASP Top 10
+
+* PCI DSS
+
+* GDPR
+
+* Custom standards
+
+
+
+# Troubleshooting
+
+Tip:
+
+"Quando as coisas dão errado, há sempre um caminho cyberpunk para consertar 🔧"
+
+## Problemas Comuns
+
+### Docker
+
+#### 🔴 Docker não está respondendo
+
+```BASH
+# Erro: Cannot connect to the Docker daemon
+```
+
+Soluções:
+
+1. Verifique se o daemon está rodando:
+
+```BASH
+sudo systemctl status docker
+```
+
+2. Verifique permissões:
+
+```BASH
+sudo usermod -aG docker $USER
+# Faça logout e login novamente
+```
+
+3. Reinicie o serviço:
+
+```BASH
+sudo systemctl restart docker
+```
+
+#### 🔴 Permissão negada no Docker
+
+```BASH
+# Erro: Permission denied while trying to connect to the Docker daemon socket
+```
+
+Soluções:
+
+1. Adicione seu usuário ao grupo docker
+
+2. Use `sudo` temporariamente
+
+3. Verifique permissões do socket:
+
+```BASH
+sudo chmod 666 /var/run/docker.sock
+```
+
+### Configuração
+
+#### 🔴 Arquivo de configuração não encontrado
+
+```BASH
+# Erro: Config file not found in ~/.config/bytebabe/settings.conf
+```
+
+Soluções:
+
+1. Execute o comando de inicialização:
+
+```BASH
+bytebabe init
+```
+
+2. Verifique permissões do diretório:
+
+```BASH
+chmod 700 ~/.config/bytebabe
+chmod 600 ~/.config/bytebabe/settings.conf
+```
+
+#### 🔴 Variáveis de ambiente não carregadas
+
+```BASH
+# Erro: Environment variables not set
+```
+
+Soluções:
+
+1. Recarregue seu shell:
+
+```BASH
+source ~/.bashrc
+```
+
+2. Verifique o arquivo de configuração:
+
+```BASH
+cat ~/.config/bytebabe/settings.conf
+```
+
+### Git
+
+#### 🔴 Configurações Git não encontradas
+
+```BASH
+# Erro: Git configuration not found
+```
+
+Soluções:
+
+1. Configure Git globalmente:
+
+```BASH
+bytebabe git config --global
+```
+
+2. Verifique as configurações:
+
+```BASH
+bytebabe git config --list
+```
+
+### Instalação
+
+#### 🔴 Command not found
+
+```BASH
+# Erro: bytebabe: command not found
+```
+
+Soluções:
+
+1. Adicione ao PATH:
+
+```BASH
+echo 'export PATH="$HOME/.bytebabe/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+2. Verifique a instalação:
+
+```BASH
+ls -la ~/.bytebabe/bin
+```
+
+#### 🔴 Dependências faltando
+
+```BASH
+# Erro: Required dependency not found
+```
+
+Soluções:
+
+1. Execute o verificador de dependências:
+
+```BASH
+bytebabe doctor
+```
+
+2. Instale manualmente as dependências necessárias
+
+## Logs e Diagnóstico
+
+### Verificar Status
+
+```BASH
+# Verificar status geral
+bytebabe status
+
+# Verificar versão
+bytebabe --version
+
+# Verificar configuração
+bytebabe config show
+```
+
+### Logs Detalhados
+
+```BASH
+# Ativar modo debug
+bytebabe --debug <comando>
+
+# Ver logs
+cat ~/.bytebabe/logs/bytebabe.log
+```
+
+## Ainda com Problemas?
+
+1. Consulte nossa [documentação completa](installation.html)
+
+2. Verifique [issues conhecidas](https://github.com/mrpunkdasilva/bytebabe/issues)
+
+3. Reporte um novo problema no GitHub
+
+4. Use o comando de diagnóstico:
+
+```BASH
+bytebabe doctor --full
+```
+
+
+
+# Common Issues 🔧
+
+## Docker Issues
+
+### 🔴 Container não inicia
+
+```BASH
+# Erro: Error response from daemon: port is already allocated
+```
+
+Solução:
+
+1. Verifique portas em uso:
+
+```BASH
+sudo lsof -i -P -n | grep LISTEN
+```
+
+2. Altere a porta no docker-compose.yml
+
+3. Pare o serviço usando a porta
+
+### 🔴 Problemas de permissão
+
+```BASH
+# Erro: Permission denied
+```
+
+Solução:
+
+1. Adicione seu usuário ao grupo docker:
+
+```BASH
+sudo usermod -aG docker $USER
+```
+
+2. Faça logout e login
+
+3. Verifique com: `groups`
+
+## Git Issues
+
+### 🔴 Conflitos de merge
+
+```BASH
+# Erro: CONFLICT (content): Merge conflict in <file>
+```
+
+Solução:
+
+1. Use `bytebabe git status` para ver arquivos
+
+2. Resolva conflitos com `bytebabe git merge --tool`
+
+3. Commit as alterações
+
+### 🔴 Branch errada
+
+```BASH
+# Situação: Commits na branch errada
+```
+
+Solução:
+
+1. Crie nova branch do ponto atual:
+
+```BASH
+bytebabe git branch correct-branch
+```
+
+2. Reset da branch antiga:
+
+```BASH
+bytebabe git reset --hard HEAD~n
+```
+
+## Database Issues
+
+### 🔴 Conexão falha
+
+```BASH
+# Erro: Connection refused
+```
+
+Solução:
+
+1. Verifique se o serviço está rodando
+
+2. Confira credenciais
+
+3. Teste conectividade:
+
+```BASH
+bytebabe db test-connection
+```
+
+### 🔴 Backup falha
+
+```BASH
+# Erro: Backup failed
+```
+
+Solução:
+
+1. Verifique permissões
+
+2. Espaço em disco
+
+3. Use modo verbose:
+
+```BASH
+bytebabe db backup --verbose
+```
+
+## Network Issues
+
+### 🔴 Firewall bloqueando
+
+```BASH
+# Erro: Connection timed out
+```
+
+Solução:
+
+1. Verifique regras:
+
+```BASH
+bytebabe firewall list
+```
+
+2. Adicione exceção:
+
+```BASH
+bytebabe firewall allow <port>
+```
+
+### 🔴 SSL/TLS
+
+```BASH
+# Erro: SSL certificate error
+```
+
+Solução:
+
+1. Verifique certificado:
+
+```BASH
+bytebabe ssl check
+```
+
+2. Renove se necessário:
+
+```BASH
+bytebabe ssl renew
+```
+
+
+
+# Error Messages 📝
+
+## Formato dos Erros
+
+```
+┌─ ByteBabe Error ──────────────────────────┐
+│ 🔴 ERROR-001: Permission Denied           │
+│                                          │
+│ Details: Unable to access docker socket   │
+│ Location: docker/client.rs:42            │
+│ Solution: Add user to docker group        │
+└──────────────────────────────────────────┘
+```
+
+## Catálogo de Erros
+
+### Docker (DOCK-XXX)
+
+| Código |Mensagem |Solução |
+-----------------------------
+| DOCK-001 |Permission denied |Adicionar usuário ao grupo docker |
+| DOCK-002 |Port in use |Mudar porta ou parar serviço |
+| DOCK-003 |Image not found |Pull da imagem ou verificar nome |
+
+### Git (GIT-XXX)
+
+| Código |Mensagem |Solução |
+-----------------------------
+| GIT-001 |Not a git repository |Inicializar repo ou verificar path |
+| GIT-002 |Merge conflict |Resolver conflitos manualmente |
+| GIT-003 |Branch not found |Verificar nome da branch |
+
+### Database (DB-XXX)
+
+| Código |Mensagem |Solução |
+-----------------------------
+| DB-001 |Connection failed |Verificar credenciais e host |
+| DB-002 |Backup failed |Checar permissões e espaço |
+| DB-003 |Query error |Validar sintaxe SQL |
+
+### Network (NET-XXX)
+
+| Código |Mensagem |Solução |
+-----------------------------
+| NET-001 |Port blocked |Verificar firewall |
+| NET-002 |SSL error |Renovar certificado |
+| NET-003 |DNS error |Verificar resolução |
+
+## Debug Mode
+
+```BASH
+# Ativar modo debug
+bytebabe --debug
+
+# Ver stack trace
+bytebabe --trace
+
+# Log detalhado
+bytebabe --verbose
+```
+
+## Error Reporting
+
+### Automatic Report
+
+```BASH
+# Enviar relatório
+bytebabe report error DOCK-001
+
+# Com detalhes
+bytebabe report error DOCK-001 --details
+```
+
+### Manual Collection
+
+1. Logs: `~/.bytebabe/logs/`
+
+2. Config: `~/.bytebabe/config/`
+
+3. System info: `bytebabe system info`
+
+
+
+# Debugging Guide 🔍
+
+## Ferramentas de Debug
+
+### CLI Debug Mode
+
+```BASH
+# Ativar debug
+bytebabe --debug
+
+# Níveis de log
+bytebabe --log-level=trace
+bytebabe --log-level=debug
+bytebabe --log-level=info
+```
+
+### Log Viewer
+
+```BASH
+# Ver logs
+bytebabe logs show
+
+# Filtrar logs
+bytebabe logs filter --level error
+bytebabe logs filter --module docker
+```
+
+## Técnicas de Debug
+
+### 1. Isolamento de Problema
+
+```BASH
+# Testar componente específico
+bytebabe test docker
+bytebabe test network
+bytebabe test database
+```
+
+### 2. Verificação de Estado
+
+```BASH
+# Estado do sistema
+bytebabe status
+
+# Componentes específicos
+bytebabe docker status
+bytebabe network status
+```
+
+### 3. Diagnóstico
+
+```BASH
+# Verificação completa
+bytebabe doctor
+
+# Verificações específicas
+bytebabe doctor docker
+bytebabe doctor network
+```
+
+## Debug por Módulo
+
+### Docker Debug
+
+```BASH
+# Logs do container
+bytebabe docker logs <container>
+
+# Inspeção
+bytebabe docker inspect <container>
+
+# Network debug
+bytebabe docker network debug
+```
+
+### Database Debug
+
+```BASH
+# Teste de conexão
+bytebabe db test-connection
+
+# Query log
+bytebabe db log-queries
+
+# Performance
+bytebabe db analyze-performance
+```
+
+### Network Debug
+
+```BASH
+# Teste de conectividade
+bytebabe network test
+
+# Trace de rota
+bytebabe network trace
+
+# Port scanning
+bytebabe network scan
+```
+
+## Análise de Performance
+
+### Profiling
+
+```BASH
+# CPU profiling
+bytebabe profile cpu
+
+# Memory profiling
+bytebabe profile memory
+
+# I/O profiling
+bytebabe profile io
+```
+
+### Benchmarking
+
+```BASH
+# Benchmark comando
+bytebabe benchmark <command>
+
+# Comparação
+bytebabe benchmark compare
+```
+
+
+
+# Support 💬
+
+## Canais de Suporte
+
+### 🌟 Community Support
+
+* GitHub Issues
+
+* Discord Server
+
+* Stack Overflow
+
+* Reddit Community
+
+### 🎯 Official Support
+
+* Email Support
+
+* Premium Support
+
+* Enterprise Support
+
+* Training Sessions
+
+## FAQ
+
+### Instalação
+
+Q: Como atualizar o ByteBabe?
+
+```BASH
+bytebabe self-update
+```
+
+### Configuração
+
+Q: Onde ficam os arquivos de config?
+
+```BASH
+~/.bytebabe/config/
+```
+
+### Troubleshooting
+
+Q: Como gerar relatório de diagnóstico?
+
+```BASH
+bytebabe doctor --report
+```
+
+## Recursos
+
+### 📚 Documentation
+
+* [Guia de Início](quick-start.html)
+
+### 🎓 Learning
+
+* Video Tutorials
+
+* Code Examples
+
+* Use Cases
+
+* Workshops
+
+## Contribuindo
+
+### 🤝 Como Contribuir
+
+1. Fork o repositório
+
+2. Crie uma branch
+
+3. Faça suas alterações
+
+4. Envie um PR
+
+### 📝 Guidelines
+
+* Coding Standards
+
+* Documentation
+
+* Testing
+
+* Review Process
+
+## Contato
+
+### 📧 Email
+
+* support@bytebabe.dev
+
+* security@bytebabe.dev
+
+* feedback@bytebabe.dev
+
+### 💬 Social
+
+* Twitter: @ByteBabeCLI
+
+* Discord: ByteBabe Community
+
+* GitHub: ByteBabe
+
+
+
+# Contributing 🤝
+
+## Como Contribuir
+
+### 1. Setup Inicial
+
+```BASH
+# Clone o repositório
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+
+# Entre no diretório
+cd bytebabe
+
+# Dê permissão de execução
+chmod +x bin/bytebabe
+```
+
+### 2. Workflow Básico
+
+1. Fork o repositório
+
+2. Crie uma branch: `feature/sua-feature`
+
+3. Faça suas alterações
+
+4. Teste manualmente os comandos
+
+5. Envie um PR
+
+### 3. Guidelines
+
+* Siga os padrões de código Shell
+
+* Teste todos os comandos
+
+* Documente mudanças
+
+* Use commits semânticos
+
+## Estrutura do Projeto
+
+```
+bytebabe/
+├── bin/          # Executável principal
+├── commands/     # Comandos da CLI
+├── lib/          # Funções compartilhadas
+└── scripts/      # Scripts utilitários
+```
+
+## Recursos
+
+* [Development Setup](development-setup.html)
+
+* [Coding Standards](coding-standards.html)
+
+* [Testing Guidelines](testing-guidelines.html)
+
+* [Documentation Guidelines](documentation-guidelines.html)
+
+
+
+# Development Setup 🛠️
+
+## Requisitos
+
+### Sistema
+
+* Linux/macOS
+
+* Bash 4+
+
+* Git
+
+* curl ou wget
+
+### Ferramentas Recomendadas
+
+* shellcheck (para linting)
+
+* shfmt (para formatação)
+
+* VSCode ou Neovim
+
+## Setup do Ambiente
+
+### 1. Dependências Básicas
+
+```BASH
+# Ubuntu/Debian
+sudo apt update
+sudo apt install git curl wget shellcheck
+
+# macOS
+brew install git curl wget shellcheck
+```
+
+### 2. Projeto Setup
+
+```BASH
+# Clone o repositório
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+cd bytebabe
+
+# Dê permissão de execução
+chmod +x bin/bytebabe
+
+# Teste a instalação
+./bin/bytebabe --version
+```
+
+## Comandos de Desenvolvimento
+
+### Testes Manuais
+
+```BASH
+# Teste um comando específico
+./bin/bytebabe hello
+./bin/bytebabe init
+
+# Teste o modo interativo
+./bin/bytebabe
+```
+
+### Lint (com shellcheck)
+
+```BASH
+# Verificar um arquivo
+shellcheck bin/bytebabe
+
+# Verificar todos os scripts
+find . -type f -name "*.sh" -exec shellcheck {} \;
+```
+
+## IDEs e Editores
+
+### VSCode
+
+Extensões recomendadas:
+
+* Shell-format
+
+* ShellCheck
+
+* Bash Debug
+
+### Neovim
+
+Plugins recomendados:
+
+* ale (para shellcheck)
+
+* vim-shell-format
+
+
+
+# Coding Standards 📝
+
+## Estilo de Código
+
+### Shell Script Guidelines
+
+```BASH
+# ✅ Bom
+function install_package() {
+    local package_name="$1"
+    if ! command -v "$package_name" &> /dev/null; then
+        echo "Instalando $package_name..."
+    fi
+}
+
+# ❌ Evitar
+function installPackage {
+    packageName=$1
+    which $packageName > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Instalando $packageName..."
+    fi
+}
+```
+
+### Nomenclatura
+
+* Funções: `snake_case`
+
+* Variáveis: `snake_case`
+
+* Constantes: `SCREAMING_SNAKE_CASE`
+
+* Arquivos: `kebab-case.sh`
+
+## Organização de Código
+
+### Estrutura de Arquivos
+
+```BASH
+# Módulos separados por funcionalidade
+commands/
+  ├── hello.sh
+  ├── init.sh
+  └── git/
+      ├── main.sh
+      └── utils.sh
+```
+
+### Imports
+
+```BASH
+# Carregar dependências
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$BASE_DIR/lib/common.sh"
+source "$BASE_DIR/lib/utils.sh"
+```
+
+## Documentação
+
+### Headers
+
+```BASH
+#!/bin/bash
+#
+# Nome do Script: hello.sh
+# Descrição: Implementa o comando hello do ByteBabe
+# Uso: bytebabe hello [nome]
+#
+# Argumentos:
+#   $1 - Nome do usuário (opcional)
+```
+
+## Boas Práticas
+
+### Error Handling
+
+```BASH
+# ✅ Bom
+if ! command -v docker &> /dev/null; then
+    echo "Erro: Docker não encontrado"
+    exit 1
+fi
+
+# ❌ Evitar
+docker ps
+if [ $? -ne 0 ]; then
+    echo "Erro"
+    exit 1
+fi
+```
+
+### Variáveis
+
+```BASH
+# ✅ Bom
+local user_name="${1:-}"
+readonly MAX_RETRIES=3
+
+# ❌ Evitar
+name=$1
+MAXRETRIES=3
+```
+
+
+
+# Testing Guidelines 🧪
+
+## Testes Manuais
+
+### 1. Comandos Básicos
+
+```BASH
+# Testar versão
+./bin/bytebabe --version
+
+# Testar ajuda
+./bin/bytebabe --help
+
+# Testar comando hello
+./bin/bytebabe hello
+```
+
+### 2. Fluxos Completos
+
+```BASH
+# Testar inicialização
+./bin/bytebabe init
+
+# Testar configuração git
+./bin/bytebabe git config
+
+# Testar instalação de ferramentas
+./bin/bytebabe devtools
+```
+
+## Checklist de Testes
+
+### Pré-commit
+
+* [ ] Verificar sintaxe (shellcheck)
+
+* [ ] Testar comandos básicos
+
+* [ ] Verificar mensagens de erro
+
+* [ ] Testar modo interativo
+
+### Pós-commit
+
+* [ ] Testar em ambiente limpo
+
+* [ ] Verificar dependências
+
+* [ ] Testar instalação completa
+
+## Ferramentas
+
+### ShellCheck
+
+```BASH
+# Verificar um arquivo
+shellcheck commands/hello.sh
+
+# Verificar diretório
+shellcheck commands/*.sh
+
+# Ignorar warnings específicos
+# shellcheck disable=SC2034
+```
+
+### Debug Mode
+
+```BASH
+# Ativar debug
+set -x
+./bin/bytebabe comando
+set +x
+
+# Ou usar flag -x
+bash -x ./bin/bytebabe comando
+```
+
+## Best Practices
+
+### 1. Ambiente de Testes
+
+```BASH
+# Criar ambiente isolado
+mkdir -p /tmp/bytebabe-test
+cd /tmp/bytebabe-test
+
+# Clonar repositório fresco
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+```
+
+### 2. Logs de Teste
+
+```BASH
+# Registrar saída
+./bin/bytebabe comando 2>&1 | tee test.log
+
+# Analisar erros
+grep "ERROR" test.log
+```
+
+### 3. Verificações
+
+```BASH
+# Verificar permissões
+test -x bin/bytebabe || echo "Erro: bytebabe não é executável"
+
+# Verificar arquivos críticos
+test -f commands/init.sh || echo "Erro: init.sh não encontrado"
+```
+
+
+
+# Documentation Guidelines 📚
+
+## Estrutura da Documentação
+
+### 1. Headers de Script
+
+```BASH
+#!/bin/bash
+#
+# ByteBabe - Terminal Tools
+# 
+# Descrição:
+#   Implementa comandos para configuração do terminal
+#
+# Uso:
+#   bytebabe terminal [comando]
+#
+# Comandos:
+#   zsh       - Instala e configura Zsh
+#   ohmyzsh   - Instala Oh My Zsh
+#   all       - Instala tudo
+```
+
+### 2. Funções
+
+```BASH
+# Instala e configura o Zsh
+#
+# Argumentos:
+#   Nenhum
+#
+# Retorna:
+#   0 se sucesso, 1 se erro
+install_zsh() {
+    echo "Instalando Zsh..."
+}
+```
+
+## Markdown Guidelines
+
+### Headers
+
+```MARKDOWN
+# Título Principal
+## Seção Secundária
+### Subseção
+```
+
+### Code Blocks
+
+```MARKDOWN
+\```bash
+./bytebabe hello
+\```
+```
+
+### Lists
+
+```MARKDOWN
+- Item 1
+  - Subitem 1.1
+  - Subitem 1.2
+- Item 2
+```
+
+## Exemplos
+
+### 1. Documentação de Comando
+
+```MARKDOWN
+# Comando Hello
+
+Exibe uma mensagem de boas-vindas personalizada.
+
+## Uso
+```bash
+bytebabe hello [nome]
+```
+
+
+
+
+
+
+
+
+## Argumentos
+
+
+
+
+
+  * `nome`: Nome do usuário (opcional)
+
+
+
+
+
+
+## Exemplos
+
+
+
+
+
+
+
+```BASH
+bytebabe hello
+bytebabe hello João
+```
+
+
+### 2. Documentação de Erro
+
+
+
+
+
+
+
+
+
+
+
+## Mensagens de Erro
+
+
+
+
+
+  * "Comando não encontrado": Verifique a instalação
+
+  * "Permissão negada": Execute com sudo
+
+
+
+
+
+
+## Best Practices
+
+
+
+
+
+### 1. Clareza
+
+
+
+
+
+  * Use linguagem simples
+
+  * Forneça exemplos práticos
+
+  * Documente casos de uso comuns
+
+
+
+
+### 2. Completude
+
+
+
+
+
+  * Documente todos os comandos
+
+  * Explique todas as opções
+
+  * Liste mensagens de erro
+
+
+
+
+### 3. Manutenção
+
+
+
+
+
+  * Mantenha docs atualizadas
+
+  * Verifique exemplos
+
+  * Atualize screenshots
+
+
+
+
+
+
+
+
+
 
 
 

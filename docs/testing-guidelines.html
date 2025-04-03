@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.687558061"><title>Testing Guidelines 🧪 | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"testes-manuais","level":0,"title":"Testes Manuais","anchor":"#testes-manuais"},{"id":"checklist-de-testes","level":0,"title":"Checklist de Testes","anchor":"#checklist-de-testes"},{"id":"ferramentas","level":0,"title":"Ferramentas","anchor":"#ferramentas"},{"id":"best-practices","level":0,"title":"Best Practices","anchor":"#best-practices"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Testing Guidelines 🧪 | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/testing-guidelines.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Testing Guidelines 🧪 | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/testing-guidelines.html#webpage",
+    "url": "writerside-documentation/testing-guidelines.html",
+    "name": "Testing Guidelines 🧪 | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="testing-guidelines" data-main-title="Testing Guidelines 🧪" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="contributing.md|Contributing 🤝"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="testing-guidelines" id="testing-guidelines.md">Testing Guidelines 🧪</h1><section class="chapter"><h2 id="testes-manuais" data-toc="testes-manuais">Testes Manuais</h2><section class="chapter"><h3 id="1-comandos-b-sicos" data-toc="1-comandos-b-sicos">1. Comandos B&aacute;sicos</h3><div class="code-block" data-lang="bash">
+# Testar versão
+./bin/bytebabe --version
+
+# Testar ajuda
+./bin/bytebabe --help
+
+# Testar comando hello
+./bin/bytebabe hello
+</div></section><section class="chapter"><h3 id="2-fluxos-completos" data-toc="2-fluxos-completos">2. Fluxos Completos</h3><div class="code-block" data-lang="bash">
+# Testar inicialização
+./bin/bytebabe init
+
+# Testar configuração git
+./bin/bytebabe git config
+
+# Testar instalação de ferramentas
+./bin/bytebabe devtools
+</div></section></section><section class="chapter"><h2 id="checklist-de-testes" data-toc="checklist-de-testes">Checklist de Testes</h2><section class="chapter"><h3 id="pr-commit" data-toc="pr-commit">Pr&eacute;-commit</h3><ul class="list _bullet" id="jar7cw_13"><li class="list__item" id="jar7cw_14"><p id="jar7cw_18">[ ] Verificar sintaxe (shellcheck)</p></li><li class="list__item" id="jar7cw_15"><p id="jar7cw_19">[ ] Testar comandos b&aacute;sicos</p></li><li class="list__item" id="jar7cw_16"><p id="jar7cw_20">[ ] Verificar mensagens de erro</p></li><li class="list__item" id="jar7cw_17"><p id="jar7cw_21">[ ] Testar modo interativo</p></li></ul></section><section class="chapter"><h3 id="p-s-commit" data-toc="p-s-commit">P&oacute;s-commit</h3><ul class="list _bullet" id="jar7cw_22"><li class="list__item" id="jar7cw_23"><p id="jar7cw_26">[ ] Testar em ambiente limpo</p></li><li class="list__item" id="jar7cw_24"><p id="jar7cw_27">[ ] Verificar depend&ecirc;ncias</p></li><li class="list__item" id="jar7cw_25"><p id="jar7cw_28">[ ] Testar instala&ccedil;&atilde;o completa</p></li></ul></section></section><section class="chapter"><h2 id="ferramentas" data-toc="ferramentas">Ferramentas</h2><section class="chapter"><h3 id="shellcheck" data-toc="shellcheck">ShellCheck</h3><div class="code-block" data-lang="bash">
+# Verificar um arquivo
+shellcheck commands/hello.sh
+
+# Verificar diretório
+shellcheck commands/*.sh
+
+# Ignorar warnings específicos
+# shellcheck disable=SC2034
+</div></section><section class="chapter"><h3 id="debug-mode" data-toc="debug-mode">Debug Mode</h3><div class="code-block" data-lang="bash">
+# Ativar debug
+set -x
+./bin/bytebabe comando
+set +x
+
+# Ou usar flag -x
+bash -x ./bin/bytebabe comando
+</div></section></section><section class="chapter"><h2 id="best-practices" data-toc="best-practices">Best Practices</h2><section class="chapter"><h3 id="1-ambiente-de-testes" data-toc="1-ambiente-de-testes">1. Ambiente de Testes</h3><div class="code-block" data-lang="bash">
+# Criar ambiente isolado
+mkdir -p /tmp/bytebabe-test
+cd /tmp/bytebabe-test
+
+# Clonar repositório fresco
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+</div></section><section class="chapter"><h3 id="2-logs-de-teste" data-toc="2-logs-de-teste">2. Logs de Teste</h3><div class="code-block" data-lang="bash">
+# Registrar saída
+./bin/bytebabe comando 2&gt;&amp;1 | tee test.log
+
+# Analisar erros
+grep &quot;ERROR&quot; test.log
+</div></section><section class="chapter"><h3 id="3-verifica-es" data-toc="3-verifica-es">3. Verifica&ccedil;&otilde;es</h3><div class="code-block" data-lang="bash">
+# Verificar permissões
+test -x bin/bytebabe || echo &quot;Erro: bytebabe não é executável&quot;
+
+# Verificar arquivos críticos
+test -f commands/init.sh || echo &quot;Erro: init.sh não encontrado&quot;
+</div></section></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="coding-standards.html" class="navigation-links__prev">Coding Standards 📝</a><a href="documentation-guidelines.html" class="navigation-links__next">Documentation Guidelines 📚</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>

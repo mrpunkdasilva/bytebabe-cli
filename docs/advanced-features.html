@@ -1,0 +1,47 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#E8488B"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-04-03T20:20:36.686851522"><title>Recursos Avan&ccedil;ados ⚙️ | ByteBabe CLI</title><script type="application/json" id="virtual-toc-data">[{"id":"rate-limiting","level":0,"title":"Rate Limiting","anchor":"#rate-limiting"},{"id":"port-forwarding","level":0,"title":"Port Forwarding","anchor":"#port-forwarding"},{"id":"bloqueio-de-ip","level":0,"title":"Bloqueio de IP","anchor":"#bloqueio-de-ip"},{"id":"backup-e-restore","level":0,"title":"Backup e Restore","anchor":"#backup-e-restore"},{"id":"logging-avan-ado","level":0,"title":"Logging Avançado","anchor":"#logging-avan-ado"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.css" rel="stylesheet"><link href="static/custom.css" rel="stylesheet"><link rel="icon" type="image/svg" sizes="16x16" href="images/bytebabe.svg"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Recursos Avan&ccedil;ados ⚙️ | ByteBabe CLI"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="ByteBabe CLI Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/advanced-features.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Recursos Avan&ccedil;ados ⚙️ | ByteBabe CLI"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/advanced-features.html#webpage",
+    "url": "writerside-documentation/advanced-features.html",
+    "name": "Recursos Avan&ccedil;ados ⚙️ | ByteBabe CLI",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "ByteBabe CLI Help"
+}</script><!-- End Schema.org --></head><body data-id="advanced-features" data-main-title="Recursos Avançados ⚙️" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs="core-modules.md|Core Modules 🛠️///firewall-module.md|Firewall Module 🛡️"><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>ByteBabe CLI  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="advanced-features" id="advanced-features.md">Recursos Avançados ⚙️</h1><section class="chapter"><h2 id="rate-limiting" data-toc="rate-limiting">Rate Limiting</h2><p id="-f2g5oe_8">Controle de taxa de conex&otilde;es:</p><div class="code-block" data-lang="bash">
+# Configurar rate limit para SSH
+bytebabe firewall limit ssh
+
+# Limite personalizado
+bytebabe firewall limit 80/tcp --rate 100/min
+</div></section><section class="chapter"><h2 id="port-forwarding" data-toc="port-forwarding">Port Forwarding</h2><div class="code-block" data-lang="bash">
+# Configurar redirecionamento
+bytebabe firewall forward
+&gt; Source port: 80
+&gt; Destination IP: 192.168.1.100
+&gt; Destination port: 8080
+</div></section><section class="chapter"><h2 id="bloqueio-de-ip" data-toc="bloqueio-de-ip">Bloqueio de IP</h2><div class="code-block" data-lang="bash">
+# Bloquear range de IPs
+bytebabe firewall block
+&gt; Enter IP range: 192.168.1.0/24
+
+# Whitelist
+bytebabe firewall allow 10.0.0.0/8
+</div></section><section class="chapter"><h2 id="backup-e-restore" data-toc="backup-e-restore">Backup e Restore</h2><div class="code-block" data-lang="bash">
+# Backup completo
+bytebabe firewall backup rules.conf
+
+# Restore seletivo
+bytebabe firewall restore --rules &quot;ssh,http&quot;
+</div></section><section class="chapter"><h2 id="logging-avan-ado" data-toc="logging-avan-ado">Logging Avan&ccedil;ado</h2><div class="code-block" data-lang="bash">
+# Ativar log detalhado
+bytebabe firewall log --level full
+
+# Exportar logs
+bytebabe firewall log export
+</div></section><div class="last-modified">Last modified: 03 abril 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="rule-management.html" class="navigation-links__prev">Gerenciamento de Regras 📋</a><a href="firewall-monitoring.html" class="navigation-links__next">Monitoramento do Firewall 📊</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="https://resources.jetbrains.com/writerside/apidoc/6.22.0-b725/app.js"></script></body></html>
