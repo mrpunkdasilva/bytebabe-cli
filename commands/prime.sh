@@ -45,7 +45,8 @@ case $1 in
   # TODO: FALTA SÓ ESSE
   firewall|fw)
     shift
-    show_header_custom "NETWORK FIREWALL" "🛡️" "${CYBER_PURPLE}"
+    source "$BASE_DIR/lib/pkg/firewall/main.sh"
+    show_header_custom "     NETWORK FIREWALL" "🛡️" "${CYBER_PURPLE}"
     run_firewall "$@"
     ;;
 
