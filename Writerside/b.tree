@@ -62,12 +62,12 @@
         <toc-element topic="debugging-tools.md"/>
     </toc-element>
     
-    <!-- System Administration -->
-    <toc-element topic="system-admin.md">
-        <toc-element topic="service-management.md"/>
-        <toc-element topic="log-management.md"/>
-        <toc-element topic="system-monitoring.md"/>
-        <toc-element topic="backup-strategies.md"/>
+    <!-- Web Servers -->
+    <toc-element topic="servers.md">
+        <toc-element topic="apache-server.md"/>
+        <toc-element topic="nginx-server.md"/>
+        <toc-element topic="ssl-configuration.md"/>
+        <toc-element topic="docker-integration.md"/>
     </toc-element>
     
     <!-- Security -->
