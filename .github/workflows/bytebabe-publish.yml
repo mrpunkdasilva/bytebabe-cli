@@ -1,0 +1,57 @@
+name: 📦 Publish ByteBabe CLI
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    name: 🚀 Publish to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔄 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 📋 Check package.json
+        run: |
+          echo "Package name: $(node -p "require('./package.json').name")"
+          echo "Version: $(node -p "require('./package.json').version")"
+          echo "Binary: $(node -p "JSON.stringify(require('./package.json').bin, null, 2)")"
+
+      - name: 📦 Package Files
+        run: |
+          # Ensure bin file is executable
+          chmod +x ./bin/bytebabe
+          
+          # Create necessary directories if they don't exist
+          mkdir -p lib/core lib/devtools lib/git lib/ide lib/pkg commands scripts
+
+      - name: 🔐 Authenticate with NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: 🚀 Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: ✅ Post-publish Check
+        run: |
+          echo "Published package info:"
+          npm view bytebabe-cli
+
+      - name: 📢 Discord Notification
+        if: always()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "ByteBabe CLI Package Publication"
+          description: "New version published to NPM! 🎉"
+          color: 0x58B9FF
+          username: ByteBabe Bot
