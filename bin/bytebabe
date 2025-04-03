@@ -13,7 +13,7 @@ source "${BASE_DIR}/lib/core/colors.sh"
 source "${BASE_DIR}/lib/core/helpers.sh"
 source "${BASE_DIR}/lib/utils/headers.sh"
 
-VERSION="3.1.337"
+VERSION="1.0.0"
 
 # Show version information
 show_version() {

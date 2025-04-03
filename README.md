@@ -39,20 +39,34 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 
 ### Prerequisites
 - Bash 4+
-- Git
+- Git (optional)
+- curl or wget
 - Docker (optional)
 
 ### Installation
 
+#### Quick Install (Recommended)
 ```bash
-# Clone the repository
-git clone https://github.com/yourrepo/bytebabe.git
+# Using curl
+curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
 
-# Make it executable
-cd bytebabe && chmod +x bin/bytebabe
+# Or using wget
+wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
+```
 
-# Optional: Add to PATH
-sudo ln -s $(pwd)/bin/bytebabe /usr/local/bin/bytebabe
+#### Manual Installation
+```bash
+# Clone the repository (if Git is available)
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+cd bytebabe
+
+# Or download and extract the release
+wget https://github.com/mrpunkdasilva/bytebabe/archive/refs/tags/v1.0.0.tar.gz
+tar xzf v1.0.0.tar.gz
+cd bytebabe-1.0.0
+
+# Run the installer
+./install.sh
 ```
 
 ### Basic Usage
