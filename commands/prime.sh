@@ -48,6 +48,7 @@ case $1 in
     show_header_custom "NETWORK FIREWALL" "🛡️" "${CYBER_PURPLE}"
     run_firewall "$@"
     ;;
+
   # TODO: FALTA SÓ ESSE
   quarantine|q)
     shift
