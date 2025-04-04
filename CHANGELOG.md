@@ -8,6 +8,18 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 
 ### 2025-04-04 
+-  Atualização automática do repositório - 2025-04-04 16:57:21
+
+### 2025-04-04 
+-  docs prime module
+
+### 2025-04-04 
+-  Merge pull request #9 from mrpunkdasilva/update-bytebabe-changelog
+
+### 2025-04-04 
+-  docs: Update ByteBabe Changelog
+
+### 2025-04-04 
 -  Merge pull request #8 from MatheusVict/feat-add-elixir-suport
 
 ### 2025-04-04 
