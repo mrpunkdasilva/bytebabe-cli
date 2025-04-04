@@ -406,6 +406,544 @@ Por enquanto, recomendamos fortemente o uso do WSL2 para a melhor experiência p
 
 
 
+# Package Management System
+
+Tip:
+
+Sistema modular de gerenciamento de pacotes e serviços do sistema
+
+## Estrutura do Módulo PKG
+
+O sistema PKG é dividido em submódulos especializados, cada um responsável por uma área específica do gerenciamento do sistema.
+
+### Módulos Disponíveis
+
+* [Upgrade](upgrade.html) - Atualização do sistema
+
+* [Install](install.html) - Instalação de pacotes
+
+* [Remove](remove.html) - Remoção de pacotes
+
+* [Backup](backup.html) - Sistema de backup
+
+* [Service](service.html) - Gerenciamento de serviços
+
+* [Network](network.html) - Configurações de rede
+
+* [Firewall](firewall.html) - Proteção do sistema
+
+* [Clean](clean.html) - Limpeza do sistema
+
+* [Info](info.html) - Informações do sistema
+
+* [List](list.html) - Listagem de pacotes
+
+* [Log](log.html) - Gerenciamento de logs
+
+* [Scan](scan.html) - Varredura de segurança
+
+* [Quarantine](quarantine.html) - Isolamento de ameaças
+
+
+
+# 🔄 Upgrade Module
+
+## Descrição
+
+Gerencia todas as atualizações do sistema, incluindo pacotes nativos e Flatpak.
+
+## Comandos
+
+```BASH
+prime upgrade        # Atualiza todo o sistema
+prime up            # Alias curto
+```
+
+## Funcionalidades
+
+* Atualização do sistema base
+
+* Atualização de pacotes instalados
+
+* Atualização de Flatpaks
+
+* Verificação de dependências
+
+* Backup automático pré-atualização
+
+## Fluxo de Atualização
+
+1. Verificação de conexão
+
+2. Backup de segurança
+
+3. Atualização da base do sistema
+
+4. Atualização de pacotes
+
+5. Atualização de Flatpaks
+
+6. Limpeza de cache
+
+
+
+# ⚡ Install Module
+
+## Descrição
+
+Gerencia a instalação de pacotes através de diferentes gerenciadores.
+
+## Comandos
+
+```BASH
+prime install [pacote]    # Instalação completa
+prime in [pacote]        # Forma curta
+prime i [pacote]         # Alias mais curto
+```
+
+## Funcionalidades
+
+* Detecção automática do gerenciador
+
+* Suporte a múltiplos pacotes
+
+* Integração com Flatpak
+
+* Resolução de dependências
+
+* Instalação interativa
+
+## Modos de Instalação
+
+* Single: Instalação de pacote único
+
+* Batch: Instalação em lote
+
+* Interactive: Menu de seleção
+
+
+
+# 🗑️ Remove Module
+
+## Descrição
+
+Sistema de remoção segura de pacotes e suas dependências.
+
+## Comandos
+
+```BASH
+prime remove [pacote]    # Remove pacote
+prime rm [pacote]       # Alias curto
+prime purge [pacote]    # Remove com configurações
+```
+
+## Funcionalidades
+
+* Remoção inteligente
+
+* Limpeza de dependências
+
+* Backup automático
+
+* Modo seguro
+
+* Remoção em lote
+
+## Modos de Remoção
+
+* Simples: Remove apenas o pacote
+
+* Completa: Remove pacote e dependências
+
+* Purge: Remove pacote, deps e configs
+
+* Interativa: Menu de seleção
+
+## Segurança
+
+* Verificação de dependências
+
+* Proteção contra remoção crítica
+
+* Backup pré-remoção
+
+* Logs detalhados
+
+* Opção de restauração
+
+
+
+# 💾 Backup Module
+
+## Descrição
+
+Sistema de backup e restauração de arquivos e configurações.
+
+## Comandos
+
+```BASH
+prime backup create <source> <destination>
+prime backup restore <backup_file> <target>
+prime backup list
+```
+
+## Funcionalidades
+
+* Backup incremental
+
+* Compressão automática
+
+* Agendamento de backups
+
+* Restauração seletiva
+
+* Verificação de integridade
+
+## Tipos de Backup
+
+* Sistema completo
+
+* Configurações
+
+* Lista de pacotes
+
+* Dados do usuário
+
+
+
+# 🔧 Service Module
+
+## Descrição
+
+Gerenciamento centralizado de serviços do sistema.
+
+## Comandos
+
+```BASH
+prime service scan           # Lista serviços
+prime service activate      # Inicia serviço
+prime service terminate     # Para serviço
+prime service reboot       # Reinicia serviço
+prime service diagnose     # Status do serviço
+```
+
+## Funcionalidades
+
+* Monitoramento em tempo real
+
+* Gestão de dependências
+
+* Logs integrados
+
+* Autorecuperação
+
+* Agendamento de tarefas
+
+
+
+# 🌐 Network Module
+
+## Descrição
+
+Gerenciamento de configurações e diagnósticos de rede.
+
+## Comandos
+
+```BASH
+prime network status
+prime network scan
+prime network configure
+prime network troubleshoot
+```
+
+## Funcionalidades
+
+* Diagnóstico de conexão
+
+* Configuração de interfaces
+
+* Monitoramento de tráfego
+
+* Otimização de performance
+
+* Resolução de problemas
+
+
+
+# 🛡️ Firewall Module
+
+## Descrição
+
+Sistema de proteção e controle de acesso à rede.
+
+## Comandos
+
+```BASH
+prime firewall status
+prime firewall rules
+prime firewall add-rule
+prime firewall remove-rule
+```
+
+## Funcionalidades
+
+* Regras personalizadas
+
+* Perfis predefinidos
+
+* Monitoramento de tráfego
+
+* Bloqueio automático
+
+* Logs de segurança
+
+
+
+# 🧹 Clean Module
+
+## Descrição
+
+Sistema de limpeza e otimização do sistema.
+
+## Comandos
+
+```BASH
+prime clean system    # Limpeza do sistema
+prime clean cache    # Limpa caches
+prime clean temp     # Remove temporários
+prime clean logs     # Limpa logs antigos
+```
+
+## Funcionalidades
+
+* Limpeza de cache
+
+* Remoção de pacotes órfãos
+
+* Otimização de disco
+
+* Limpeza de logs
+
+* Desfragmentação
+
+
+
+# ℹ️ Info Module
+
+## Descrição
+
+Sistema de informações sobre pacotes e sistema.
+
+## Comandos
+
+```BASH
+prime info [pacote]         # Info do pacote
+prime info files [pacote]   # Arquivos do pacote
+prime info deps [pacote]    # Dependências
+```
+
+## Funcionalidades
+
+* Detalhes de pacotes
+
+* Informações do sistema
+
+* Estatísticas de uso
+
+* Histórico de alterações
+
+* Análise de dependências
+
+
+
+# 📋 List Module
+
+## Descrição
+
+Sistema de listagem e busca de pacotes instalados e disponíveis.
+
+## Comandos
+
+```BASH
+prime list                  # Lista todos os pacotes
+prime list installed       # Pacotes instalados
+prime list available      # Pacotes disponíveis
+prime list updates        # Atualizações pendentes
+prime list search <termo> # Busca pacotes
+```
+
+## Funcionalidades
+
+* Listagem filtrada
+
+* Busca avançada
+
+* Ordenação customizada
+
+* Exportação de listas
+
+* Histórico de instalações
+
+## Formatos de Saída
+
+* Tabela (padrão)
+
+* JSON
+
+* CSV
+
+* YAML
+
+
+
+# 📝 Log Module
+
+## Descrição
+
+Sistema de gerenciamento e análise de logs do sistema.
+
+## Comandos
+
+```BASH
+prime log show           # Exibe logs recentes
+prime log search <termo> # Busca nos logs
+prime log export        # Exporta logs
+prime log clean         # Limpa logs antigos
+prime log watch         # Monitora logs em tempo real
+```
+
+## Funcionalidades
+
+* Visualização em tempo real
+
+* Filtros avançados
+
+* Rotação automática
+
+* Compressão de logs antigos
+
+* Análise de padrões
+
+## Tipos de Log
+
+* Sistema
+
+* Segurança
+
+* Aplicações
+
+* Performance
+
+* Rede
+
+
+
+# 🔍 Scan Module
+
+## Descrição
+
+Sistema de varredura e análise de segurança do sistema.
+
+## Comandos
+
+```BASH
+prime scan system        # Varredura completa
+prime scan security     # Análise de segurança
+prime scan ports        # Varredura de portas
+prime scan malware     # Detecção de malware
+prime scan updates     # Verifica atualizações
+```
+
+## Funcionalidades
+
+* Varredura de vulnerabilidades
+
+* Detecção de malware
+
+* Análise de portas
+
+* Verificação de integridade
+
+* Relatórios detalhados
+
+## Tipos de Scan
+
+* Rápido: Verificação básica
+
+* Completo: Análise profunda
+
+* Personalizado: Escopo definido
+
+* Agendado: Execução programada
+
+* Background: Scan em segundo plano
+
+## Relatórios
+
+* Resumo executivo
+
+* Detalhes técnicos
+
+* Níveis de severidade
+
+* Recomendações
+
+* Histórico de scans
+
+## Integração
+
+* Firewall
+
+* Antivírus
+
+* IDS/IPS
+
+* Log System
+
+* Quarantine Module
+
+
+
+# 🔒 Quarantine Module
+
+## Descrição
+
+Sistema de isolamento e gestão de ameaças detectadas.
+
+## Comandos
+
+```BASH
+prime quarantine list          # Lista itens
+prime quarantine isolate      # Isola arquivo
+prime quarantine restore      # Restaura arquivo
+prime quarantine remove       # Remove ameaça
+prime quarantine analyze      # Analisa item
+```
+
+## Funcionalidades
+
+* Isolamento automático
+
+* Análise de ameaças
+
+* Restauração segura
+
+* Logs detalhados
+
+* Notificações
+
+## Níveis de Isolamento
+
+* Baixo risco
+
+* Médio risco
+
+* Alto risco
+
+* Crítico
+
+
+
 # Core Modules 🛠️
 
 Tip:

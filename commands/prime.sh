@@ -42,7 +42,6 @@ case $1 in
     run_scan "$@"
     ;;
 
-  # TODO: FALTA SÓ ESSE
   firewall|fw)
     shift
     source "$BASE_DIR/lib/pkg/firewall/main.sh"
