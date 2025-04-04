@@ -12,12 +12,28 @@
     <toc-element topic="getting-started.md">
         <toc-element topic="installation.md"/>
         <toc-element topic="quick-start.md"/>
-        <!-- Removido configuration.md temporariamente -->
     </toc-element>
-    
+
     <!-- Windows Support - Coming Soon -->
     <toc-element topic="windows-support.md"/>
-    
+
+    <!-- Package Management -->
+    <toc-element topic="pkg.md">
+        <toc-element topic="upgrade.md"/>
+        <toc-element topic="install.md"/>
+        <toc-element topic="remove.md"/>
+        <toc-element topic="backup.md"/>
+        <toc-element topic="service.md"/>
+        <toc-element topic="network.md"/>
+        <toc-element topic="firewall.md"/>
+        <toc-element topic="clean.md"/>
+        <toc-element topic="info.md"/>
+        <toc-element topic="list.md"/>
+        <toc-element topic="log.md"/>
+        <toc-element topic="scan.md"/>
+        <toc-element topic="quarantine.md"/>
+    </toc-element>
+
     <!-- Core Modules -->
     <toc-element topic="core-modules.md">
         <!-- Docker Management -->
