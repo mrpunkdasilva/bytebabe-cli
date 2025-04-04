@@ -126,8 +126,13 @@ case $1 in
   # 🎮 EASTER EGG
   neo)
     shift
+    source "$BASE_DIR/lib/pkg/neo/main.sh"
     show_header_custom "RED PILL ACTIVATED" "💊" "${CYBER_RED}"
-    run_neo_mode
+    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+      show_neo_help
+    else
+      run_neo_mode "$@"
+    fi
     ;;
 
   *)

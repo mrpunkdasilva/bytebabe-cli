@@ -137,4 +137,6 @@ run_backup() {
 # Se executado diretamente
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   run_backup "$@"
+else
+  show_help
 fi
