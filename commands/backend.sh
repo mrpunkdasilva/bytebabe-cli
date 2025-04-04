@@ -355,7 +355,7 @@ select_runtimes() {
     IFS=',' read -ra choices <<< "$runtime_choices"
 
     if [[ " ${choices[*]} " =~ "7" ]]; then
-        runtimes=("node" "php" "python" "java" "go" "rust", "elixir")
+        runtimes=("node" "php" "python" "java" "go" "rust" "elixir")
     else
         runtimes=()
         for choice in "${choices[@]}"; do
