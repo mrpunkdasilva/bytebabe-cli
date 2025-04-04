@@ -46,7 +46,7 @@ case $1 in
   # 🛡️ SECURITY SUITE
   scan)
     shift
-    show_header_custom "THREAT ASSESSMENT SCAN" "🔍" "${CYBER_YELLOW}"
+    source "$BASE_DIR/lib/pkg/scan/main.sh"
     run_scan "$@"
     ;;
 
