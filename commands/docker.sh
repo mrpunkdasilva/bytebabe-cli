@@ -11,27 +11,10 @@ source "$BASE_DIR/lib/docker/containers.sh"
 source "$BASE_DIR/lib/docker/images.sh"
 source "$BASE_DIR/lib/docker/volumes.sh"
 source "$BASE_DIR/lib/docker/compose.sh"
-source "$BASE_DIR/lib/docker/utils.sh"
 
 # Verify Docker is ready
 check_docker_daemon
 
-
-# Main command processor
-handle_container_command() {
-    local subcmd="$1"
-    shift
-
-    case "$subcmd" in
-        "list"|"ls"|"l")
-            list_containers "$@"
-            ;;
-        "start"|"up"|"u")
-            start_container "$@"
-            ;;
-        # ... outros casos
-    esac
-}
 
 # Função principal que processa os comandos
 main() {
@@ -42,7 +25,7 @@ main() {
     # Estilo 2: Curto (docker c ls -a)
     case "$command" in
         # Estilo verboso para containers
-        "containers"|"container")
+        "containers"|"c")
             handle_container_command "$@"
             ;;
         # Alias curto para containers
@@ -69,17 +52,13 @@ main() {
             ;;
 
         # Estilo verboso para compose
-        "compose")
-            handle_compose_command "$@"
-            ;;
-        # Alias curto para compose
-        "co"|"comp")
+        "compose"|"co")
             handle_compose_command "$@"
             ;;
 
         *)
             echo "Comando inválido: $command"
-            show_help
+            show_docker_help
             exit 1
             ;;
     esac
