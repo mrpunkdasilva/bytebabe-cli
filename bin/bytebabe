@@ -50,6 +50,9 @@ case $1 in
     db)
         source "${BASE_DIR}/commands/db.sh" "${@:2}"
         ;;
+    edit)
+         source "${BASE_DIR}/commands/byteedit.sh" "${@:2}"
+        ;;
     ide)
         source "${BASE_DIR}/commands/ide.sh" "${@:2}"
         ;;
