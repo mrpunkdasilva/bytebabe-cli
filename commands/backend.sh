@@ -391,7 +391,7 @@ select_frameworks() {
     IFS=',' read -ra choices <<< "$fw_choices"
 
     if [[ " ${choices[*]} " =~ "7" ]]; then
-        frameworks=("express" "django" "flask" "spring" "nestjs" "laravel", "phoenix")
+        frameworks=("express" "django" "flask" "spring" "nestjs" "laravel" "phoenix")
     else
         frameworks=()
         for choice in "${choices[@]}"; do
