@@ -60,8 +60,8 @@ case $1 in
   # TODO: FALTA SÓ ESSE
   quarantine|q)
     shift
+    source "$BASE_DIR/lib/pkg/quarantine/main.sh"
     show_header_custom "MALWARE QUARANTINE" "☣️" "${CYBER_RED}"
-    run_quarantine "$@"
     ;;
 
   # 🛠️ SYSTEM UTILITIES
