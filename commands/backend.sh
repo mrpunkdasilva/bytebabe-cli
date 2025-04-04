@@ -59,6 +59,7 @@ declare -A SUPPORTED_TECHS=(
     ["spring"]="Spring Boot"
     ["nestjs"]="NestJS"
     ["laravel"]="Laravel"
+    ["elixir"]="Elixir"
 )
 
 # ==========================================
@@ -202,6 +203,18 @@ install_runtime() {
             fi
             echo -e "${CYBER_GREEN}✔ Rust $(rustc --version) instalado${RESET}"
             ;;
+        "elixir")
+        echo -e "${CYBER_BLUE}▶ Configurando Elixir...${RESET}"
+        if ! command -v elixir &> /dev/null; then
+            echo -e "${CYBER_YELLOW}⚡ Instalando Elixir...${RESET}"
+            curl -fsSO https://elixir-lang.org/install.sh
+            sh install.sh elixir@1.18.3 otp@27.2.3
+            installs_dir=$HOME/.elixir-install/installs
+            export PATH=$installs_dir/otp/27.2.3/bin:$PATH
+            export PATH=$installs_dir/elixir/1.18.3-otp-27/bin:$PATH
+        fi
+        echo -e "${CYBER_GREEN}✔ Elixir $(elixir --version) instalado${RESET}"
+        ;;
     esac
 }
 
@@ -319,13 +332,14 @@ select_runtimes() {
     echo -e "4) Java"
     echo -e "5) Go"
     echo -e "6) Rust"
-    echo -e "7) Todos${RESET}"
+    echo -e "7) Elixir"
+    echo -e "8) Todos${RESET}"
     read -p "Opções (ex: 1,3,5): " runtime_choices
 
     IFS=',' read -ra choices <<< "$runtime_choices"
 
     if [[ " ${choices[*]} " =~ "7" ]]; then
-        runtimes=("node" "php" "python" "java" "go" "rust")
+        runtimes=("node" "php" "python" "java" "go" "rust", "elixir")
     else
         runtimes=()
         for choice in "${choices[@]}"; do
@@ -336,6 +350,7 @@ select_runtimes() {
                 4) runtimes+=("java") ;;
                 5) runtimes+=("go") ;;
                 6) runtimes+=("rust") ;;
+                7) runtimes+=("elixir") ;;
             esac
         done
     fi
@@ -413,7 +428,7 @@ process_direct_install() {
 
     for tech in "$@"; do
         case $tech in
-            node|php|python|java|go|rust)
+            node|php|python|java|go|rust|elixir)
                 install_runtime "$tech"
                 ;;
             express|django|flask|spring|nestjs|laravel)
@@ -439,6 +454,7 @@ list_supported_techs() {
     echo -e "  ${CYBER_PINK}java${RESET}    - Java (via SDKMAN)"
     echo -e "  ${CYBER_PINK}go${RESET}      - Go"
     echo -e "  ${CYBER_PINK}rust${RESET}    - Rust"
+    echo -e "  ${CYBER_PINK}elixir${RESET}  - Elixir"
 
     echo -e "\n${CYBER_YELLOW}${CYBER_BOLD}Frameworks:${RESET}"
     echo -e "  ${CYBER_PINK}express${RESET} - Express.js"
