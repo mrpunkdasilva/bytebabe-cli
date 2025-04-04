@@ -29,10 +29,18 @@ case $1 in
     run_install "$@"
     ;;
 
-  remove|rm)
+  remove|rm|purge)
     shift
-    show_header_custom "LEGACY MODULE PURGE" "☠️" "${CYBER_RED}"
-    run_remove "$@"
+    source "$BASE_DIR/lib/pkg/remove/main.sh"
+    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+      show_remove_help
+    else
+      if [[ "$0" == *"purge"* ]]; then
+        run_remove --purge "$@"
+      else
+        run_remove "$@"
+      fi
+    fi
     ;;
 
   # 🛡️ SECURITY SUITE
