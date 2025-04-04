@@ -290,6 +290,22 @@ install_framework() {
             echo -e "${CYBER_GREEN}✔ Laravel Installer instalado${RESET}"
             echo -e "${CYBER_PINK}⚡ Use: ${CYBER_YELLOW}laravel new projeto${RESET} para criar um novo projeto"
             ;;
+        "phoenix")
+            echo -e "${CYBER_BLUE}▶ Instalando Phoenix...${RESET}"
+            if ! command -v mix &> /dev/null; then
+                echo -e "${CYBER_YELLOW}⚠ Elixir não encontrado. Instale primeiro com:${RESET}"
+                echo -e "${CYBER_PINK}bytebabe backend install elixir${RESET}"
+            fi
+
+            echo -e "${CYBER_PINK}⚡ Instalando Hex (gerenciador de pacotes)...${RESET}"
+            mix local.hex --force
+
+            echo -e "${CYBER_PINK}⚡ Instalando Phoenix...${RESET}"
+            mix archive.install hex phx_new 1.7.21
+
+            echo -e "${CYBER_GREEN}✔ Phoenix instalado com sucesso!${RESET}"
+            echo -e "${CYBER_PINK}Dica: Use ${CYBER_YELLOW}mix phx.new meu_app${RESET} para criar um novo projeto Phoenix${RESET}"
+            ;;
     esac
 }
 
@@ -368,13 +384,14 @@ select_frameworks() {
     echo -e "4) Spring Boot"
     echo -e "5) NestJS"
     echo -e "6) Laravel"
-    echo -e "7) Todos${RESET}"
+    echo -e "7) Phoenix"
+    echo -e "8) Todos${RESET}"
     read -p "Opções (ex: 2,4,6): " fw_choices
 
     IFS=',' read -ra choices <<< "$fw_choices"
 
     if [[ " ${choices[*]} " =~ "7" ]]; then
-        frameworks=("express" "django" "flask" "spring" "nestjs" "laravel")
+        frameworks=("express" "django" "flask" "spring" "nestjs" "laravel", "phoenix")
     else
         frameworks=()
         for choice in "${choices[@]}"; do
@@ -385,6 +402,7 @@ select_frameworks() {
                 4) frameworks+=("spring") ;;
                 5) frameworks+=("nestjs") ;;
                 6) frameworks+=("laravel") ;;
+                7) frameworks+=("phoenix") ;;
             esac
         done
     fi
@@ -431,7 +449,7 @@ process_direct_install() {
             node|php|python|java|go|rust|elixir)
                 install_runtime "$tech"
                 ;;
-            express|django|flask|spring|nestjs|laravel)
+            express|django|flask|spring|nestjs|laravel|phoenix)
                 install_framework "$tech"
                 ;;
             *)
@@ -463,6 +481,7 @@ list_supported_techs() {
     echo -e "  ${CYBER_PINK}spring${RESET}  - Spring Boot"
     echo -e "  ${CYBER_PINK}nestjs${RESET}  - NestJS"
     echo -e "  ${CYBER_PINK}laravel${RESET} - Laravel"
+    echo -e "  ${CYBER_PINK}phoenix${RESET} - Phoenix"
     cyber_divider
 }
 
