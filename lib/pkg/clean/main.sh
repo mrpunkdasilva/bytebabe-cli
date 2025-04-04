@@ -136,9 +136,73 @@ direct_mode() {
   esac
 }
 
-# Main
-if [ $# -eq 0 ]; then
-  interactive_menu
-else
-  direct_mode "$@"
+# Função de ajuda do módulo clean
+show_clean_help() {
+    show_header_custom "SYSTEM PURGE" "🧹" "${CYBER_BLUE}"
+    
+    echo -e "${CYBER_BLUE}USAGE:${NC}"
+    echo -e "  prime clean ${CYBER_YELLOW}[command]${NC}"
+    echo
+    
+    echo -e "${CYBER_BLUE}COMMANDS:${NC}"
+    echo -e "  ${CYBER_GREEN}basic${NC}     Basic system cleanup"
+    echo -e "  ${CYBER_RED}deep${NC}      Deep system cleanup"
+    echo
+    
+    echo -e "${CYBER_BLUE}OPTIONS:${NC}"
+    echo -e "  ${CYBER_YELLOW}-y, --yes${NC}    Auto-confirm all operations"
+    echo -e "  ${CYBER_YELLOW}-h, --help${NC}   Show this help message"
+    echo
+    
+    echo -e "${CYBER_BLUE}EXAMPLES:${NC}"
+    echo -e "  ${CYBER_YELLOW}prime clean${NC}           # Interactive mode"
+    echo -e "  ${CYBER_YELLOW}prime clean basic${NC}     # Basic cleanup"
+    echo -e "  ${CYBER_YELLOW}prime clean deep -y${NC}   # Deep cleanup with auto-confirm"
+}
+
+# Função principal de limpeza
+run_clean() {
+    local auto_confirm=false
+    local mode=""
+
+    # Processar argumentos
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --help|-h)
+                show_clean_help
+                return 0
+                ;;
+            --yes|-y)
+                auto_confirm=true
+                shift
+                ;;
+            basic|deep)
+                mode="$1"
+                shift
+                ;;
+            *)
+                echo -e "${CYBER_RED}Invalid option: $1${NC}"
+                show_clean_help
+                return 1
+                ;;
+        esac
+    done
+
+    # Se modo não especificado, usar menu interativo
+    if [ -z "$mode" ]; then
+        interactive_menu
+        return
+    fi
+
+    # Se modo especificado, executar diretamente
+    if [ "$auto_confirm" = true ]; then
+        export AUTO_CONFIRM=true
+    fi
+    
+    direct_mode "$mode"
+}
+
+# Se executado diretamente
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    run_clean "$@"
 fi

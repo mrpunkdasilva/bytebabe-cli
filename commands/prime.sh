@@ -68,6 +68,12 @@ case $1 in
   clean)
     shift
     source "$BASE_DIR/lib/pkg/clean/main.sh"
+    show_header_custom "SYSTEM PURGE" "🧹" "${CYBER_BLUE}"
+    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+      show_clean_help
+    else
+      run_clean "$@"
+    fi
     ;;
 
   backup)
