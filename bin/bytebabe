@@ -3,9 +3,9 @@
 # Resolve script base directory, even when called via symlink
 if [ -L "$0" ]; then
     REAL_SCRIPT_PATH=$(readlink -f "$0")
-    BASE_DIR=$(dirname "$(dirname "$REAL_SCRIPT_PATH")")
+    BASE_DIR="/home/mrpunkdasilva/bytebabe"
 else
-    BASE_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+    BASE_DIR="/home/mrpunkdasilva/bytebabe"
 fi
 
 # Load libraries with absolute paths
@@ -13,7 +13,7 @@ source "${BASE_DIR}/lib/core/colors.sh"
 source "${BASE_DIR}/lib/core/helpers.sh"
 source "${BASE_DIR}/lib/utils/headers.sh"
 
-VERSION="1.0.0"
+VERSION="0.1.1"
 
 # Show version information
 show_version() {
@@ -64,6 +64,9 @@ case $1 in
         ;;
     prime|pm)
         source "${BASE_DIR}/commands/prime.sh" "${@:2}"
+        ;;
+    gh|github)
+        source "${BASE_DIR}/commands/gh.sh" "${@:2}"
         ;;
     --version|-v)
         show_version
