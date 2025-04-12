@@ -8,7 +8,8 @@ source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/utils/config.sh"
 source "$BASE_DIR/lib/utils/headers.sh"
-
+source "$BASE_DIR/lib/utils/nvm.sh"
+source "$BASE_DIR/commands/neovim_tools.sh"
 
 
 
@@ -18,32 +19,47 @@ source "$BASE_DIR/lib/utils/headers.sh"
 configure_basics() {
     # Configuração do sistema
     echo -e "\n${CYBER_BLUE}▶ Atualizando sistema...${RESET}"
-    sudo apt update -qq && sudo apt upgrade -y -qq
+    echo -e "${CYBER_YELLOW}Deseja atualizar o sistema? (s/n)${RESET}"
+    read -r resposta
+    
+    if [[ "$resposta" =~ ^[Ss]$ ]]; then
+        echo -e "${CYBER_BLUE}Atualizando pacotes...${RESET}"
+        sudo apt update -qq && sudo apt upgrade -y -qq
+    else
+        echo -e "${CYBER_YELLOW}Atualização do sistema ignorada.${RESET}"
+    fi
     
     # Instala pacotes essenciais
     echo -e "\n${CYBER_BLUE}▶ Instalando ferramentas base...${RESET}"
-    sudo apt install -y -qq \
-        build-essential \
-        libssl-dev \
-        zlib1g-dev \
-        libbz2-dev \
-        libreadline-dev \
-        libsqlite3-dev \
-        llvm \
-        libncursesw5-dev \
-        xz-utils \
-        tk-dev \
-        libxml2-dev \
-        libxmlsec1-dev \
-        libffi-dev \
-        liblzma-dev \
-        jq \
-        unzip \
-        tree \
-        htop \
-        neofetch
+    echo -e "${CYBER_YELLOW}Deseja instalar ferramentas de desenvolvimento essenciais? (s/n)${RESET}"
+    read -r resposta
+    
+    if [[ "$resposta" =~ ^[Ss]$ ]]; then
+        echo -e "${CYBER_BLUE}Instalando pacotes essenciais...${RESET}"
+        sudo apt install -y -qq \
+            build-essential \
+            libssl-dev \
+            zlib1g-dev \
+            libbz2-dev \
+            libreadline-dev \
+            libsqlite3-dev \
+            llvm \
+            libncursesw5-dev \
+            xz-utils \
+            tk-dev \
+            libxml2-dev \
+            libxmlsec1-dev \
+            libffi-dev \
+            liblzma-dev \
+            jq \
+            unzip \
+            tree \
+            htop \
+            neofetch
+    else
+        echo -e "${CYBER_YELLOW}Instalação de ferramentas ignorada.${RESET}"
+    fi
 }
-
 
 
 
@@ -76,66 +92,23 @@ configure_git_identity() {
 # INSTALAÇÃO DO DOCKER
 # ======================
 install_docker() {
-    source "$BASE_DIR/lib/utils/get_docker.sh"
+    echo -e "\n${CYBER_BLUE}▶ Instalando Docker...${RESET}"
+    echo -e "${CYBER_YELLOW}Deseja instalar o Docker? (s/n)${RESET}"
+    read -r resposta
+    
+    if [[ "$resposta" =~ ^[Ss]$ ]]; then
+        echo -e "${CYBER_BLUE}Instalando Docker...${RESET}"
+        source "$BASE_DIR/lib/utils/get_docker.sh"
 
-    # Configura usuário
-    sudo usermod -aG docker $USER
-    echo -e "${CYBER_GREEN}✔ Docker instalado"
-    echo -e "${CYBER_ORANGE}⚠ Reinicie o terminal para usar Docker sem sudo${RESET}"
+        # Configura usuário
+        sudo usermod -aG docker $USER
+        echo -e "${CYBER_GREEN}✔ Docker instalado"
+        echo -e "${CYBER_ORANGE}⚠ Reinicie o terminal para usar Docker sem sudo${RESET}"
 
-    save_config "DOCKER_INSTALLED" "true"
-}
-
-
-
-
-
-
-
-
-
-# ======================
-# FERRAMENTAS NEOVIM
-# ======================
-install_neovim_tools() {
-   
-   echo -e "\n${CYBER_BLUE}▶ Instalando ferramentas neo vim e vim...${RESET}"
-
-   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-   sudo rm -rf /opt/nvim
-   sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-
-    export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-    export PATH="$PATH:/usr/local/bin"
-
-    # Remova a instalação anterior
-    rm -rf ~/.config/nvim
-    rm -rf ~/.local/share/nvim
-    rm -rf ~/.local/state/nvim
-
-    # Instale novamente
-    git clone https://github.com/LazyVim/starter ~/.config/nvim
-
-    echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.bashrc
-    echo 'export PATH="$PATH:/opt/nvim-linux-x86_64/bin"' >> ~/.zshrc
-
-    source ~/.bashrc
-    source ~/.zshrc
-
-
-    # Mensagem final de sucesso
-    echo -e "\n${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
-    echo -e "${CYBER_GREEN}           CONFIGURAÇÃO COMPLETA!"
-    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
-    echo -e "${CYBER_BLUE}╭─────────────────────────────────────────────╮"
-    echo -e "│ ${CYBER_GREEN}✔ Neovim + LazyVim ${CYBER_BLUE}configurados com sucesso!  "
-    echo -e "│                                                         "
-    echo -e "│ ${CYBER_YELLOW}Próximos passos:${CYBER_BLUE}                                    "
-    echo -e "│ 1. Abra o Neovim: ${CYBER_GREEN}nvim${CYBER_BLUE}                          "
-    echo -e "│ 2. Aguarde a instalação automática dos plugins           "
-    echo -e "│ 3. Reinicie o Neovim após a conclusão                   "
-    echo -e "╰─────────────────────────────────────────────╯${RESET}"
-    echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}\n"
+        save_config "DOCKER_INSTALLED" "true"
+    else
+        echo -e "${CYBER_YELLOW}Instalação do Docker ignorada.${RESET}"
+    fi
 }
 
 
