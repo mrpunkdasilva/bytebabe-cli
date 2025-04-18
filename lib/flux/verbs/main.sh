@@ -6,6 +6,10 @@ CYBER_GREEN='\033[1;32m'
 CYBER_BLUE='\033[1;34m'
 RESET='\033[0m'
 
+# Define o diretório base
+export BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+
 # Carrega todos os verbos HTTP
 source "$BASE_DIR/lib/flux/verbs/get/main.sh"
 source "$BASE_DIR/lib/flux/verbs/post/main.sh"

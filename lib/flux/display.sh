@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# Exibe o cabeçalho do Flux
+show_flux_header() {
+    clear
+    echo -e "${CYBER_BLUE}"
+    cat << "EOF"
+    ███████╗██╗     ██╗   ██╗██╗  ██╗
+    ██╔════╝██║     ██║   ██║╚██╗██╔╝
+    █████╗  ██║     ██║   ██║ ╚███╔╝ 
+    ██╔══╝  ██║     ██║   ██║ ██╔██╗ 
+    ██║     ███████╗╚██████╔╝██╔╝ ██╗
+    ╚═╝     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝
+EOF
+    echo -e "${CYBER_PURPLE}"
+    echo -e "╔════════════════════════════════════════╗"
+    echo -e "║   ${CYBER_BLUE}⚡ ${CYBER_YELLOW}HTTP CLIENT v1.0 ${CYBER_PURPLE}⚡   ║"
+    echo -e "╚════════════════════════════════════════╝${RESET}"
+    echo
+}
+
 # Exibe o cabeçalho da requisição
 show_request_header() {
     local method="$1"

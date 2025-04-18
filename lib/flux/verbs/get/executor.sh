@@ -3,7 +3,12 @@
 perform_get_request() {
     local url="$1"
     local params="$2"
-    local curl_cmd="curl -s -i -w '\n%{http_code}\n%{time_total}'"  # Adicionado -i para incluir headers
+    
+    # Limpa a tela e mostra o header
+    clear
+    show_flux_header
+    
+    local curl_cmd="curl -s -i -w '\n%{http_code}\n%{time_total}'"
 
     # Mostra cabeçalho da requisição
     show_request_header "GET" "$url"
@@ -11,7 +16,7 @@ perform_get_request() {
     # Prepara headers
     local headers=()
     headers+=("User-Agent: Flux-HTTP-Client/1.0")
-    headers+=("Accept: application/json")  # Sempre incluir Accept: application/json
+    headers+=("Accept: application/json")
     
     # Mostra headers da requisição
     show_request_headers "${headers[@]}"
