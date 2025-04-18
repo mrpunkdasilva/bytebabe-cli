@@ -24,8 +24,9 @@ show_request_headers() {
 # Exibe o corpo da resposta formatado
 show_response() {
     local status_code="$1"
-    local response="$2"
-    local duration="$3"
+    local headers="$2"
+    local body="$3"
+    local duration="$4"
 
     # Determina a cor baseada no status code
     local status_color
@@ -42,11 +43,20 @@ show_response() {
     echo -e "${CYBER_BLUE}│${RESET} Time: ${CYBER_YELLOW}${duration}ms${RESET}"
     echo -e "${CYBER_BLUE}╰─────────────────────────────────╯${RESET}\n"
 
-    # Tenta formatar como JSON se possível
-    if [[ "$response" =~ ^\{.*\}$ || "$response" =~ ^\[.*\]$ ]]; then
-        echo "$response" | jq -C '.' 2>/dev/null || echo "$response"
+    # Mostra headers da resposta
+    echo -e "${CYBER_BLUE}Response Headers:${RESET}"
+    echo "$headers" | while IFS= read -r line; do
+        if [[ -n "$line" ]]; then
+            echo -e "  ${CYBER_YELLOW}▸${RESET} ${line}"
+        fi
+    done
+    echo
+
+    # Tenta formatar o body como JSON se possível
+    if [[ "$body" =~ ^\{.*\}$ || "$body" =~ ^\[.*\]$ ]]; then
+        echo "$body" | jq -C '.' 2>/dev/null || echo "$body"
     else
-        echo "$response"
+        echo "$body"
     fi
     echo
 }
