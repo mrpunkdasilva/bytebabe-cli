@@ -6,6 +6,14 @@
 
   <h1>ByteBabe CLI</h1>
   <p>A cyberpunk-themed developer toolkit for supercharged workflows 🚀</p>
+
+  <p>
+    <a href="#installation">Installation</a> •
+    <a href="#key-features">Features</a> •
+    <a href="#usage">Usage</a> •
+    <a href="#contributing">Contributing</a> •
+    <a href="#support">Support</a>
+  </p>
 </div>
 
 ## ⚡ Overview
@@ -18,34 +26,29 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
   - Container/image/volume management
   - Compose stack handling
   - Visual container stats
-
-- **Development Environment**
-  - Frontend tooling (Node.js, React, etc)
-  - Backend setup (Python, Java, Go, etc)
-  - Database management
+- **Git Operations (Neo Module)**
+  - Repository management
+  - Branch operations
+  - Commit handling
+- **Development Tools (Matrix Module)**
   - IDE configuration
+  - Language servers
+  - Debug tools
+- **Database Operations (Oracle Module)**
+  - Multiple database support
+  - Backup/restore
+  - Migration tools
 
-- **Git Supercharged**
-  - Visual branch navigation
-  - Smart commit system
-  - Time machine visualization
-
-- **Server Management**
-  - Apache/Nginx setup
-  - SSL configuration
-  - Docker integration
-
-## 🚀 Quick Start
+## 🚀 Installation
 
 ### Prerequisites
-- Bash 4+
-- Git (optional)
-- curl or wget
-- Docker (optional)
+- 🐧 Linux/Unix (sorry Windows-chan)
+- 🐚 Bash 4+
+- 📦 Git (optional)
+- 🌐 curl or wget
+- 🐳 Docker (optional)
 
-### Installation
-
-#### Quick Install (Recommended)
+### Quick Install
 ```bash
 # Using curl
 curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
@@ -54,65 +57,49 @@ curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install
 wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
 ```
 
-#### Manual Installation
+### Manual Installation
 ```bash
-# Clone the repository (if Git is available)
+# Clone the repository
 git clone https://github.com/mrpunkdasilva/bytebabe.git
 cd bytebabe
-
-# Or download and extract the release
-wget https://github.com/mrpunkdasilva/bytebabe/archive/refs/tags/v1.0.0.tar.gz
-tar xzf v1.0.0.tar.gz
-cd bytebabe-1.0.0
 
 # Run the installer
 ./install.sh
 ```
 
-### Basic Usage
+## 💻 Usage
 
 ```bash
 # Initialize development environment
 bytebabe init
 
-# Start Docker containers
+# Manage Docker containers
 bytebabe docker up
+bytebabe docker down
+bytebabe docker logs
 
-# Setup backend environment
-bytebabe backend setup
+# Git operations
+bytebabe git push
+bytebabe git sync
+bytebabe git clean
 
-# Configure frontend tools
-bytebabe frontend setup
+# Development tools
+bytebabe dev install
+bytebabe dev update
+bytebabe dev doctor
 ```
 
 ## 📦 Module Overview
 
-- `bytebabe init` - First-time setup
-- `bytebabe docker` - Container management
-- `bytebabe git` - Git operations
-- `bytebabe backend` - Backend environment
-- `bytebabe frontend` - Frontend tooling
-- `bytebabe servers` - Web server management
-- `bytebabe db` - Database operations
-- `bytebabe ide` - IDE configuration
-- `bytebabe devtools` - Development utilities
+| Module | Description | Commands |
+|--------|-------------|----------|
+| `init` | First-time setup | `bytebabe init` |
+| `docker` | Container management | `bytebabe docker [up/down/logs]` |
+| `git` | Git operations | `bytebabe git [push/pull/sync]` |
+| `dev` | Development tools | `bytebabe dev [install/update]` |
+| `db` | Database operations | `bytebabe db [backup/restore]` |
 
-## 🛠️ Architecture
-
-```
-bytebabe/
-├── bin/                # Main executable
-├── commands/          # Command modules
-├── lib/              # Shared libraries
-│   ├── core/         # Core functionality
-│   ├── docker/       # Docker helpers
-│   ├── git/          # Git utilities
-│   └── server/       # Server management
-├── docs/             # Documentation
-└── scripts/          # Utility scripts
-```
-
-## 🎨 Customization (Futures Plan)
+## 🛠️ Configuration
 
 ByteBabe can be customized through:
 - `~/.config/bytebabe/config.json` - General settings
@@ -131,6 +118,12 @@ ByteBabe can be customized through:
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
+## 💬 Support
+
+- 📧 Email: support@bytebabe.dev
+- 💻 Discord: [ByteBabe Community](https://discord.gg/bytebabe)
+- 🐦 Twitter: [@ByteBabeCLI](https://twitter.com/ByteBabeCLI)
+
 ## 🌟 Acknowledgments
 
 - Inspired by modern developer workflows
@@ -140,5 +133,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by P</sub>
+  <sub>Built with ❤️ by Mr Punk da Silva</sub>
 </div>
