@@ -406,6 +406,91 @@ Por enquanto, recomendamos fortemente o uso do WSL2 para a melhor experiência p
 
 
 
+# Core Modules 🛠️
+
+Tip:
+
+"Um módulo para cada necessidade, uma solução para cada problema"
+
+## Visão Geral
+
+ByteBabe oferece um conjunto poderoso de módulos core, cada um projetado para simplificar aspectos específicos do desenvolvimento.
+
+## Módulos Disponíveis
+
+### 🐳 Docker Module
+
+* Gerenciamento completo de containers
+
+* Operações com imagens e volumes
+
+* Orquestração via Compose
+
+* [Saiba mais](docker-module.html)
+
+### 🗄️ Database Module
+
+* Suporte a múltiplos bancos de dados
+
+* Backup e restore simplificados
+
+* Ferramentas de migração
+
+* [Saiba mais](database-module.html)
+
+### 🛡️ Firewall Module
+
+* Gerenciamento de regras
+
+* Perfis de segurança
+
+* Monitoramento em tempo real
+
+* [Saiba mais](firewall-module.html)
+
+### 🔄 Git Module
+
+* Workflows otimizados
+
+* Gerenciamento de branches
+
+* Hooks personalizados
+
+* [Saiba mais](git-module.html)
+
+## Características Comuns
+
+| Característica |Descrição |
+-----------------------------
+| Interface CLI |Comandos intuitivos e consistentes |
+| Modo Cyberpunk |Visual estilizado e feedback colorido |
+| Documentação |Help detalhado e exemplos práticos |
+| Extensibilidade |Plugins e customizações |
+
+## Integração
+
+Todos os módulos core:
+
+* Compartilham a mesma base de configuração
+
+* Podem ser usados independentemente
+
+* Oferecem interfaces consistentes
+
+* Suportam automação via scripts
+
+## Próximos Passos
+
+* [🐳 Docker Module](docker-module.html)
+
+* [🗄️ Database Module](database-module.html)
+
+* [🛡️ Firewall Module](firewall-module.html)
+
+* [🔄 Git Module](git-module.html)
+
+
+
 # Package Management System
 
 Tip:
@@ -944,88 +1029,377 @@ prime quarantine analyze      # Analisa item
 
 
 
-# Core Modules 🛠️
+# Git Module 🔄
 
 Tip:
 
-"Um módulo para cada necessidade, uma solução para cada problema"
+"Git com interface cyberpunk: onde o controle de versão encontra o futuro"
 
 ## Visão Geral
 
-ByteBabe oferece um conjunto poderoso de módulos core, cada um projetado para simplificar aspectos específicos do desenvolvimento.
+O módulo Git do ByteBabe transforma o Git tradicional em uma experiência cyberpunk interativa, com menus coloridos e workflows otimizados.
 
-## Módulos Disponíveis
+## Interface Principal
 
-### 🐳 Docker Module
+```BASH
+# Iniciar interface principal
+bytebabe git
 
-* Gerenciamento completo de containers
+# Modo rápido
+bytebabe git quick
+```
 
-* Operações com imagens e volumes
+## Componentes Principais
 
-* Orquestração via Compose
+| Componente |Comando |Descrição |
+----------------------------------
+| Profile Dashboard |`profile` |Identidade e estatísticas |
+| Smart Staging |`stage` |Seleção interativa de arquivos |
+| Commit Wizard |`commit` |Commits semânticos guiados |
+| Branch Navigator |`branch` |Gerenciamento visual de branches |
+| Push Controller |`push` |Operações avançadas de push |
+| Time Machine |`time` |Histórico interativo |
 
-* [Saiba mais](docker-module.html)
+## Quick Actions
 
-### 🗄️ Database Module
+```BASH
+[s] Status    - Ver estado do repositório
+[c] Commit    - Commit rápido
+[b] Branches  - Listar branches
+[p] Push      - Push para remote
+[q] Quit      - Sair do menu
+```
 
-* Suporte a múltiplos bancos de dados
+## Características
 
-* Backup e restore simplificados
+* Interface cyberpunk colorida
 
-* Ferramentas de migração
+* Menus interativos
 
-* [Saiba mais](database-module.html)
+* Validações de segurança
 
-### 🛡️ Firewall Module
+* Atalhos de teclado
 
-* Gerenciamento de regras
+* Feedback visual
 
-* Perfis de segurança
-
-* Monitoramento em tempo real
-
-* [Saiba mais](firewall-module.html)
-
-### 🔄 Git Module
-
-* Workflows otimizados
-
-* Gerenciamento de branches
-
-* Hooks personalizados
-
-* [Saiba mais](git-module.html)
-
-## Características Comuns
-
-| Característica |Descrição |
------------------------------
-| Interface CLI |Comandos intuitivos e consistentes |
-| Modo Cyberpunk |Visual estilizado e feedback colorido |
-| Documentação |Help detalhado e exemplos práticos |
-| Extensibilidade |Plugins e customizações |
-
-## Integração
-
-Todos os módulos core:
-
-* Compartilham a mesma base de configuração
-
-* Podem ser usados independentemente
-
-* Oferecem interfaces consistentes
-
-* Suportam automação via scripts
+* Easter eggs
 
 ## Próximos Passos
 
-* [🐳 Docker Module](docker-module.html)
+* [🌿 Branch Management](branch-management.html)
 
-* [🗄️ Database Module](database-module.html)
+* [📂 Staging Operations](staging-operations.html)
 
-* [🛡️ Firewall Module](firewall-module.html)
+* [🔄 Git Workflows](git-workflows.html)
 
-* [🔄 Git Module](git-module.html)
+* [🪝 Git Hooks](git-hooks.html)
+
+
+
+# Branch Management 🌿
+
+## Branch Navigator
+
+Interface visual para gerenciar branches:
+
+```BASH
+bytebabe git branch
+```
+
+### Ações Disponíveis
+
+| Ação |Descrição |Comando Rápido |
+-----------------------------------
+| Switch Branch |Mudar de branch |`switch` |
+| Create Branch |Nova feature branch |`new` |
+| Merge Branch |Combinar branches |`merge` |
+| Delete Branch |Remover branch local |`delete` |
+
+## Operações Comuns
+
+### Criar Branch
+
+```BASH
+# Interativo
+bytebabe git branch new
+
+# Direto
+bytebabe git branch new feature/nome
+```
+
+### Merge de Branches
+
+```BASH
+# Merge interativo
+bytebabe git branch merge
+
+# Com confirmação visual
+bytebabe git branch merge develop --visual
+```
+
+### Deletar Branches
+
+```BASH
+# Com validação
+bytebabe git branch delete feature/old
+
+# Força deleção
+bytebabe git branch delete feature/old --force
+```
+
+## Proteções
+
+* Validação antes de deletar
+
+* Verificação de merges
+
+* Proteção de branches principais
+
+* Detecção de conflitos
+
+
+
+# Staging Operations 📂
+
+## Smart Staging
+
+Interface interativa para staging de arquivos:
+
+```BASH
+bytebabe git stage
+```
+
+### Características
+
+* Seleção múltipla
+
+* Preview de mudanças
+
+* Filtros por tipo
+
+* Staging parcial
+
+* Undo/Redo
+
+## Comandos Principais
+
+```BASH
+# Staging interativo
+bytebabe git stage
+
+# Staging rápido
+bytebabe git stage all
+
+# Unstage
+bytebabe git unstage
+```
+
+## Modos de Visualização
+
+| Modo |Descrição |Atalho |
+---------------------------
+| List |Lista simples |`l` |
+| Tree |Visualização em árvore |`t` |
+| Detail |Detalhes completos |`d` |
+
+## Operações Avançadas
+
+### Staging Parcial
+
+```BASH
+# Selecionar hunks
+bytebabe git stage --partial
+
+# Review de mudanças
+bytebabe git stage --review
+```
+
+### Filtros
+
+```BASH
+# Por extensão
+bytebabe git stage "*.js"
+
+# Por diretório
+bytebabe git stage src/
+```
+
+## Dicas Pro
+
+1. Use espaço para selecionar
+
+2. Enter para confirmar
+
+3. Tab para navegação
+
+4. ? para ajuda
+
+
+
+# Git Workflows 🔄
+
+## Workflows Suportados
+
+Tip:
+
+Em desenvolvimento
+
+### GitFlow
+
+```BASH
+# Iniciar GitFlow
+bytebabe git flow init
+
+# Nova feature
+bytebabe git flow feature start
+```
+
+### Trunk-Based
+
+```BASH
+# Setup inicial
+bytebabe git trunk setup
+
+# Nova branch curta
+bytebabe git trunk feature
+```
+
+## Commit Patterns
+
+### Commits Semânticos
+
+```BASH
+# Commit guiado
+bytebabe git commit
+
+Tipos disponíveis:
+- feat: Nova feature
+- fix: Correção de bug
+- docs: Documentação
+- style: Formatação
+- refactor: Refatoração
+- test: Testes
+- chore: Tarefas
+```
+
+## Automações
+
+Tip:
+
+Em desenvolvimento
+
+### Auto-Branch
+
+```BASH
+# Branch por ticket
+bytebabe git auto-branch TICKET-123
+
+# Branch por tipo
+bytebabe git auto-branch feature/descricao
+```
+
+### Auto-Merge
+
+```BASH
+# Merge automático
+bytebabe git auto-merge develop
+
+# Com testes
+bytebabe git auto-merge --with-tests
+```
+
+## Boas Práticas
+
+1. Use commits semânticos
+
+2. Mantenha branches atualizadas
+
+3. Faça merge frequente
+
+4. Revise antes do push
+
+
+
+# Git Hooks 🪝
+
+Tip:
+
+Em desenvolvimento
+
+## Hooks Disponíveis
+
+### Pre-Commit
+
+```BASH
+# Instalar hook
+bytebabe git hooks add pre-commit
+
+# Configurar
+bytebabe git hooks config pre-commit
+```
+
+### Commit-Msg
+
+```BASH
+# Validação de mensagem
+bytebabe git hooks add commit-msg
+
+# Template personalizado
+bytebabe git hooks template commit-msg
+```
+
+## Hooks Customizados
+
+### Criar Hook
+
+```BASH
+# Novo hook
+bytebabe git hooks create meu-hook
+
+# Editar hook
+bytebabe git hooks edit meu-hook
+```
+
+### Gerenciar Hooks
+
+```BASH
+# Listar hooks
+bytebabe git hooks list
+
+# Remover hook
+bytebabe git hooks remove hook-name
+```
+
+## Templates Prontos
+
+| Template |Uso |Comando |
+--------------------------
+| Lint |Validação de código |`lint` |
+| Tests |Execução de testes |`test` |
+| Format |Formatação de código |`format` |
+| Verify |Validações diversas |`verify` |
+
+## Configuração
+
+```YAML
+hooks:
+  pre-commit:
+    - lint
+    - test
+  commit-msg:
+    - semantic
+    - jira
+```
+
+## Integração
+
+* CI/CD pipelines
+
+* Linters
+
+* Test runners
+
+* Code formatters
 
 
 
@@ -2117,380 +2491,6 @@ Suporte a exportação para:
 * Prometheus
 
 * Nagios
-
-
-
-# Git Module 🔄
-
-Tip:
-
-"Git com interface cyberpunk: onde o controle de versão encontra o futuro"
-
-## Visão Geral
-
-O módulo Git do ByteBabe transforma o Git tradicional em uma experiência cyberpunk interativa, com menus coloridos e workflows otimizados.
-
-## Interface Principal
-
-```BASH
-# Iniciar interface principal
-bytebabe git
-
-# Modo rápido
-bytebabe git quick
-```
-
-## Componentes Principais
-
-| Componente |Comando |Descrição |
-----------------------------------
-| Profile Dashboard |`profile` |Identidade e estatísticas |
-| Smart Staging |`stage` |Seleção interativa de arquivos |
-| Commit Wizard |`commit` |Commits semânticos guiados |
-| Branch Navigator |`branch` |Gerenciamento visual de branches |
-| Push Controller |`push` |Operações avançadas de push |
-| Time Machine |`time` |Histórico interativo |
-
-## Quick Actions
-
-```BASH
-[s] Status    - Ver estado do repositório
-[c] Commit    - Commit rápido
-[b] Branches  - Listar branches
-[p] Push      - Push para remote
-[q] Quit      - Sair do menu
-```
-
-## Características
-
-* Interface cyberpunk colorida
-
-* Menus interativos
-
-* Validações de segurança
-
-* Atalhos de teclado
-
-* Feedback visual
-
-* Easter eggs
-
-## Próximos Passos
-
-* [🌿 Branch Management](branch-management.html)
-
-* [📂 Staging Operations](staging-operations.html)
-
-* [🔄 Git Workflows](git-workflows.html)
-
-* [🪝 Git Hooks](git-hooks.html)
-
-
-
-# Branch Management 🌿
-
-## Branch Navigator
-
-Interface visual para gerenciar branches:
-
-```BASH
-bytebabe git branch
-```
-
-### Ações Disponíveis
-
-| Ação |Descrição |Comando Rápido |
------------------------------------
-| Switch Branch |Mudar de branch |`switch` |
-| Create Branch |Nova feature branch |`new` |
-| Merge Branch |Combinar branches |`merge` |
-| Delete Branch |Remover branch local |`delete` |
-
-## Operações Comuns
-
-### Criar Branch
-
-```BASH
-# Interativo
-bytebabe git branch new
-
-# Direto
-bytebabe git branch new feature/nome
-```
-
-### Merge de Branches
-
-```BASH
-# Merge interativo
-bytebabe git branch merge
-
-# Com confirmação visual
-bytebabe git branch merge develop --visual
-```
-
-### Deletar Branches
-
-```BASH
-# Com validação
-bytebabe git branch delete feature/old
-
-# Força deleção
-bytebabe git branch delete feature/old --force
-```
-
-## Proteções
-
-* Validação antes de deletar
-
-* Verificação de merges
-
-* Proteção de branches principais
-
-* Detecção de conflitos
-
-
-
-# Staging Operations 📂
-
-## Smart Staging
-
-Interface interativa para staging de arquivos:
-
-```BASH
-bytebabe git stage
-```
-
-### Características
-
-* Seleção múltipla
-
-* Preview de mudanças
-
-* Filtros por tipo
-
-* Staging parcial
-
-* Undo/Redo
-
-## Comandos Principais
-
-```BASH
-# Staging interativo
-bytebabe git stage
-
-# Staging rápido
-bytebabe git stage all
-
-# Unstage
-bytebabe git unstage
-```
-
-## Modos de Visualização
-
-| Modo |Descrição |Atalho |
----------------------------
-| List |Lista simples |`l` |
-| Tree |Visualização em árvore |`t` |
-| Detail |Detalhes completos |`d` |
-
-## Operações Avançadas
-
-### Staging Parcial
-
-```BASH
-# Selecionar hunks
-bytebabe git stage --partial
-
-# Review de mudanças
-bytebabe git stage --review
-```
-
-### Filtros
-
-```BASH
-# Por extensão
-bytebabe git stage "*.js"
-
-# Por diretório
-bytebabe git stage src/
-```
-
-## Dicas Pro
-
-1. Use espaço para selecionar
-
-2. Enter para confirmar
-
-3. Tab para navegação
-
-4. ? para ajuda
-
-
-
-# Git Workflows 🔄
-
-## Workflows Suportados
-
-Tip:
-
-Em desenvolvimento
-
-### GitFlow
-
-```BASH
-# Iniciar GitFlow
-bytebabe git flow init
-
-# Nova feature
-bytebabe git flow feature start
-```
-
-### Trunk-Based
-
-```BASH
-# Setup inicial
-bytebabe git trunk setup
-
-# Nova branch curta
-bytebabe git trunk feature
-```
-
-## Commit Patterns
-
-### Commits Semânticos
-
-```BASH
-# Commit guiado
-bytebabe git commit
-
-Tipos disponíveis:
-- feat: Nova feature
-- fix: Correção de bug
-- docs: Documentação
-- style: Formatação
-- refactor: Refatoração
-- test: Testes
-- chore: Tarefas
-```
-
-## Automações
-
-Tip:
-
-Em desenvolvimento
-
-### Auto-Branch
-
-```BASH
-# Branch por ticket
-bytebabe git auto-branch TICKET-123
-
-# Branch por tipo
-bytebabe git auto-branch feature/descricao
-```
-
-### Auto-Merge
-
-```BASH
-# Merge automático
-bytebabe git auto-merge develop
-
-# Com testes
-bytebabe git auto-merge --with-tests
-```
-
-## Boas Práticas
-
-1. Use commits semânticos
-
-2. Mantenha branches atualizadas
-
-3. Faça merge frequente
-
-4. Revise antes do push
-
-
-
-# Git Hooks 🪝
-
-Tip:
-
-Em desenvolvimento
-
-## Hooks Disponíveis
-
-### Pre-Commit
-
-```BASH
-# Instalar hook
-bytebabe git hooks add pre-commit
-
-# Configurar
-bytebabe git hooks config pre-commit
-```
-
-### Commit-Msg
-
-```BASH
-# Validação de mensagem
-bytebabe git hooks add commit-msg
-
-# Template personalizado
-bytebabe git hooks template commit-msg
-```
-
-## Hooks Customizados
-
-### Criar Hook
-
-```BASH
-# Novo hook
-bytebabe git hooks create meu-hook
-
-# Editar hook
-bytebabe git hooks edit meu-hook
-```
-
-### Gerenciar Hooks
-
-```BASH
-# Listar hooks
-bytebabe git hooks list
-
-# Remover hook
-bytebabe git hooks remove hook-name
-```
-
-## Templates Prontos
-
-| Template |Uso |Comando |
---------------------------
-| Lint |Validação de código |`lint` |
-| Tests |Execução de testes |`test` |
-| Format |Formatação de código |`format` |
-| Verify |Validações diversas |`verify` |
-
-## Configuração
-
-```YAML
-hooks:
-  pre-commit:
-    - lint
-    - test
-  commit-msg:
-    - semantic
-    - jira
-```
-
-## Integração
-
-* CI/CD pipelines
-
-* Linters
-
-* Test runners
-
-* Code formatters
 
 
 
