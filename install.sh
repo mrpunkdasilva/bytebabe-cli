@@ -8,32 +8,45 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configurações
-REPO_DIR="$(pwd)"
+VERSION="1.0.0"
+REPO_URL="https://github.com/mrpunkdasilva/bytebabe"
+TARBALL_URL="${REPO_URL}/releases/download/v${VERSION}/bytebabe-${VERSION}.tar.gz"
+TEMP_DIR="/tmp/bytebabe-install"
+INSTALL_DIR="/opt/bytebabe"
 BIN_DIR="/usr/local/bin"
 EXECUTABLE="bytebabe"
 
-echo -e "${BLUE}⚡ Criando link para ByteBabe CLI...${NC}"
+echo -e "${BLUE}⚡ Instalando ByteBabe CLI v${VERSION}...${NC}"
 
-# Verifica permissões do diretório bin
-if [ ! -w "${BIN_DIR}" ]; then
-    echo -e "${YELLOW}Necessário sudo para criar link em ${BIN_DIR}${NC}"
-    if ! sudo -v; then
-        echo -e "${RED}Erro: Necessário privilégios sudo para instalação${NC}"
-        exit 1
-    fi
+# Cria diretório temporário
+rm -rf "$TEMP_DIR"
+mkdir -p "$TEMP_DIR"
+
+# Download do pacote
+echo -e "${BLUE}📥 Baixando pacote...${NC}"
+if ! curl -L "$TARBALL_URL" -o "${TEMP_DIR}/bytebabe.tar.gz"; then
+    echo -e "${RED}Erro: Falha ao baixar o pacote${NC}"
+    exit 1
 fi
 
-# Garante que o executável tem permissões corretas
-chmod +x "${REPO_DIR}/bin/bytebabe"
+# Extrai o pacote
+echo -e "${BLUE}📦 Extraindo arquivos...${NC}"
+tar -xzf "${TEMP_DIR}/bytebabe.tar.gz" -C "$TEMP_DIR"
 
-# Modifica o script principal para usar o caminho absoluto
-echo -e "${BLUE}Configurando script principal...${NC}"
-sed -i "s|BASE_DIR=.*|BASE_DIR=\"${REPO_DIR}\"|" "${REPO_DIR}/bin/bytebabe"
+# Cria diretório de instalação
+sudo mkdir -p "$INSTALL_DIR"
+sudo cp -r "${TEMP_DIR}"/bytebabe-*/* "$INSTALL_DIR/"
 
-# Cria link direto para o executável
-echo -e "${BLUE}Criando link para o executável...${NC}"
-sudo ln -sf "${REPO_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
+# Configura permissões
+sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
 
-echo -e "${GREEN}✔ Link criado com sucesso!${NC}"
+# Cria link simbólico
+echo -e "${BLUE}🔗 Criando link simbólico...${NC}"
+sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
+
+# Limpa arquivos temporários
+rm -rf "$TEMP_DIR"
+
+echo -e "${GREEN}✔ ByteBabe CLI instalado com sucesso!${NC}"
 echo -e "${BLUE}➜ Execute 'bytebabe --version' para testar${NC}"
 echo -e "${BLUE}➜ Execute 'bytebabe init' para começar${NC}"
