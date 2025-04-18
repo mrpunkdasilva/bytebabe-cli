@@ -68,6 +68,10 @@ case $1 in
     gh|github)
         source "${BASE_DIR}/commands/gh.sh" "${@:2}"
         ;;
+    # Novo comando Flux
+    flux)
+        source "${BASE_DIR}/commands/flux.sh" "${@:2}"
+        ;;
     --version|-v)
         show_version
         exit 0
@@ -92,6 +96,9 @@ case $1 in
         echo -e "  ${CYBER_GREEN}devtools${RESET}      Development tools"
         echo -e "    ${CYBER_GRAY}terminal${RESET}     Terminal configuration"
         echo -e "  ${CYBER_GREEN}docker${RESET}       Docker tools"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}API TOOLS:${RESET}"
+        echo -e "  ${CYBER_GREEN}flux${RESET}          Terminal API Studio 🌊"
         echo -e ""
         echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
         echo -e "  ${CYBER_GREEN}servers${RESET}       Server management"
