@@ -14,7 +14,7 @@ show_flux_header() {
 EOF
     echo -e "${CYBER_PURPLE}"
     echo -e "╔════════════════════════════════════════╗"
-    echo -e "║   ${CYBER_BLUE}⚡ ${CYBER_YELLOW}HTTP CLIENT v1.0 ${CYBER_PURPLE}⚡   ║"
+    echo -e "║   ${CYBER_BLUE}⚡ ${CYBER_YELLOW}HTTP CLIENT v1.0 ${CYBER_PURPLE}⚡   "
     echo -e "╚════════════════════════════════════════╝${RESET}"
     echo
 }
