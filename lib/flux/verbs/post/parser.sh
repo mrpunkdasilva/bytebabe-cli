@@ -2,6 +2,7 @@
 
 parse_post_args() {
     local params=""
+    local loading_style="default"
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
@@ -17,6 +18,10 @@ parse_post_args() {
                 params+=" -H 'Accept: application/json'"
                 shift
                 ;;
+            --loading-style)
+                loading_style="$2"
+                shift 2
+                ;;
             *)
                 echo -e "${CYBER_RED}Error: Unknown option '$1'${RESET}"
                 show_post_help
@@ -25,5 +30,5 @@ parse_post_args() {
         esac
     done
 
-    echo "$params"
+    echo "$params|$loading_style"
 }

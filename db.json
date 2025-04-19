@@ -1,0 +1,67 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Neo",
+      "email": "neo@matrix.com",
+      "role": "hacker"
+    },
+    {
+      "id": "2",
+      "name": "Trinity",
+      "email": "trinity@matrix.com",
+      "role": "operator"
+    },
+    {
+      "id": "8e93"
+    },
+    {
+      "id": "1e32"
+    },
+    {
+      "id": "6a27"
+    },
+    {
+      "id": "344b",
+      "name": "Morpheus",
+      "email": "morpheus@matrix.com",
+      "role": "captain"
+    },
+    {
+      "id": "ead9",
+      "name": "Morpheus",
+      "email": "morpheus@matrix.com",
+      "role": "captain"
+    },
+    {
+      "id": "ae6c",
+      "name": "Morpheus",
+      "email": "morpheus@matrix.com",
+      "role": "captain"
+    }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "The Matrix",
+      "author": "Neo",
+      "content": "Wake up, Neo..."
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "postId": 1,
+      "author": "Trinity",
+      "content": "Follow the white rabbit"
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "name": "Zion Defense",
+      "status": "active",
+      "priority": "high"
+    }
+  ]
+}

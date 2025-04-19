@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Carrega os módulos necessários
 source "$BASE_DIR/lib/flux/verbs/post/executor.sh"
 source "$BASE_DIR/lib/flux/verbs/post/parser.sh"
 source "$BASE_DIR/lib/flux/verbs/post/validator.sh"
@@ -8,8 +9,9 @@ source "$BASE_DIR/lib/flux/verbs/post/help.sh"
 execute_post() {
     local url="$1"
     shift
-    
-    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+
+    # Verifica se é pedido de ajuda
+    if [[ "$1" == "--help" || "$1" == "-h" || -z "$1" ]]; then
         show_post_help
         return 0
     fi
@@ -18,10 +20,13 @@ execute_post() {
         return 1
     fi
 
-    local params
-    if ! params=$(parse_post_args "$@"); then
+    local parsed_args
+    if ! parsed_args=$(parse_post_args "$@"); then
         return 1
     fi
 
-    perform_post_request "$url" "$params"
+    # Separa os parâmetros e o estilo de loading
+    IFS='|' read -r params loading_style <<< "$parsed_args"
+
+    perform_post_request "$url" "$params" "$loading_style"
 }
