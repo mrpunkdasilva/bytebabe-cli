@@ -1,25 +1,10 @@
 {
   "users": [
     {
-      "id": "1",
-      "name": "Neo",
-      "email": "neo@matrix.com",
-      "role": "hacker"
-    },
-    {
-      "id": "2",
-      "name": "Trinity",
-      "email": "trinity@matrix.com",
-      "role": "operator"
-    },
-    {
       "id": "8e93"
     },
     {
       "id": "1e32"
-    },
-    {
-      "id": "6a27"
     },
     {
       "id": "344b",
