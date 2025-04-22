@@ -44,6 +44,10 @@ case $1 in
     backend)
         source "${BASE_DIR}/commands/backend.sh" "${@:2}"
         ;;
+    # Novo comando Spring
+    spring)
+        source "${BASE_DIR}/commands/backend/spring/main.sh" "${@:2}"
+        ;;
     servers)
         source "${BASE_DIR}/commands/servers.sh" "${@:2}"
         ;;
@@ -68,7 +72,6 @@ case $1 in
     gh|github)
         source "${BASE_DIR}/commands/gh.sh" "${@:2}"
         ;;
-    # Novo comando Flux
     flux)
         source "${BASE_DIR}/commands/flux.sh" "${@:2}"
         ;;
@@ -84,28 +87,52 @@ case $1 in
         echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CORE COMMANDS:${RESET}"
         echo -e "  ${CYBER_GREEN}hello${RESET}         Receba uma mensagem cyberpunk aleatória"
         echo -e "  ${CYBER_GREEN}init${RESET}          Initialize development environment"
-        echo -e "  ${CYBER_GREEN}git${RESET}           Advanced Git tools"
+        echo -e "  ${CYBER_GREEN}edit${RESET}          Edit ByteBabe configuration files"
         echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}STACK COMMANDS:${RESET}"
-        echo -e "  ${CYBER_GREEN}frontend${RESET}      Install frontend stack (Node, React, etc)"
-        echo -e "  ${CYBER_GREEN}backend${RESET}       Install backend stack (Python, Java, etc)"
-        echo -e "  ${CYBER_GREEN}db${RESET}            Databases (PostgreSQL, MongoDB, etc)"
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT STACK:${RESET}"
+        echo -e "  ${CYBER_GREEN}frontend${RESET}      Frontend development tools"
+        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure frontend environment"
+        echo -e "  ${CYBER_GREEN}backend${RESET}       Backend development tools"
+        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure backend environment"
+        echo -e "    ${CYBER_GRAY}└─ install${RESET}   Install specific technology"
+        echo -e "  ${CYBER_GREEN}spring${RESET}        Spring Boot development tools"
+        echo -e "    ${CYBER_GRAY}└─ new${RESET}       Create new Spring Boot project"
+        echo -e "    ${CYBER_GRAY}└─ generate${RESET}  Generate Spring components"
         echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEV ENVIRONMENT:${RESET}"
-        echo -e "  ${CYBER_GREEN}ide${RESET}           IDEs (VSCode, IntelliJ, etc)"
-        echo -e "  ${CYBER_GREEN}devtools${RESET}      Development tools"
-        echo -e "    ${CYBER_GRAY}terminal${RESET}     Terminal configuration"
-        echo -e "  ${CYBER_GREEN}docker${RESET}       Docker tools"
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT TOOLS:${RESET}"
+        echo -e "  ${CYBER_GREEN}ide${RESET}           IDE management"
+        echo -e "    ${CYBER_GRAY}└─ vscode${RESET}    VSCode setup and extensions"
+        echo -e "    ${CYBER_GRAY}└─ intellij${RESET}  IntelliJ IDEA setup"
+        echo -e "  ${CYBER_GREEN}devtools${RESET}      Development utilities"
+        echo -e "    ${CYBER_GRAY}└─ terminal${RESET}  Terminal configuration (Zsh/OhMyZsh)"
+        echo -e "    ${CYBER_GRAY}└─ database${RESET}  Database tools (DBeaver/Compass)"
         echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}API TOOLS:${RESET}"
-        echo -e "  ${CYBER_GREEN}flux${RESET}          Terminal API Studio 🌊"
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}VERSION CONTROL:${RESET}"
+        echo -e "  ${CYBER_GREEN}git${RESET}           Advanced Git operations"
+        echo -e "  ${CYBER_GREEN}gh${RESET}, ${CYBER_GREEN}github${RESET}    GitHub CLI tools and shortcuts"
         echo -e ""
         echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
         echo -e "  ${CYBER_GREEN}servers${RESET}       Server management"
-        echo -e "  ${CYBER_GREEN}docker${RESET}        Docker containers and images"
+        echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Start/stop servers"
+        echo -e "    ${CYBER_GRAY}└─ status${RESET}    Check server status"
+        echo -e "  ${CYBER_GREEN}docker${RESET}        Docker operations"
+        echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Container management"
+        echo -e "    ${CYBER_GRAY}└─ logs${RESET}      Container logs"
         echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}UTILITIES:${RESET}"
-        echo -e "  ${CYBER_GREEN}--help | -h${RESET}   Show this message"
-        echo -e "  ${CYBER_GREEN}--version | -v${RESET} Show CLI version"
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DATABASE TOOLS:${RESET}"
+        echo -e "  ${CYBER_GREEN}db${RESET}            Database operations"
+        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure databases"
+        echo -e "    ${CYBER_GRAY}└─ install${RESET}   Install specific database"
+        echo -e "    ${CYBER_GRAY}└─ start/stop${RESET} Database service control"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}API TOOLS:${RESET}"
+        echo -e "  ${CYBER_GREEN}flux${RESET}          Terminal API Studio 🌊"
+        echo -e "  ${CYBER_GREEN}prime${RESET}, ${CYBER_GREEN}pm${RESET}     Prime API tools"
+        echo -e ""
+        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}SYSTEM:${RESET}"
+        echo -e "  ${CYBER_GREEN}--version${RESET}, ${CYBER_GREEN}-v${RESET}  Show CLI version"
+        echo -e "  ${CYBER_GREEN}--help${RESET}, ${CYBER_GREEN}-h${RESET}     Show this help message"
+        echo -e ""
+        echo -e "${CYBER_PURPLE}╰┈➤ ${CYBER_GRAY}For detailed command help, use: ${CYBER_CYAN}bytebabe <command> --help${RESET}"
         ;;
 esac
