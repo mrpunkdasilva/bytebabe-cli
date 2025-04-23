@@ -18,6 +18,7 @@ show_spring_help() {
     
     echo -e "\n${CYBER_BLUE}COMMANDS:${RESET}"
     echo -e "  ${CYBER_GREEN}new, create${RESET}    Create new Spring Boot project"
+    echo -e "  ${CYBER_GREEN}config${RESET}         Configure Spring settings"
     echo -e "  ${CYBER_GREEN}generate, g${RESET}    Generate Spring components"
     echo -e "  ${CYBER_GREEN}run${RESET}            Run Spring Boot application"
     echo -e "  ${CYBER_GREEN}build${RESET}          Build Spring Boot application"
@@ -82,4 +83,24 @@ show_spring_generate_help() {
     
     echo -e "\n  ${CYBER_CYAN}# Generate entity with package${RESET}"
     echo -e "  bytebabe spring g entity -n Customer -p com.example.api.model"
+}
+
+# Adiciona help específico para config
+show_spring_config_help() {
+    show_spring_header
+    
+    echo -e "\n${CYBER_BLUE}CONFIG COMMAND USAGE:${RESET}"
+    echo -e "  bytebabe spring config ${CYBER_YELLOW}<action> [options]${RESET}\n"
+    
+    echo -e "${CYBER_BLUE}Actions:${RESET}"
+    echo -e "  ${CYBER_GREEN}init${RESET}                    Initialize Spring configuration"
+    echo -e "  ${CYBER_GREEN}set-base${RESET} <package>      Set base package"
+    echo -e "  ${CYBER_GREEN}set-default${RESET} <type> <pkg> Set default package for component type"
+    echo -e "  ${CYBER_GREEN}show${RESET}                    Show current configuration\n"
+    
+    echo -e "${CYBER_BLUE}Examples:${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring config init${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring config set-base com.example.api${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring config set-default controller web${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring config show${RESET}"
 }
