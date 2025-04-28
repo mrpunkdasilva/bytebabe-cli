@@ -1,17 +1,28 @@
 #!/bin/bash
 
-# Resolve script base directory, even when called via symlink
-if [ -L "$0" ]; then
-    REAL_SCRIPT_PATH=$(readlink -f "$0")
-    BASE_DIR="/home/mrpunkdasilva/bytebabe"
-else
-    BASE_DIR="/home/mrpunkdasilva/bytebabe"
-fi
+# Carrega o diretório base
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# Load libraries with absolute paths
-source "${BASE_DIR}/lib/core/colors.sh"
-source "${BASE_DIR}/lib/core/helpers.sh"
-source "${BASE_DIR}/lib/utils/headers.sh"
+# Carrega as dependências
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
+source "$BASE_DIR/lib/core/alias_manager.sh"
+
+# Função para mostrar o header cyberpunk
+show_cyberpunk_header() {
+    echo -e "${CYBER_PINK}╔════════════════════════════════════════════════╗"
+    echo -e "║             BYTEBABE CLI                     ║"
+    echo -e "╚════════════════════════════════════════════════╝${RESET}"
+}
+
+# Expande aliases se necessário
+if [ $# -gt 0 ]; then
+    expanded=$(expand_alias "$1")
+    if [ ! -z "$expanded" ]; then
+        shift
+        set -- $expanded "$@"
+    fi
+fi
 
 VERSION="0.1.2"
 
@@ -28,7 +39,11 @@ show_version() {
 show_cyberpunk_header
 
 # Process commands
-case $1 in
+case "$1" in
+    alias)
+        shift
+        main "$@"
+        ;;
     hello)
         source "${BASE_DIR}/commands/hello.sh" "${@:2}"
         ;;

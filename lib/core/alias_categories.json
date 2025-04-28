@@ -1,0 +1,41 @@
+{
+  "categories": {
+    "dev": {
+      "description": "Comandos de desenvolvimento",
+      "aliases": {
+        "s": "serve",
+        "d": "dev",
+        "b": "build",
+        "t": "test",
+        "w": "watch"
+      }
+    },
+    "tools": {
+      "description": "Ferramentas e utilitários",
+      "aliases": {
+        "k": "kubectl",
+        "tf": "terraform",
+        "ans": "ansible",
+        "mk": "minikube"
+      }
+    },
+    "cloud": {
+      "description": "Comandos cloud",
+      "aliases": {
+        "aws": "aws",
+        "az": "azure",
+        "gcp": "gcloud",
+        "do": "doctl"
+      }
+    },
+    "system": {
+      "description": "Comandos do sistema",
+      "aliases": {
+        "sys": "system",
+        "net": "network",
+        "sec": "security",
+        "mon": "monitor"
+      }
+    }
+  }
+}

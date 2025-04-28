@@ -1,0 +1,42 @@
+{
+  "templates": {
+    "git": {
+      "description": "Template Git padrão",
+      "aliases": {
+        "gs": "git status",
+        "ga": "git add",
+        "gc": "git commit -m",
+        "gp": "git push",
+        "gl": "git pull",
+        "gco": "git checkout",
+        "gb": "git branch",
+        "gm": "git merge"
+      }
+    },
+    "docker": {
+      "description": "Template Docker padrão",
+      "aliases": {
+        "d": "docker",
+        "dc": "docker-compose",
+        "dps": "docker ps",
+        "di": "docker images",
+        "dex": "docker exec -it",
+        "dl": "docker logs",
+        "dp": "docker pull",
+        "dr": "docker run"
+      }
+    },
+    "kubernetes": {
+      "description": "Template Kubernetes padrão",
+      "aliases": {
+        "k": "kubectl",
+        "kg": "kubectl get",
+        "kd": "kubectl describe",
+        "ka": "kubectl apply -f",
+        "kl": "kubectl logs",
+        "ke": "kubectl exec -it",
+        "kn": "kubectl config set-context --current --namespace"
+      }
+    }
+  }
+}
