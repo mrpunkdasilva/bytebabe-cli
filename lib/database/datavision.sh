@@ -4,23 +4,19 @@
 HEADER_STYLE="${CYBER_BLUE}${BOLD}"
 BORDER_COLOR="${CYBER_PURPLE}"
 DATA_COLOR="${CYBER_GREEN}"
-NULL_COLOR="${CYBER_RED}"
-COUNT_COLOR="${CYBER_YELLOW}"
 
-# Símbolos para bordas e decorações
-declare -A SYMBOLS=(
-    ["top_left"]="╭"
-    ["top_right"]="╮"
-    ["bottom_left"]="╰"
-    ["bottom_right"]="╯"
-    ["horizontal"]="─"
-    ["vertical"]="│"
-    ["t_down"]="┬"
-    ["t_up"]="┴"
-    ["t_right"]="├"
-    ["t_left"]="┤"
-    ["cross"]="┼"
-)
+# Configurações
+CONFIG_DIR="$HOME/.bytebabe/datavision"
+CONNECTIONS_FILE="$CONFIG_DIR/connections.json"
+HISTORY_FILE="$CONFIG_DIR/query_history.json"
+EXPORT_DIR="$CONFIG_DIR/exports"
+
+# Inicializa estrutura
+init_config() {
+    mkdir -p "$CONFIG_DIR" "$EXPORT_DIR"
+    [ ! -f "$CONNECTIONS_FILE" ] && echo '{"connections":[]}' > "$CONNECTIONS_FILE"
+    [ ! -f "$HISTORY_FILE" ] && echo '{"queries":[]}' > "$HISTORY_FILE"
+}
 
 # Função principal do DataVision
 datavision_main() {
@@ -28,20 +24,26 @@ datavision_main() {
     shift
 
     case "$command" in
-        "show")
-            show_table_data "$@"
+        "connect")
+            connect_database "$@"
             ;;
-        "schema")
-            show_table_schema "$@"
+        "add")
+            add_connection "$@"
             ;;
-        "stats")
-            show_table_stats "$@"
+        "list")
+            list_connections
             ;;
-        "search")
-            search_data "$@"
+        "remove")
+            remove_connection "$@"
             ;;
-        "relations")
-            show_table_relations "$@"
+        "edit")
+            edit_connection "$@"
+            ;;
+        "import")
+            import_connection "$@"
+            ;;
+        "export")
+            export_connection "$@"
             ;;
         *)
             show_datavision_help
@@ -49,261 +51,448 @@ datavision_main() {
     esac
 }
 
-# Mostra dados da tabela com paginação
-show_table_data() {
-    local table="$1"
-    local page="${2:-1}"
-    local limit="${3:-10}"
-    local offset=$(( (page - 1) * limit ))
+# Adiciona nova conexão
+add_connection() {
+    echo -e "\n${HEADER_STYLE}📊 DataVision - Nova Conexão${RESET}\n"
 
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Visualizando $table${RESET}\n"
-
-    # Executa query baseada no tipo de banco
-    case "$DB_TYPE" in
-        "postgres")
-            psql -U "$DB_USER" -d "$DB_NAME" -c "\
-                SELECT COUNT(*) FROM $table;
-                SELECT * FROM $table LIMIT $limit OFFSET $offset;"
-            ;;
-        "mysql")
-            mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "\
-                SELECT COUNT(*) FROM $table;
-                SELECT * FROM $table LIMIT $offset, $limit;"
-            ;;
-    esac | format_table_output
-}
-
-# Formata saída em tabela estilizada
-format_table_output() {
-    # Lê os dados e formata em uma tabela bonita com bordas
-    local IFS=$'\n'
-    local -a lines=()
-    while read -r line; do
-        lines+=("$line")
-    done
-
-    # Processa cabeçalho
-    local -a headers=(${lines[0]})
-    local -a widths=()
-    for header in "${headers[@]}"; do
-        widths+=(${#header})
-    done
-
-    # Calcula larguras máximas das colunas
-    for line in "${lines[@]:1}"; do
-        local -a fields=($line)
-        for i in "${!fields[@]}"; do
-            if [ ${#fields[$i]} -gt ${widths[$i]} ]; then
-                widths[$i]=${#fields[$i]}
-            fi
-        done
-    done
-
-    # Desenha cabeçalho
-    draw_table_border "top" widths
-    printf "${BORDER_COLOR}${SYMBOLS[vertical]}${RESET}"
-    for i in "${!headers[@]}"; do
-        printf " ${HEADER_STYLE}%-*s${RESET} ${BORDER_COLOR}${SYMBOLS[vertical]}${RESET}" "${widths[$i]}" "${headers[$i]}"
-    done
+    # Coleta informações da conexão
+    read -p "Nome da conexão: " name
+    read -p "Tipo (mysql/postgres/mongodb): " type
+    read -p "Host: " host
+    read -p "Porta: " port
+    read -p "Usuário: " user
+    read -s -p "Senha: " password
     echo
-    draw_table_border "middle" widths
+    read -p "Database: " database
 
-    # Desenha linhas de dados
-    for line in "${lines[@]:1}"; do
-        local -a fields=($line)
-        printf "${BORDER_COLOR}${SYMBOLS[vertical]}${RESET}"
-        for i in "${!fields[@]}"; do
-            if [ "${fields[$i]}" == "NULL" ]; then
-                printf " ${NULL_COLOR}%-*s${RESET} ${BORDER_COLOR}${SYMBOLS[vertical]}${RESET}" "${widths[$i]}" "NULL"
-            else
-                printf " ${DATA_COLOR}%-*s${RESET} ${BORDER_COLOR}${SYMBOLS[vertical]}${RESET}" "${widths[$i]}" "${fields[$i]}"
-            fi
-        done
-        echo
-    done
+    # Cria objeto JSON da conexão
+    local connection="{\"name\":\"$name\",\"type\":\"$type\",\"host\":\"$host\",\"port\":$port,\"user\":\"$user\",\"password\":\"$password\",\"database\":\"$database\"}"
+    
+    # Adiciona ao arquivo de conexões
+    local temp_file=$(mktemp)
+    jq ".connections += [$connection]" "$CONNECTIONS_FILE" > "$temp_file"
+    mv "$temp_file" "$CONNECTIONS_FILE"
 
-    # Desenha rodapé
-    draw_table_border "bottom" widths
+    echo -e "\n${CYBER_GREEN}✓ Conexão adicionada com sucesso!${RESET}"
 }
 
-# Desenha bordas da tabela
-draw_table_border() {
-    local border_type="$1"
-    local -n widths_ref="$2"
+# Lista conexões salvas
+list_connections() {
+    echo -e "\n${HEADER_STYLE}📊 DataVision - Conexões Salvas${RESET}\n"
+    
+    jq -r '.connections[] | "Nome: \(.name)\nTipo: \(.type)\nHost: \(.host)\nPorta: \(.port)\nDatabase: \(.database)\n---"' "$CONNECTIONS_FILE"
+}
 
-    printf "${BORDER_COLOR}"
-    case "$border_type" in
-        "top")
-            printf "${SYMBOLS[top_left]}"
-            for i in "${!widths_ref[@]}"; do
-                printf "%*s" "$((widths_ref[i] + 2))" | tr ' ' "${SYMBOLS[horizontal]}"
-                if [ $i -lt $((${#widths_ref[@]} - 1)) ]; then
-                    printf "${SYMBOLS[t_down]}"
-                fi
-            done
-            printf "${SYMBOLS[top_right]}"
+# Remove conexão
+remove_connection() {
+    local name="$1"
+    if [ -z "$name" ]; then
+        echo -e "${CYBER_RED}✘ Nome da conexão não especificado${RESET}"
+        return 1
+    fi
+
+    local temp_file=$(mktemp)
+    jq "del(.connections[] | select(.name == \"$name\"))" "$CONNECTIONS_FILE" > "$temp_file"
+    mv "$temp_file" "$CONNECTIONS_FILE"
+
+    echo -e "${CYBER_GREEN}✓ Conexão removida com sucesso!${RESET}"
+}
+
+# Conecta ao banco de dados
+connect_database() {
+    local name="$1"
+    if [ -z "$name" ]; then
+        echo -e "${CYBER_RED}✘ Nome da conexão não especificado${RESET}"
+        return 1
+    fi
+
+    # Obtém dados da conexão
+    local connection=$(jq -r ".connections[] | select(.name == \"$name\")" "$CONNECTIONS_FILE")
+    if [ -z "$connection" ]; then
+        echo -e "${CYBER_RED}✘ Conexão não encontrada${RESET}"
+        return 1
+    fi
+
+    local type=$(echo $connection | jq -r '.type')
+    local host=$(echo $connection | jq -r '.host')
+    local port=$(echo $connection | jq -r '.port')
+    local user=$(echo $connection | jq -r '.user')
+    local password=$(echo $connection | jq -r '.password')
+    local database=$(echo $connection | jq -r '.database')
+
+    # Conecta baseado no tipo de banco
+    case "$type" in
+        "mysql")
+            mysql -h "$host" -P "$port" -u "$user" -p"$password" "$database"
             ;;
-        "middle")
-            printf "${SYMBOLS[t_right]}"
-            for i in "${!widths_ref[@]}"; do
-                printf "%*s" "$((widths_ref[i] + 2))" | tr ' ' "${SYMBOLS[horizontal]}"
-                if [ $i -lt $((${#widths_ref[@]} - 1)) ]; then
-                    printf "${SYMBOLS[cross]}"
-                fi
-            done
-            printf "${SYMBOLS[t_left]}"
+        "postgres")
+            PGPASSWORD="$password" psql -h "$host" -p "$port" -U "$user" "$database"
             ;;
-        "bottom")
-            printf "${SYMBOLS[bottom_left]}"
-            for i in "${!widths_ref[@]}"; do
-                printf "%*s" "$((widths_ref[i] + 2))" | tr ' ' "${SYMBOLS[horizontal]}"
-                if [ $i -lt $((${#widths_ref[@]} - 1)) ]; then
-                    printf "${SYMBOLS[t_up]}"
-                fi
-            done
-            printf "${SYMBOLS[bottom_right]}"
+        "mongodb")
+            mongosh "mongodb://$user:$password@$host:$port/$database"
+            ;;
+        *)
+            echo -e "${CYBER_RED}✘ Tipo de banco não suportado${RESET}"
+            return 1
             ;;
     esac
-    printf "${RESET}\n"
 }
 
-# Mostra estatísticas da tabela
-show_table_stats() {
-    local table="$1"
-    
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Estatísticas de $table${RESET}\n"
+# Importa conexões
+import_connection() {
+    local file="$1"
+    if [ ! -f "$file" ]; then
+        echo -e "${CYBER_RED}✘ Arquivo não encontrado${RESET}"
+        return 1
+    fi
 
-    case "$DB_TYPE" in
-        "postgres")
-            psql -U "$DB_USER" -d "$DB_NAME" -c "\
-                SELECT 
-                    (SELECT COUNT(*) FROM $table) as total_rows,
-                    pg_size_pretty(pg_total_relation_size('$table')) as table_size,
-                    (SELECT COUNT(*) FROM information_schema.columns WHERE table_name = '$table') as column_count;"
-            ;;
-        "mysql")
-            mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "\
-                SELECT 
-                    (SELECT COUNT(*) FROM $table) as total_rows,
-                    (SELECT COUNT(*) FROM information_schema.columns WHERE table_name = '$table') as column_count,
-                    (SELECT data_length + index_length FROM information_schema.tables WHERE table_name = '$table') as table_size;"
-            ;;
-    esac | format_table_output
+    jq -s '.[0].connections + .[1].connections | {connections: .}' "$CONNECTIONS_FILE" "$file" > "$CONNECTIONS_FILE.tmp"
+    mv "$CONNECTIONS_FILE.tmp" "$CONNECTIONS_FILE"
+
+    echo -e "${CYBER_GREEN}✓ Conexões importadas com sucesso!${RESET}"
 }
 
-# Mostra esquema da tabela
-show_table_schema() {
-    local table="$1"
-
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Esquema de $table${RESET}\n"
-
-    case "$DB_TYPE" in
-        "postgres")
-            psql -U "$DB_USER" -d "$DB_NAME" -c "\
-                SELECT 
-                    column_name,
-                    data_type,
-                    is_nullable,
-                    column_default
-                FROM information_schema.columns 
-                WHERE table_name = '$table'
-                ORDER BY ordinal_position;"
-            ;;
-        "mysql")
-            mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "\
-                SELECT 
-                    column_name,
-                    data_type,
-                    is_nullable,
-                    column_default
-                FROM information_schema.columns 
-                WHERE table_name = '$table'
-                ORDER BY ordinal_position;"
-            ;;
-    esac | format_table_output
-}
-
-# Busca dados na tabela
-search_data() {
-    local table="$1"
-    local column="$2"
-    local value="$3"
-
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Buscando em $table${RESET}\n"
-
-    case "$DB_TYPE" in
-        "postgres")
-            psql -U "$DB_USER" -d "$DB_NAME" -c "\
-                SELECT * FROM $table 
-                WHERE $column ILIKE '%$value%'
-                LIMIT 10;"
-            ;;
-        "mysql")
-            mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "\
-                SELECT * FROM $table 
-                WHERE $column LIKE '%$value%'
-                LIMIT 10;"
-            ;;
-    esac | format_table_output
-}
-
-# Mostra relações da tabela
-show_table_relations() {
-    local table="$1"
-
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Relações de $table${RESET}\n"
-
-    case "$DB_TYPE" in
-        "postgres")
-            psql -U "$DB_USER" -d "$DB_NAME" -c "\
-                SELECT
-                    tc.table_schema, 
-                    tc.constraint_name, 
-                    tc.table_name, 
-                    kcu.column_name,
-                    ccu.table_name AS foreign_table_name,
-                    ccu.column_name AS foreign_column_name
-                FROM 
-                    information_schema.table_constraints AS tc 
-                    JOIN information_schema.key_column_usage AS kcu
-                      ON tc.constraint_name = kcu.constraint_name
-                    JOIN information_schema.constraint_column_usage AS ccu
-                      ON ccu.constraint_name = tc.constraint_name
-                WHERE tc.table_name = '$table'
-                  AND tc.constraint_type = 'FOREIGN KEY';"
-            ;;
-        "mysql")
-            mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" -e "\
-                SELECT
-                    TABLE_NAME as table_name,
-                    COLUMN_NAME as column_name,
-                    REFERENCED_TABLE_NAME as foreign_table_name,
-                    REFERENCED_COLUMN_NAME as foreign_column_name
-                FROM
-                    information_schema.KEY_COLUMN_USAGE
-                WHERE
-                    TABLE_NAME = '$table'
-                    AND REFERENCED_TABLE_NAME IS NOT NULL;"
-            ;;
-    esac | format_table_output
+# Exporta conexões
+export_connection() {
+    local output="${1:-datavision_connections.json}"
+    cp "$CONNECTIONS_FILE" "$output"
+    echo -e "${CYBER_GREEN}✓ Conexões exportadas para $output${RESET}"
 }
 
 # Ajuda do DataVision
 show_datavision_help() {
-    echo -e "\n${HEADER_STYLE}📊 DataVision - Visualizador de Banco de Dados${RESET}\n"
+    echo -e "\n${HEADER_STYLE}📊 DataVision - Gerenciador de Conexões de Banco de Dados${RESET}\n"
     echo -e "${CYBER_YELLOW}Uso:${RESET}"
     echo -e "  bytebabe datavision ${CYBER_GREEN}<comando>${RESET} ${CYBER_BLUE}[opções]${RESET}\n"
     
     echo -e "${CYBER_YELLOW}Comandos:${RESET}"
-    echo -e "  ${CYBER_GREEN}show${RESET} ${CYBER_BLUE}<tabela> [página] [limite]${RESET}    Mostra dados da tabela"
-    echo -e "  ${CYBER_GREEN}schema${RESET} ${CYBER_BLUE}<tabela>${RESET}                    Mostra esquema da tabela"
-    echo -e "  ${CYBER_GREEN}stats${RESET} ${CYBER_BLUE}<tabela>${RESET}                     Mostra estatísticas da tabela"
-    echo -e "  ${CYBER_GREEN}search${RESET} ${CYBER_BLUE}<tabela> <coluna> <valor>${RESET}  Busca dados na tabela"
-    echo -e "  ${CYBER_GREEN}relations${RESET} ${CYBER_BLUE}<tabela>${RESET}                 Mostra relações da tabela\n"
+    echo -e "  ${CYBER_GREEN}connect${RESET} ${CYBER_BLUE}<nome>${RESET}          Conecta a um banco configurado"
+    echo -e "  ${CYBER_GREEN}add${RESET}                        Adiciona nova conexão"
+    echo -e "  ${CYBER_GREEN}list${RESET}                       Lista todas as conexões"
+    echo -e "  ${CYBER_GREEN}remove${RESET} ${CYBER_BLUE}<nome>${RESET}          Remove uma conexão"
+    echo -e "  ${CYBER_GREEN}edit${RESET} ${CYBER_BLUE}<nome>${RESET}            Edita uma conexão"
+    echo -e "  ${CYBER_GREEN}import${RESET} ${CYBER_BLUE}<arquivo>${RESET}       Importa conexões de arquivo"
+    echo -e "  ${CYBER_GREEN}export${RESET} ${CYBER_BLUE}[arquivo]${RESET}       Exporta conexões para arquivo\n"
     
     echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
-    echo -e "  bytebabe datavision show users"
-    echo -e "  bytebabe datavision schema products"
-    echo -e "  bytebabe datavision search users name john"
-    echo -e "  bytebabe datavision stats orders\n"
+    echo -e "  bytebabe datavision add"
+    echo -e "  bytebabe datavision connect my-postgres"
+    echo -e "  bytebabe datavision list"
+    echo -e "  bytebabe datavision export backup.json\n"
 }
+
+# Menu principal de gerenciamento
+manage_database() {
+    local conn_name="$1"
+    local conn_data=$(get_connection "$conn_name")
+    
+    while true; do
+        clear
+        echo -e "\n${HEADER_STYLE}📊 DataVision - Database Manager${RESET}"
+        echo -e "${CYBER_BLUE}Connected to:${RESET} $conn_name\n"
+
+        local options=(
+            "📋 Browse Tables"
+            "📝 Execute Query"
+            "📊 Table Structure"
+            "📤 Export Data"
+            "📥 Import Data"
+            "🔄 Backup/Restore"
+            "📈 Database Info"
+            "📋 Query History"
+            "⬅️  Back"
+        )
+
+        choose_from_menu "Select operation:" choice "${options[@]}"
+
+        case $choice in
+            *Tables*)
+                browse_tables "$conn_data"
+                ;;
+            *Query*)
+                execute_query "$conn_data"
+                ;;
+            *Structure*)
+                show_table_structure "$conn_data"
+                ;;
+            *Export*)
+                export_data "$conn_data"
+                ;;
+            *Import*)
+                import_data "$conn_data"
+                ;;
+            *Backup*)
+                backup_restore_menu "$conn_data"
+                ;;
+            *Info*)
+                show_database_info "$conn_data"
+                ;;
+            *History*)
+                show_query_history "$conn_name"
+                ;;
+            *Back*)
+                break
+                ;;
+        esac
+    done
+}
+
+# Navegar tabelas
+browse_tables() {
+    local conn_data="$1"
+    local db_type=$(echo "$conn_data" | jq -r '.type')
+    local tables
+
+    case $db_type in
+        "mysql")
+            tables=$(mysql_list_tables "$conn_data")
+            ;;
+        "postgres")
+            tables=$(postgres_list_tables "$conn_data")
+            ;;
+        "mongodb")
+            tables=$(mongo_list_collections "$conn_data")
+            ;;
+    esac
+
+    while true; do
+        echo -e "\n${HEADER_STYLE}📋 Tables${RESET}\n"
+        local table_options=($tables "⬅️  Back")
+        
+        choose_from_menu "Select table:" table_choice "${table_options[@]}"
+        
+        [ "$table_choice" = "⬅️  Back" ] && break
+        
+        show_table_menu "$conn_data" "$table_choice"
+    done
+}
+
+# Menu de operações da tabela
+show_table_menu() {
+    local conn_data="$1"
+    local table_name="$2"
+
+    while true; do
+        echo -e "\n${HEADER_STYLE}Table: $table_name${RESET}\n"
+        
+        local options=(
+            "👀 View Data"
+            "📊 Show Structure"
+            "📝 Edit Data"
+            "📤 Export Table"
+            "🗑️  Truncate Table"
+            "⬅️  Back"
+        )
+
+        choose_from_menu "Select operation:" choice "${options[@]}"
+
+        case $choice in
+            *View*)
+                view_table_data "$conn_data" "$table_name"
+                ;;
+            *Structure*)
+                show_table_structure "$conn_data" "$table_name"
+                ;;
+            *Edit*)
+                edit_table_data "$conn_data" "$table_name"
+                ;;
+            *Export*)
+                export_table "$conn_data" "$table_name"
+                ;;
+            *Truncate*)
+                truncate_table "$conn_data" "$table_name"
+                ;;
+            *Back*)
+                break
+                ;;
+        esac
+    done
+}
+
+# Executar query
+execute_query() {
+    local conn_data="$1"
+    local db_type=$(echo "$conn_data" | jq -r '.type')
+    
+    echo -e "\n${HEADER_STYLE}📝 SQL Query Editor${RESET}\n"
+    echo -e "${CYBER_YELLOW}Enter your query (end with semicolon):${RESET}"
+    
+    local query=""
+    while IFS= read -r line; do
+        [ "$line" = ";" ] && break
+        query="$query$line"
+    done
+
+    case $db_type in
+        "mysql")
+            mysql_execute_query "$conn_data" "$query"
+            ;;
+        "postgres")
+            postgres_execute_query "$conn_data" "$query"
+            ;;
+        "mongodb")
+            mongo_execute_query "$conn_data" "$query"
+            ;;
+    esac
+
+    # Salva no histórico
+    save_query_history "$(echo "$conn_data" | jq -r '.name')" "$query"
+}
+
+# Exportar dados
+export_data() {
+    local conn_data="$1"
+    local db_type=$(echo "$conn_data" | jq -r '.type')
+    
+    echo -e "\n${HEADER_STYLE}📤 Export Data${RESET}\n"
+    
+    local options=(
+        "📋 Export Table"
+        "📊 Export Query Result"
+        "📦 Export Full Database"
+        "⬅️  Back"
+    )
+
+    choose_from_menu "Select export type:" choice "${options[@]}"
+
+    case $choice in
+        *Table*)
+            export_table_data "$conn_data"
+            ;;
+        *Query*)
+            export_query_result "$conn_data"
+            ;;
+        *Database*)
+            export_full_database "$conn_data"
+            ;;
+    esac
+}
+
+# Importar dados
+import_data() {
+    local conn_data="$1"
+    local db_type=$(echo "$conn_data" | jq -r '.type')
+    
+    echo -e "\n${HEADER_STYLE}📥 Import Data${RESET}\n"
+    
+    local options=(
+        "📋 Import CSV"
+        "📊 Import SQL"
+        "📦 Import Backup"
+        "⬅️  Back"
+    )
+
+    choose_from_menu "Select import type:" choice "${options[@]}"
+
+    case $choice in
+        *CSV*)
+            import_csv "$conn_data"
+            ;;
+        *SQL*)
+            import_sql "$conn_data"
+            ;;
+        *Backup*)
+            import_backup "$conn_data"
+            ;;
+    esac
+}
+
+# Funções auxiliares para cada tipo de banco
+
+# MySQL
+mysql_list_tables() {
+    local conn_data="$1"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    mysql -h "$host" -P "$port" -u "$user" -p"$pass" "$db" -N -e "SHOW TABLES;"
+}
+
+mysql_execute_query() {
+    local conn_data="$1"
+    local query="$2"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    mysql -h "$host" -P "$port" -u "$user" -p"$pass" "$db" -e "$query"
+}
+
+# PostgreSQL
+postgres_list_tables() {
+    local conn_data="$1"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    PGPASSWORD="$pass" psql -h "$host" -p "$port" -U "$user" -d "$db" -t -c "\dt"
+}
+
+postgres_execute_query() {
+    local conn_data="$1"
+    local query="$2"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    PGPASSWORD="$pass" psql -h "$host" -p "$port" -U "$user" -d "$db" -c "$query"
+}
+
+# MongoDB
+mongo_list_collections() {
+    local conn_data="$1"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    mongosh "mongodb://$user:$pass@$host:$port/$db" --quiet --eval "db.getCollectionNames()"
+}
+
+mongo_execute_query() {
+    local conn_data="$1"
+    local query="$2"
+    local host=$(echo "$conn_data" | jq -r '.host')
+    local port=$(echo "$conn_data" | jq -r '.port')
+    local user=$(echo "$conn_data" | jq -r '.user')
+    local pass=$(echo "$conn_data" | jq -r '.password')
+    local db=$(echo "$conn_data" | jq -r '.database')
+
+    mongosh "mongodb://$user:$pass@$host:$port/$db" --quiet --eval "$query"
+}
+
+# Histórico de queries
+save_query_history() {
+    local conn_name="$1"
+    local query="$2"
+    local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+    
+    local new_entry="{\"connection\":\"$conn_name\",\"query\":\"$query\",\"timestamp\":\"$timestamp\"}"
+    local temp_file=$(mktemp)
+    
+    jq ".queries += [$new_entry]" "$HISTORY_FILE" > "$temp_file"
+    mv "$temp_file" "$HISTORY_FILE"
+}
+
+show_query_history() {
+    local conn_name="$1"
+    
+    echo -e "\n${HEADER_STYLE}📋 Query History${RESET}\n"
+    
+    jq -r ".queries[] | select(.connection == \"$conn_name\") | \"\(.timestamp): \(.query)\"" "$HISTORY_FILE"
+    
+    read -n 1 -s -r -p "Press any key to continue..."
+}
+
+# Inicializa configurações
+init_config
