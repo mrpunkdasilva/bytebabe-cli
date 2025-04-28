@@ -142,15 +142,15 @@ case "$1" in
             help|--help|-h)
                 show_spring_generate_help
                 ;;
-            controller)
+            controller|ctrl)
                 shift
                 generate_controller "$@"
                 ;;
-            service)
+            service|svc)
                 shift
                 generate_service "$@"
                 ;;
-            repository)
+            repository|repo)
                 shift
                 generate_repository "$@"
                 ;;
@@ -169,6 +169,20 @@ case "$1" in
             security)
                 shift
                 generate_security_config "$@"
+                ;;
+            all)
+                shift
+                local name="$1"
+                if [[ -z "$name" ]]; then
+                    echo -e "${CYBER_RED}✘ Nome da entidade é obrigatório${RESET}"
+                    exit 1
+                fi
+                generate_entity "$name"
+                generate_repository "$name"
+                generate_service "$name"
+                generate_controller "$name"
+                generate_dto "$name"
+                echo -e "${CYBER_GREEN}✔ Todos os componentes foram gerados para ${name}${RESET}"
                 ;;
             *)
                 echo -e "${CYBER_RED}✘ Gerador não encontrado: $1${RESET}"
@@ -207,12 +221,53 @@ case "$1" in
     test)
         shift
         case "$1" in
-            help|--help|-h)
-                show_spring_test_help
+            service)
+                shift
+                generate_service_test "$@"
+                ;;
+            controller)
+                shift
+                generate_controller_test "$@"
+                ;;
+            run)
+                shift
+                mvn test "$@"
                 ;;
             *)
-                check_requirements
-                mvn test "$@"
+                show_spring_test_help
+                ;;
+        esac
+        ;;
+
+    docs)
+        shift
+        case "$1" in
+            setup)
+                setup_swagger
+                ;;
+            *)
+                show_spring_docs_help
+                ;;
+        esac
+        ;;
+
+    docker)
+        shift
+        case "$1" in
+            setup)
+                generate_docker_files
+                ;;
+            build)
+                docker-compose build
+                ;;
+            up)
+                docker-compose up -d
+                ;;
+            down)
+                docker-compose down
+                ;;
+            *)
+                show_spring_docker_help
                 ;;
         esac
         ;;
