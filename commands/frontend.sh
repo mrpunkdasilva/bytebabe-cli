@@ -10,6 +10,7 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # Importa módulos
 source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
+source "$BASE_DIR/lib/frontend/main.sh"
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO
@@ -177,6 +178,175 @@ show_help() {
     echo -e "  ${CYBER_YELLOW}bytebabe frontend help${RESET}"
     cyber_divider
 }
+
+show_frontend_help() {
+    echo -e "${CYBER_BLUE}${CYBER_BOLD}FRONTEND CLI - COMANDOS DISPONÍVEIS${RESET}"
+    echo ""
+    echo -e "${CYBER_YELLOW}Uso: bytebabe frontend <comando> [opções]${RESET}"
+    echo ""
+    echo -e "${CYBER_PINK}Comandos Gerais:${RESET}"
+    echo -e "  ${CYBER_GREEN}new, create${RESET}    Cria novo projeto frontend"
+    echo -e "  ${CYBER_GREEN}generate, g${RESET}    Gera componentes e outros recursos"
+    echo -e "  ${CYBER_GREEN}install, i${RESET}     Instala dependências"
+    echo -e "  ${CYBER_GREEN}test, t${RESET}        Executa testes"
+    echo -e "  ${CYBER_GREEN}build, b${RESET}       Compila o projeto"
+    echo -e "  ${CYBER_GREEN}serve, s${RESET}       Inicia servidor de desenvolvimento"
+    echo ""
+    echo -e "${CYBER_PINK}Comandos de Geração:${RESET}"
+    echo -e "  ${CYBER_GREEN}g component${RESET}    Gera novo componente"
+    echo -e "  ${CYBER_GREEN}g service${RESET}      Gera novo serviço"
+    echo -e "  ${CYBER_GREEN}g store${RESET}        Gera nova store (Vue/React)"
+    echo -e "  ${CYBER_GREEN}g hook${RESET}         Gera novo hook (React)"
+    echo -e "  ${CYBER_GREEN}g guard${RESET}        Gera novo guard (Angular)"
+    echo ""
+    echo -e "${CYBER_PINK}Exemplos:${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe frontend new react my-app${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe frontend g component UserProfile${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe frontend g service Auth${RESET}"
+}
+
+# Handler principal de comandos
+case "$1" in
+    new|create)
+        shift
+        case "$1" in
+            react)
+                npx create-react-app "$2" --template typescript
+                ;;
+            vue)
+                npm create vue@latest "$2"
+                ;;
+            angular)
+                npx @angular/cli new "$2"
+                ;;
+            help|--help|-h)
+                echo -e "${CYBER_BLUE}Uso: bytebabe frontend new <framework> <nome-projeto>${RESET}"
+                echo -e "Frameworks disponíveis: react, vue, angular"
+                ;;
+            *)
+                echo -e "${CYBER_RED}✘ Framework não especificado ou não suportado${RESET}"
+                echo -e "Use ${CYBER_YELLOW}bytebabe frontend new --help${RESET} para mais informações"
+                exit 1
+                ;;
+        esac
+        ;;
+    
+    generate|g)
+        shift
+        case "$1" in
+            component|c)
+                shift
+                generate_component "$1"
+                ;;
+            service|s)
+                shift
+                generate_service "$1"
+                ;;
+            store)
+                shift
+                framework=$(detect_framework)
+                case "$framework" in
+                    "react")
+                        generate_react_context "$1"
+                        ;;
+                    "vue")
+                        generate_vue_store "$1"
+                        ;;
+                    *)
+                        echo -e "${CYBER_RED}✘ Store não suportada para este framework${RESET}"
+                        ;;
+                esac
+                ;;
+            hook)
+                shift
+                framework=$(detect_framework)
+                if [[ "$framework" == "react" ]]; then
+                    generate_react_hook "$1"
+                else
+                    echo -e "${CYBER_RED}✘ Hooks são específicos do React${RESET}"
+                fi
+                ;;
+            guard)
+                shift
+                framework=$(detect_framework)
+                if [[ "$framework" == "angular" ]]; then
+                    generate_angular_guard "$1"
+                else
+                    echo -e "${CYBER_RED}✘ Guards são específicos do Angular${RESET}"
+                fi
+                ;;
+            *)
+                echo -e "${CYBER_RED}✘ Tipo de geração não especificado ou inválido${RESET}"
+                echo -e "Tipos disponíveis: component, service, store, hook, guard"
+                ;;
+        esac
+        ;;
+    
+    install|i)
+        shift
+        case "$1" in
+            deps)
+                npm install
+                ;;
+            dev)
+                shift
+                npm install --save-dev "$@"
+                ;;
+            *)
+                npm install "$@"
+                ;;
+        esac
+        ;;
+    
+    test|t)
+        shift
+        case "$1" in
+            watch)
+                npm run test:watch
+                ;;
+            coverage)
+                npm run test:coverage
+                ;;
+            *)
+                npm test "$@"
+                ;;
+        esac
+        ;;
+    
+    build|b)
+        shift
+        case "$1" in
+            prod)
+                npm run build:prod
+                ;;
+            *)
+                npm run build
+                ;;
+        esac
+        ;;
+    
+    serve|s)
+        shift
+        case "$1" in
+            prod)
+                npm run serve:prod
+                ;;
+            *)
+                npm run start
+                ;;
+        esac
+        ;;
+    
+    help|--help|-h)
+        show_frontend_help
+        ;;
+    
+    *)
+        echo -e "${CYBER_RED}✘ Comando não reconhecido: $1${RESET}"
+        show_frontend_help
+        exit 1
+        ;;
+esac
 
 # ==========================================
 # FUNÇÃO PRINCIPAL
