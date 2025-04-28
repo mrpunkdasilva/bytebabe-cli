@@ -11,6 +11,9 @@ source "$BASE_DIR/lib/backend/spring/config.sh"
 source "$BASE_DIR/lib/backend/spring/generators.sh"
 source "$BASE_DIR/lib/backend/spring/project.sh"
 source "$BASE_DIR/lib/backend/spring/commands.sh"
+source "$BASE_DIR/lib/backend/spring/templates.sh"
+source "$BASE_DIR/lib/backend/spring/dependency.sh"
+source "$BASE_DIR/lib/backend/spring/profile.sh"
 
 # Verifica se Java e Maven estão instalados
 check_requirements() {
@@ -24,9 +27,6 @@ check_requirements() {
         exit 1
     fi
 }
-
-# Carrega geradores customizados no início
-load_custom_generators
 
 # Handler principal de comandos
 case "$1" in
@@ -43,6 +43,62 @@ case "$1" in
         esac
         ;;
     
+    template)
+        shift
+        case "$1" in
+            list)
+                list_templates
+                ;;
+            add)
+                shift
+                add_template "$@"
+                ;;
+            *)
+                show_spring_template_help
+                ;;
+        esac
+        ;;
+        
+    dependency|dep)
+        shift
+        case "$1" in
+            list)
+                list_dependencies
+                ;;
+            add)
+                shift
+                add_dependency "$@"
+                ;;
+            remove)
+                shift
+                remove_dependency "$@"
+                ;;
+            *)
+                show_spring_dependency_help
+                ;;
+        esac
+        ;;
+        
+    profile)
+        shift
+        case "$1" in
+            list)
+                list_profiles
+                ;;
+            create)
+                shift
+                create_profile "$@"
+                ;;
+            set-active)
+                shift
+                set_active_profile "$@"
+                ;;
+            *)
+                show_spring_profile_help
+                ;;
+        esac
+        ;;
+        
     config)
         shift
         spring_config "$@"
@@ -86,21 +142,38 @@ case "$1" in
             help|--help|-h)
                 show_spring_generate_help
                 ;;
-            controller|service|repository|entity|dto|crud)
-                local generator_type=$1
+            controller)
                 shift
-                "generate_$generator_type" "$@"
+                generate_controller "$@"
+                ;;
+            service)
+                shift
+                generate_service "$@"
+                ;;
+            repository)
+                shift
+                generate_repository "$@"
+                ;;
+            entity)
+                shift
+                generate_entity "$@"
+                ;;
+            dto)
+                shift
+                generate_dto "$@"
+                ;;
+            crud)
+                shift
+                generate_crud "$@"
+                ;;
+            security)
+                shift
+                generate_security_config "$@"
                 ;;
             *)
-                if generator_exists "$1"; then
-                    local generator_name=$1
-                    shift
-                    "generate_$generator_name" "$@"
-                else
-                    echo -e "${CYBER_RED}✘ Gerador não encontrado: $1${RESET}"
-                    echo -e "Use ${CYBER_YELLOW}bytebabe spring generator list${RESET} para ver os geradores disponíveis"
-                    return 1
-                fi
+                echo -e "${CYBER_RED}✘ Gerador não encontrado: $1${RESET}"
+                echo -e "Use ${CYBER_YELLOW}bytebabe spring generator list${RESET} para ver os geradores disponíveis"
+                exit 1
                 ;;
         esac
         ;;
