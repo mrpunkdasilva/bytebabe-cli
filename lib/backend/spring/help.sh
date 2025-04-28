@@ -104,3 +104,44 @@ show_spring_config_help() {
     echo -e "  ${CYBER_YELLOW}bytebabe spring config set-default controller web${RESET}"
     echo -e "  ${CYBER_YELLOW}bytebabe spring config show${RESET}"
 }
+
+show_security_help() {
+    show_spring_header
+    
+    echo -e "\n${CYBER_BLUE}SECURITY COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}audit${RESET}    Run security audits and fixes"
+    echo -e "  ${CYBER_GREEN}scan${RESET}     Scan for vulnerabilities"
+    echo -e "  ${CYBER_GREEN}setup${RESET}    Configure security features"
+    
+    echo -e "\n${CYBER_BLUE}EXAMPLES:${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring security audit run${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring security scan deps${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring security setup oauth${RESET}"
+}
+
+show_monitor_help() {
+    show_spring_header
+    
+    echo -e "\n${CYBER_BLUE}MONITORING COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}    Configure monitoring tools"
+    echo -e "  ${CYBER_GREEN}metrics${RESET}  Manage application metrics"
+    echo -e "  ${CYBER_GREEN}logs${RESET}     Configure log management"
+    echo -e "  ${CYBER_GREEN}alerts${RESET}   Manage monitoring alerts"
+    
+    echo -e "\n${CYBER_BLUE}EXAMPLES:${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring monitor setup prometheus${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring monitor metrics enable${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring monitor alerts setup${RESET}"
+}
+
+show_deploy_help() {
+    show_spring_header
+    
+    echo -e "\n${CYBER_BLUE}DEPLOYMENT COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}k8s${RESET}      Kubernetes deployment options"
+    echo -e "  ${CYBER_GREEN}cloud${RESET}    Cloud provider deployments"
+    
+    echo -e "\n${CYBER_BLUE}EXAMPLES:${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring deploy k8s setup${RESET}"
+    echo -e "  ${CYBER_YELLOW}bytebabe spring deploy cloud aws${RESET}"
+}

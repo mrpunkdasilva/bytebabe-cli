@@ -285,6 +285,186 @@ case "$1" in
         esac
         ;;
 
+    security)
+        shift
+        case "$1" in
+            audit)
+                shift
+                case "$1" in
+                    run)
+                        run_security_audit "$@"
+                        ;;
+                    fix)
+                        fix_security_issues "$@"
+                        ;;
+                    report)
+                        generate_security_report "$@"
+                        ;;
+                    *)
+                        show_security_audit_help
+                        ;;
+                esac
+                ;;
+            scan)
+                shift
+                case "$1" in
+                    deps)
+                        scan_dependencies "$@"
+                        ;;
+                    code)
+                        scan_code_vulnerabilities "$@"
+                        ;;
+                    docker)
+                        scan_docker_security "$@"
+                        ;;
+                    *)
+                        show_security_scan_help
+                        ;;
+                esac
+                ;;
+            setup)
+                shift
+                case "$1" in
+                    oauth)
+                        setup_oauth_security "$@"
+                        ;;
+                    jwt)
+                        setup_jwt_security "$@"
+                        ;;
+                    keycloak)
+                        setup_keycloak_integration "$@"
+                        ;;
+                    *)
+                        show_security_setup_help
+                        ;;
+                esac
+                ;;
+            *)
+                show_security_help
+                ;;
+        esac
+        ;;
+
+    monitor)
+        shift
+        case "$1" in
+            setup)
+                shift
+                case "$1" in
+                    prometheus)
+                        setup_prometheus_monitoring "$@"
+                        ;;
+                    grafana)
+                        setup_grafana_dashboard "$@"
+                        ;;
+                    elk)
+                        setup_elk_stack "$@"
+                        ;;
+                    *)
+                        show_monitor_setup_help
+                        ;;
+                esac
+                ;;
+            metrics)
+                shift
+                case "$1" in
+                    enable)
+                        enable_application_metrics "$@"
+                        ;;
+                    custom)
+                        add_custom_metrics "$@"
+                        ;;
+                    export)
+                        export_metrics_data "$@"
+                        ;;
+                    *)
+                        show_metrics_help
+                        ;;
+                esac
+                ;;
+            logs)
+                shift
+                case "$1" in
+                    setup)
+                        setup_log_aggregation "$@"
+                        ;;
+                    analyze)
+                        analyze_log_patterns "$@"
+                        ;;
+                    export)
+                        export_log_data "$@"
+                        ;;
+                    *)
+                        show_logs_help
+                        ;;
+                esac
+                ;;
+            alerts)
+                shift
+                case "$1" in
+                    setup)
+                        setup_alert_rules "$@"
+                        ;;
+                    add)
+                        add_custom_alert "$@"
+                        ;;
+                    list)
+                        list_alert_rules "$@"
+                        ;;
+                    *)
+                        show_alerts_help
+                        ;;
+                esac
+                ;;
+            *)
+                show_monitor_help
+                ;;
+        esac
+        ;;
+
+    deploy)
+        shift
+        case "$1" in
+            k8s)
+                shift
+                case "$1" in
+                    setup)
+                        setup_kubernetes_deployment "$@"
+                        ;;
+                    apply)
+                        apply_k8s_manifests "$@"
+                        ;;
+                    rollback)
+                        rollback_deployment "$@"
+                        ;;
+                    *)
+                        show_k8s_help
+                        ;;
+                esac
+                ;;
+            cloud)
+                shift
+                case "$1" in
+                    aws)
+                        deploy_to_aws "$@"
+                        ;;
+                    gcp)
+                        deploy_to_gcp "$@"
+                        ;;
+                    azure)
+                        deploy_to_azure "$@"
+                        ;;
+                    *)
+                        show_cloud_deploy_help
+                        ;;
+                esac
+                ;;
+            *)
+                show_deploy_help
+                ;;
+        esac
+        ;;
+
     help|--help|-h)
         show_spring_help
         ;;
