@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A cyberpunk-themed developer toolkit for supercharged workflows 🚀",
   "bin": {
-    "bytebabe": "./bin/bytebabe"
+    "bytebabe": "bin/bytebabe"
   },
   "files": [
     "bin/",

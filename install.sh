@@ -35,7 +35,7 @@ tar -xzf "${TEMP_DIR}/bytebabe.tar.gz" -C "$TEMP_DIR"
 
 # Cria diretório de instalação
 sudo mkdir -p "$INSTALL_DIR"
-sudo cp -r "${TEMP_DIR}"/bytebabe-*/* "$INSTALL_DIR/"
+sudo cp -r "${TEMP_DIR}"/bytebabe.sh-*/* "$INSTALL_DIR/"
 
 # Configura permissões
 sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
