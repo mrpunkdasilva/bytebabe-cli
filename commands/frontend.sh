@@ -11,6 +11,12 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/frontend/main.sh"
+source "$BASE_DIR/lib/frontend/config.sh"
+source "$BASE_DIR/lib/frontend/templates.sh"
+
+# Configurações
+VITE_TEMPLATES=("react" "react-ts" "vue" "vue-ts" "preact" "preact-ts" "lit" "lit-ts" "svelte" "svelte-ts")
+NEXT_TEMPLATES=("default" "app" "pages" "default-ts" "app-ts" "pages-ts")
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO
@@ -205,27 +211,172 @@ show_frontend_help() {
     echo -e "  ${CYBER_YELLOW}bytebabe frontend g service Auth${RESET}"
 }
 
+# Função para criar novo projeto
+create_frontend_project() {
+    local framework=$1
+    local name=$2
+    local template=$3
+
+    case $framework in
+        "react")
+            if [[ "$template" == "vite" ]]; then
+                npm create vite@latest "$name" -- --template react-ts
+            else
+                npx create-react-app "$name" --template typescript
+            fi
+            ;;
+        "vue")
+            if [[ "$template" == "vite" ]]; then
+                npm create vite@latest "$name" -- --template vue-ts
+            else
+                npm create vue@latest "$name"
+            fi
+            ;;
+        "angular")
+            npx @angular/cli new "$name" --style=scss --routing=true --strict
+            ;;
+        "next")
+            npx create-next-app@latest "$name" --typescript --tailwind --eslint
+            ;;
+        "svelte")
+            npm create vite@latest "$name" -- --template svelte-ts
+            ;;
+        *)
+            echo -e "${CYBER_RED}✘ Framework não suportado: $framework${RESET}"
+            exit 1
+            ;;
+    esac
+
+    # Configuração pós-criação
+    cd "$name" || exit
+    
+    # Inicializa configuração ByteBabe
+    init_frontend_config
+
+    # Instala dependências comuns
+    npm install --save-dev \
+        @testing-library/jest-dom \
+        @testing-library/user-event \
+        prettier \
+        eslint \
+        husky \
+        lint-staged
+
+    # Configurações específicas por framework
+    case $framework in
+        "react"|"next")
+            npm install --save-dev \
+                @testing-library/react \
+                @types/react-test-renderer
+            ;;
+        "vue")
+            npm install --save-dev \
+                @vue/test-utils \
+                @vitejs/plugin-vue
+            ;;
+        "angular")
+            npm install --save-dev \
+                @types/jasmine \
+                karma-coverage
+            ;;
+    esac
+
+    echo -e "${CYBER_GREEN}✔ Projeto $name criado com sucesso!${RESET}"
+    echo -e "${CYBER_BLUE}Para começar:${RESET}"
+    echo -e "  cd $name"
+    echo -e "  npm run dev"
+}
+
+# Função para adicionar funcionalidades
+add_feature() {
+    local feature=$1
+    shift
+    local options=("$@")
+
+    case $feature in
+        "tailwind")
+            npm install -D tailwindcss postcss autoprefixer
+            npx tailwindcss init -p
+            setup_tailwind
+            ;;
+        "redux")
+            npm install @reduxjs/toolkit react-redux
+            generate_redux_store
+            ;;
+        "router")
+            local framework=$(detect_framework)
+            case $framework in
+                "react")
+                    npm install react-router-dom
+                    generate_react_router
+                    ;;
+                "vue")
+                    npm install vue-router@4
+                    generate_vue_router
+                    ;;
+            esac
+            ;;
+        "i18n")
+            local framework=$(detect_framework)
+            case $framework in
+                "react")
+                    npm install react-i18next i18next
+                    generate_i18n_setup
+                    ;;
+                "vue")
+                    npm install vue-i18n@9
+                    generate_vue_i18n
+                    ;;
+                "angular")
+                    ng add @angular/localize
+                    ;;
+            esac
+            ;;
+        *)
+            echo -e "${CYBER_RED}✘ Funcionalidade não suportada: $feature${RESET}"
+            exit 1
+            ;;
+    esac
+}
+
 # Handler principal de comandos
 case "$1" in
     new|create)
         shift
         case "$1" in
-            react)
-                npx create-react-app "$2" --template typescript
-                ;;
-            vue)
-                npm create vue@latest "$2"
-                ;;
-            angular)
-                npx @angular/cli new "$2"
+            react|vue|angular|next|svelte)
+                framework=$1
+                shift
+                name=$1
+                shift
+                template=${1:-"default"}
+                create_frontend_project "$framework" "$name" "$template"
                 ;;
             help|--help|-h)
-                echo -e "${CYBER_BLUE}Uso: bytebabe frontend new <framework> <nome-projeto>${RESET}"
-                echo -e "Frameworks disponíveis: react, vue, angular"
+                show_frontend_new_help
                 ;;
             *)
                 echo -e "${CYBER_RED}✘ Framework não especificado ou não suportado${RESET}"
-                echo -e "Use ${CYBER_YELLOW}bytebabe frontend new --help${RESET} para mais informações"
+                show_frontend_new_help
+                exit 1
+                ;;
+        esac
+        ;;
+    
+    add)
+        shift
+        case "$1" in
+            tailwind|redux|router|i18n)
+                feature=$1
+                shift
+                add_feature "$feature" "$@"
+                ;;
+            help|--help|-h)
+                show_frontend_add_help
+                ;;
+            *)
+                echo -e "${CYBER_RED}✘ Funcionalidade não especificada ou não suportada${RESET}"
+                show_frontend_add_help
                 exit 1
                 ;;
         esac
