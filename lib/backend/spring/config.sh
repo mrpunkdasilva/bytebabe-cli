@@ -5,7 +5,7 @@ CONFIG_FILE=".bytebabe/spring-config.json"
 
 # Inicializa ou lê configuração
 init_spring_config() {
-    mkdir -p .bytebabe
+    mkdir -p .bytebabe.sh
     
     if [[ ! -f "$CONFIG_FILE" ]]; then
         # Tenta detectar package base do projeto
