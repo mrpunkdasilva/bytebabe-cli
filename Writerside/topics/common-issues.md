@@ -1,4 +1,4 @@
-# Common Issues 🔧
+# Common Issues
 
 ## Docker Issues
 

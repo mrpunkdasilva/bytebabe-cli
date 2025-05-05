@@ -1,4 +1,4 @@
-# Docker Integration 🐳
+# Docker Integration
 
 ## Compose Configuration
 

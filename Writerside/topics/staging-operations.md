@@ -1,4 +1,4 @@
-# Staging Operations 📂
+# Staging Operations
 
 ## Smart Staging
 

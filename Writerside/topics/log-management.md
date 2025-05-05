@@ -1,4 +1,4 @@
-# Log Management 📝
+# Log Management
 
 ## Visualização de Logs
 

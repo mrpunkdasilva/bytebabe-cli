@@ -1,4 +1,4 @@
-# Access Control 🔑
+# Access Control
 
 > Status: Em Desenvolvimento 🚧
 

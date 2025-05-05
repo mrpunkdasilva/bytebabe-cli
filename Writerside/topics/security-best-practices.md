@@ -1,4 +1,4 @@
-# Security Best Practices ✅
+# Security Best Practices
 
 > Status: Planejado 🚧
 

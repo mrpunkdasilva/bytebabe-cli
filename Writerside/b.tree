@@ -16,6 +16,7 @@
 
     <!-- Windows Support - Coming Soon -->
     <toc-element topic="windows-support.md"/>
+    <toc-element topic="module-status.md"/>
 
     <!-- Package Management -->
 

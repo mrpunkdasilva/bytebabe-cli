@@ -1,4 +1,4 @@
-# Error Messages 📝
+# Error Messages
 
 ## Formato dos Erros
 

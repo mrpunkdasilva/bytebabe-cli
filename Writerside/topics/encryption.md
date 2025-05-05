@@ -1,4 +1,4 @@
-# Encryption 🔒
+# Encryption
 
 > Status: Planejado 🚧
 

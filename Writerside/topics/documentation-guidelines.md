@@ -1,4 +1,4 @@
-# Documentation Guidelines 📚
+# Documentation Guidelines
 
 ## Estrutura da Documentação
 

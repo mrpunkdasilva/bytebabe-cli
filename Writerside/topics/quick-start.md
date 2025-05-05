@@ -16,7 +16,7 @@ bytebabe --help
 
 ## Módulos Principais
 
-### 🐳 Docker
+### Docker
 ```bash
 # Iniciar containers
 bytebabe docker up
@@ -28,7 +28,7 @@ bytebabe docker ps
 bytebabe docker down
 ```
 
-### 🔧 Git
+### Git
 ```bash
 # Status estiloso
 bytebabe git status
@@ -40,7 +40,7 @@ bytebabe git commit
 bytebabe git push
 ```
 
-### 🌐 Servers
+### Servers
 ```bash
 # Iniciar servidor de desenvolvimento
 bytebabe servers dev
@@ -75,30 +75,9 @@ bytebabe git stage
 bytebabe git commit
 ```
 
-## Dicas Pro
-
-```ascii
-    /\___/\
-   (  o o  )
-   (  =^=  ) 
-    (______)
-```
-
-1. Use TAB para autocompletar
-2. Setas ↑↓ para histórico
-3. `--help` em qualquer comando
-4. `Ctrl+C` sempre funciona
-
-## Atalhos do Teclado
-
-| Atalho | Ação |
-|--------|------|
-| `Ctrl+C` | Cancelar operação |
-| `Ctrl+D` | Sair do modo interativo |
-| `Tab` | Autocompletar |
-| `↑↓` | Navegar histórico |
-
 ## Próximos Passos
 
-- [🔧 Core Modules](core-modules.md)
-- [🛠️ Dev Tools](dev-tools.md)
+- [Docker Module](docker-module.md)
+- [Git Module](git-module.md)
+- [Servers](servers.md)
+- [Database Module](database-module.md)

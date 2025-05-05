@@ -1,4 +1,4 @@
-# Testing Module 🧪
+# Testing Module
 
 ## Test Runner
 

@@ -1,4 +1,4 @@
-# Backup e Restore 💾
+# Backup e Restore
 
 ## Backup Automático
 

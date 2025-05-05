@@ -1,4 +1,4 @@
-# Coding Standards 📝
+# Coding Standards
 
 ## Estilo de Código
 
