@@ -1,4 +1,4 @@
-# Bancos Suportados 📚
+# Bancos Suportados
 
 ## Bancos Disponíveis
 

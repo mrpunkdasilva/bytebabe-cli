@@ -1,4 +1,4 @@
-# Container Management 🎮
+# Container Management
 
 ## Comandos Disponíveis
 

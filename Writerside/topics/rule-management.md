@@ -1,4 +1,4 @@
-# Gerenciamento de Regras 📋
+# Gerenciamento de Regras
 
 ## Comandos Básicos
 

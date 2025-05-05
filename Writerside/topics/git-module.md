@@ -1,4 +1,4 @@
-# Git Module 🔄
+# Git Module
 
 > "Git com interface cyberpunk: onde o controle de versão encontra o futuro"
 

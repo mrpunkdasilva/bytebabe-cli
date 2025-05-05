@@ -1,4 +1,4 @@
-# Testing Guidelines 🧪
+# Testing Guidelines
 
 ## Testes Manuais
 

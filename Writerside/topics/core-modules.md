@@ -1,4 +1,4 @@
-# Core Modules 🛠️
+# Core Modules
 
 > "Um módulo para cada necessidade, uma solução para cada problema"
 

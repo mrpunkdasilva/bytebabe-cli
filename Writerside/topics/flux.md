@@ -1,4 +1,4 @@
-# Flux - Terminal API Studio 🌊
+# Flux - Terminal API Studio
 
 > Em desenvolvimento 🚧
 

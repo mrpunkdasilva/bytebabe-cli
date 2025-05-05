@@ -1,4 +1,4 @@
-# Monitoramento de Bancos 📊
+# Monitoramento de Bancos
 
 ## Dashboard em Tempo Real
 

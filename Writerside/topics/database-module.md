@@ -1,4 +1,4 @@
-# Database Module 🗄️
+# Database Module
 
 > "Gerenciamento de bancos de dados com estilo cyberpunk"
 

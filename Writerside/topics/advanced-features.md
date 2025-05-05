@@ -1,4 +1,4 @@
-# Recursos Avançados ⚙️
+# Recursos Avançados 
 
 ## Rate Limiting
 

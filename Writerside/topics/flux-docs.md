@@ -1,4 +1,4 @@
-# Documentation Module 📚
+# Documentation Module
 
 ## Documentação Automática
 

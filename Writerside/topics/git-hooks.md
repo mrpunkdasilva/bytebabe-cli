@@ -1,4 +1,4 @@
-# Git Hooks 🪝
+# Git Hooks
 
 > Em desenvolvimento
 

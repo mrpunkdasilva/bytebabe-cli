@@ -1,40 +1,40 @@
 # ByteBabe CLI
 
 ```
-888888b.          888           888888b.          888              
-888  "88b         888           888  "88b         888              
-888  .88P         888           888  .88P         888              
-8888888K. 888  888888888 .d88b. 8888888K.  8888b. 88888b.  .d88b.  
-888  "Y88b888  888888   d8P  Y8b888  "Y88b    "88b888 "88bd8P  Y8b 
-888    888888  888888   88888888888    888.d888888888  88888888888 
-888   d88PY88b 888Y88b. Y8b.    888   d88P888  888888 d88PY8b.     
-8888888P"  "Y88888 "Y888 "Y8888 8888888P" "Y88888888888P"  "Y8888  
-               888                                                 
-          Y8b d88P                                                 
-           "Y88P"                                                  
+888888b.          888           888888b.          888              
+888  "88b         888           888  "88b         888              
+888  .88P         888           888  .88P         888              
+8888888K. 888  888888888 .d88b. 8888888K.  8888b. 88888b.  .d88b.  
+888  "Y88b888  888888   d8P  Y8b888  "Y88b    "88b888 "88bd8P  Y8b 
+888    888888  888888   88888888888    888.d888888888  88888888888 
+888   d88PY88b 888Y88b. Y8b.    888   d88P888  888888 d88PY8b.     
+8888888P"  "Y88888 "Y888 "Y8888 8888888P" "Y88888888P"  "Y8888  
+               888                                                 
+          Y8b d88P                                                 
+           "Y88P"                                                  
 ```
 
 Tip:
 
-"Por que usar uma CLI normal quando você pode ter uma waifu digital te ajudando?"
+"Por que usar uma CLI normal quando você pode ter uma assistente digital te ajudando?"
 
 — Algum dev às 3 da manhã
 
 ByteBabe é sua assistente CLI cyberpunk para desenvolvimento. Ela transforma tarefas tediosas em interações divertidas, sem sacrificar a funcionalidade profissional.
 
-## Por que ByteBabe? 🤔
+## Por que ByteBabe?
 
-* 🎨 Interface cyberpunk estilosa
+* Interface cyberpunk estilosa
 
-* 🚀 Automação inteligente de tarefas
+* Automação inteligente de tarefas
 
-* 🐳 Gerenciamento Docker simplificado
+* Gerenciamento Docker simplificado
 
-* 🔒 Segurança com estilo
+* Segurança com estilo
 
-* 🛠️ Ferramentas de desenvolvimento integradas
+* Ferramentas de desenvolvimento integradas
 
-* 🌈 Experiência única de usuário
+* Experiência única de usuário
 
 ## Feita para Devs Reais
 
@@ -59,10 +59,10 @@ Chega de CLIs que parecem saídas do MS-DOS dos anos 80. ByteBabe traz:
 
 | Módulo |O que faz |Nível de Coolness |
 ----------------------------------------
-| Git |Gerenciamento Git com estilo |🔥🔥🔥 |
-| Docker |Container management para humanos |🔥🔥🔥🔥 |
-| DevTools |Suite completa de desenvolvimento |🔥🔥🔥 |
-| Servers |Servidores web com um comando |🔥🔥🔥🔥 |
+| Git |Gerenciamento Git com estilo |⭐⭐⭐ |
+| Docker |Container management para humanos |⭐⭐⭐⭐ |
+| DevTools |Suite completa de desenvolvimento |⭐⭐⭐ |
+| Servers |Servidores web com um comando |⭐⭐⭐⭐ |
 
 ## Próximos Passos
 
@@ -71,6 +71,8 @@ Pronto para mergulhar no cyberpunk? Confira:
 * [Instalação](installation.html)
 
 * [Quick Start](quick-start.html)
+
+* [Core Modules](core-modules.html)
 
 
 
@@ -153,82 +155,66 @@ Certifique-se de ter:
 
 # Instalação
 
-Tip:
+## Requisitos
 
-"Instalar software é como montar LEGO: siga as instruções e não perca as peças"
+* Linux, macOS ou WSL (Windows Subsystem for Linux)
 
-## Instalação Rápida (Modo Cyberpunk)
+* Bash 4.0+ ou Zsh
 
-```
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀
-⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀
-⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀
-⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀
-⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀
-⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀
-⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀
-⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀
-⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀
-⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀
-⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-```
+* Git
 
-### One-liner (Modo Hacker)
+* Docker (opcional, necessário para módulos Docker e Servers)
+
+## Instalação Rápida
 
 ```BASH
+# Instalação via curl
 curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
-```
 
-### Instalação Manual (Modo Tradicional)
-
-1. Clone o repositório:
-
-```BASH
-git clone https://github.com/mrpunkdasilva/bytebabe.git
-cd bytebabe
-```
-
-1. Execute o instalador:
-
-```BASH
-./install.sh
-```
-
-## Verificando a Instalação
-
-```BASH
+# Verificar instalação
 bytebabe --version
 ```
 
-Se você ver algo como:
+## Instalação Manual
 
+```BASH
+# Clone o repositório
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+
+# Entre no diretório
+cd bytebabe
+
+# Instale o ByteBabe
+./install.sh
+
+# Adicione ao PATH (se não for feito automaticamente)
+echo 'export PATH="$HOME/.bytebabe/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
-ByteBabe CLI v1.0.0 (⌐■_■)
+
+## Configuração Inicial
+
+Após a instalação, execute o comando de inicialização:
+
+```BASH
+bytebabe init
 ```
 
-Parabéns! Você está pronto para hackear com estilo!
+Este comando irá:
 
-## Possíveis Problemas
+1. Verificar dependências
 
-| Problema |Solução |
----------------------
-| `Command not found` |Adicione `~/.bytebabe/bin` ao seu PATH |
-| `Permission denied` |Execute com `sudo` ou verifique permissões |
-| `Dependencies missing` |Execute `bytebabe doctor` para verificar |
+2. Configurar diretórios necessários
+
+3. Criar arquivos de configuração padrão
+
+4. Oferecer configuração guiada dos módulos
 
 ## Próximos Passos
 
-* [🚀 Quick Start](quick-start.html)
+* [Quick Start](quick-start.html) - Primeiros comandos
 
-* [📚 Core Modules](core-modules.html)
+* [Core Modules](core-modules.html) - Visão geral dos módulos
 
 
 
@@ -254,7 +240,7 @@ bytebabe --help
 
 ## Módulos Principais
 
-### 🐳 Docker
+### Docker
 
 ```BASH
 # Iniciar containers
@@ -267,7 +253,7 @@ bytebabe docker ps
 bytebabe docker down
 ```
 
-### 🔧 Git
+### Git
 
 ```BASH
 # Status estiloso
@@ -280,7 +266,7 @@ bytebabe git commit
 bytebabe git push
 ```
 
-### 🌐 Servers
+### Servers
 
 ```BASH
 # Iniciar servidor de desenvolvimento
@@ -318,37 +304,15 @@ bytebabe git stage
 bytebabe git commit
 ```
 
-## Dicas Pro
-
-```
- /\___/\
-(  o o  )
-(  =^=  ) 
- (______)
-```
-
-1. Use TAB para autocompletar
-
-2. Setas ↑↓ para histórico
-
-3. `--help` em qualquer comando
-
-4. `Ctrl+C` sempre funciona
-
-## Atalhos do Teclado
-
-| Atalho |Ação |
-----------------
-| `Ctrl+C` |Cancelar operação |
-| `Ctrl+D` |Sair do modo interativo |
-| `Tab` |Autocompletar |
-| `↑↓` |Navegar histórico |
-
 ## Próximos Passos
 
-* [🔧 Core Modules](core-modules.html)
+* [Docker Module](docker-module.html)
 
-* [🛠️ Dev Tools](dev-tools.html)
+* [Git Module](git-module.html)
+
+* [Servers](servers.html)
+
+* [Database Module](database-module.html)
 
 
 
@@ -406,7 +370,41 @@ Por enquanto, recomendamos fortemente o uso do WSL2 para a melhor experiência p
 
 
 
-# Core Modules 🛠️
+# Status dos Módulos
+
+Esta página mostra o status atual de desenvolvimento de cada módulo do ByteBabe CLI.
+
+## Módulos Principais
+
+| Módulo |Status |Descrição |
+-----------------------------
+| Docker |Estável |Gerenciamento de containers, imagens e volumes |
+| Database |Estável |Suporte a MySQL, PostgreSQL, MongoDB e Redis |
+| Git |Estável |Operações Git com interface melhorada |
+| Servers |Estável |Gerenciamento de servidores Apache e Nginx |
+| DevTools |Estável |Instalação de ferramentas de desenvolvimento |
+
+## Módulos em Desenvolvimento
+
+| Módulo |Status |Previsão |
+----------------------------
+| Security |Em Desenvolvimento |Q3 2023 |
+| Firewall |Planejado |Q4 2023 |
+| Monitoring |Planejado |Q4 2023 |
+
+## Legenda de Status
+
+* Estável: Módulo completo e testado
+
+* Beta: Funcional mas pode conter bugs
+
+* Em Desenvolvimento: Trabalho em andamento
+
+* Planejado: Ainda não iniciado
+
+
+
+# Core Modules
 
 Tip:
 
@@ -1029,7 +1027,7 @@ prime quarantine analyze      # Analisa item
 
 
 
-# Git Module 🔄
+# Git Module
 
 Tip:
 
@@ -1096,7 +1094,7 @@ bytebabe git quick
 
 
 
-# Branch Management 🌿
+# Branch Management
 
 ## Branch Navigator
 
@@ -1159,7 +1157,7 @@ bytebabe git branch delete feature/old --force
 
 
 
-# Staging Operations 📂
+# Staging Operations
 
 ## Smart Staging
 
@@ -1236,7 +1234,7 @@ bytebabe git stage src/
 
 
 
-# Git Workflows 🔄
+# Git Workflows
 
 ## Workflows Suportados
 
@@ -1320,7 +1318,7 @@ bytebabe git auto-merge --with-tests
 
 
 
-# Git Hooks 🪝
+# Git Hooks
 
 Tip:
 
@@ -1403,7 +1401,7 @@ hooks:
 
 
 
-# Docker Module 🐳
+# Docker Module
 
 Tip:
 
@@ -1453,7 +1451,7 @@ bytebabe docker i p nginx
 
 
 
-# Container Management 🎮
+# Container Management
 
 ## Comandos Disponíveis
 
@@ -1532,7 +1530,7 @@ bytebabe docker c rm -v my-container
 
 
 
-# Image Management 🏴‍☠️
+# Image Management
 
 ## Comandos Disponíveis
 
@@ -1611,7 +1609,7 @@ bytebabe docker i b -t myapp:1.0 .
 
 
 
-# Volume Management 💾
+# Volume Management
 
 ## Comandos Disponíveis
 
@@ -1688,7 +1686,7 @@ bytebabe docker v rm dbdata
 
 
 
-# Compose Operations 🎭
+# Compose Operations
 
 ## Comandos Disponíveis
 
@@ -1842,7 +1840,7 @@ bytebabe docker st exp -f json
 
 
 
-# Database Module 🗄️
+# Database Module
 
 Tip:
 
@@ -1905,7 +1903,7 @@ bytebabe db log mongodb
 
 
 
-# Bancos Suportados 📚
+# Bancos Suportados
 
 ## Bancos Disponíveis
 
@@ -1983,7 +1981,7 @@ postgres:
 
 
 
-# Backup e Restore 💾
+# Backup e Restore
 
 ## Backup Automático
 
@@ -2043,7 +2041,7 @@ bytebabe db restore postgres --tables "users,orders"
 
 
 
-# Ferramentas de Migração 🔄
+# Ferramentas de Migração
 
 ## Visão Geral
 
@@ -2102,7 +2100,7 @@ DROP TABLE users;
 
 
 
-# Monitoramento de Bancos 📊
+# Monitoramento de Bancos
 
 ## Dashboard em Tempo Real
 
@@ -2174,7 +2172,7 @@ Suporte a exportação de métricas para:
 
 
 
-# Firewall Module 🛡️
+# Firewall Module
 
 Tip:
 
@@ -2232,7 +2230,7 @@ bytebabe firewall add
 
 
 
-# Perfis de Segurança 🔒
+# Perfis de Segurança
 
 ## Developer Profile
 
@@ -2301,7 +2299,7 @@ bytebabe firewall setup
 
 
 
-# Gerenciamento de Regras 📋
+# Gerenciamento de Regras
 
 ## Comandos Básicos
 
@@ -2369,7 +2367,7 @@ bytebabe firewall import rules.conf
 
 
 
-# Recursos Avançados ⚙️
+# Recursos Avançados
 
 ## Rate Limiting
 
@@ -2426,7 +2424,7 @@ bytebabe firewall log export
 
 
 
-# Monitoramento do Firewall 📊
+# Monitoramento do Firewall
 
 ## Dashboard em Tempo Real
 
@@ -2494,7 +2492,7 @@ Suporte a exportação para:
 
 
 
-# Development Tools 🛠️
+# Development Tools
 
 O módulo DevTools do ByteBabe oferece instalação e configuração automatizada de ferramentas essenciais para desenvolvimento.
 
@@ -2787,7 +2785,7 @@ bytebabe devtools browser
 
 
 
-# Web Servers 🌐
+# Web Servers
 
 O módulo de servidores web do ByteBabe permite gerenciar instâncias Docker do Apache e Nginx de forma simplificada.
 
@@ -2946,7 +2944,7 @@ volumes:
 
 
 
-# Docker Integration 🐳
+# Docker Integration
 
 ## Compose Configuration
 
@@ -2994,7 +2992,7 @@ networks:
 
 
 
-# Security 🔐
+# Security
 
 Tip:
 
@@ -3083,7 +3081,7 @@ Interessado em ajudar no desenvolvimento?
 
 
 
-# Access Control 🔑
+# Access Control
 
 Tip:
 
@@ -3148,7 +3146,7 @@ Este módulo está atualmente em desenvolvimento. Acompanhe o progresso em nosso
 
 
 
-# Encryption 🔒
+# Encryption
 
 Tip:
 
@@ -3212,7 +3210,7 @@ Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso
 
 
 
-# Security Best Practices ✅
+# Security Best Practices
 
 Tip:
 
@@ -3276,7 +3274,7 @@ Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso
 
 
 
-# Vulnerability Scanning 🔍
+# Vulnerability Scanning
 
 Tip:
 
@@ -3340,7 +3338,7 @@ Este módulo está em fase de planejamento. Acompanhe o desenvolvimento em nosso
 
 
 
-# Flux - Terminal API Studio 🌊
+# Flux - Terminal API Studio
 
 Tip:
 
@@ -3460,7 +3458,7 @@ bytebabe flux open my-api
 
 
 
-# Testing Module 🧪
+# Testing Module
 
 ## Test Runner
 
@@ -3560,7 +3558,7 @@ flux test watch
 
 
 
-# Documentation Module 📚
+# Documentation Module
 
 ## Documentação Automática
 
@@ -3663,7 +3661,7 @@ Response:
 
 
 
-# Monitoring Module 📊
+# Monitoring Module
 
 ## Dashboard
 
@@ -3755,7 +3753,7 @@ alerts:
 
 
 
-# Security Module 🔒
+# Security Module
 
 ## Security Scanner
 
@@ -4055,7 +4053,7 @@ bytebabe doctor --full
 
 
 
-# Common Issues 🔧
+# Common Issues
 
 ## Docker Issues
 
@@ -4213,7 +4211,7 @@ bytebabe ssl renew
 
 
 
-# Error Messages 📝
+# Error Messages
 
 ## Formato dos Erros
 
@@ -4296,7 +4294,7 @@ bytebabe report error DOCK-001 --details
 
 
 
-# Debugging Guide 🔍
+# Debugging Guide
 
 ## Ferramentas de Debug
 
@@ -4424,7 +4422,7 @@ bytebabe benchmark compare
 
 
 
-# Support 💬
+# Support
 
 ## Canais de Suporte
 
@@ -4532,7 +4530,7 @@ bytebabe doctor --report
 
 
 
-# Contributing 🤝
+# Contributing
 
 ## Como Contribuir
 
@@ -4593,7 +4591,7 @@ bytebabe/
 
 
 
-# Development Setup 🛠️
+# Development Setup
 
 ## Requisitos
 
@@ -4687,7 +4685,7 @@ Plugins recomendados:
 
 
 
-# Coding Standards 📝
+# Coding Standards
 
 ## Estilo de Código
 
@@ -4793,7 +4791,7 @@ MAXRETRIES=3
 
 
 
-# Testing Guidelines 🧪
+# Testing Guidelines
 
 ## Testes Manuais
 
@@ -4905,7 +4903,7 @@ test -f commands/init.sh || echo "Erro: init.sh não encontrado"
 
 
 
-# Documentation Guidelines 📚
+# Documentation Guidelines
 
 ## Estrutura da Documentação
 

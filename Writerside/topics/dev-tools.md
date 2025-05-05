@@ -1,4 +1,4 @@
-# Development Tools 🛠️
+# Development Tools
 
 O módulo DevTools do ByteBabe oferece instalação e configuração automatizada de ferramentas essenciais para desenvolvimento.
 
