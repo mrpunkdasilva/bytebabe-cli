@@ -97,10 +97,7 @@
     
     <!-- Flux - API Management -->
     <toc-element topic="flux.md">
-        <toc-element topic="flux-testing.md"/>
-        <toc-element topic="flux-docs.md"/>
-        <toc-element topic="flux-monitor.md"/>
-        <toc-element topic="flux-security.md"/>
+        <toc-element topic="flux-verbs.md"/>
     </toc-element>
     
     <!-- Troubleshooting -->
