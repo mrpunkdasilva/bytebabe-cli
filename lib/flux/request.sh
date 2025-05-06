@@ -64,6 +64,8 @@ EOF
         echo -e "  ${CYBER_BLUE}[3]${RESET} ${CYBER_CYAN}Limpar histórico${RESET}"
         echo -e "  ${CYBER_BLUE}[4]${RESET} ${CYBER_CYAN}Exportar histórico${RESET}"
         echo -e "  ${CYBER_BLUE}[5]${RESET} ${CYBER_CYAN}Forçar limpeza do histórico${RESET}"
+        echo -e "  ${CYBER_BLUE}[6]${RESET} ${CYBER_CYAN}Filtrar por método${RESET}"
+        echo -e "  ${CYBER_BLUE}[7]${RESET} ${CYBER_CYAN}Estatísticas do histórico${RESET}"
         echo -e "  ${CYBER_BLUE}[0]${RESET} ${CYBER_CYAN}Voltar${RESET}"
         echo
         echo -e "${CYBER_PURPLE}───────────────────────────────────────────────────────────────${RESET}"
@@ -88,9 +90,6 @@ EOF
                 read req_num
                 clear
                 view_request_details $req_num
-                echo
-                echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
-                read
                 ;;
             3)
                 clear
@@ -123,6 +122,57 @@ EOF
                 echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
                 read
                 ;;
+            6)
+                clear
+                echo -e "${CYBER_PURPLE}╔═══════════════════════════════════════════════════════════════╗${RESET}"
+                echo -e "${CYBER_PURPLE}║ ${CYBER_CYAN}${BOLD}FILTRAR HISTÓRICO${RESET}${CYBER_PURPLE}                                  ║${RESET}"
+                echo -e "${CYBER_PURPLE}╚═══════════════════════════════════════════════════════════════╝${RESET}"
+                echo
+                echo -e "  ${CYBER_BLUE}[1]${RESET} ${CYBER_CYAN}GET${RESET}"
+                echo -e "  ${CYBER_BLUE}[2]${RESET} ${CYBER_CYAN}POST${RESET}"
+                echo -e "  ${CYBER_BLUE}[3]${RESET} ${CYBER_CYAN}PUT${RESET}"
+                echo -e "  ${CYBER_BLUE}[4]${RESET} ${CYBER_CYAN}DELETE${RESET}"
+                echo -e "  ${CYBER_BLUE}[0]${RESET} ${CYBER_CYAN}Voltar${RESET}"
+                echo
+                echo -ne "${CYBER_PINK}Escolha um método: ${RESET}"
+                read method_choice
+                
+                case $method_choice in
+                    1) 
+                        clear
+                        filter_request_history "GET"
+                        echo
+                        echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
+                        read
+                        ;;
+                    2) 
+                        clear
+                        filter_request_history "POST"
+                        echo
+                        echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
+                        read
+                        ;;
+                    3) 
+                        clear
+                        filter_request_history "PUT"
+                        echo
+                        echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
+                        read
+                        ;;
+                    4) 
+                        clear
+                        filter_request_history "DELETE"
+                        echo
+                        echo -ne "${CYBER_BLUE}Pressione Enter para continuar...${RESET}"
+                        read
+                        ;;
+                    0) ;;
+                    *) 
+                        echo -e "${CYBER_RED}[✗] Opção inválida${RESET}"
+                        sleep 1
+                        ;;
+                esac
+                ;;
             0)
                 return
                 ;;
@@ -142,6 +192,18 @@ process_request_for_history() {
     local body="$4"
     local response="$5"
     local status_code="$6"
+    
+    # Verifica se as funções do history.sh foram carregadas
+    if ! type save_request_history > /dev/null 2>&1; then
+        echo -e "${CYBER_YELLOW}[!] Carregando funções do módulo de histórico...${RESET}"
+        HISTORY_PATH="$(dirname "$0")/history.sh"
+        if [ -f "$HISTORY_PATH" ]; then
+            source "$HISTORY_PATH"
+        else
+            echo -e "${CYBER_RED}[✗] Arquivo de histórico não encontrado: $HISTORY_PATH${RESET}"
+            return 1
+        fi
+    fi
     
     # Salva no histórico
     save_request_history "$method" "$url" "$headers" "$body" "$response" "$status_code"
