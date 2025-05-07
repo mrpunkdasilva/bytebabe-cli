@@ -33,12 +33,43 @@ fi
 echo -e "${BLUE}📦 Extraindo arquivos...${NC}"
 tar -xzf "${TEMP_DIR}/bytebabe.tar.gz" -C "$TEMP_DIR"
 
+# Lista o conteúdo extraído para debug
+echo -e "${BLUE}📋 Verificando arquivos extraídos...${NC}"
+ls -la "$TEMP_DIR"
+
 # Cria diretório de instalação
 sudo mkdir -p "$INSTALL_DIR"
-sudo cp -r "${TEMP_DIR}"/bytebabe.sh-*/* "$INSTALL_DIR/"
 
-# Configura permissões
-sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
+# Copia todos os arquivos extraídos diretamente
+echo -e "${BLUE}📂 Copiando arquivos...${NC}"
+sudo cp -r "$TEMP_DIR"/* "$INSTALL_DIR/" 2>/dev/null || true
+
+# Verifica se há arquivos bin/ no diretório temporário
+if [ -d "$TEMP_DIR/bin" ]; then
+    sudo mkdir -p "$INSTALL_DIR/bin"
+    sudo cp -r "$TEMP_DIR/bin"/* "$INSTALL_DIR/bin/" 2>/dev/null || true
+fi
+
+# Procura pelo executável bytebabe em qualquer lugar
+EXEC_PATH=$(find "$TEMP_DIR" -type f -name "bytebabe" | head -n 1)
+if [ -n "$EXEC_PATH" ]; then
+    echo -e "${BLUE}🔍 Executável encontrado em: $EXEC_PATH${NC}"
+    sudo mkdir -p "$INSTALL_DIR/bin"
+    sudo cp "$EXEC_PATH" "$INSTALL_DIR/bin/"
+    sudo chmod +x "$INSTALL_DIR/bin/bytebabe"
+else
+    echo -e "${YELLOW}⚠️ Executável 'bytebabe' não encontrado no pacote${NC}"
+    
+    # Cria um script básico como fallback
+    echo -e "${BLUE}🔧 Criando script básico...${NC}"
+    sudo mkdir -p "$INSTALL_DIR/bin"
+    cat << 'EOF' | sudo tee "$INSTALL_DIR/bin/bytebabe" > /dev/null
+#!/bin/bash
+echo "ByteBabe CLI v${VERSION}"
+echo "Esta é uma instalação básica. Execute 'bytebabe update' para atualizar."
+EOF
+    sudo chmod +x "$INSTALL_DIR/bin/bytebabe"
+fi
 
 # Cria link simbólico
 echo -e "${BLUE}🔗 Criando link simbólico...${NC}"
