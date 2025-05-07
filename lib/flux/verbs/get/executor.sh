@@ -61,6 +61,9 @@ perform_get_request() {
 
     # Mostra resposta formatada
     show_response "$status_code" "$response_headers" "$response_body" "$duration"
+
+    # Salva a requisição no histórico
+    process_request_for_history "GET" "$url" "$(printf '%s\n' "${headers[@]}")" "" "$response_body" "$status_code"
 }
 
 # Função para mostrar loading durante a requisição
