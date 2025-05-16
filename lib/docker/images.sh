@@ -401,6 +401,49 @@ confirm() {
     [[ $REPLY =~ ^[Yy]$ ]]
 }
 
+# Função para processar comandos de imagens
+handle_image_command() {
+    local subcommand="$1"
+    shift
+
+    case "$subcommand" in
+        "list"|"ls")
+            show_all_images
+            ;;
+        "pull"|"p")
+            if [ -z "$1" ]; then
+                echo -e "${CYBER_RED}Erro: Especifique uma imagem para pull${RESET}"
+                echo -e "Exemplo: ${CYBER_CYAN}bytebabe docker images pull nginx${RESET}"
+                return 1
+            fi
+            $cmd_docker pull "$1"
+            ;;
+        "search"|"s")
+            if [ -z "$1" ]; then
+                echo -e "${CYBER_RED}Erro: Especifique um termo para busca${RESET}"
+                echo -e "Exemplo: ${CYBER_CYAN}bytebabe docker images search nginx${RESET}"
+                return 1
+            fi
+            $cmd_docker search "$1"
+            ;;
+        "prune"|"clean")
+            echo -e "${CYBER_YELLOW}Removendo imagens não utilizadas...${RESET}"
+            $cmd_docker image prune -a --force
+            ;;
+        "stats"|"stat")
+            show_image_stats
+            ;;
+        *)
+            echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}IMAGE COMMANDS:${RESET}"
+            echo -e "  ${CYBER_GREEN}list${RESET}, ${CYBER_GREEN}ls${RESET}       List all images"
+            echo -e "  ${CYBER_GREEN}pull${RESET}, ${CYBER_GREEN}p${RESET}        Pull an image"
+            echo -e "  ${CYBER_GREEN}search${RESET}, ${CYBER_GREEN}s${RESET}      Search for images"
+            echo -e "  ${CYBER_GREEN}prune${RESET}, ${CYBER_GREEN}clean${RESET}   Remove unused images"
+            echo -e "  ${CYBER_GREEN}stats${RESET}, ${CYBER_GREEN}stat${RESET}    Show image statistics"
+            ;;
+    esac
+}
+
 pull_management_menu() {
     while true; do
         clear

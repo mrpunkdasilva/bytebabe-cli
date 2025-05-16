@@ -493,3 +493,36 @@ container_commander() {
     main_menu
 }
 
+# Função para processar comandos de container
+handle_container_command() {
+    local subcommand="$1"
+    shift
+
+    case "$subcommand" in
+        "list"|"ls")
+            if [[ "$1" == "--all" || "$1" == "-a" ]]; then
+                list_all_containers
+            else
+                list_running_containers
+            fi
+            ;;
+        "create"|"new")
+            create_container
+            ;;
+        "stats"|"stat")
+            show_stats
+            ;;
+        "search"|"find")
+            search_containers
+            ;;
+        *)
+            echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CONTAINER COMMANDS:${RESET}"
+            echo -e "  ${CYBER_GREEN}list${RESET}, ${CYBER_GREEN}ls${RESET}       List containers"
+            echo -e "    ${CYBER_GRAY}--all, -a${RESET}  Show all containers (including stopped)"
+            echo -e "  ${CYBER_GREEN}create${RESET}, ${CYBER_GREEN}new${RESET}    Create a new container"
+            echo -e "  ${CYBER_GREEN}stats${RESET}, ${CYBER_GREEN}stat${RESET}    Show container statistics"
+            echo -e "  ${CYBER_GREEN}search${RESET}, ${CYBER_GREEN}find${RESET}   Search for containers"
+            ;;
+    esac
+}
+
