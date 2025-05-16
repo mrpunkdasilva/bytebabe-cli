@@ -1,4 +1,4 @@
-# Image Management 🏴‍☠️
+# Image Management
 
 ## Comandos Disponíveis
 

@@ -106,5 +106,8 @@ perform_delete_request() {
     echo -e "${CYBER_BLUE}║${RESET} ${CYBER_YELLOW}Request completed at $(date '+%Y-%m-%d %H:%M:%S')${RESET}"
     echo -e "${CYBER_BLUE}╚════════════════════════════════════════════════════════════════════════╝${RESET}"
 
+    # Salva a requisição no histórico
+    process_request_for_history "DELETE" "$url" "$(printf '%s\n' "${headers[@]}")" "" "$response_body" "$status_code"
+
     return $(( status_code >= 200 && status_code < 300 ? 0 : 1 ))
 }

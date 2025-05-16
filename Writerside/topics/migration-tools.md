@@ -1,4 +1,4 @@
-# Ferramentas de Migração 🔄
+# Ferramentas de Migração
 
 ## Visão Geral
 

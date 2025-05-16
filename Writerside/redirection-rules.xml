@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="36b64964">
+        <description>Created after removal of "Documentation Module" from ByteBabe CLI</description>
+        <accepts>flux-docs.html</accepts>
+    </rule>
+    <rule id="7da9f270">
+        <description>Created after removal of "Monitoring Module" from ByteBabe CLI</description>
+        <accepts>flux-monitor.html</accepts>
+    </rule>
+    <rule id="35caba95">
+        <description>Created after removal of "Security Module" from ByteBabe CLI</description>
+        <accepts>flux-security.html</accepts>
+    </rule>
+    <rule id="1ffc9d52">
+        <description>Created after removal of "Testing Module" from ByteBabe CLI</description>
+        <accepts>flux-testing.html</accepts>
+    </rule>
+</rules>

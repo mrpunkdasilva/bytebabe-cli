@@ -1,4 +1,4 @@
-# Monitoring Module 📊
+# Monitoring Module
 
 ## Dashboard
 

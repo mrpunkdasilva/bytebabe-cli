@@ -1,4 +1,4 @@
-# Web Servers 🌐
+# Web Servers
 
 O módulo de servidores web do ByteBabe permite gerenciar instâncias Docker do Apache e Nginx de forma simplificada.
 

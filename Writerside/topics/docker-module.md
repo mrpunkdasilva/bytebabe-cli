@@ -1,4 +1,4 @@
-# Docker Module 🐳
+# Docker Module
 
 > "Onde Poseidon encontra o cyberpunk para domar seus containers"
 

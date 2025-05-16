@@ -1,4 +1,4 @@
-# Firewall Module 🛡️
+# Firewall Module
 
 > "Segurança com estilo cyberpunk"
 

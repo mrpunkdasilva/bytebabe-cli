@@ -102,3 +102,26 @@ show_loading() {
     done
     echo -ne "\r\033[K"  # Limpa a linha
 }
+
+# Mostra a ajuda do Flux
+show_flux_help() {
+    echo -e "${CYBER_PURPLE}╔═══════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYBER_PURPLE}║ ${CYBER_CYAN}${BOLD}FLUX API CLIENT - AJUDA${RESET}${CYBER_PURPLE}                              ║${RESET}"
+    echo -e "${CYBER_PURPLE}╚═══════════════════════════════════════════════════════════════╝${RESET}"
+    echo
+    echo -e "${CYBER_BLUE}Uso:${RESET} flux ${CYBER_GREEN}<comando>${RESET} [opções]"
+    echo
+    echo -e "${CYBER_BLUE}Comandos:${RESET}"
+    echo -e "  ${CYBER_GREEN}get${RESET}      Envia uma requisição GET"
+    echo -e "  ${CYBER_GREEN}post${RESET}     Envia uma requisição POST"
+    echo -e "  ${CYBER_GREEN}put${RESET}      Envia uma requisição PUT"
+    echo -e "  ${CYBER_GREEN}delete${RESET}   Envia uma requisição DELETE"
+    echo -e "  ${CYBER_GREEN}history${RESET}  Gerencia o histórico de requisições"
+    echo -e "  ${CYBER_GREEN}server${RESET}   Inicia um servidor JSON para testes"
+    echo
+    echo -e "${CYBER_BLUE}Exemplos:${RESET}"
+    echo -e "  ${CYBER_CYAN}flux get https://api.exemplo.com/users${RESET}"
+    echo -e "  ${CYBER_CYAN}flux post https://api.exemplo.com/users -d '{\"name\":\"John\"}'${RESET}"
+    echo -e "  ${CYBER_CYAN}flux server${RESET} (inicia o servidor JSON na porta 3000)"
+    echo -e "  ${CYBER_CYAN}flux server 8080${RESET} (inicia o servidor JSON na porta 8080)"
+}

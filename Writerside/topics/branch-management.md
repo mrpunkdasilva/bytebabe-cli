@@ -1,4 +1,4 @@
-# Branch Management 🌿
+# Branch Management
 
 ## Branch Navigator
 

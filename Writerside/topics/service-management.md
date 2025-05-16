@@ -1,4 +1,4 @@
-# Service Management 🔄
+# Service Management
 
 ## Comandos Disponíveis
 

@@ -1,6 +1,4 @@
-# Git Workflows 🔄
-
-
+# Git Workflows
 
 ## Workflows Suportados
 

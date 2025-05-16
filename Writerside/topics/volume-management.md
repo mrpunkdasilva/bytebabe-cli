@@ -1,4 +1,4 @@
-# Volume Management 💾
+# Volume Management
 
 ## Comandos Disponíveis
 

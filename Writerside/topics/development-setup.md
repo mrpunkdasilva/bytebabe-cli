@@ -1,4 +1,4 @@
-# Development Setup 🛠️
+# Development Setup
 
 ## Requisitos
 

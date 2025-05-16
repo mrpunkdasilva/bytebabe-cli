@@ -1,4 +1,4 @@
-# Monitoramento do Firewall 📊
+# Monitoramento do Firewall
 
 ## Dashboard em Tempo Real
 

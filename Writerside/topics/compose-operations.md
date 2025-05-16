@@ -1,4 +1,4 @@
-# Compose Operations 🎭
+# Compose Operations
 
 ## Comandos Disponíveis
 

@@ -1,4 +1,4 @@
-# Security 🔐
+# Security
 
 > "Segurança é um estilo de vida, não uma feature"
 

@@ -1,4 +1,4 @@
-# Perfis de Segurança 🔒
+# Perfis de Segurança
 
 ## Developer Profile
 

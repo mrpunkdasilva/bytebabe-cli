@@ -1,4 +1,4 @@
-# Security Module 🔒
+# Security Module
 
 ## Security Scanner
 

@@ -20,4 +20,7 @@ perform_put_request() {
     # Executar request
     echo -e "${CYBER_BLUE}Executing PUT request...${RESET}"
     eval "$curl_cmd" | jq '.' 2>/dev/null || cat
+
+    # Salva a requisição no histórico
+    process_request_for_history "PUT" "$url" "$(printf '%s\n' "${headers[@]}")" "$body" "$response_body" "$status_code"
 }
