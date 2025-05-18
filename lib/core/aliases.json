@@ -1,51 +1,39 @@
 {
   "default_aliases": {
-    "frontend": {
-      "f": "frontend",
-      "fe": "frontend",
-      "front": "frontend",
-      "fc": "frontend create",
-      "fn": "frontend new",
-      "fg": "frontend generate",
-      "fs": "frontend serve"
-    },
-    "backend": {
-      "b": "backend",
-      "be": "backend",
-      "back": "backend",
-      "bc": "backend create",
-      "bn": "backend new",
-      "bg": "backend generate",
-      "bs": "backend serve"
-    },
-    "docker": {
-      "d": "docker",
-      "dk": "docker",
-      "dc": "docker compose",
-      "dcu": "docker compose up",
-      "dcd": "docker compose down",
-      "dcb": "docker compose build"
-    },
-    "git": {
-      "g": "git",
-      "gs": "git status",
-      "gc": "git commit",
-      "gp": "git push",
-      "gl": "git pull",
-      "gb": "git branch",
-      "gco": "git checkout"
-    },
-    "database": {
-      "db": "database",
-      "dbs": "database start",
-      "dbc": "database create",
-      "dbm": "database migrate"
-    },
-    "utils": {
-      "h": "help",
-      "v": "version",
-      "i": "init",
-      "c": "config"
-    }
+    "f": "frontend",
+    "fe": "frontend",
+    "front": "frontend",
+    "fc": "frontend create",
+    "fn": "frontend new",
+    "fg": "frontend generate",
+    "fs": "frontend serve",
+    "b": "backend",
+    "be": "backend",
+    "back": "backend",
+    "bc": "backend create",
+    "bn": "backend new",
+    "bg": "backend generate",
+    "bs": "backend serve",
+    "d": "docker",
+    "dk": "docker",
+    "dc": "docker compose",
+    "dcu": "docker compose up",
+    "dcd": "docker compose down",
+    "dcb": "docker compose build",
+    "g": "git",
+    "gs": "git status",
+    "gc": "git commit",
+    "gp": "git push",
+    "gl": "git pull",
+    "gb": "git branch",
+    "gco": "git checkout",
+    "db": "database",
+    "dbs": "database start",
+    "dbc": "database create",
+    "dbm": "database migrate",
+    "h": "help",
+    "v": "version",
+    "i": "init",
+    "c": "config"
   }
 }

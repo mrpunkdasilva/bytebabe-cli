@@ -39,43 +39,132 @@ show_frontend_header() {
 
 install_package_manager() {
     local pkg=$1
+    local use_sudo=""
+    
+    # Perguntar se deseja usar sudo (apenas uma vez)
+    if [ -z "$SUDO_ASKED" ]; then
+        echo -e "${CYBER_BLUE}Deseja usar sudo para instalar os pacotes? (s/n)${RESET}"
+        read -p "> " use_sudo_answer
+        if [[ "$use_sudo_answer" =~ ^[Ss]$ ]]; then
+            use_sudo="sudo"
+        fi
+        export SUDO_ASKED=1
+    fi
+    
     case $pkg in
         "yarn")
-            sudo npm install -g yarn
-            echo -e "${CYBER_GREEN}✔ Yarn $(yarn --version) instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando Yarn...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g yarn
+            else
+                npm install -g yarn
+            fi
+            
+            if command -v yarn &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ Yarn $(yarn --version) instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar o Yarn.${RESET}"
+            fi
             ;;
         "pnpm")
-            sudo npm install -g pnpm
-            echo -e "${CYBER_GREEN}✔ pnpm $(pnpm --version) instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando pnpm...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g pnpm
+            else
+                npm install -g pnpm
+            fi
+            
+            if command -v pnpm &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ pnpm $(pnpm --version) instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar o pnpm.${RESET}"
+            fi
             ;;
         "bun")
-            sudo curl -fsSL https://bun.sh/install | bash
-            echo -e "${CYBER_GREEN}✔ Bun $(bun --version) instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando Bun...${RESET}"
+            curl -fsSL https://bun.sh/install | bash
+            
+            if command -v bun &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ Bun $(bun --version) instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar o Bun.${RESET}"
+            fi
             ;;
         "npm")
-            sudo echo -e "${CYBER_GREEN}✔ npm $(npm --version) (pré-instalado)${RESET}"
+            if command -v npm &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ npm $(npm --version) (pré-instalado)${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ npm não encontrado, mas deveria estar instalado com o Node.js.${RESET}"
+            fi
             ;;
     esac
 }
 
 install_framework() {
     local fw=$1
+    local use_sudo=""
+    
+    # Usar a mesma configuração de sudo definida anteriormente
+    if [[ "$SUDO_ASKED" == "1" && "$use_sudo_answer" =~ ^[Ss]$ ]]; then
+        use_sudo="sudo"
+    fi
+    
     case $fw in
         "react")
-            sudo npm install -g create-react-app create-vite
-            echo -e "${CYBER_GREEN}✔ React + Vite instalados${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando React + Vite...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g create-react-app create-vite
+            else
+                npm install -g create-react-app create-vite
+            fi
+            
+            if command -v create-react-app &> /dev/null && command -v create-vite &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ React + Vite instalados com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar React + Vite.${RESET}"
+            fi
             ;;
         "vue")
-            sudo npm install -g @vue/cli
-            echo -e "${CYBER_GREEN}✔ Vue CLI $(vue --version) instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando Vue CLI...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g @vue/cli
+            else
+                npm install -g @vue/cli
+            fi
+            
+            if command -v vue &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ Vue CLI $(vue --version) instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar Vue CLI.${RESET}"
+            fi
             ;;
         "angular")
-            sudo npm install -g @angular/cli
-            echo -e "${CYBER_GREEN}✔ Angular CLI instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando Angular CLI...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g @angular/cli
+            else
+                npm install -g @angular/cli
+            fi
+            
+            if command -v ng &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ Angular CLI $(ng version --version) instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar Angular CLI.${RESET}"
+            fi
             ;;
         "next")
-            sudo npm install -g create-next-app
-            echo -e "${CYBER_GREEN}✔ Next.js instalado${RESET}"
+            echo -e "${CYBER_YELLOW}Instalando Next.js...${RESET}"
+            if [ -n "$use_sudo" ]; then
+                sudo npm install -g create-next-app
+            else
+                npm install -g create-next-app
+            fi
+            
+            if command -v create-next-app &> /dev/null; then
+                echo -e "${CYBER_GREEN}✓ Next.js instalado com sucesso!${RESET}"
+            else
+                echo -e "${CYBER_RED}✘ Falha ao instalar Next.js.${RESET}"
+            fi
             ;;
     esac
 }
@@ -85,6 +174,12 @@ install_framework() {
 # ==========================================
 
 select_package_managers() {
+    # Verificar se o Node.js está instalado
+    if ! command -v node &> /dev/null; then
+        echo -e "${CYBER_YELLOW}⚠ Node.js não está instalado. Pulando instalação de gerenciadores de pacotes.${RESET}"
+        return
+    fi
+    
     echo -e "${CYBER_YELLOW}● SELECIONE SEUS GERENCIADORES (separados por vírgulas ou 5 para todos):${RESET}"
     echo -e "${CYBER_BLUE}1) npm"
     echo -e "2) yarn"
@@ -109,12 +204,32 @@ select_package_managers() {
         done
     fi
 
+    # Verificar quais gerenciadores já estão instalados
+    echo -e "${CYBER_BLUE}Verificando gerenciadores de pacotes instalados...${RESET}"
     for pm in "${package_managers[@]}"; do
-        install_package_manager "$pm"
+        if command -v "$pm" &> /dev/null; then
+            echo -e "${CYBER_GREEN}✓ $pm $($pm --version 2>/dev/null || echo 'instalado') já está instalado${RESET}"
+        else
+            echo -e "${CYBER_YELLOW}⚠ $pm não está instalado${RESET}"
+            echo -e "${CYBER_BLUE}Deseja instalar $pm? (s/n)${RESET}"
+            read -p "> " install_pm
+            
+            if [[ "$install_pm" =~ ^[Ss]$ ]]; then
+                install_package_manager "$pm"
+            else
+                echo -e "${CYBER_YELLOW}⚠ Pulando instalação de $pm${RESET}"
+            fi
+        fi
     done
 }
 
 select_frameworks() {
+    # Verificar se o Node.js está instalado
+    if ! command -v node &> /dev/null; then
+        echo -e "${CYBER_YELLOW}⚠ Node.js não está instalado. Pulando instalação de frameworks.${RESET}"
+        return
+    fi
+    
     echo -e "\n${CYBER_YELLOW}● SELECIONE SEUS FRAMEWORKS (separados por vírgulas ou 5 para todos):${RESET}"
     echo -e "${CYBER_BLUE}1) React"
     echo -e "2) Vue"
@@ -139,8 +254,71 @@ select_frameworks() {
         done
     fi
 
+    # Verificar quais frameworks já estão instalados
+    echo -e "${CYBER_BLUE}Verificando frameworks instalados...${RESET}"
     for fw in "${frameworks[@]}"; do
-        install_framework "$fw"
+        case $fw in
+            "react")
+                if command -v create-react-app &> /dev/null; then
+                    echo -e "${CYBER_GREEN}✓ React já está instalado${RESET}"
+                else
+                    echo -e "${CYBER_YELLOW}⚠ React não está instalado${RESET}"
+                    echo -e "${CYBER_BLUE}Deseja instalar React? (s/n)${RESET}"
+                    read -p "> " install_fw
+                    
+                    if [[ "$install_fw" =~ ^[Ss]$ ]]; then
+                        install_framework "$fw"
+                    else
+                        echo -e "${CYBER_YELLOW}⚠ Pulando instalação de React${RESET}"
+                    fi
+                fi
+                ;;
+            "vue")
+                if command -v vue &> /dev/null; then
+                    echo -e "${CYBER_GREEN}✓ Vue já está instalado${RESET}"
+                else
+                    echo -e "${CYBER_YELLOW}⚠ Vue não está instalado${RESET}"
+                    echo -e "${CYBER_BLUE}Deseja instalar Vue? (s/n)${RESET}"
+                    read -p "> " install_fw
+                    
+                    if [[ "$install_fw" =~ ^[Ss]$ ]]; then
+                        install_framework "$fw"
+                    else
+                        echo -e "${CYBER_YELLOW}⚠ Pulando instalação de Vue${RESET}"
+                    fi
+                fi
+                ;;
+            "angular")
+                if command -v ng &> /dev/null; then
+                    echo -e "${CYBER_GREEN}✓ Angular já está instalado${RESET}"
+                else
+                    echo -e "${CYBER_YELLOW}⚠ Angular não está instalado${RESET}"
+                    echo -e "${CYBER_BLUE}Deseja instalar Angular? (s/n)${RESET}"
+                    read -p "> " install_fw
+                    
+                    if [[ "$install_fw" =~ ^[Ss]$ ]]; then
+                        install_framework "$fw"
+                    else
+                        echo -e "${CYBER_YELLOW}⚠ Pulando instalação de Angular${RESET}"
+                    fi
+                fi
+                ;;
+            "next")
+                if command -v create-next-app &> /dev/null; then
+                    echo -e "${CYBER_GREEN}✓ Next.js já está instalado${RESET}"
+                else
+                    echo -e "${CYBER_YELLOW}⚠ Next.js não está instalado${RESET}"
+                    echo -e "${CYBER_BLUE}Deseja instalar Next.js? (s/n)${RESET}"
+                    read -p "> " install_fw
+                    
+                    if [[ "$install_fw" =~ ^[Ss]$ ]]; then
+                        install_framework "$fw"
+                    else
+                        echo -e "${CYBER_YELLOW}⚠ Pulando instalação de Next.js${RESET}"
+                    fi
+                fi
+                ;;
+        esac
     done
 }
 
@@ -154,9 +332,27 @@ process_setup() {
 
     # Verificar Node.js
     if ! command -v node &> /dev/null; then
-        echo -e "${CYBER_RED}✘ Node.js não encontrado! Instale primeiro com:${RESET}"
-        echo -e "${CYBER_PINK}bytebabe backend install node${RESET}"
-        return 1
+        echo -e "${CYBER_YELLOW}⚠ Node.js não encontrado!${RESET}"
+        echo -e "${CYBER_BLUE}Para instalar o Node.js, você pode usar:${RESET}"
+        echo -e "${CYBER_PINK}  • Ubuntu/Debian: sudo apt install nodejs npm${RESET}"
+        echo -e "${CYBER_PINK}  • Fedora: sudo dnf install nodejs npm${RESET}"
+        echo -e "${CYBER_PINK}  • Arch Linux: sudo pacman -S nodejs npm${RESET}"
+        echo -e "${CYBER_PINK}  • macOS: brew install node${RESET}"
+        echo -e "${CYBER_PINK}  • Windows: Baixe o instalador em https://nodejs.org/${RESET}"
+        echo -e "${CYBER_YELLOW}Após instalar o Node.js, execute este comando novamente.${RESET}"
+        
+        # Perguntar se deseja continuar sem Node.js
+        echo -e "${CYBER_BLUE}Deseja continuar mesmo sem o Node.js? (s/n)${RESET}"
+        read -p "> " continue_without_node
+        
+        if [[ ! "$continue_without_node" =~ ^[Ss]$ ]]; then
+            echo -e "${CYBER_RED}✘ Configuração cancelada.${RESET}"
+            return 1
+        fi
+        
+        echo -e "${CYBER_YELLOW}⚠ Continuando sem Node.js. Algumas funcionalidades podem não funcionar corretamente.${RESET}"
+    else
+        echo -e "${CYBER_GREEN}✓ Node.js $(node -v) encontrado!${RESET}"
     fi
 
     # Gerenciadores de pacote
@@ -168,9 +364,29 @@ process_setup() {
     # Finalização
     echo -e "\n${CYBER_PINK}⚡ CONFIGURAÇÃO COMPLETA! ⚡${RESET}"
     echo -e "${CYBER_BLUE}Ferramentas instaladas:"
-    echo -e "• Node.js $(node -v)"
-    echo -e "• Gerenciadores: ${package_managers[*]}"
-    echo -e "• Frameworks: ${frameworks[*]}${RESET}"
+    
+    # Verificar se o Node.js está instalado
+    if command -v node &> /dev/null; then
+        echo -e "• Node.js $(node -v)"
+    else
+        echo -e "• Node.js ${CYBER_RED}não instalado${RESET}"
+    fi
+    
+    # Verificar se há gerenciadores de pacotes instalados
+    if [ ${#package_managers[@]} -gt 0 ]; then
+        echo -e "• Gerenciadores: ${package_managers[*]}"
+    else
+        echo -e "• Gerenciadores: ${CYBER_YELLOW}nenhum selecionado${RESET}"
+    fi
+    
+    # Verificar se há frameworks instalados
+    if [ ${#frameworks[@]} -gt 0 ]; then
+        echo -e "• Frameworks: ${frameworks[*]}"
+    else
+        echo -e "• Frameworks: ${CYBER_YELLOW}nenhum selecionado${RESET}"
+    fi
+    
+    echo -e "${RESET}"
 }
 
 show_help() {
@@ -341,6 +557,9 @@ add_feature() {
 
 # Handler principal de comandos
 case "$1" in
+    setup)
+        process_setup
+        ;;
     new|create)
         shift
         case "$1" in
@@ -508,11 +727,16 @@ main() {
         "setup")
             process_setup
             ;;
+        "new"|"create"|"add"|"generate"|"g"|"serve"|"s")
+            # Esses comandos já foram processados pelo bloco principal
+            ;;
         "help"|"--help"|"-h")
             show_help
             ;;
         *)
-            show_help
+            if [ -z "$1" ]; then
+                show_help
+            fi
             ;;
     esac
 }
@@ -521,4 +745,7 @@ main() {
 # INICIALIZAÇÃO
 # ==========================================
 
-main "$@"
+# Se nenhum comando foi processado pelo bloco principal, chama a função main
+if [ $? -eq 0 ]; then
+    main "$@"
+fi
