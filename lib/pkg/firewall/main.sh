@@ -198,30 +198,136 @@ check_firewall_status() {
                 echo -e "${CYBER_BLUE}║${CYBER_CYAN}                    ACTIVE ZONE: $active_zone${CYBER_BLUE}                    ║${RESET}"
                 echo -e "${CYBER_BLUE}╚══════════════════════════════════════════════════════════════╝${RESET}"
                 
-                # Display services
-                echo -e "\n${CYBER_YELLOW}▓▒░ ACTIVE SERVICES ░▒▓${RESET}"
-                sudo firewall-cmd --list-services | tr ' ' '\n' | while read service; do
-                    if [[ -n "$service" ]]; then
-                        echo -e "  ${CYBER_GREEN}►${RESET} $service"
-                    fi
-                done
+                # Display services with descriptions
+                echo -e "\n${CYBER_YELLOW}▓▒░ ENABLED SERVICES ░▒▓${RESET}"
+                local services=$(sudo firewall-cmd --list-services)
+                local services_shown=false
+                if [[ -n "$services" ]]; then
+                    echo "$services" | tr ' ' '\n' | while read service; do
+                        if [[ -n "$service" ]]; then
+                            services_shown=true
+                            case $service in
+                                "ssh") echo -e "  ${CYBER_GREEN}► SSH${RESET} - Secure Shell access" ;;
+                                "dhcpv6-client") echo -e "  ${CYBER_BLUE}► DHCPv6${RESET} - IPv6 address assignment" ;;
+                                "mdns") echo -e "  ${CYBER_MAGENTA}► mDNS${RESET} - Multicast DNS discovery" ;;
+                                "samba-client") echo -e "  ${CYBER_CYAN}► Samba${RESET} - Windows file sharing" ;;
+                                "http") echo -e "  ${CYBER_YELLOW}► HTTP${RESET} - Web server (port 80)" ;;
+                                "https") echo -e "  ${CYBER_YELLOW}► HTTPS${RESET} - Secure web server (port 443)" ;;
+                                "ftp") echo -e "  ${CYBER_BLUE}► FTP${RESET} - File transfer protocol" ;;
+                                "dns") echo -e "  ${CYBER_MAGENTA}► DNS${RESET} - Domain name resolution" ;;
+                                *) echo -e "  ${CYBER_WHITE}► $service${RESET}" ;;
+                            esac
+                        fi
+                    done
+                fi
+                if [[ -z "$services" ]]; then
+                    echo -e "  ${CYBER_RED}► NO SERVICES ENABLED${RESET}"
+                fi
                 
-                # Display ports
+                # Display ports with descriptions
                 echo -e "\n${CYBER_YELLOW}▓▒░ OPEN PORTS ░▒▓${RESET}"
-                sudo firewall-cmd --list-ports | tr ' ' '\n' | while read port; do
-                    if [[ -n "$port" ]]; then
-                        echo -e "  ${CYBER_BLUE}►${RESET} $port"
-                    fi
-                done
+                local ports=$(sudo firewall-cmd --list-ports)
+                if [[ -n "$ports" ]]; then
+                    echo "$ports" | tr ' ' '\n' | while read port; do
+                        if [[ -n "$port" ]]; then
+                            case $port in
+                                "22/tcp") echo -e "  ${CYBER_GREEN}► Port 22/tcp${RESET} - SSH access" ;;
+                                "80/tcp") echo -e "  ${CYBER_YELLOW}► Port 80/tcp${RESET} - HTTP web server" ;;
+                                "443/tcp") echo -e "  ${CYBER_YELLOW}► Port 443/tcp${RESET} - HTTPS secure web" ;;
+                                "3000/tcp") echo -e "  ${CYBER_CYAN}► Port 3000/tcp${RESET} - React/Node.js dev server" ;;
+                                "8000/tcp") echo -e "  ${CYBER_CYAN}► Port 8000/tcp${RESET} - Django/Flask dev server" ;;
+                                "8080/tcp") echo -e "  ${CYBER_CYAN}► Port 8080/tcp${RESET} - Alternative web server" ;;
+                                "3306/tcp") echo -e "  ${CYBER_MAGENTA}► Port 3306/tcp${RESET} - MySQL database" ;;
+                                "5432/tcp") echo -e "  ${CYBER_MAGENTA}► Port 5432/tcp${RESET} - PostgreSQL database" ;;
+                                "27017/tcp") echo -e "  ${CYBER_MAGENTA}► Port 27017/tcp${RESET} - MongoDB database" ;;
+                                "6379/tcp") echo -e "  ${CYBER_MAGENTA}► Port 6379/tcp${RESET} - Redis cache" ;;
+                                *) echo -e "  ${CYBER_WHITE}► Port $port${RESET}" ;;
+                            esac
+                        fi
+                    done
+                else
+                    echo -e "  ${CYBER_RED}► NO PORTS OPEN${RESET}"
+                fi
                 
                 # Display interfaces
                 echo -e "\n${CYBER_YELLOW}▓▒░ NETWORK INTERFACES ░▒▓${RESET}"
-                sudo firewall-cmd --list-interfaces | tr ' ' '\n' | while read interface; do
-                    if [[ -n "$interface" ]]; then
-                        echo -e "  ${CYBER_MAGENTA}►${RESET} $interface"
-                    fi
-                done
+                local interfaces=$(sudo firewall-cmd --list-interfaces)
+                if [[ -n "$interfaces" ]]; then
+                    echo "$interfaces" | tr ' ' '\n' | while read interface; do
+                        if [[ -n "$interface" ]]; then
+                            case $interface in
+                                "wlo1") echo -e "  ${CYBER_BLUE}► $interface${RESET} - Wireless network interface" ;;
+                                "eno1"|"eth0") echo -e "  ${CYBER_GREEN}► $interface${RESET} - Wired network interface" ;;
+                                "lo") echo -e "  ${CYBER_MAGENTA}► $interface${RESET} - Loopback interface" ;;
+                                "docker0") echo -e "  ${CYBER_CYAN}► $interface${RESET} - Docker bridge network" ;;
+                                *) echo -e "  ${CYBER_WHITE}► $interface${RESET}" ;;
+                            esac
+                        fi
+                    done
+                else
+                    echo -e "  ${CYBER_RED}► NO INTERFACES CONFIGURED${RESET}"
+                fi
                 
+                # Security summary
+                echo -e "\n${CYBER_YELLOW}▓▒░ SECURITY SUMMARY ░▒▓${RESET}"
+                local service_count=$(echo "$services" | wc -w)
+                local port_count=$(echo "$ports" | wc -w)
+                local interface_count=$(echo "$interfaces" | wc -w)
+                
+                echo -e "  ${CYBER_BLUE}► SERVICES: $service_count${RESET}"
+                echo -e "  ${CYBER_BLUE}► PORTS: $port_count${RESET}"
+                echo -e "  ${CYBER_BLUE}► INTERFACES: $interface_count${RESET}"
+                
+                # Security recommendations
+                echo -e "\n${CYBER_YELLOW}▓▒░ SECURITY RECOMMENDATIONS ░▒▓${RESET}"
+                if [[ $port_count -gt 10 ]]; then
+                    echo -e "  ${CYBER_RED}⚠ MANY PORTS OPEN - Consider closing unnecessary ports${RESET}"
+                fi
+                if [[ $service_count -eq 0 ]]; then
+                    echo -e "  ${CYBER_YELLOW}⚠ NO SERVICES ENABLED - Consider enabling essential services${RESET}"
+                fi
+                if echo "$services" | grep -q "ssh"; then
+                    echo -e "  ${CYBER_GREEN}✓ SSH access enabled${RESET}"
+                else
+                    echo -e "  ${CYBER_RED}⚠ SSH not enabled - You may lose remote access${RESET}"
+                fi
+
+                # SSH Details block
+                echo -e "\n${CYBER_PURPLE}▓▒░ SSH DETAILS ░▒▓${RESET}"
+                # SSH Port(s)
+                local ssh_ports=$(sudo firewall-cmd --zone=$active_zone --list-ports | tr ' ' '\n' | grep -E '22/(tcp|udp)')
+                if [[ -n "$ssh_ports" ]]; then
+                    echo -e "  ${CYBER_GREEN}► SSH Port(s): $ssh_ports${RESET}"
+                else
+                    # Check if SSH is enabled as a service (default port 22)
+                    if echo "$services" | grep -q "ssh"; then
+                        echo -e "  ${CYBER_GREEN}► SSH Port(s): 22/tcp (default)${RESET}"
+                    else
+                        echo -e "  ${CYBER_RED}► SSH Port(s): Not detected${RESET}"
+                    fi
+                fi
+                # Allowed IPs (sources)
+                local ssh_sources=$(sudo firewall-cmd --zone=$active_zone --list-sources)
+                if [[ -n "$ssh_sources" ]]; then
+                    echo -e "  ${CYBER_BLUE}► Allowed IPs: $ssh_sources${RESET}"
+                else
+                    echo -e "  ${CYBER_YELLOW}► Allowed IPs: All (no restriction)${RESET}"
+                fi
+                # Rate limiting (not natively in firewalld, but check for rich rules)
+                local ssh_rich=$(sudo firewall-cmd --zone=$active_zone --list-rich-rules | grep -i ssh)
+                if echo "$ssh_rich" | grep -qi 'limit'; then
+                    echo -e "  ${CYBER_MAGENTA}► Rate Limiting: Enabled${RESET}"
+                else
+                    echo -e "  ${CYBER_YELLOW}► Rate Limiting: Not detected${RESET}"
+                fi
+                # Logging (check if logging is enabled for SSH)
+                local ssh_log=$(sudo firewall-cmd --zone=$active_zone --list-rich-rules | grep -i ssh | grep -i log)
+                if [[ -n "$ssh_log" ]]; then
+                    echo -e "  ${CYBER_CYAN}► Logging: Enabled for SSH${RESET}"
+                else
+                    echo -e "  ${CYBER_YELLOW}► Logging: Not detected for SSH${RESET}"
+                fi
+
                 echo -e "\n${CYBER_GREEN}▓▒░ ✓ FIREWALLD OPERATIONAL ░▒▓${RESET}"
             else
                 echo -e "\n${CYBER_RED}▓▒░ ✖ FIREWALLD: STOPPED ░▒▓${RESET}"
@@ -343,30 +449,201 @@ list_firewall_rules() {
     
     case $FIREWALL_TYPE in
         "ufw")
+            echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                    UFW FIREWALL RULES                    ${CYBER_PURPLE}║${RESET}"
+            echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+            
             if sudo ufw status numbered; then
-                echo -e "${CYBER_GREEN}✓ UFW rules listed successfully${RESET}"
+                echo -e "\n${CYBER_GREEN}▓▒░ ✓ UFW RULES DISPLAYED ░▒▓${RESET}"
+                
+                # Parse and display rules in a more organized way
+                echo -e "\n${CYBER_YELLOW}▓▒░ RULE SUMMARY ░▒▓${RESET}"
+                local total_rules=$(sudo ufw status numbered | grep -c "^\[")
+                local allowed_rules=$(sudo ufw status numbered | grep -c "ALLOW")
+                local denied_rules=$(sudo ufw status numbered | grep -c "DENY")
+                
+                echo -e "  ${CYBER_BLUE}► TOTAL RULES: $total_rules${RESET}"
+                echo -e "  ${CYBER_GREEN}► ALLOWED: $allowed_rules${RESET}"
+                echo -e "  ${CYBER_RED}► DENIED: $denied_rules${RESET}"
             else
-                echo -e "${CYBER_RED}✖ Failed to list UFW rules${RESET}"
+                echo -e "\n${CYBER_RED}▓▒░ ✖ FAILED TO LIST UFW RULES ░▒▓${RESET}"
             fi
             ;;
         "firewalld")
-            echo -e "${CYBER_YELLOW}Firewalld Zones:${RESET}"
-            sudo firewall-cmd --list-all-zones
-            echo -e "\n${CYBER_YELLOW}Active Zone:${RESET}"
-            sudo firewall-cmd --list-all
+            echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                  FIREWALLD RULES PANEL                  ${CYBER_PURPLE}║${RESET}"
+            echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+            
+            # Get active zone
+            local active_zone=$(sudo firewall-cmd --get-active-zones | head -n1 | cut -d' ' -f1)
+            echo -e "\n${CYBER_BLUE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${CYBER_BLUE}║${CYBER_CYAN}                    ACTIVE ZONE: $active_zone${CYBER_BLUE}                    ║${RESET}"
+            echo -e "${CYBER_BLUE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+            
+            # Display services with descriptions
+            echo -e "\n${CYBER_YELLOW}▓▒░ ENABLED SERVICES ░▒▓${RESET}"
+            local services=$(sudo firewall-cmd --list-services)
+            local services_shown=false
+            if [[ -n "$services" ]]; then
+                echo "$services" | tr ' ' '\n' | while read service; do
+                    if [[ -n "$service" ]]; then
+                        services_shown=true
+                        case $service in
+                            "ssh") echo -e "  ${CYBER_GREEN}► SSH${RESET} - Secure Shell access" ;;
+                            "dhcpv6-client") echo -e "  ${CYBER_BLUE}► DHCPv6${RESET} - IPv6 address assignment" ;;
+                            "mdns") echo -e "  ${CYBER_MAGENTA}► mDNS${RESET} - Multicast DNS discovery" ;;
+                            "samba-client") echo -e "  ${CYBER_CYAN}► Samba${RESET} - Windows file sharing" ;;
+                            "http") echo -e "  ${CYBER_YELLOW}► HTTP${RESET} - Web server (port 80)" ;;
+                            "https") echo -e "  ${CYBER_YELLOW}► HTTPS${RESET} - Secure web server (port 443)" ;;
+                            "ftp") echo -e "  ${CYBER_BLUE}► FTP${RESET} - File transfer protocol" ;;
+                            "dns") echo -e "  ${CYBER_MAGENTA}► DNS${RESET} - Domain name resolution" ;;
+                            *) echo -e "  ${CYBER_WHITE}► $service${RESET}" ;;
+                        esac
+                    fi
+                done
+            fi
+            if [[ -z "$services" ]]; then
+                echo -e "  ${CYBER_RED}► NO SERVICES ENABLED${RESET}"
+            fi
+            
+            # Display ports with descriptions
+            echo -e "\n${CYBER_YELLOW}▓▒░ OPEN PORTS ░▒▓${RESET}"
+            local ports=$(sudo firewall-cmd --list-ports)
+            if [[ -n "$ports" ]]; then
+                echo "$ports" | tr ' ' '\n' | while read port; do
+                    if [[ -n "$port" ]]; then
+                        case $port in
+                            "22/tcp") echo -e "  ${CYBER_GREEN}► Port 22/tcp${RESET} - SSH access" ;;
+                            "80/tcp") echo -e "  ${CYBER_YELLOW}► Port 80/tcp${RESET} - HTTP web server" ;;
+                            "443/tcp") echo -e "  ${CYBER_YELLOW}► Port 443/tcp${RESET} - HTTPS secure web" ;;
+                            "3000/tcp") echo -e "  ${CYBER_CYAN}► Port 3000/tcp${RESET} - React/Node.js dev server" ;;
+                            "8000/tcp") echo -e "  ${CYBER_CYAN}► Port 8000/tcp${RESET} - Django/Flask dev server" ;;
+                            "8080/tcp") echo -e "  ${CYBER_CYAN}► Port 8080/tcp${RESET} - Alternative web server" ;;
+                            "3306/tcp") echo -e "  ${CYBER_MAGENTA}► Port 3306/tcp${RESET} - MySQL database" ;;
+                            "5432/tcp") echo -e "  ${CYBER_MAGENTA}► Port 5432/tcp${RESET} - PostgreSQL database" ;;
+                            "27017/tcp") echo -e "  ${CYBER_MAGENTA}► Port 27017/tcp${RESET} - MongoDB database" ;;
+                            "6379/tcp") echo -e "  ${CYBER_MAGENTA}► Port 6379/tcp${RESET} - Redis cache" ;;
+                            *) echo -e "  ${CYBER_WHITE}► Port $port${RESET}" ;;
+                        esac
+                    fi
+                done
+            else
+                echo -e "  ${CYBER_RED}► NO PORTS OPEN${RESET}"
+            fi
+            
+            # Display interfaces
+            echo -e "\n${CYBER_YELLOW}▓▒░ NETWORK INTERFACES ░▒▓${RESET}"
+            local interfaces=$(sudo firewall-cmd --list-interfaces)
+            if [[ -n "$interfaces" ]]; then
+                echo "$interfaces" | tr ' ' '\n' | while read interface; do
+                    if [[ -n "$interface" ]]; then
+                        case $interface in
+                            "wlo1") echo -e "  ${CYBER_BLUE}► $interface${RESET} - Wireless network interface" ;;
+                            "eno1"|"eth0") echo -e "  ${CYBER_GREEN}► $interface${RESET} - Wired network interface" ;;
+                            "lo") echo -e "  ${CYBER_MAGENTA}► $interface${RESET} - Loopback interface" ;;
+                            "docker0") echo -e "  ${CYBER_CYAN}► $interface${RESET} - Docker bridge network" ;;
+                            *) echo -e "  ${CYBER_WHITE}► $interface${RESET}" ;;
+                        esac
+                    fi
+                done
+            else
+                echo -e "  ${CYBER_RED}► NO INTERFACES CONFIGURED${RESET}"
+            fi
+            
+            # Security summary
+            echo -e "\n${CYBER_YELLOW}▓▒░ SECURITY SUMMARY ░▒▓${RESET}"
+            local service_count=$(echo "$services" | wc -w)
+            local port_count=$(echo "$ports" | wc -w)
+            local interface_count=$(echo "$interfaces" | wc -w)
+            
+            echo -e "  ${CYBER_BLUE}► SERVICES: $service_count${RESET}"
+            echo -e "  ${CYBER_BLUE}► PORTS: $port_count${RESET}"
+            echo -e "  ${CYBER_BLUE}► INTERFACES: $interface_count${RESET}"
+            
+            # Security recommendations
+            echo -e "\n${CYBER_YELLOW}▓▒░ SECURITY RECOMMENDATIONS ░▒▓${RESET}"
+            if [[ $port_count -gt 10 ]]; then
+                echo -e "  ${CYBER_RED}⚠ MANY PORTS OPEN - Consider closing unnecessary ports${RESET}"
+            fi
+            if [[ $service_count -eq 0 ]]; then
+                echo -e "  ${CYBER_YELLOW}⚠ NO SERVICES ENABLED - Consider enabling essential services${RESET}"
+            fi
+            if echo "$services" | grep -q "ssh"; then
+                echo -e "  ${CYBER_GREEN}✓ SSH access enabled${RESET}"
+            else
+                echo -e "  ${CYBER_RED}⚠ SSH not enabled - You may lose remote access${RESET}"
+            fi
+
+            # SSH Details block
+            echo -e "\n${CYBER_PURPLE}▓▒░ SSH DETAILS ░▒▓${RESET}"
+            # SSH Port(s)
+            local ssh_ports=$(sudo firewall-cmd --zone=$active_zone --list-ports | tr ' ' '\n' | grep -E '22/(tcp|udp)')
+            if [[ -n "$ssh_ports" ]]; then
+                echo -e "  ${CYBER_GREEN}► SSH Port(s): $ssh_ports${RESET}"
+            else
+                # Check if SSH is enabled as a service (default port 22)
+                if echo "$services" | grep -q "ssh"; then
+                    echo -e "  ${CYBER_GREEN}► SSH Port(s): 22/tcp (default)${RESET}"
+                else
+                    echo -e "  ${CYBER_RED}► SSH Port(s): Not detected${RESET}"
+                fi
+            fi
+            # Allowed IPs (sources)
+            local ssh_sources=$(sudo firewall-cmd --zone=$active_zone --list-sources)
+            if [[ -n "$ssh_sources" ]]; then
+                echo -e "  ${CYBER_BLUE}► Allowed IPs: $ssh_sources${RESET}"
+            else
+                echo -e "  ${CYBER_YELLOW}► Allowed IPs: All (no restriction)${RESET}"
+            fi
+            # Rate limiting (not natively in firewalld, but check for rich rules)
+            local ssh_rich=$(sudo firewall-cmd --zone=$active_zone --list-rich-rules | grep -i ssh)
+            if echo "$ssh_rich" | grep -qi 'limit'; then
+                echo -e "  ${CYBER_MAGENTA}► Rate Limiting: Enabled${RESET}"
+            else
+                echo -e "  ${CYBER_YELLOW}► Rate Limiting: Not detected${RESET}"
+            fi
+            # Logging (check if logging is enabled for SSH)
+            local ssh_log=$(sudo firewall-cmd --zone=$active_zone --list-rich-rules | grep -i ssh | grep -i log)
+            if [[ -n "$ssh_log" ]]; then
+                echo -e "  ${CYBER_CYAN}► Logging: Enabled for SSH${RESET}"
+            else
+                echo -e "  ${CYBER_YELLOW}► Logging: Not detected for SSH${RESET}"
+            fi
+
+            echo -e "\n${CYBER_GREEN}▓▒░ ✓ FIREWALLD RULES DISPLAYED ░▒▓${RESET}"
             ;;
         "iptables")
-            echo -e "${CYBER_YELLOW}iptables Rules:${RESET}"
-            sudo iptables -L -v -n --line-numbers
+            echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                   IPTABLES RULES PANEL                   ${CYBER_PURPLE}║${RESET}"
+            echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+            
+            echo -e "\n${CYBER_YELLOW}▓▒░ IPTABLES RULES (DETAILED) ░▒▓${RESET}"
+            if sudo iptables -L -v -n --line-numbers; then
+                echo -e "\n${CYBER_GREEN}▓▒░ ✓ IPTABLES RULES DISPLAYED ░▒▓${RESET}"
+            else
+                echo -e "\n${CYBER_RED}▓▒░ ✖ FAILED TO LIST IPTABLES RULES ░▒▓${RESET}"
+            fi
             ;;
         "nftables")
-            echo -e "${CYBER_YELLOW}nftables Rules:${RESET}"
-            sudo nft list ruleset
+            echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+            echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                   NFTABLES RULES PANEL                   ${CYBER_PURPLE}║${RESET}"
+            echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+            
+            echo -e "\n${CYBER_YELLOW}▓▒░ NFTABLES RULES (DETAILED) ░▒▓${RESET}"
+            if sudo nft list ruleset; then
+                echo -e "\n${CYBER_GREEN}▓▒░ ✓ NFTABLES RULES DISPLAYED ░▒▓${RESET}"
+            else
+                echo -e "\n${CYBER_RED}▓▒░ ✖ FAILED TO LIST NFTABLES RULES ░▒▓${RESET}"
+            fi
             ;;
         *)
-            echo -e "${CYBER_RED}✖ Unknown firewall type: $FIREWALL_TYPE${RESET}"
+            echo -e "\n${CYBER_RED}▓▒░ ✖ UNKNOWN FIREWALL TYPE: $FIREWALL_TYPE ░▒▓${RESET}"
             ;;
     esac
+    
+    echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                    RULES ANALYSIS COMPLETE                    ${CYBER_PURPLE}║${RESET}"
+    echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
 }
 
 add_firewall_rule() {

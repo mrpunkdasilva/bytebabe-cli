@@ -1,0 +1,12 @@
+{
+  "hello": {
+    "input": [],
+    "expected_output": "Hello, Cyberpunk!",
+    "exit_code": 0
+  },
+  "init": {
+    "input": [],
+    "expected_output": "Environment initialized",
+    "exit_code": 0
+  }
+}

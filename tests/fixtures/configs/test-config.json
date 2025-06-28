@@ -1,0 +1,11 @@
+{
+  "app": {
+    "name": "ByteBabe Test",
+    "version": "1.0.0-test"
+  },
+  "test": {
+    "timeout": 30,
+    "retries": 3,
+    "verbose": true
+  }
+}
