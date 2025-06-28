@@ -72,7 +72,7 @@ case "$1" in
         source "${BASE_DIR}/lib/database/datavision.sh"
         datavision_main "${@:2}"
         ;;
-    edit)
+    edit|byteedit)
          source "${BASE_DIR}/commands/byteedit.sh" "${@:2}"
         ;;
     ide)
