@@ -123,7 +123,7 @@ process_advanced_command() {
     local ide=$2
 
     case "$cmd" in
-        install)
+        install|i|add)
             if [[ -z "$ide" ]]; then
                 echo -e "${CYBER_ICON_ERROR} ${CYBER_RED}Especifique uma IDE para instalar${RESET}"
                 show_ide_help
@@ -131,7 +131,7 @@ process_advanced_command() {
             fi
             process_single_ide "$ide"
             ;;
-        run)
+        run|r)
             if [[ -z "$ide" ]]; then
                 echo -e "${CYBER_ICON_ERROR} ${CYBER_RED}Especifique uma IDE para executar${RESET}"
                 echo -e "${CYBER_YELLOW}IDEs disponíveis: ${!RUN_IDS[@]}${RESET}"
@@ -139,14 +139,14 @@ process_advanced_command() {
             fi
             run_ide "$ide"
             ;;
-        status)
+        status|s)
             if [[ -z "$ide" ]]; then
                 echo -e "${CYBER_ICON_ERROR} ${CYBER_RED}Especifique uma IDE para verificar${RESET}"
                 return 1
             fi
             ide_status "$ide"
             ;;
-        list)
+        list|l)
             list_installed_ides
             ;;
         *)
