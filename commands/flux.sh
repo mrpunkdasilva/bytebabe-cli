@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# Define o diretório base (deve apontar para a raiz do projeto)
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Set BASE_DIR if not already set (for direct execution)
+if [ -z "$BASE_DIR" ]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
 
 # Importa os módulos necessários
-source "$BASE_DIR/lib/flux/display.sh"
-source "$BASE_DIR/lib/flux/ui.sh"
-source "$BASE_DIR/lib/flux/verbs/get/main.sh"
-source "$BASE_DIR/lib/flux/verbs/postFeature/main.sh"
-source "$BASE_DIR/lib/flux/verbs/put/main.sh"
-source "$BASE_DIR/lib/flux/verbs/delete/main.sh"
-source "$BASE_DIR/lib/flux/history.sh"  # Importa o módulo de histórico diretamente
-source "$BASE_DIR/lib/flux/request.sh"
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/flux/display.sh"
+source "${BASE_DIR}/lib/flux/ui.sh"
+source "${BASE_DIR}/lib/flux/verbs/get/main.sh"
+source "${BASE_DIR}/lib/flux/verbs/postFeature/main.sh"
+source "${BASE_DIR}/lib/flux/verbs/put/main.sh"
+source "${BASE_DIR}/lib/flux/verbs/delete/main.sh"
+source "${BASE_DIR}/lib/flux/history.sh"  # Importa o módulo de histórico diretamente
+source "${BASE_DIR}/lib/flux/request.sh"
 
 # Cores
 export CYBER_BLUE='\033[38;5;45m'
@@ -49,7 +53,7 @@ main() {
             ;;
         "server")
             # Verifica se o script json-server.sh é executável
-            local server_script="$BASE_DIR/commands/json-server.sh"
+            local server_script="${BASE_DIR}/commands/json-server.sh"
             if [ ! -x "$server_script" ]; then
                 echo -e "${CYBER_YELLOW}[i] Corrigindo permissões do script json-server.sh...${RESET}"
                 chmod +x "$server_script"

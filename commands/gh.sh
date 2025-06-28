@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Resolve script base directory
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
 # Carrega bibliotecas
 source "${BASE_DIR}/lib/core/colors.sh"
 source "${BASE_DIR}/lib/core/helpers.sh"

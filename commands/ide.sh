@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Set BASE_DIR if not already set (for direct execution)
+if [ -z "$BASE_DIR" ]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
+
 # ==========================================
 # IDE COMMANDER - CYBERPUNK EDITION
 # ==========================================

@@ -1,17 +1,17 @@
 #!/bin/bash
 
-# Carrega paths absolutos
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Set BASE_DIR if not already set (for direct execution)
+if [ -z "$BASE_DIR" ]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
 
 # Importa módulos
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/utils/config.sh"
-source "$BASE_DIR/lib/utils/headers.sh"
-source "$BASE_DIR/lib/utils/nvm.sh"
-source "$BASE_DIR/commands/neovim_tools.sh"
-
-
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/utils/config.sh"
+source "${BASE_DIR}/lib/utils/headers.sh"
+source "${BASE_DIR}/lib/utils/nvm.sh"
+source "${BASE_DIR}/commands/neovim_tools.sh"
 
 # ======================
 # CONFIGURAÇÕES BÁSICAS

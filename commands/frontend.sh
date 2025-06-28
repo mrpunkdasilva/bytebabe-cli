@@ -4,15 +4,12 @@
 # FRONTEND COMMANDER - CYBERPUNK EDITION
 # ==========================================
 
-# Carrega paths absolutos
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
-# Importa módulos
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/frontend/main.sh"
-source "$BASE_DIR/lib/frontend/config.sh"
-source "$BASE_DIR/lib/frontend/templates.sh"
+# Carrega bibliotecas
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/frontend/main.sh"
+source "${BASE_DIR}/lib/frontend/config.sh"
+source "${BASE_DIR}/lib/frontend/templates.sh"
 
 # Configurações
 VITE_TEMPLATES=("react" "react-ts" "vue" "vue-ts" "preact" "preact-ts" "lit" "lit-ts" "svelte" "svelte-ts")

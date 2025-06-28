@@ -4,11 +4,9 @@
 # CONFIGURAÇÕES GLOBAIS
 # ==================================================
 
-
-# Importar módulos
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
+# Carrega bibliotecas
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
 
 # ==========================================
 # FUNÇÕES PRINCIPAIS

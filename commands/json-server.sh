@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Define o diretório base (deve apontar para a raiz do projeto)
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
 
 # Importa as cores
-source "$BASE_DIR/lib/flux/display.sh"
+source "${BASE_DIR}/lib/flux/display.sh"
 
 # Verifica se o json-server está instalado
 check_json_server() {
@@ -24,7 +24,7 @@ check_json_server() {
 
 # Inicia o servidor JSON
 start_json_server() {
-    local db_file="$BASE_DIR/db.json"
+    local db_file="${BASE_DIR}/db.json"
     local port=${1:-3000}
     
     if [ ! -f "$db_file" ]; then

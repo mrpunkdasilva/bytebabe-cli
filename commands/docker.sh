@@ -1,16 +1,20 @@
 #!/bin/bash
 
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
+# Set BASE_DIR if not already set (for direct execution)
+if [ -z "$BASE_DIR" ]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+fi
+
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
 
 # Carrega módulos Docker
-source "$BASE_DIR/lib/docker/ui.sh"
-source "$BASE_DIR/lib/docker/helpers.sh"
-source "$BASE_DIR/lib/docker/containers.sh"
-source "$BASE_DIR/lib/docker/images.sh"
-source "$BASE_DIR/lib/docker/volumes.sh"
-source "$BASE_DIR/lib/docker/compose.sh"
+source "${BASE_DIR}/lib/docker/ui.sh"
+source "${BASE_DIR}/lib/docker/helpers.sh"
+source "${BASE_DIR}/lib/docker/containers.sh"
+source "${BASE_DIR}/lib/docker/images.sh"
+source "${BASE_DIR}/lib/docker/volumes.sh"
+source "${BASE_DIR}/lib/docker/compose.sh"
 
 # Verify Docker is ready
 check_docker_daemon
@@ -26,29 +30,29 @@ main() {
     case "$command" in
         # Estilo verboso para containers
         "containers"|"c")
-            handle_container_command "$@"
+            container_commander "$@"
             ;;
         # Alias curto para containers
         "c"|"cont")
-            handle_container_command "$@"
+            container_commander "$@"
             ;;
 
         # Estilo verboso para imagens
         "images"|"image")
-            handle_image_command "$@"
+            image_harbor "$@"
             ;;
         # Alias curto para imagens
         "i"|"img")
-            handle_image_command "$@"
+            image_harbor "$@"
             ;;
 
         # Estilo verboso para volumes
         "volumes"|"volume")
-            handle_volume_command "$@"
+            echo -e "${CYBER_YELLOW}Volume management not yet implemented${RESET}"
             ;;
         # Alias curto para volumes
         "v"|"vol")
-            handle_volume_command "$@"
+            echo -e "${CYBER_YELLOW}Volume management not yet implemented${RESET}"
             ;;
 
         # Estilo verboso para compose

@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# Carrega paths absolutos
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
 # Importa módulos
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/utils/headers.sh"
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/utils/headers.sh"
 
 
 ### █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█

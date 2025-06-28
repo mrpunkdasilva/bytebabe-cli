@@ -4,11 +4,10 @@
 # DOCKER SERVER MANAGER - BYTEBABE EDITION
 # ======================
 
-# Carrega configurações e cores
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/database/db_services.sh"
+# Carrega bibliotecas
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/database/db_services.sh"
 
 
 # ======================

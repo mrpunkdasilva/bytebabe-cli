@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # Carrega configurações e cores
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "$BASE_DIR/lib/core/colors.sh"
-source "$BASE_DIR/lib/core/helpers.sh"
-source "$BASE_DIR/lib/server/servers_services.sh"
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/server/servers_services.sh"
 
 
 # ======================
