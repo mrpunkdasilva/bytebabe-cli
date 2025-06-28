@@ -5,8 +5,8 @@
 # ==========================================
 
 # Importar módulos
-source "$(pwd)/lib/core/colors.sh"
-source "$(pwd)/lib/core/helpers.sh"
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
 
 # ==========================================
 # DETECÇÃO DE SISTEMA E PKG MANAGER

@@ -59,7 +59,7 @@ call_browser_tools() {
 
 call_api_tools() {
     echo -e "${CYBER_YELLOW}⚡ Iniciando API Tools...${RESET}"
-    source "$BASE_DIR/lib/devtools/api_services.sh"
+    source "$BASE_DIR/lib/devtools/api_services.sh" "${@:1}"
 }
 
 # ==========================================
