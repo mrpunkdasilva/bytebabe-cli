@@ -19,58 +19,68 @@ detect_and_install_firewall() {
         VER=$(uname -r)
     fi
     
-    echo -e "${CYBER_YELLOW}Detected OS: $OS $VER${RESET}"
+    echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                    SYSTEM ANALYSIS                    ${CYBER_PURPLE}║${RESET}"
+    echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${CYBER_YELLOW}▓▒░ OS: $OS $VER ░▒▓${RESET}"
     
     # Check for existing firewalls
     local firewall_installed=false
     local firewall_type=""
     
+    echo -e "\n${CYBER_BLUE}▓▒░ SCANNING FOR FIREWALL SYSTEMS ░▒▓${RESET}"
+    
     # Check UFW
     if command -v ufw &> /dev/null; then
         firewall_installed=true
         firewall_type="ufw"
-        echo -e "${CYBER_GREEN}✓ UFW firewall detected${RESET}"
+        echo -e "  ${CYBER_GREEN}► UFW FIREWALL DETECTED${RESET}"
     # Check firewalld (Fedora/RHEL/CentOS)
     elif command -v firewall-cmd &> /dev/null; then
         firewall_installed=true
         firewall_type="firewalld"
-        echo -e "${CYBER_GREEN}✓ firewalld detected${RESET}"
+        echo -e "  ${CYBER_GREEN}► FIREWALLD DETECTED${RESET}"
     # Check iptables
     elif command -v iptables &> /dev/null; then
         firewall_installed=true
         firewall_type="iptables"
-        echo -e "${CYBER_GREEN}✓ iptables detected${RESET}"
+        echo -e "  ${CYBER_GREEN}► IPTABLES DETECTED${RESET}"
     # Check nftables
     elif command -v nft &> /dev/null; then
         firewall_installed=true
         firewall_type="nftables"
-        echo -e "${CYBER_GREEN}✓ nftables detected${RESET}"
+        echo -e "  ${CYBER_GREEN}► NFTABLES DETECTED${RESET}"
     fi
     
     if [[ "$firewall_installed" == false ]]; then
-        echo -e "${CYBER_RED}✖ No firewall detected${RESET}"
-        echo -e "${CYBER_YELLOW}Installing appropriate firewall...${RESET}"
+        echo -e "  ${CYBER_RED}► NO FIREWALL DETECTED${RESET}"
+        echo -e "\n${CYBER_YELLOW}▓▒░ INSTALLING APPROPRIATE FIREWALL ░▒▓${RESET}"
         
         # Install firewall based on OS
         case $OS in
             *"Fedora"*|*"Red Hat"*|*"CentOS"*|*"Rocky"*|*"AlmaLinux"*)
+                echo -e "  ${CYBER_BLUE}► SELECTING FIREWALLD FOR RHEL/FEDORA${RESET}"
                 install_firewalld
                 firewall_type="firewalld"
                 ;;
             *"Ubuntu"*|*"Debian"*|*"Linux Mint"*)
+                echo -e "  ${CYBER_BLUE}► SELECTING UFW FOR DEBIAN/UBUNTU${RESET}"
                 install_ufw
                 firewall_type="ufw"
                 ;;
             *"Arch"*|*"Manjaro"*)
+                echo -e "  ${CYBER_BLUE}► SELECTING UFW FOR ARCH${RESET}"
                 install_ufw
                 firewall_type="ufw"
                 ;;
             *"openSUSE"*|*"SUSE"*)
+                echo -e "  ${CYBER_BLUE}► SELECTING FIREWALLD FOR SUSE${RESET}"
                 install_firewalld
                 firewall_type="firewalld"
                 ;;
             *)
                 # Default to UFW for unknown distributions
+                echo -e "  ${CYBER_BLUE}► SELECTING UFW AS DEFAULT${RESET}"
                 install_ufw
                 firewall_type="ufw"
                 ;;
@@ -79,33 +89,45 @@ detect_and_install_firewall() {
     
     # Export firewall type for other functions
     export FIREWALL_TYPE=$firewall_type
-    echo -e "${CYBER_GREEN}✓ Using firewall: $firewall_type${RESET}"
+    
+    echo -e "\n${CYBER_PURPLE}╔══════════════════════════════════════════════════════════════╗${RESET}"
+    echo -e "${CYBER_PURPLE}║${CYBER_CYAN}                    FIREWALL SELECTED                    ${CYBER_PURPLE}║${RESET}"
+    echo -e "${CYBER_PURPLE}╚══════════════════════════════════════════════════════════════╝${RESET}"
+    echo -e "${CYBER_GREEN}▓▒░ ✓ ACTIVE FIREWALL: $firewall_type ░▒▓${RESET}"
 }
 
 install_ufw() {
     echo -e "\n${CYBER_BLUE}▓▒░ Installing UFW Firewall ░▒▓${RESET}"
     
+    echo -e "\n${CYBER_YELLOW}▓▒░ DETECTING PACKAGE MANAGER ░▒▓${RESET}"
+    
     if command -v apt &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING APT PACKAGE MANAGER${RESET}"
         sudo apt update && sudo apt install -y ufw
     elif command -v dnf &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING DNF PACKAGE MANAGER${RESET}"
         sudo dnf install -y ufw
     elif command -v yum &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING YUM PACKAGE MANAGER${RESET}"
         sudo yum install -y ufw
     elif command -v pacman &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING PACMAN PACKAGE MANAGER${RESET}"
         sudo pacman -S --noconfirm ufw
     elif command -v zypper &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING ZYPPER PACKAGE MANAGER${RESET}"
         sudo zypper install -y ufw
     else
-        echo -e "${CYBER_RED}✖ Could not install UFW - no supported package manager found${RESET}"
+        echo -e "  ${CYBER_RED}► NO SUPPORTED PACKAGE MANAGER FOUND${RESET}"
         return 1
     fi
     
     if command -v ufw &> /dev/null; then
-        echo -e "${CYBER_GREEN}✓ UFW installed successfully${RESET}"
+        echo -e "\n${CYBER_GREEN}▓▒░ ✓ UFW INSTALLED SUCCESSFULLY ░▒▓${RESET}"
+        echo -e "\n${CYBER_YELLOW}▓▒░ ENABLING UFW FIREWALL ░▒▓${RESET}"
         sudo ufw --force enable
-        echo -e "${CYBER_GREEN}✓ UFW enabled${RESET}"
+        echo -e "${CYBER_GREEN}▓▒░ ✓ UFW ENABLED ░▒▓${RESET}"
     else
-        echo -e "${CYBER_RED}✖ Failed to install UFW${RESET}"
+        echo -e "\n${CYBER_RED}▓▒░ ✖ FAILED TO INSTALL UFW ░▒▓${RESET}"
         return 1
     fi
 }
@@ -113,24 +135,30 @@ install_ufw() {
 install_firewalld() {
     echo -e "\n${CYBER_BLUE}▓▒░ Installing firewalld ░▒▓${RESET}"
     
+    echo -e "\n${CYBER_YELLOW}▓▒░ DETECTING PACKAGE MANAGER ░▒▓${RESET}"
+    
     if command -v dnf &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING DNF PACKAGE MANAGER${RESET}"
         sudo dnf install -y firewalld
     elif command -v yum &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING YUM PACKAGE MANAGER${RESET}"
         sudo yum install -y firewalld
     elif command -v zypper &> /dev/null; then
+        echo -e "  ${CYBER_BLUE}► USING ZYPPER PACKAGE MANAGER${RESET}"
         sudo zypper install -y firewalld
     else
-        echo -e "${CYBER_RED}✖ Could not install firewalld - no supported package manager found${RESET}"
+        echo -e "  ${CYBER_RED}► NO SUPPORTED PACKAGE MANAGER FOUND${RESET}"
         return 1
     fi
     
     if command -v firewall-cmd &> /dev/null; then
-        echo -e "${CYBER_GREEN}✓ firewalld installed successfully${RESET}"
+        echo -e "\n${CYBER_GREEN}▓▒░ ✓ FIREWALLD INSTALLED SUCCESSFULLY ░▒▓${RESET}"
+        echo -e "\n${CYBER_YELLOW}▓▒░ ENABLING FIREWALLD SERVICE ░▒▓${RESET}"
         sudo systemctl enable firewalld
         sudo systemctl start firewalld
-        echo -e "${CYBER_GREEN}✓ firewalld enabled and started${RESET}"
+        echo -e "${CYBER_GREEN}▓▒░ ✓ FIREWALLD ENABLED AND STARTED ░▒▓${RESET}"
     else
-        echo -e "${CYBER_RED}✖ Failed to install firewalld${RESET}"
+        echo -e "\n${CYBER_RED}▓▒░ ✖ FAILED TO INSTALL FIREWALLD ░▒▓${RESET}"
         return 1
     fi
 }
