@@ -232,11 +232,13 @@ expand_alias() {
     local expanded=""
     
     # Procura nos aliases padrão
-    expanded=$(jq -r ".default_aliases.\"$alias_name\" // empty" "$ALIAS_CONFIG_FILE")
+    if [ -f "$ALIAS_CONFIG_FILE" ]; then
+        expanded=$(jq -r ".default_aliases.\"$alias_name\" // empty" "$ALIAS_CONFIG_FILE" 2>/dev/null || echo "")
+    fi
     
     # Se não encontrou, procura nos aliases do usuário
-    if [ -z "$expanded" ]; then
-        expanded=$(jq -r ".user_aliases.\"$alias_name\" // empty" "$USER_ALIAS_FILE")
+    if [ -z "$expanded" ] && [ -f "$USER_ALIAS_FILE" ]; then
+        expanded=$(jq -r ".user_aliases.\"$alias_name\" // empty" "$USER_ALIAS_FILE" 2>/dev/null || echo "")
     fi
     
     echo "$expanded"
@@ -484,3 +486,6 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
 fi
+
+# Inicializa os aliases quando o script é carregado
+init_user_aliases

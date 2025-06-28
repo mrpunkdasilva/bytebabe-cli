@@ -73,12 +73,12 @@ run_basic_tests() {
     # Teste 1: Comando hello sem argumentos
     run_test "hello sem argumentos" \
         "$BYTEBABE_BIN hello" \
-        "Hello"
+        "BYTEBABE SAYS HI!"
     
     # Teste 2: Comando hello com argumento
     run_test "hello com argumento" \
         "$BYTEBABE_BIN hello TestUser" \
-        "Hello"
+        "BYTEBABE SAYS HI!"
     
     # Teste 3: Comando help
     run_test "comando help" \
