@@ -5,9 +5,9 @@
 # ==========================================
 
 # Importar módulos
-source "$(pwd)/../lib/core/colors.sh"
-source "$(pwd)/../lib/core/helpers.sh"
-source "$(pwd)/../lib/ide/ide_services.sh"
+source "${BASE_DIR}/lib/core/colors.sh"
+source "${BASE_DIR}/lib/core/helpers.sh"
+source "${BASE_DIR}/lib/ide/ide_services.sh"
 
 # ==========================================
 # CONSTANTES
