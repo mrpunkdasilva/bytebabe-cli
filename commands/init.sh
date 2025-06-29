@@ -61,9 +61,6 @@ configure_basics() {
     fi
 }
 
-
-
-
 # ======================
 #  CONFIGURAÇÃO DO GIT
 # ======================
@@ -85,8 +82,6 @@ configure_git_identity() {
     git config --global pull.rebase true
     git config --global core.editor "code --wait"
 }
-
-
 
 # ======================
 # INSTALAÇÃO DO DOCKER
@@ -111,25 +106,27 @@ install_docker() {
     fi
 }
 
+main() {
+    show_cyberpunk_header
+    load_config
 
+    echo -e "\n${CYBER_PINK}⚡ INICIALIZANDO BYTEBABE CLI ⚡${RESET}"
 
-show_cyberpunk_header
-load_config
+    # ======================
+    # VERIFICA DEPENDÊNCIAS
+    # ======================
+    check_dependencies curl wget git
 
-echo -e "\n${CYBER_PINK}⚡ INICIALIZANDO BYTEBABE CLI ⚡${RESET}"
+    configure_basics
+    configure_git_identity
+    install_nvm_if_needed
+    install_docker
+    install_neovim_tools
 
+    echo -e "\n${CYBER_GREEN}⚡ CONFIGURAÇÃO INICIAL COMPLETA! ⚡${RESET}"
+}
 
-# ======================
-# VERIFICA DEPENDÊNCIAS
-# ======================
-check_dependencies curl wget git
-
-
-configure_basics
-configure_git_identity
-install_nvm_if_needed
-install_docker
-install_neovim_tools
-
-
-echo -e "\n${CYBER_GREEN}⚡ CONFIGURAÇÃO INICIAL COMPLETA! ⚡${RESET}"
+# Só executa main se chamado diretamente
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

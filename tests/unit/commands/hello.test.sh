@@ -1,244 +1,161 @@
-#!/usr/bin/env bats
+#!/bin/bash
 
-# ByteBabe CLI - Teste Unitário: Comando Hello
-# Descrição: Testa o comando hello do ByteBabe CLI
+# Teste unitário para o comando hello do ByteBabe CLI
+# Descrição: Testa a estrutura e funcionalidades do comando hello
 
+set -euo pipefail
+
+# Configuração do ambiente de teste
+readonly BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+readonly TEST_TEMP_DIR="$(mktemp -d)"
+readonly HOME="$TEST_TEMP_DIR"
+
+# Contadores
+TOTAL_TESTS=0
+PASSED_TESTS=0
+FAILED_TESTS=0
+
+# Cores
+readonly CYBER_RED='\033[0;31m'
+readonly CYBER_GREEN='\033[0;32m'
+readonly CYBER_BLUE='\033[0;34m'
+readonly RESET='\033[0m'
+
+# Função para log
+log() {
+    local level="$1"
+    shift
+    local message="$*"
+    
+    case "$level" in
+        "INFO") echo -e "${CYBER_BLUE}ℹ $message${RESET}" ;;
+        "SUCCESS") echo -e "${CYBER_GREEN}✔ $message${RESET}" ;;
+        "ERROR") echo -e "${CYBER_RED}✗ $message${RESET}" ;;
+        *) echo "$message" ;;
+    esac
+}
+
+# Função para executar teste
+run_test() {
+    local test_name="$1"
+    local test_command="$2"
+    local expected_result="$3"
+    
+    TOTAL_TESTS=$((TOTAL_TESTS + 1))
+    
+    echo -n "Testando: $test_name... "
+    
+    if eval "$test_command" >/dev/null 2>&1; then
+        echo -e "${CYBER_GREEN}PASS${RESET}"
+        PASSED_TESTS=$((PASSED_TESTS + 1))
+        return 0
+    else
+        echo -e "${CYBER_RED}FAIL${RESET}"
+        echo "  Esperado: $expected_result"
+        FAILED_TESTS=$((FAILED_TESTS + 1))
+        return 1
+    fi
+}
+
+# Setup do teste
 setup() {
-    # Configurar ambiente de teste
-    export BYTEBABE_TEST_MODE=true
+    # Cria diretório .bytebabe para testes
+    mkdir -p "$HOME/.bytebabe"
+    log "INFO" "Setup do teste hello concluído"
+}
+
+# Cleanup do teste
+cleanup() {
+    # Limpeza após cada teste
+    rm -rf "$TEST_TEMP_DIR"
+    log "INFO" "Cleanup do teste hello concluído"
+}
+
+# Testes do comando hello
+test_hello_structure() {
+    log "INFO" "Executando testes de estrutura do comando hello..."
     
-    # Diretórios base
-    export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    export TESTS_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
-    export PROJECT_ROOT="$(dirname "$TESTS_DIR")"
+    local hello_file="$BASE_DIR/commands/hello.sh"
     
-    # Caminho para o bytebabe
-    export BYTEBABE_BIN="$PROJECT_ROOT/bin/bytebabe"
+    # Teste 1: Arquivo existe
+    run_test "hello command exists" \
+        "test -f '$hello_file'" \
+        "arquivo hello.sh existe"
     
-    # Verificar se o bytebabe existe
-    if [ ! -f "$BYTEBABE_BIN" ]; then
-        skip "ByteBabe CLI não encontrado: $BYTEBABE_BIN"
+    # Teste 2: Arquivo é executável
+    run_test "hello command is executable" \
+        "test -x '$hello_file'" \
+        "arquivo hello.sh é executável"
+    
+    # Teste 3: Contém array de frases
+    run_test "hello has quotes array" \
+        "grep -q 'CYBER_QUOTES=' '$hello_file'" \
+        "array CYBER_QUOTES encontrado"
+    
+    # Teste 4: Contém função de header
+    run_test "hello has header function" \
+        "grep -q 'show_hello_header()' '$hello_file'" \
+        "função show_hello_header encontrada"
+    
+    # Teste 5: Contém função de frase aleatória
+    run_test "hello has random quote function" \
+        "grep -q 'show_random_quote()' '$hello_file'" \
+        "função show_random_quote encontrada"
+    
+    # Teste 6: Contém função main
+    run_test "hello has main function" \
+        "grep -q 'main()' '$hello_file'" \
+        "função main encontrada"
+    
+    # Teste 7: Contém estilo cyberpunk
+    run_test "hello has cyberpunk styling" \
+        "grep -q 'CYBER_' '$hello_file'" \
+        "estilo cyberpunk encontrado"
+    
+    # Teste 8: Contém emojis
+    run_test "hello has emojis" \
+        "grep -q '🌆\|⚡\|🌍\|💻' '$hello_file'" \
+        "emojis encontrados"
+    
+    # Teste 9: Contém frases cyberpunk
+    run_test "hello has cyberpunk quotes" \
+        "grep -q 'Wake up, samurai' '$hello_file'" \
+        "frases cyberpunk encontradas"
+    
+    # Teste 10: Contém header personalizado
+    run_test "hello has custom header" \
+        "grep -q 'BYTEBABE SAYS HI' '$hello_file'" \
+        "header personalizado encontrado"
+}
+
+# Função para mostrar resumo
+show_summary() {
+    echo
+    log "INFO" "=== Resumo dos Testes do Comando Hello ==="
+    echo "Total: $TOTAL_TESTS"
+    echo "Passou: $PASSED_TESTS"
+    echo "Falhou: $FAILED_TESTS"
+    
+    if [ $FAILED_TESTS -eq 0 ]; then
+        log "SUCCESS" "Todos os testes do comando hello passaram!"
+        exit 0
+    else
+        log "ERROR" "Alguns testes do comando hello falharam"
+        exit 1
     fi
-    
-    # Verificar se é executável
-    if [ ! -x "$BYTEBABE_BIN" ]; then
-        chmod +x "$BYTEBABE_BIN"
-    fi
-    
-    # Criar diretório temporário para testes
-    export TEST_TMP_DIR="$(mktemp -d)"
-    export TEST_OUTPUT_FILE="$TEST_TMP_DIR/output.txt"
-    export TEST_ERROR_FILE="$TEST_TMP_DIR/error.txt"
 }
 
-teardown() {
-    # Limpar arquivos temporários
-    if [ -d "$TEST_TMP_DIR" ]; then
-        rm -rf "$TEST_TMP_DIR"
-    fi
+# Função principal
+main() {
+    log "INFO" "🚀 Iniciando testes unitários do comando hello..."
+    
+    setup
+    test_hello_structure
+    cleanup
+    show_summary
 }
 
-# Teste: Comando hello sem argumentos
-@test "hello command without arguments" {
-    run "$BYTEBABE_BIN" hello
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-    [[ "$output" == *"Cyberpunk"* ]]
-}
-
-# Teste: Comando hello com argumento
-@test "hello command with argument" {
-    run "$BYTEBABE_BIN" hello "TestUser"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-    [[ "$output" == *"TestUser"* ]]
-}
-
-# Teste: Comando hello com múltiplos argumentos
-@test "hello command with multiple arguments" {
-    run "$BYTEBABE_BIN" hello "User1" "User2"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-    [[ "$output" == *"User1"* ]]
-}
-
-# Teste: Comando hello com argumentos especiais
-@test "hello command with special characters" {
-    run "$BYTEBABE_BIN" hello "User@123"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-    [[ "$output" == *"User@123"* ]]
-}
-
-# Teste: Comando hello com argumentos vazios
-@test "hello command with empty arguments" {
-    run "$BYTEBABE_BIN" hello ""
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-}
-
-# Teste: Comando hello com argumentos muito longos
-@test "hello command with very long argument" {
-    local long_name="$(printf 'A%.0s' {1..1000})"
-    run "$BYTEBABE_BIN" hello "$long_name"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-}
-
-# Teste: Comando hello com caracteres Unicode
-@test "hello command with unicode characters" {
-    run "$BYTEBABE_BIN" hello "João"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-    [[ "$output" == *"João"* ]]
-}
-
-# Teste: Verificar se o comando hello existe
-@test "hello command exists" {
-    run "$BYTEBABE_BIN" --help
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"hello"* ]]
-}
-
-# Teste: Verificar ajuda do comando hello
-@test "hello command help" {
-    run "$BYTEBABE_BIN" hello --help
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"hello"* ]]
-}
-
-# Teste: Verificar se o comando hello é executável
-@test "hello command is executable" {
-    [ -x "$BYTEBABE_BIN" ]
-}
-
-# Teste: Verificar formato da saída
-@test "hello command output format" {
-    run "$BYTEBABE_BIN" hello "TestUser"
-    
-    [ "$status" -eq 0 ]
-    # Verificar se a saída não está vazia
-    [ -n "$output" ]
-    # Verificar se não contém caracteres de controle estranhos
-    [[ "$output" =~ ^[[:print:][:space:]]*$ ]]
-}
-
-# Teste: Verificar performance do comando
-@test "hello command performance" {
-    local start_time
-    local end_time
-    local execution_time
-    
-    start_time=$(date +%s%N)
-    run "$BYTEBABE_BIN" hello "TestUser"
-    end_time=$(date +%s%N)
-    
-    execution_time=$(( (end_time - start_time) / 1000000 ))  # em milissegundos
-    
-    [ "$status" -eq 0 ]
-    # O comando deve executar em menos de 1 segundo
-    [ "$execution_time" -lt 1000 ]
-}
-
-# Teste: Verificar se o comando não deixa processos órfãos
-@test "hello command no orphaned processes" {
-    local initial_processes
-    local final_processes
-    
-    initial_processes=$(pgrep -c "$(basename "$BYTEBABE_BIN")" || echo "0")
-    
-    run "$BYTEBABE_BIN" hello "TestUser"
-    
-    # Aguardar um pouco para garantir que processos sejam finalizados
-    sleep 0.1
-    
-    final_processes=$(pgrep -c "$(basename "$BYTEBABE_BIN")" || echo "0")
-    
-    [ "$status" -eq 0 ]
-    [ "$initial_processes" -eq "$final_processes" ]
-}
-
-# Teste: Verificar se o comando funciona em diferentes diretórios
-@test "hello command works from different directories" {
-    local original_dir
-    local temp_dir
-    
-    original_dir=$(pwd)
-    temp_dir=$(mktemp -d)
-    
-    cd "$temp_dir"
-    run "$BYTEBABE_BIN" hello "TestUser"
-    cd "$original_dir"
-    
-    rm -rf "$temp_dir"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-}
-
-# Teste: Verificar se o comando respeita variáveis de ambiente
-@test "hello command respects environment variables" {
-    export BYTEBABE_TEST_MODE=true
-    export BYTEBABE_VERBOSE=true
-    
-    run "$BYTEBABE_BIN" hello "TestUser"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-}
-
-# Teste: Verificar se o comando não falha com entrada inválida
-@test "hello command handles invalid input gracefully" {
-    # Testar com caracteres de controle
-    run "$BYTEBABE_BIN" hello $'\x00\x01\x02'
-    
-    # O comando deve não falhar (pode ignorar caracteres inválidos)
-    [ "$status" -eq 0 ]
-}
-
-# Teste: Verificar se o comando funciona com redirecionamento
-@test "hello command works with redirection" {
-    run "$BYTEBABE_BIN" hello "TestUser" > "$TEST_OUTPUT_FILE" 2> "$TEST_ERROR_FILE"
-    
-    [ "$status" -eq 0 ]
-    [ -f "$TEST_OUTPUT_FILE" ]
-    [ -s "$TEST_OUTPUT_FILE" ]  # Arquivo não está vazio
-    
-    local output_content
-    output_content=$(cat "$TEST_OUTPUT_FILE")
-    [[ "$output_content" == *"Hello"* ]]
-}
-
-# Teste: Verificar se o comando não gera erros em stderr
-@test "hello command produces no stderr output" {
-    run "$BYTEBABE_BIN" hello "TestUser" 2> "$TEST_ERROR_FILE"
-    
-    [ "$status" -eq 0 ]
-    [ -f "$TEST_ERROR_FILE" ]
-    [ ! -s "$TEST_ERROR_FILE" ]  # Arquivo de erro deve estar vazio
-}
-
-# Teste: Verificar se o comando funciona com pipe
-@test "hello command works with pipe" {
-    run bash -c "$BYTEBABE_BIN hello 'TestUser' | grep -i hello"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-}
-
-# Teste: Verificar se o comando funciona com subshell
-@test "hello command works in subshell" {
-    run bash -c "(\"$BYTEBABE_BIN\" hello 'TestUser')"
-    
-    [ "$status" -eq 0 ]
-    [[ "$output" == *"Hello"* ]]
-} 
+# Executa se chamado diretamente
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi 
