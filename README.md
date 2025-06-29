@@ -241,7 +241,7 @@ bytebabe servers down
 bytebabe init
 
 # Simple text editor
-bytebabe byteedit file.txt
+bytebabe edit file.txt
 
 # Greeting message
 bytebabe hello
@@ -249,22 +249,22 @@ bytebabe hello
 
 ## 📦 Module Overview
 
-| Module | Description | Commands |
-|--------|-------------|----------|
-| `docker` | Container management | `containers`, `images`, `volumes`, `compose` |
-| `db` | Database operations | `setup`, `start`, `stop`, `status` |
-| `git` | Git operations | `status`, `stage`, `commit`, `push` |
-| `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` |
-| `devtools` | Development tools | `terminal`, `database`, `api`, `browser` |
-| `prime` | System management | `install`, `upgrade`, `firewall`, `scan` |
-| `backend` | Backend development | `install`, `setup`, `generate` |
-| `frontend` | Frontend development | `setup`, `new`, `generate` |
-| `flux` | API development | `get`, `post`, `put`, `delete`, `server` |
-| `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` |
-| `servers` | Server management | `up`, `down`, `status`, `setup` |
-| `init` | Environment setup | Complete development environment |
-| `byteedit` | Text editor | Simple file editing |
-| `hello` | Greeting | Cyberpunk welcome message |
+| Module | Description | Commands | Test Status |
+|--------|-------------|----------|-------------|
+| `docker` | Container management | `containers`, `images`, `volumes`, `compose` | ✅ 10/10 |
+| `db` | Database operations | `setup`, `start`, `stop`, `status` | ✅ 10/10 |
+| `git` | Git operations | `status`, `stage`, `commit`, `push` | 🔄 Pending |
+| `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` | 🔄 Pending |
+| `devtools` | Development tools | `terminal`, `database`, `api`, `browser` | 🔄 Pending |
+| `prime` | System management | `install`, `upgrade`, `firewall`, `scan` | 🔄 Pending |
+| `backend` | Backend development | `install`, `setup`, `generate` | ⚠️ 9/10 |
+| `frontend` | Frontend development | `setup`, `new`, `generate` | ✅ 10/10 |
+| `flux` | API development | `get`, `post`, `put`, `delete`, `server` | 🔄 Pending |
+| `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` | 🔄 Pending |
+| `servers` | Server management | `up`, `down`, `status`, `setup` | 🔄 Pending |
+| `init` | Environment setup | Complete development environment | ✅ 10/10 |
+| `edit` | Text editor | Simple file editing | ✅ 10/10 |
+| `hello` | Greeting | Cyberpunk welcome message | ✅ 10/10 |
 
 ## 🛠️ Configuration
 
@@ -273,13 +273,89 @@ ByteBabe can be customized through:
 - `~/.config/bytebabe/themes/` - Custom themes
 - `~/.config/bytebabe/plugins/` - User plugins
 
+## 🧪 Testing
+
+ByteBabe includes a comprehensive testing framework to ensure code quality and reliability:
+
+### Unit Tests
+```bash
+# Run individual command tests
+bash tests/unit/commands/hello.test.sh
+bash tests/unit/commands/init.test.sh
+bash tests/unit/commands/backend.test.sh
+bash tests/unit/commands/frontend.test.sh
+bash tests/unit/commands/byteedit.test.sh
+bash tests/unit/commands/db.test.sh
+bash tests/unit/commands/docker.test.sh
+
+# Run all tests
+for test_file in tests/unit/commands/*.test.sh; do
+    echo "Executando: $test_file"
+    bash "$test_file"
+    echo "---"
+done
+```
+
+### Test Coverage
+- ✅ **hello** - 10/10 tests passing
+- ✅ **init** - 10/10 tests passing  
+- ✅ **backend** - 9/10 tests passing
+- ✅ **frontend** - 10/10 tests passing
+- ✅ **byteedit** - 10/10 tests passing
+- ✅ **db** - 10/10 tests passing
+- ✅ **docker** - 10/10 tests passing
+
+### Test Structure
+Each test follows a consistent pattern:
+- **Setup**: Creates temporary environment
+- **Structural Tests**: Verifies file existence, executability, functions, imports
+- **Functional Tests**: Checks command-specific features
+- **Cleanup**: Removes temporary files
+- **Reporting**: Shows pass/fail summary
+
+### Testing Documentation
+For detailed testing information, see [tests/README.md](tests/README.md).
+
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Development Setup
+```bash
+# Clone and setup
+git clone https://github.com/mrpunkdasilva/bytebabe.git
+cd bytebabe
+
+# Run tests before making changes
+for test_file in tests/unit/commands/*.test.sh; do
+    bash "$test_file"
+done
+
+# Make your changes and add tests
+# Follow Conventional Commits for commit messages
+git commit -m "feat: add new feature"
+git commit -m "fix: resolve bug in module"
+git commit -m "test: add unit tests for command"
+
+# Run tests again
+for test_file in tests/unit/commands/*.test.sh; do
+    bash "$test_file"
+done
+```
+
+### Commit Guidelines
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `test:` - Adding or updating tests
+- `docs:` - Documentation changes
+- `refactor:` - Code refactoring
+- `style:` - Code style changes
+- `perf:` - Performance improvements
+
+### Testing Requirements
+- All new features must include unit tests
+- Maintain test coverage above 80%
+- Run tests before submitting PRs
+- Follow existing test patterns
 
 ## 📝 License
 
@@ -288,6 +364,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 💬 Support
 
 - 📖 [Documentation](docs/)
+- 🧪 [Testing Guide](tests/README.md)
 - 🐛 [Issues](https://github.com/mrpunkdasilva/bytebabe/issues)
 - 💡 [Discussions](https://github.com/mrpunkdasilva/bytebabe/discussions)
 
@@ -296,6 +373,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - Built with cyberpunk aesthetics in mind
 - Powered by the open source community
 - Inspired by modern developer workflows
+- Quality-driven development with comprehensive testing
 
 ---
 

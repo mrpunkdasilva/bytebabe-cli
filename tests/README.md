@@ -1,136 +1,151 @@
 # 🧪 Testes ByteBabe CLI
 
-Esta pasta contém todos os testes automatizados e manuais para o ByteBabe CLI.
+Esta pasta contém todos os testes automatizados para o ByteBabe CLI.
 
-## 📁 Estrutura
+## 📁 Estrutura Atual
 
 ```
 tests/
 ├── unit/                 # Testes unitários
-│   ├── commands/        # Testes dos comandos
-│   ├── lib/            # Testes das bibliotecas
-│   └── utils/          # Testes utilitários
-├── integration/         # Testes de integração
-│   ├── docker/         # Testes Docker
-│   ├── database/       # Testes de banco
-│   └── api/           # Testes de API
-├── e2e/               # Testes end-to-end
-│   ├── workflows/     # Fluxos completos
-│   └── scenarios/     # Cenários específicos
-├── fixtures/          # Dados de teste
-│   ├── configs/       # Configurações
-│   ├── data/          # Dados mock
-│   └── responses/     # Respostas esperadas
-├── scripts/           # Scripts de teste
-│   ├── setup.sh       # Setup do ambiente
-│   ├── teardown.sh    # Limpeza do ambiente
-│   └── helpers.sh     # Funções auxiliares
-└── reports/           # Relatórios de teste
-    ├── coverage/      # Cobertura de código
-    ├── junit/         # Relatórios JUnit
-    └── html/          # Relatórios HTML
+│   └── commands/        # Testes dos comandos principais
+│       ├── hello.test.sh
+│       ├── init.test.sh
+│       ├── backend.test.sh
+│       ├── frontend.test.sh
+│       ├── byteedit.test.sh
+│       ├── db.test.sh
+│       └── docker.test.sh
+├── integration/         # Testes de integração (planejado)
+├── e2e/               # Testes end-to-end (planejado)
+├── fixtures/          # Dados de teste (planejado)
+├── scripts/           # Scripts de teste (planejado)
+└── reports/           # Relatórios de teste (planejado)
 ```
 
 ## 🚀 Como Executar
 
-### Testes Unitários
+### Testes Unitários Individuais
+```bash
+# Executar testes específicos
+bash tests/unit/commands/hello.test.sh
+bash tests/unit/commands/init.test.sh
+bash tests/unit/commands/backend.test.sh
+bash tests/unit/commands/frontend.test.sh
+bash tests/unit/commands/byteedit.test.sh
+bash tests/unit/commands/db.test.sh
+bash tests/unit/commands/docker.test.sh
+```
+
+### Executar Todos os Testes
 ```bash
 # Executar todos os testes unitários
-./tests/scripts/run_unit_tests.sh
-
-# Executar testes específicos
-./tests/scripts/run_unit_tests.sh commands/hello
+for test_file in tests/unit/commands/*.test.sh; do
+    echo "Executando: $test_file"
+    bash "$test_file"
+    echo "---"
+done
 ```
 
-### Testes de Integração
-```bash
-# Executar testes de integração
-./tests/scripts/run_integration_tests.sh
+## 📊 Status dos Testes
 
-# Executar com Docker
-./tests/scripts/run_integration_tests.sh --docker
+### ✅ Testes Implementados
+- **hello** - 10/10 testes passando
+- **init** - 10/10 testes passando
+- **backend** - 9/10 testes passando
+- **frontend** - 10/10 testes passando
+- **byteedit** - 10/10 testes passando
+- **db** - 10/10 testes passando
+- **docker** - 10/10 testes passando
+
+### 🔄 Testes Pendentes
+- **git** - Testes de controle de versão
+- **gh** - Testes do GitHub CLI
+- **devtools** - Testes de ferramentas de desenvolvimento
+- **prime** - Testes de gerenciamento de sistema
+- **flux** - Testes de API
+- **ide** - Testes de gerenciamento de IDE
+- **servers** - Testes de gerenciamento de servidores
+
+## 🏗️ Estrutura dos Testes
+
+Cada teste segue um padrão consistente:
+
+### Setup
+```bash
+# Configuração do ambiente de teste
+readonly BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+readonly TEST_TEMP_DIR="$(mktemp -d)"
+readonly HOME="$TEST_TEMP_DIR"
 ```
 
-### Testes E2E
-```bash
-# Executar testes end-to-end
-./tests/scripts/run_e2e_tests.sh
+### Testes Estruturais
+- Verificação de existência do arquivo
+- Verificação de permissões de execução
+- Verificação de funções principais
+- Verificação de imports necessários
+- Verificação de estilo cyberpunk
 
-# Executar cenário específico
-./tests/scripts/run_e2e_tests.sh --scenario=init
+### Testes Funcionais
+- Verificação de funcionalidades específicas do comando
+- Verificação de comandos e subcomandos
+- Verificação de ajuda integrada
+
+### Cleanup
+```bash
+# Limpeza após cada teste
+rm -rf "$TEST_TEMP_DIR"
 ```
 
-### Todos os Testes
+### Relatório
 ```bash
-# Setup inicial (uma vez)
-./tests/scripts/setup.sh
-
-# Executar todos os testes
-./tests/scripts/run_all_tests.sh
-
-# Executar com relatórios
-./tests/scripts/run_all_tests.sh --reports --verbose
-
-# Apenas linting
-./tests/scripts/run_all_tests.sh --lint
-
-# Testes específicos
-./tests/scripts/run_all_tests.sh --skip-e2e
+# Mostra resumo dos testes
+echo "Total: $TOTAL_TESTS"
+echo "Passou: $PASSED_TESTS"
+echo "Falhou: $FAILED_TESTS"
 ```
 
 ## 🛠️ Ferramentas Utilizadas
 
-- **BATS**: Framework de testes para Bash
-- **ShellCheck**: Linting de código Shell
-- **Docker**: Containers para testes isolados
-- **GitHub Actions**: CI/CD automatizado
-
-## 📊 Relatórios
-
-Os relatórios são gerados automaticamente em:
-- `tests/reports/coverage/` - Cobertura de código
-- `tests/reports/junit/` - Relatórios JUnit XML
-- `tests/reports/html/` - Relatórios HTML interativos
-
-## 🔧 Configuração
-
-### Variáveis de Ambiente
-```bash
-# Configurar ambiente de teste
-export BYTEBABE_TEST_MODE=true
-export BYTEBABE_TEST_DATA_DIR=tests/fixtures/data
-export BYTEBABE_TEST_REPORTS_DIR=tests/reports
-```
-
-### Arquivo de Configuração
-```bash
-# tests/config/test.env
-BYTEBABE_TEST_TIMEOUT=30
-BYTEBABE_TEST_RETRIES=3
-BYTEBABE_TEST_VERBOSE=true
-```
+- **Bash**: Scripts de teste nativos
+- **grep**: Busca de padrões nos arquivos
+- **test**: Verificações de arquivos e permissões
+- **mktemp**: Criação de diretórios temporários
 
 ## 📝 Convenções
 
 ### Nomenclatura
-- Arquivos de teste: `*.test.sh`
-- Arquivos de fixture: `*.fixture.json`
-- Scripts auxiliares: `*.helper.sh`
+- Arquivos de teste: `[comando].test.sh`
+- Funções de teste: `test_[comando]_structure()`
+- Variáveis: `TOTAL_TESTS`, `PASSED_TESTS`, `FAILED_TESTS`
 
 ### Estrutura de Teste
 ```bash
-#!/usr/bin/env bats
+#!/bin/bash
 
+# Configuração
+set -euo pipefail
+
+# Setup
 setup() {
-    # Setup do teste
+    mkdir -p "$HOME/.bytebabe"
 }
 
-teardown() {
-    # Limpeza do teste
+# Testes
+test_command_structure() {
+    # Testes estruturais e funcionais
 }
 
-@test "descrição do teste" {
-    # Implementação do teste
+# Cleanup
+cleanup() {
+    rm -rf "$TEST_TEMP_DIR"
+}
+
+# Execução
+main() {
+    setup
+    test_command_structure
+    cleanup
+    show_summary
 }
 ```
 
@@ -138,30 +153,62 @@ teardown() {
 
 ### Modo Verboso
 ```bash
-./tests/scripts/run_unit_tests.sh --verbose
+# Executar com saída detalhada
+bash -x tests/unit/commands/hello.test.sh
 ```
 
 ### Debug Individual
 ```bash
-# Executar teste específico com debug
-bats --verbose-run tests/unit/commands/hello.test.sh
+# Executar teste específico
+bash tests/unit/commands/hello.test.sh
 ```
 
-### Logs de Teste
+### Verificar Estrutura
 ```bash
-# Ver logs detalhados
-tail -f tests/reports/test.log
+# Verificar se arquivo existe
+test -f commands/hello.sh
+
+# Verificar se é executável
+test -x commands/hello.sh
+
+# Verificar conteúdo
+grep -q "main()" commands/hello.sh
 ```
 
 ## 🤝 Contribuindo
 
-1. Escreva testes para novas funcionalidades
-2. Mantenha cobertura de código > 80%
-3. Execute testes antes de fazer commit
-4. Atualize documentação quando necessário
+### Criando Novos Testes
+1. Crie arquivo `tests/unit/commands/[comando].test.sh`
+2. Siga o padrão dos testes existentes
+3. Inclua pelo menos 10 testes estruturais
+4. Teste funcionalidades específicas do comando
+5. Execute o teste para verificar funcionamento
+
+### Padrão de Commit
+```bash
+git commit -m "test: add unit test for [comando] command
+
+- Add structural unit test for [comando].sh
+- Checks for file existence, executability, functions, imports and features
+- Follows the same pattern as other command tests"
+```
+
+### Requisitos
+- Todos os novos comandos devem ter testes unitários
+- Manter padrão consistente entre todos os testes
+- Incluir setup, cleanup e relatório
+- Seguir Conventional Commits
 
 ## 📚 Recursos
 
-- [BATS Documentation](https://github.com/bats-core/bats-core)
-- [ShellCheck Documentation](https://www.shellcheck.net/)
-- [Testing Guidelines](../docs/testing-guidelines.html) 
+- [Bash Testing Best Practices](https://github.com/kward/shunit2)
+- [Shell Script Testing](https://www.shellscript.sh/test.html)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+
+## 🎯 Próximos Passos
+
+1. **Completar testes pendentes** para todos os comandos
+2. **Criar script runner** para executar todos os testes
+3. **Adicionar testes de integração** para fluxos completos
+4. **Implementar relatórios** de cobertura
+5. **Configurar CI/CD** com GitHub Actions 
