@@ -15,11 +15,6 @@ tests/
 │       ├── byteedit.test.sh
 │       ├── db.test.sh
 │       └── docker.test.sh
-├── integration/         # Testes de integração (planejado)
-├── e2e/               # Testes end-to-end (planejado)
-├── fixtures/          # Dados de teste (planejado)
-├── scripts/           # Scripts de teste (planejado)
-└── reports/           # Relatórios de teste (planejado)
 ```
 
 ## 🚀 Como Executar

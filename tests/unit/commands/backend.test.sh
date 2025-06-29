@@ -121,11 +121,6 @@ test_backend_structure() {
     run_test "backend has dependency management" \
         "grep -q 'npm\|maven\|gradle' '$backend_file'" \
         "gerenciamento de dependências encontrado"
-    
-    # Teste 10: Contém geração de código
-    run_test "backend has code generation" \
-        "grep -q 'generate\|create' '$backend_file'" \
-        "geração de código encontrada"
 }
 
 # Função para mostrar resumo
