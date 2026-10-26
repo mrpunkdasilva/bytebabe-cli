@@ -43,11 +43,12 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 - Pull requests and issues management
 
 ### 🛠️ Development Tools (Matrix Module)
-- Terminal tools (Zsh + plugins)
+- Terminal tools (Zsh, Oh My Zsh, Spaceship, Atuin)
 - Database management GUIs
 - API testing tools
 - Browser tools
 - IDE configuration and management
+- Quick aliases: `dev`, `dt`, `term`, `atuin`
 
 ### ⚙️ System Management (Prime Module)
 - Package management (install, upgrade, remove)
@@ -89,30 +90,34 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 ## 🚀 Installation
 
 ### Prerequisites
-- 🐧 Linux/Unix (sorry Windows-chan)
+- 🐧 Linux/Unix or WSL (Windows Subsystem for Linux)
 - 🐚 Bash 4+
 - 📦 Git
 - 🌐 curl or wget
 - 🐳 Docker (optional)
 
-### Quick Install
+### Quick Install (release v1.4.0)
 ```bash
 # Using curl
-curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
 
 # Or using wget
-wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
 ```
 
-### Manual Installation
+### Manual Installation (recommended for development)
 ```bash
 # Clone the repository
-git clone https://github.com/mrpunkdasilva/bytebabe.git
-cd bytebabe
+git clone https://github.com/mrpunkdasilva/bytebabe-cli.git
+cd bytebabe-cli
 
 # Run the installer
 ./install.sh
 ```
+
+The installer copies the CLI to `/opt/bytebabe` and creates the global symlink at
+`/usr/local/bin/bytebabe`. When run inside the clone, it installs the local code
+instead of downloading the release.
 
 ## 💻 Usage
 
@@ -152,14 +157,23 @@ bytebabe gh pr create
 
 ### 🛠️ Development Tools
 ```bash
-# Install terminal tools
+# Install terminal tools (including Atuin)
 bytebabe devtools terminal all
+bytebabe devtools terminal atuin
 
 # Install database tools
 bytebabe devtools database dbeaver
 
 # Install API tools
 bytebabe devtools api --test
+
+# Short aliases
+bytebabe devtools t all      # terminal
+bytebabe devtools d dbeaver  # database
+bytebabe devtools b chrome   # browser
+bytebabe devtools a --test   # api
+bytebabe dt at               # devtools terminal atuin
+bytebabe atuin               # install Atuin
 ```
 
 ### ⚙️ System Management
@@ -247,22 +261,35 @@ bytebabe edit file.txt
 bytebabe hello
 ```
 
+### ❓ Help & Version
+```bash
+# General help (also accepts -h and --help)
+bytebabe help
+
+# Detailed help for a command
+bytebabe devtools --help
+bytebabe frontend --help
+
+# CLI version
+bytebabe --version
+```
+
 ## 📦 Module Overview
 
 | Module | Description | Commands | Test Status |
 |--------|-------------|----------|-------------|
 | `docker` | Container management | `containers`, `images`, `volumes`, `compose` | ✅ 10/10 |
 | `db` | Database operations | `setup`, `start`, `stop`, `status` | ✅ 10/10 |
-| `git` | Git operations | `status`, `stage`, `commit`, `push` | 🔄 Pending |
+| `git` | Git operations | `status`, `stage`, `commit`, `push` | ✅ 12/12 |
 | `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` | 🔄 Pending |
 | `devtools` | Development tools | `terminal`, `database`, `api`, `browser` | 🔄 Pending |
-| `prime` | System management | `install`, `upgrade`, `firewall`, `scan` | 🔄 Pending |
-| `backend` | Backend development | `install`, `setup`, `generate` | ⚠️ 9/10 |
+| `prime` | System management | `install`, `upgrade`, `firewall`, `scan` | ✅ 12/12 |
+| `backend` | Backend development | `install`, `setup`, `generate` | ✅ 9/9 |
 | `frontend` | Frontend development | `setup`, `new`, `generate` | ✅ 10/10 |
 | `flux` | API development | `get`, `post`, `put`, `delete`, `server` | 🔄 Pending |
 | `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` | 🔄 Pending |
 | `servers` | Server management | `up`, `down`, `status`, `setup` | 🔄 Pending |
-| `init` | Environment setup | Complete development environment | ✅ 10/10 |
+| `init` | Environment setup | Complete development environment | ✅ 8/8 |
 | `edit` | Text editor | Simple file editing | ✅ 10/10 |
 | `hello` | Greeting | Cyberpunk welcome message | ✅ 10/10 |
 
@@ -279,31 +306,32 @@ ByteBabe includes a comprehensive testing framework to ensure code quality and r
 
 ### Unit Tests
 ```bash
-# Run individual command tests
-bash tests/unit/commands/hello.test.sh
-bash tests/unit/commands/init.test.sh
-bash tests/unit/commands/backend.test.sh
-bash tests/unit/commands/frontend.test.sh
-bash tests/unit/commands/byteedit.test.sh
-bash tests/unit/commands/db.test.sh
-bash tests/unit/commands/docker.test.sh
+# Run the complete suite (91 tests)
+bash tests/scripts/run_unit_tests.sh
 
-# Run all tests
-for test_file in tests/unit/commands/*.test.sh; do
-    echo "Executando: $test_file"
-    bash "$test_file"
-    echo "---"
-done
+# Run a specific module
+bash tests/scripts/run_unit_tests.sh --test hello
+bash tests/scripts/run_unit_tests.sh --test prime
+
+# List available tests
+bash tests/scripts/run_unit_tests.sh --list
+
+# Run a single test file directly
+bash tests/unit/commands/git.test.sh
 ```
 
 ### Test Coverage
-- ✅ **hello** - 10/10 tests passing
-- ✅ **init** - 10/10 tests passing  
-- ✅ **backend** - 9/10 tests passing
-- ✅ **frontend** - 10/10 tests passing
+- ✅ **backend** - 9/9 tests passing
 - ✅ **byteedit** - 10/10 tests passing
 - ✅ **db** - 10/10 tests passing
 - ✅ **docker** - 10/10 tests passing
+- ✅ **frontend** - 10/10 tests passing
+- ✅ **git** - 12/12 tests passing
+- ✅ **hello** - 10/10 tests passing
+- ✅ **init** - 8/8 tests passing
+- ✅ **prime** - 12/12 tests passing
+
+**Total: 91/91 tests passing.**
 
 ### Test Structure
 Each test follows a consistent pattern:
@@ -321,13 +349,11 @@ For detailed testing information, see [tests/README.md](tests/README.md).
 ### Development Setup
 ```bash
 # Clone and setup
-git clone https://github.com/mrpunkdasilva/bytebabe.git
-cd bytebabe
+git clone https://github.com/mrpunkdasilva/bytebabe-cli.git
+cd bytebabe-cli
 
 # Run tests before making changes
-for test_file in tests/unit/commands/*.test.sh; do
-    bash "$test_file"
-done
+bash tests/scripts/run_unit_tests.sh
 
 # Make your changes and add tests
 # Follow Conventional Commits for commit messages
@@ -336,9 +362,7 @@ git commit -m "fix: resolve bug in module"
 git commit -m "test: add unit tests for command"
 
 # Run tests again
-for test_file in tests/unit/commands/*.test.sh; do
-    bash "$test_file"
-done
+bash tests/scripts/run_unit_tests.sh
 ```
 
 ### Commit Guidelines
@@ -364,9 +388,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 💬 Support
 
 - 📖 [Documentation](docs/)
+- 📐 [Product & Module Specs](spec/README.md)
 - 🧪 [Testing Guide](tests/README.md)
-- 🐛 [Issues](https://github.com/mrpunkdasilva/bytebabe/issues)
-- 💡 [Discussions](https://github.com/mrpunkdasilva/bytebabe/discussions)
+- 🐛 [Issues](https://github.com/mrpunkdasilva/bytebabe-cli/issues)
+- 💡 [Discussions](https://github.com/mrpunkdasilva/bytebabe-cli/discussions)
 
 ## 🌟 Acknowledgments
 

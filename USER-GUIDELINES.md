@@ -1,65 +1,65 @@
 # ByteBabe CLI - User Guidelines
 
-## Filosofia de Design
+## Design Philosophy
 
-O ByteBabe CLI segue uma filosofia de design que combina estética cyberpunk com funcionalidade profissional. Nosso objetivo é criar ferramentas que sejam não apenas poderosas e eficientes, mas também visualmente estimulantes e agradáveis de usar.
+ByteBabe CLI follows a design philosophy that combines cyberpunk aesthetics with professional functionality. Our goal is to build tools that are not only powerful and efficient, but also visually exciting and enjoyable to use.
 
-## Princípios Fundamentais
+## Core Principles
 
-### 1. Estética Cyberpunk com Funcionalidade Profissional
+### 1. Cyberpunk Aesthetics with Professional Functionality
 
-- **Interfaces visuais**: Use cores neon (azul, rosa, verde) sobre fundos escuros
-- **ASCII art**: Incorpore elementos visuais em ASCII para headers e separadores
-- **Terminologia**: Adote termos do universo cyberpunk sem comprometer a clareza
+- **Visual interfaces**: Use neon colors (blue, pink, green) on dark backgrounds
+- **ASCII art**: Incorporate ASCII visual elements in headers and separators
+- **Terminology**: Adopt cyberpunk terms without compromising clarity
 
-### 2. Consistência Visual e Funcional
+### 2. Visual and Functional Consistency
 
-- **Paleta de cores**: Mantenha uma paleta consistente em todos os módulos
-- **Estrutura de comandos**: Siga padrões consistentes para todos os comandos
-- **Feedback visual**: Forneça feedback visual consistente para ações similares
+- **Color palette**: Keep a consistent palette across all modules
+- **Command structure**: Follow consistent patterns for every command
+- **Visual feedback**: Provide consistent visual feedback for similar actions
 
-### 3. Experiência do Desenvolvedor em Primeiro Lugar
+### 3. Developer Experience First
 
-- **Eficiência**: Minimize o número de comandos necessários para tarefas comuns
-- **Clareza**: Forneça mensagens de erro claras e acionáveis
-- **Documentação**: Integre ajuda contextual em todos os níveis
+- **Efficiency**: Minimize the number of commands required for common tasks
+- **Clarity**: Provide clear, actionable error messages
+- **Documentation**: Integrate contextual help at every level
 
-## Diretrizes de Código
+## Code Guidelines
 
-### Estrutura de Arquivos
+### File Structure
 
 ```
 bytebabe/
-├── bin/                # Executáveis principais
-├── commands/           # Implementação de comandos
-│   ├── core/           # Comandos essenciais
-│   ├── flux/           # Módulo API client
-│   └── ...             # Outros módulos
-├── lib/                # Bibliotecas compartilhadas
-│   ├── core/           # Funções core
-│   ├── ui/             # Componentes de UI
-│   └── utils/          # Utilitários
-└── docs/               # Documentação
+├── bin/                # Main executables
+├── commands/           # Command implementations
+│   ├── core/           # Essential commands
+│   ├── flux/           # API client module
+│   └── ...             # Other modules
+├── lib/                # Shared libraries
+│   ├── core/           # Core functions
+│   ├── ui/             # UI components
+│   └── utils/          # Utilities
+└── docs/               # Documentation
 ```
 
-### Padrões de Código
+### Code Standards
 
-1. **Nomenclatura**
-   - Funções: `snake_case` (ex: `parse_json_response`)
-   - Variáveis: `snake_case` (ex: `response_body`)
-   - Constantes: `SCREAMING_SNAKE_CASE` (ex: `MAX_RETRY_COUNT`)
-   - Arquivos: `kebab-case.sh` (ex: `http-client.sh`)
+1. **Naming**
+   - Functions: `snake_case` (e.g., `parse_json_response`)
+   - Variables: `snake_case` (e.g., `response_body`)
+   - Constants: `SCREAMING_SNAKE_CASE` (e.g., `MAX_RETRY_COUNT`)
+   - Files: `kebab-case.sh` (e.g., `http-client.sh`)
 
-2. **Documentação de Código**
+2. **Code Documentation**
    ```bash
-   # Processa uma resposta HTTP e formata de acordo com o tipo de conteúdo
+   # Processes an HTTP response and formats it according to the content type
    #
-   # Argumentos:
-   #   $1 - Corpo da resposta
-   #   $2 - Tipo de conteúdo (opcional, padrão: application/json)
+   # Arguments:
+   #   $1 - Response body
+   #   $2 - Content type (optional, default: application/json)
    #
-   # Retorna:
-   #   Resposta formatada
+   # Returns:
+   #   Formatted response
    process_response() {
        local response_body="$1"
        local content_type="${2:-application/json}"
@@ -67,18 +67,18 @@ bytebabe/
    }
    ```
 
-3. **Tratamento de Erros**
+3. **Error Handling**
    ```bash
    if ! command -v jq &> /dev/null; then
-       echo -e "${CYBER_RED}Erro: jq não encontrado${RESET}"
-       echo -e "${CYBER_YELLOW}Instale com: sudo apt install jq${RESET}"
+       echo -e "${CYBER_RED}Error: jq not found${RESET}"
+       echo -e "${CYBER_YELLOW}Install it with: sudo apt install jq${RESET}"
        exit 1
    fi
    ```
 
-## Diretrizes de UI/UX
+## UI/UX Guidelines
 
-### Componentes Visuais
+### Visual Components
 
 1. **Headers**
    ```
@@ -89,90 +89,90 @@ bytebabe/
 
 2. **Menus**
    ```
-   1) Enviar GET request
-   2) Enviar POST request
-   3) Configurar headers
-   4) Salvar coleção
+   1) Send GET request
+   2) Send POST request
+   3) Configure headers
+   4) Save collection
    ```
 
 3. **Feedback**
    ```
-   ✓ Request enviado com sucesso (200 OK)
-   ✗ Falha na conexão: Host não encontrado
-   ⚠ Aviso: Resposta sem conteúdo
+   ✓ Request sent successfully (200 OK)
+   ✗ Connection failed: Host not found
+   ⚠ Warning: Empty response body
    ```
 
-### Paleta de Cores
+### Color Palette
 
-- **Primária**: Ciano neon (`\033[38;5;51m`) - Títulos, sucesso
-- **Secundária**: Rosa neon (`\033[38;5;198m`) - Destaques, prompts
-- **Terciária**: Verde neon (`\033[38;5;46m`) - Confirmações, status positivo
-- **Alerta**: Amarelo (`\033[38;5;226m`) - Avisos, atenção
-- **Erro**: Vermelho (`\033[38;5;196m`) - Erros, falhas
-- **Fundo**: Preto profundo (`\033[48;5;0m`) - Fundo padrão
+- **Primary**: Neon cyan (`\033[38;5;51m`) - Titles, success
+- **Secondary**: Neon pink (`\033[38;5;198m`) - Highlights, prompts
+- **Tertiary**: Neon green (`\033[38;5;46m`) - Confirmations, positive status
+- **Warning**: Yellow (`\033[38;5;226m`) - Warnings, attention
+- **Error**: Red (`\033[38;5;196m`) - Errors, failures
+- **Background**: Deep black (`\033[48;5;0m`) - Default background
 
-### Fluxos de Interação
+### Interaction Flows
 
-1. **Fluxo de Comando**
-   - Comando → Confirmação → Execução → Resultado → Próximos passos
-   - Sempre ofereça uma saída clara ou caminho de volta
+1. **Command Flow**
+   - Command → Confirmation → Execution → Result → Next steps
+   - Always provide a clear exit or path back
 
-2. **Fluxo de Erro**
-   - Erro → Explicação → Solução sugerida → Opção de retry/exit
+2. **Error Flow**
+   - Error → Explanation → Suggested solution → Retry/exit option
 
-3. **Fluxo de Configuração**
-   - Mostrar configuração atual → Opções de mudança → Confirmação → Aplicação
+3. **Configuration Flow**
+   - Show current configuration → Change options → Confirmation → Apply
 
-## Diretrizes de Documentação
+## Documentation Guidelines
 
-### Estrutura de Documentação
+### Documentation Structure
 
-1. **Visão Geral**: O que é e para que serve
-2. **Instalação**: Como instalar e configurar
-3. **Uso Básico**: Comandos essenciais
-4. **Uso Avançado**: Recursos avançados
-5. **Referência**: Lista completa de comandos e opções
-6. **Troubleshooting**: Problemas comuns e soluções
+1. **Overview**: What it is and what it is for
+2. **Installation**: How to install and configure it
+3. **Basic Usage**: Essential commands
+4. **Advanced Usage**: Advanced features
+5. **Reference**: Complete list of commands and options
+6. **Troubleshooting**: Common problems and solutions
 
-### Exemplos
+### Examples
 
-Sempre inclua exemplos práticos e realistas:
+Always include practical, realistic examples:
 
 ```bash
-# Exemplo básico
-bytebabe flux get https://api.exemplo.com/users
+# Basic example
+bytebabe flux get https://api.example.com/users
 
-# Exemplo com parâmetros
-bytebabe flux get https://api.exemplo.com/users \
+# Example with parameters
+bytebabe flux get https://api.example.com/users \
   --header "Authorization: Bearer token123" \
   --format json
 
-# Exemplo de fluxo completo
-bytebabe flux collection create minha-api
-bytebabe flux request add minha-api get-users GET https://api.exemplo.com/users
-bytebabe flux collection run minha-api get-users
+# Complete workflow example
+bytebabe flux collection create my-api
+bytebabe flux request add my-api get-users GET https://api.example.com/users
+bytebabe flux collection run my-api get-users
 ```
 
-## Checklist de Qualidade
+## Quality Checklist
 
-Antes de considerar um recurso como concluído, verifique:
+Before considering a feature complete, verify:
 
-- [ ] O código segue os padrões de nomenclatura e estrutura
-- [ ] A documentação está completa e atualizada
-- [ ] A interface do usuário é consistente com o resto do sistema
-- [ ] O tratamento de erros é robusto e informativo
-- [ ] Os testes cobrem casos de uso normais e de borda
-- [ ] A experiência do usuário foi considerada e otimizada
-- [ ] O recurso mantém a estética cyberpunk sem sacrificar usabilidade
+- [ ] The code follows the naming and structure standards
+- [ ] Documentation is complete and up to date
+- [ ] The user interface is consistent with the rest of the system
+- [ ] Error handling is robust and informative
+- [ ] Tests cover normal and edge cases
+- [ ] The user experience has been considered and optimized
+- [ ] The feature preserves the cyberpunk aesthetic without sacrificing usability
 
-## Processo de Desenvolvimento
+## Development Process
 
-1. **Planejamento**: Defina escopo, requisitos e critérios de aceitação
-2. **Design**: Crie mockups de UI e diagrame a arquitetura
-3. **Implementação**: Siga as diretrizes de código e UI
-4. **Teste**: Teste manualmente e com scripts automatizados
-5. **Documentação**: Atualize a documentação com exemplos
-6. **Revisão**: Verifique contra a checklist de qualidade
-7. **Lançamento**: Integre ao sistema principal
+1. **Planning**: Define scope, requirements, and acceptance criteria
+2. **Design**: Create UI mockups and diagram the architecture
+3. **Implementation**: Follow the code and UI guidelines
+4. **Testing**: Test manually and with automated scripts
+5. **Documentation**: Update the documentation with examples
+6. **Review**: Check against the quality checklist
+7. **Release**: Integrate into the main system
 
-Lembre-se: O ByteBabe CLI é uma ferramenta séria com uma estética divertida. Nunca sacrifique funcionalidade por estilo, mas também não ignore o impacto positivo que uma boa experiência visual pode ter na produtividade e satisfação do usuário.
+Remember: ByteBabe CLI is a serious tool with a fun aesthetic. Never sacrifice functionality for style, but do not ignore the positive impact a good visual experience can have on productivity and user satisfaction.

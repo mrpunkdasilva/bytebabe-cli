@@ -6,6 +6,17 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## Latest Changes
 
+## [Unreleased]
+
+### Added
+- Pasta `spec/` com PRD, arquitetura, specs dos 11 módulos, cenários BDD e templates SDD/OpenSpec
+
+### Fixed
+- Erros de sintaxe em `lib/core/tui/docker_dialogs.sh`, `lib/core/tui/spring_dialogs.sh`, `lib/backend/spring/deployment.sh` e `lib/pkg/quarantine/main.sh`
+
+### Changed
+- README com link para as specs do produto e módulos
+
 ## [1.4.0] - 2026-10-26
 
 ### Added
