@@ -16,7 +16,7 @@ create_spring_project_dialog() {
     package_name=$(get_input "Package Name" "Enter package name:" "com.example")
     if [ -z "$package_name" ]; then
         return
-    }
+    fi
     
     # Seleção de dependências
     dependencies=$(dialog --clear \

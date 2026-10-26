@@ -88,7 +88,7 @@ isolate_file() {
     if [ -f "$quarantine_file" ] && [ "$force" != "--force" ]; then
         echo -e "${CYBER_YELLOW}⚠ Arquivo já está em quarentena${RESET}"
         return 1
-    }
+    fi
     
     # Move arquivo para quarentena
     if sudo mv "$file" "$quarantine_file"; then
@@ -115,7 +115,7 @@ restore_file() {
     if [ ! -f "$quarantine_file" ]; then
         echo -e "${CYBER_RED}✖ Item não encontrado na quarentena${RESET}"
         return 1
-    }
+    fi
     
     local original_path=$(cat "$quarantine_file.meta" | grep "ORIGINAL_PATH:" | cut -d':' -f2)
     
@@ -137,7 +137,7 @@ remove_threat() {
     if [ ! -f "$quarantine_file" ]; then
         echo -e "${CYBER_RED}✖ Item não encontrado na quarentena${RESET}"
         return 1
-    }
+    fi
     
     echo -e "${CYBER_RED}⚠ ATENÇÃO: Esta ação é irreversível!${RESET}"
     read -p "$(echo -e ${CYBER_YELLOW}"Confirma remoção? (y/N): "${NC})" confirm
@@ -162,7 +162,7 @@ analyze_item() {
     if [ ! -f "$quarantine_file" ]; then
         echo -e "${CYBER_RED}✖ Item não encontrado na quarentena${RESET}"
         return 1
-    }
+    fi
     
     echo -e "\n${CYBER_BLUE}╔══════════════════════════════════════════════════════════════════════╗${RESET}"
     echo -e "${CYBER_BLUE}║ ${CYBER_RED}THREAT ANALYSIS ${CYBER_BLUE}                                                ║${RESET}"

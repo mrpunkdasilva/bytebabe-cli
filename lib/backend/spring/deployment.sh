@@ -74,7 +74,7 @@ deploy_to_aws() {
     if ! aws sts get-caller-identity &>/dev/null; then
         echo -e "${CYBER_RED}✘ Credenciais AWS não configuradas${RESET}"
         return 1
-    }
+    fi
     
     # Criar arquivo de configuração do Elastic Beanstalk
     mkdir -p .elasticbeanstalk
@@ -113,7 +113,7 @@ deploy_to_gcp() {
     if ! gcloud auth list &>/dev/null; then
         echo -e "${CYBER_RED}✘ Autenticação GCP não configurada${RESET}"
         return 1
-    }
+    fi
     
     # Gerar arquivo app.yaml para App Engine
     cat > "app.yaml" << EOF
@@ -142,7 +142,7 @@ deploy_to_azure() {
     if ! az account show &>/dev/null; then
         echo -e "${CYBER_RED}✘ Login Azure não realizado${RESET}"
         return 1
-    }
+    fi
     
     # Deploy usando Azure App Service
     az webapp up \

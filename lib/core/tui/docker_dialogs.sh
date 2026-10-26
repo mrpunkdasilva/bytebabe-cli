@@ -215,7 +215,7 @@ list_containers_dialog() {
         dialog --title "Containers" \
                --msgbox "No containers found" 8 40
         return
-    }
+    fi
 
     dialog --title "Container List" \
            --textbox <(echo "$containers" | column -t -s $'\t') \
@@ -230,7 +230,7 @@ start_container_dialog() {
         dialog --title "Start Container" \
                --msgbox "No stopped containers found" 8 40
         return
-    }
+    fi
 
     local container
     container=$(dialog --title "Start Container" \
@@ -259,7 +259,7 @@ stop_container_dialog() {
         dialog --title "Stop Container" \
                --msgbox "No running containers found" 8 40
         return
-    }
+    fi
 
     local container
     container=$(dialog --title "Stop Container" \
@@ -291,7 +291,7 @@ restart_container_dialog() {
         dialog --title "Restart Container" \
                --msgbox "No running containers found" 8 40
         return
-    }
+    fi
 
     local container
     container=$(dialog --title "Restart Container" \
@@ -320,7 +320,7 @@ remove_container_dialog() {
         dialog --title "Remove Container" \
                --msgbox "No containers found" 8 40
         return
-    }
+    fi
 
     local container
     container=$(dialog --title "Remove Container" \
@@ -352,7 +352,7 @@ show_container_stats_dialog() {
         dialog --title "Container Stats" \
                --msgbox "No running containers found" 8 40
         return
-    }
+    fi
 
     local container
     container=$(dialog --title "Container Stats" \
@@ -378,7 +378,7 @@ list_images_dialog() {
         dialog --title "Images" \
                --msgbox "Nenhuma imagem encontrada" 8 40
         return
-    }
+    fi
 
     dialog --title "Lista de Imagens" \
            --textbox <(echo "$images" | column -t -s $'\t') \
@@ -414,7 +414,7 @@ push_image_dialog() {
         dialog --title "Push Image" \
                --msgbox "Nenhuma imagem local encontrada" 8 40
         return
-    }
+    fi
 
     local image
     image=$(dialog --title "Push Image" \
@@ -481,7 +481,7 @@ remove_image_dialog() {
         dialog --title "Remove Image" \
                --msgbox "Nenhuma imagem encontrada" 8 40
         return
-    }
+    fi
 
     local image
     image=$(dialog --title "Remove Image" \
