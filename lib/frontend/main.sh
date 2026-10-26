@@ -5,7 +5,9 @@ source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/frontend/config.sh"
 source "$BASE_DIR/lib/frontend/templates.sh"
-source "$BASE_DIR/lib/frontend/commands.sh"
+[ -f "$BASE_DIR/lib/frontend/commands.sh" ] && source "$BASE_DIR/lib/frontend/commands.sh"
+[ -f "$BASE_DIR/lib/frontend/help.sh" ] && source "$BASE_DIR/lib/frontend/help.sh"
+[ -f "$BASE_DIR/lib/frontend/generators.sh" ] && source "$BASE_DIR/lib/frontend/generators.sh"
 
 # Carrega geradores específicos de cada framework
 source "$BASE_DIR/lib/frontend/react/generators.sh"

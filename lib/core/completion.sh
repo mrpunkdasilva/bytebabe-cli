@@ -14,8 +14,8 @@ _bytebabe_completion() {
     local spring_subcmds="new template dependency profile config generator generate run build test docs docker clean"
     local docker_subcmds="containers images volumes networks compose stats"
     local git_subcmds="init clone status commit push pull"
-    local devtools_subcmds="terminal database api browser"
-    local terminal_subcmds="zsh ohmyzsh spaceship plugins all"
+    local devtools_subcmds="terminal term t database db d api a browser bwsr b help h"
+    local terminal_subcmds="zsh z ohmyzsh omz oh-my-zsh spaceship sp space atuin altuin at plugins p all a help h"
     local db_subcmds="setup start backup restore"
 
     # Se estamos no primeiro argumento

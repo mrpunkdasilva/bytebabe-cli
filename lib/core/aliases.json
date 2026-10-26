@@ -5,6 +5,11 @@
     "docker": "docker",
     "git": "git",
     "database": "database",
-    "utils": "utils"
+    "utils": "utils",
+    "devtools": "devtools",
+    "dev": "devtools",
+    "dt": "devtools terminal",
+    "term": "devtools terminal",
+    "atuin": "devtools terminal atuin"
   }
 }

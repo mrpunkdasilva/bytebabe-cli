@@ -15,68 +15,63 @@ TEMP_DIR="/tmp/bytebabe-install"
 INSTALL_DIR="/opt/bytebabe"
 BIN_DIR="/usr/local/bin"
 EXECUTABLE="bytebabe"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)"
 
 echo -e "${BLUE}⚡ Instalando ByteBabe CLI v${VERSION}...${NC}"
 
-# Cria diretório temporário
-rm -rf "$TEMP_DIR"
-mkdir -p "$TEMP_DIR"
+SOURCE_DIR=""
 
-# Download do pacote
-echo -e "${BLUE}📥 Baixando pacote...${NC}"
-if ! curl -L "$TARBALL_URL" -o "${TEMP_DIR}/bytebabe.tar.gz"; then
-    echo -e "${RED}Erro: Falha ao baixar o pacote${NC}"
+# Modo local: instalando a partir de um clone do repositório
+if [ -f "${SCRIPT_DIR}/install.sh" ] && [ -f "${SCRIPT_DIR}/bin/bytebabe" ] && [ -d "${SCRIPT_DIR}/lib" ]; then
+    echo -e "${BLUE}📂 Instalando a partir do repositório local: ${SCRIPT_DIR}${NC}"
+    SOURCE_DIR="$SCRIPT_DIR"
+else
+    # Cria diretório temporário
+    rm -rf "$TEMP_DIR"
+    mkdir -p "$TEMP_DIR"
+
+    # Download do pacote
+    echo -e "${BLUE}📥 Baixando pacote...${NC}"
+    if ! curl -fsSL "$TARBALL_URL" -o "${TEMP_DIR}/bytebabe.tar.gz"; then
+        echo -e "${RED}Erro: Falha ao baixar o pacote${NC}"
+        exit 1
+    fi
+
+    # Extrai o pacote
+    echo -e "${BLUE}📦 Extraindo arquivos...${NC}"
+    if ! tar -xzf "${TEMP_DIR}/bytebabe.tar.gz" -C "$TEMP_DIR"; then
+        echo -e "${RED}Erro: Falha ao extrair o pacote${NC}"
+        exit 1
+    fi
+
+    # O tarball pode conter um diretório raiz (ex: bytebabe-1.0.0/)
+    EXEC_PATH=$(find "$TEMP_DIR" -type f -path '*/bin/bytebabe' | head -n 1)
+    if [ -z "$EXEC_PATH" ]; then
+        echo -e "${RED}Erro: executável bin/bytebabe não encontrado no pacote${NC}"
+        exit 1
+    fi
+    SOURCE_DIR=$(dirname "$(dirname "$EXEC_PATH")")
+fi
+
+if [ ! -f "${SOURCE_DIR}/bin/bytebabe" ] || [ ! -d "${SOURCE_DIR}/lib" ]; then
+    echo -e "${RED}Erro: instalação inválida, bin/bytebabe ou lib/ não encontrados em ${SOURCE_DIR}${NC}"
     exit 1
 fi
 
-# Extrai o pacote
-echo -e "${BLUE}📦 Extraindo arquivos...${NC}"
-tar -xzf "${TEMP_DIR}/bytebabe.tar.gz" -C "$TEMP_DIR"
-
-# Lista o conteúdo extraído para debug
-echo -e "${BLUE}📋 Verificando arquivos extraídos...${NC}"
-ls -la "$TEMP_DIR"
-
-# Cria diretório de instalação
+# Substitui instalação anterior
+echo -e "${BLUE}📂 Copiando arquivos para ${INSTALL_DIR}...${NC}"
+sudo rm -rf "$INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
-
-# Copia todos os arquivos extraídos diretamente
-echo -e "${BLUE}📂 Copiando arquivos...${NC}"
-sudo cp -r "$TEMP_DIR"/* "$INSTALL_DIR/" 2>/dev/null || true
-
-# Verifica se há arquivos bin/ no diretório temporário
-if [ -d "$TEMP_DIR/bin" ]; then
-    sudo mkdir -p "$INSTALL_DIR/bin"
-    sudo cp -r "$TEMP_DIR/bin"/* "$INSTALL_DIR/bin/" 2>/dev/null || true
-fi
-
-# Procura pelo executável bytebabe em qualquer lugar
-EXEC_PATH=$(find "$TEMP_DIR" -type f -name "bytebabe" | head -n 1)
-if [ -n "$EXEC_PATH" ]; then
-    echo -e "${BLUE}🔍 Executável encontrado em: $EXEC_PATH${NC}"
-    sudo mkdir -p "$INSTALL_DIR/bin"
-    sudo cp "$EXEC_PATH" "$INSTALL_DIR/bin/"
-    sudo chmod +x "$INSTALL_DIR/bin/bytebabe"
-else
-    echo -e "${YELLOW}⚠️ Executável 'bytebabe' não encontrado no pacote${NC}"
-    
-    # Cria um script básico como fallback
-    echo -e "${BLUE}🔧 Criando script básico...${NC}"
-    sudo mkdir -p "$INSTALL_DIR/bin"
-    cat << 'EOF' | sudo tee "$INSTALL_DIR/bin/bytebabe" > /dev/null
-#!/bin/bash
-echo "ByteBabe CLI v${VERSION}"
-echo "Esta é uma instalação básica. Execute 'bytebabe update' para atualizar."
-EOF
-    sudo chmod +x "$INSTALL_DIR/bin/bytebabe"
-fi
+sudo cp -a "${SOURCE_DIR}/." "$INSTALL_DIR/"
+sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
 
 # Cria link simbólico
 echo -e "${BLUE}🔗 Criando link simbólico...${NC}"
 sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
+hash -r 2>/dev/null || true
 
 # Limpa arquivos temporários
-rm -rf "$TEMP_DIR"
+[ -d "$TEMP_DIR" ] && rm -rf "$TEMP_DIR"
 
 echo -e "${GREEN}✔ ByteBabe CLI instalado com sucesso!${NC}"
 echo -e "${BLUE}➜ Execute 'bytebabe --version' para testar${NC}"

@@ -7,6 +7,7 @@ O módulo DevTools do ByteBabe oferece instalação e configuração automatizad
 ### Terminal Tools
 - Zsh + Oh My Zsh
 - Spaceship Prompt
+- Atuin (histórico de shell)
 - Plugins (autosuggestions, syntax highlighting, etc)
 
 ### Database Tools
@@ -42,6 +43,14 @@ bytebabe devtools [categoria] [ferramenta]
 bytebabe devtools terminal all      # Instala todas as ferramentas de terminal
 bytebabe devtools database dbeaver  # Instala apenas o DBeaver
 bytebabe devtools api --test        # Instala ferramentas de teste de API
+
+# Aliases
+bytebabe devtools t all             # Mesmo que "terminal all"
+bytebabe devtools d dbeaver         # Mesmo que "database dbeaver"
+bytebabe devtools b chrome          # Mesmo que "browser chrome"
+bytebabe devtools a --test          # Mesmo que "api --test"
+bytebabe dt at                      # Mesmo que "devtools terminal atuin"
+bytebabe atuin                      # Instala o Atuin
 ```
 
 ## Características

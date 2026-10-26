@@ -337,179 +337,189 @@ add_feature() {
 }
 
 # Handler principal de comandos
-case "$1" in
-    new|create)
-        shift
-        case "$1" in
-            react|vue|angular|next|svelte)
-                framework=$1
-                shift
-                name=$1
-                shift
-                template=${1:-"default"}
-                create_frontend_project "$framework" "$name" "$template"
-                ;;
-            help|--help|-h)
-                show_frontend_new_help
-                ;;
-            *)
-                echo -e "${CYBER_RED}✘ Framework não especificado ou não suportado${RESET}"
-                show_frontend_new_help
-                exit 1
-                ;;
-        esac
-        ;;
-    
-    add)
-        shift
-        case "$1" in
-            tailwind|redux|router|i18n)
-                feature=$1
-                shift
-                add_feature "$feature" "$@"
-                ;;
-            help|--help|-h)
-                show_frontend_add_help
-                ;;
-            *)
-                echo -e "${CYBER_RED}✘ Funcionalidade não especificada ou não suportada${RESET}"
-                show_frontend_add_help
-                exit 1
-                ;;
-        esac
-        ;;
-    
-    generate|g)
-        shift
-        case "$1" in
-            component|c)
-                shift
-                generate_component "$1"
-                ;;
-            service|s)
-                shift
-                generate_service "$1"
-                ;;
-            store)
-                shift
-                framework=$(detect_framework)
-                case "$framework" in
-                    "react")
-                        generate_react_context "$1"
-                        ;;
-                    "vue")
-                        generate_vue_store "$1"
-                        ;;
-                    *)
-                        echo -e "${CYBER_RED}✘ Store não suportada para este framework${RESET}"
-                        ;;
-                esac
-                ;;
-            hook)
-                shift
-                framework=$(detect_framework)
-                if [[ "$framework" == "react" ]]; then
-                    generate_react_hook "$1"
-                else
-                    echo -e "${CYBER_RED}✘ Hooks são específicos do React${RESET}"
-                fi
-                ;;
-            guard)
-                shift
-                framework=$(detect_framework)
-                if [[ "$framework" == "angular" ]]; then
-                    generate_angular_guard "$1"
-                else
-                    echo -e "${CYBER_RED}✘ Guards são específicos do Angular${RESET}"
-                fi
-                ;;
-            *)
-                echo -e "${CYBER_RED}✘ Tipo de geração não especificado ou inválido${RESET}"
-                echo -e "Tipos disponíveis: component, service, store, hook, guard"
-                ;;
-        esac
-        ;;
-    
-    install|i)
-        shift
-        case "$1" in
-            deps)
-                npm install
-                ;;
-            dev)
-                shift
-                npm install --save-dev "$@"
-                ;;
-            *)
-                npm install "$@"
-                ;;
-        esac
-        ;;
-    
-    test|t)
-        shift
-        case "$1" in
-            watch)
-                npm run test:watch
-                ;;
-            coverage)
-                npm run test:coverage
-                ;;
-            *)
-                npm test "$@"
-                ;;
-        esac
-        ;;
-    
-    build|b)
-        shift
-        case "$1" in
-            prod)
-                npm run build:prod
-                ;;
-            *)
-                npm run build
-                ;;
-        esac
-        ;;
-    
-    serve|s)
-        shift
-        case "$1" in
-            prod)
-                npm run serve:prod
-                ;;
-            *)
-                npm run start
-                ;;
-        esac
-        ;;
-    
-    help|--help|-h)
-        show_frontend_help
-        ;;
-    
-    *)
-        echo -e "${CYBER_RED}✘ Comando não reconhecido: $1${RESET}"
-        show_frontend_help
-        exit 1
-        ;;
-esac
+run_frontend_command() {
+    case "$1" in
+        new|create)
+            shift
+            case "$1" in
+                react|vue|angular|next|svelte)
+                    framework=$1
+                    shift
+                    name=$1
+                    shift
+                    template=${1:-"default"}
+                    create_frontend_project "$framework" "$name" "$template"
+                    ;;
+                help|--help|-h)
+                    [ "$(type -t show_frontend_new_help)" = "function" ] && show_frontend_new_help || show_frontend_help
+                    ;;
+                *)
+                    echo -e "${CYBER_RED}✘ Framework não especificado ou não suportado${RESET}"
+                    [ "$(type -t show_frontend_new_help)" = "function" ] && show_frontend_new_help || show_frontend_help
+                    exit 1
+                    ;;
+            esac
+            ;;
+        
+        add)
+            shift
+            case "$1" in
+                tailwind|redux|router|i18n)
+                    feature=$1
+                    shift
+                    add_feature "$feature" "$@"
+                    ;;
+                help|--help|-h)
+                    [ "$(type -t show_frontend_add_help)" = "function" ] && show_frontend_add_help || show_frontend_help
+                    ;;
+                *)
+                    echo -e "${CYBER_RED}✘ Funcionalidade não especificada ou não suportada${RESET}"
+                    [ "$(type -t show_frontend_add_help)" = "function" ] && show_frontend_add_help || show_frontend_help
+                    exit 1
+                    ;;
+            esac
+            ;;
+        
+        generate|g)
+            shift
+            case "$1" in
+                component|c)
+                    shift
+                    generate_component "$1"
+                    ;;
+                service|s)
+                    shift
+                    generate_service "$1"
+                    ;;
+                store)
+                    shift
+                    framework=$(detect_framework)
+                    case "$framework" in
+                        "react")
+                            generate_react_context "$1"
+                            ;;
+                        "vue")
+                            generate_vue_store "$1"
+                            ;;
+                        *)
+                            echo -e "${CYBER_RED}✘ Store não suportada para este framework${RESET}"
+                            ;;
+                    esac
+                    ;;
+                hook)
+                    shift
+                    framework=$(detect_framework)
+                    if [[ "$framework" == "react" ]]; then
+                        generate_react_hook "$1"
+                    else
+                        echo -e "${CYBER_RED}✘ Hooks são específicos do React${RESET}"
+                    fi
+                    ;;
+                guard)
+                    shift
+                    framework=$(detect_framework)
+                    if [[ "$framework" == "angular" ]]; then
+                        generate_angular_guard "$1"
+                    else
+                        echo -e "${CYBER_RED}✘ Guards são específicos do Angular${RESET}"
+                    fi
+                    ;;
+                *)
+                    echo -e "${CYBER_RED}✘ Tipo de geração não especificado ou inválido${RESET}"
+                    echo -e "Tipos disponíveis: component, service, store, hook, guard"
+                    ;;
+            esac
+            ;;
+        
+        install|i)
+            shift
+            case "$1" in
+                deps)
+                    npm install
+                    ;;
+                dev)
+                    shift
+                    npm install --save-dev "$@"
+                    ;;
+                *)
+                    npm install "$@"
+                    ;;
+            esac
+            ;;
+        
+        test|t)
+            shift
+            case "$1" in
+                watch)
+                    npm run test:watch
+                    ;;
+                coverage)
+                    npm run test:coverage
+                    ;;
+                *)
+                    npm test "$@"
+                    ;;
+            esac
+            ;;
+        
+        build|b)
+            shift
+            case "$1" in
+                prod)
+                    npm run build:prod
+                    ;;
+                *)
+                    npm run build
+                    ;;
+            esac
+            ;;
+        
+        serve|s)
+            shift
+            case "$1" in
+                prod)
+                    npm run serve:prod
+                    ;;
+                *)
+                    npm run start
+                    ;;
+            esac
+            ;;
+        
+        help|--help|-h)
+            show_frontend_help
+            ;;
+        
+        setup)
+            process_setup
+            ;;
+        
+        *)
+            echo -e "${CYBER_RED}✘ Comando não reconhecido: $1${RESET}"
+            show_frontend_help
+            exit 1
+            ;;
+    esac
+}
 
 # ==========================================
 # FUNÇÃO PRINCIPAL
 # ==========================================
 
 main() {
+    if [ $# -eq 0 ]; then
+        run_frontend_command help
+        return
+    fi
     case $1 in
         "setup")
             process_setup
             ;;
         "help"|"--help"|"-h")
-            show_help
+            run_frontend_command help
             ;;
         *)
-            show_help
+            run_frontend_command "$@"
             ;;
     esac
 }
@@ -518,4 +528,6 @@ main() {
 # INICIALIZAÇÃO
 # ==========================================
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

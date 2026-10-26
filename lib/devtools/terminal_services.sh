@@ -252,6 +252,99 @@ install_spaceship() {
 }
 
 # ==========================================
+# INSTALAÇÃO DO ATUIN (HISTÓRICO DE SHELL)
+# ==========================================
+
+atuin_shell_init() {
+    local rc_file=$1
+    case "$(basename "$rc_file")" in
+        .zshrc) echo 'eval "$(atuin init zsh)"' ;;
+        .bashrc|.bash_profile) echo 'eval "$(atuin init bash)"' ;;
+        *) echo '' ;;
+    esac
+}
+
+configure_atuin() {
+    local updated=0
+    local rc_file
+
+    for rc_file in "$HOME/.zshrc" "$HOME/.bashrc"; do
+        [[ -f "$rc_file" ]] || continue
+
+        local init_line
+        init_line=$(atuin_shell_init "$rc_file")
+        [ -z "$init_line" ] && continue
+
+        if ! grep -qE '\.atuin/bin/env|\.atuin/bin:\$PATH' "$rc_file"; then
+            # Remove init antigo para garantir que o PATH seja definido antes
+            local tmp_file
+            tmp_file=$(mktemp)
+            grep -v 'atuin init' "$rc_file" > "$tmp_file" || true
+            mv "$tmp_file" "$rc_file"
+
+            {
+                echo ""
+                echo "# Atuin - shell history"
+                echo 'export PATH="$HOME/.atuin/bin:$PATH"'
+                echo "$init_line"
+            } >> "$rc_file"
+            updated=1
+        elif ! grep -q 'atuin init' "$rc_file"; then
+            echo "$init_line" >> "$rc_file"
+            updated=1
+        fi
+    done
+
+    if [[ $updated -eq 1 ]]; then
+        echo -e "${CYBER_GREEN}✔ Atuin configurado no shell${RESET}"
+    fi
+}
+
+install_atuin() {
+    echo -e "${CYBER_BLUE}▶ Verificando Atuin...${RESET}"
+
+    if command -v atuin &> /dev/null; then
+        echo -e "${CYBER_GREEN}✔ Atuin já está instalado ($(atuin --version 2>/dev/null | head -n1))${RESET}"
+        configure_atuin
+        return 0
+    fi
+
+    echo -e "${CYBER_YELLOW}⚡ Instalando Atuin...${RESET}"
+
+    case $PKG_MANAGER in
+        brew)
+            brew install atuin || return 1
+            ;;
+        pacman)
+            sudo pacman -S --needed --noconfirm atuin || return 1
+            ;;
+        *)
+            if command -v curl &> /dev/null; then
+                curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh -s -- --non-interactive || return 1
+            elif command -v wget &> /dev/null; then
+                wget -qO- https://setup.atuin.sh | sh -s -- --non-interactive || return 1
+            else
+                echo -e "${CYBER_RED}✘ curl ou wget necessário para instalar Atuin${RESET}"
+                return 1
+            fi
+            ;;
+    esac
+
+    export PATH="$HOME/.atuin/bin:$PATH"
+    hash -r 2>/dev/null
+
+    if command -v atuin &> /dev/null; then
+        echo -e "${CYBER_GREEN}✔ Atuin $(atuin --version 2>/dev/null | head -n1) instalado${RESET}"
+        configure_atuin
+        echo -e "${CYBER_BLUE}Reinicie o terminal para ativar o atalho Ctrl+R do Atuin.${RESET}"
+        return 0
+    fi
+
+    echo -e "${CYBER_RED}✘ Falha ao instalar Atuin${RESET}"
+    return 1
+}
+
+# ==========================================
 # MENUS INTERATIVOS
 # ==========================================
 
@@ -276,9 +369,10 @@ show_terminal_menu() {
     echo -e "${CYBER_PINK}1) Instalar Zsh e definir como padrão"
     echo -e "2) Instalar Oh My Zsh"
     echo -e "3) Instalar Spaceship Prompt"
-    echo -e "4) Instalar Tudo (Zsh + Oh My Zsh + Spaceship)"
-    echo -e "5) Configurar Plugins (cores, autocomplete)"
-    echo -e "6) Ajuda"
+    echo -e "4) Instalar Atuin (histórico de shell)"
+    echo -e "5) Instalar Tudo (Zsh + Oh My Zsh + Spaceship + Atuin)"
+    echo -e "6) Configurar Plugins (cores, autocomplete)"
+    echo -e "7) Ajuda"
     echo -e "0) Voltar${RESET}"
     echo ""
     cyber_divider
@@ -290,34 +384,38 @@ show_terminal_menu() {
 
 process_installation() {
     case $1 in
-        "zsh")
+        "zsh"|"z")
             install_zsh
             ;;
-        "ohmyzsh")
+        "ohmyzsh"|"omz"|"oh-my-zsh")
             if ! command -v zsh &> /dev/null; then
                 echo -e "${CYBER_RED}✘ Zsh não está instalado. Instale primeiro.${RESET}"
                 return 1
             fi
             install_ohmyzsh
             ;;
-        "spaceship")
+        "spaceship"|"sp"|"space")
             if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
                 echo -e "${CYBER_RED}✘ Oh My Zsh não está instalado. Instale primeiro.${RESET}"
                 return 1
             fi
             install_spaceship
             ;;
-        "plugins")
+        "atuin"|"altuin"|"at")
+            install_atuin
+            ;;
+        "plugins"|"p")
             if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
                 echo -e "${CYBER_RED}✘ Oh My Zsh não está instalado. Instale primeiro.${RESET}"
                 return 1
             fi
             configure_zsh_plugins
             ;;
-        "all")
+        "all"|"a")
             install_zsh
             install_ohmyzsh
             install_spaceship
+            install_atuin
             configure_zsh_plugins
             echo -e "${CYBER_PINK}⚡ TERMINAL CONFIGURADO! ⚡${RESET}"
             echo -e "${CYBER_BLUE}Reinicie seu terminal para aplicar as mudanças.${RESET}"
@@ -333,14 +431,16 @@ show_help() {
     show_terminal_header
     echo -e "${CYBER_BLUE}USO: bytebabe terminal [comando]"
     echo -e "\nCOMANDOS DISPONÍVEIS:"
-    echo -e "  ${CYBER_PINK}zsh${RESET}        - Instala e configura o Zsh"
-    echo -e "  ${CYBER_PINK}ohmyzsh${RESET}    - Instala o Oh My Zsh"
-    echo -e "  ${CYBER_PINK}spaceship${RESET}  - Instala o Spaceship Prompt"
-    echo -e "  ${CYBER_PINK}plugins${RESET}    - Configura plugins (cores, autocomplete)"
-    echo -e "  ${CYBER_PINK}all${RESET}        - Instala tudo (Zsh + Oh My Zsh + Spaceship + Plugins)"
-    echo -e "  ${CYBER_PINK}help${RESET}       - Mostra esta ajuda"
+    echo -e "  ${CYBER_PINK}zsh, z${RESET}            - Instala e configura o Zsh"
+    echo -e "  ${CYBER_PINK}ohmyzsh, omz${RESET}      - Instala o Oh My Zsh"
+    echo -e "  ${CYBER_PINK}spaceship, sp${RESET}     - Instala o Spaceship Prompt"
+    echo -e "  ${CYBER_PINK}atuin, at${RESET}         - Instala o Atuin (histórico de shell)"
+    echo -e "  ${CYBER_PINK}plugins, p${RESET}        - Configura plugins (cores, autocomplete)"
+    echo -e "  ${CYBER_PINK}all, a${RESET}            - Instala tudo (Zsh + Oh My Zsh + Spaceship + Atuin + Plugins)"
+    echo -e "  ${CYBER_PINK}help, h${RESET}           - Mostra esta ajuda"
     echo -e "\nEXEMPLOS:"
-    echo -e "  ${CYBER_YELLOW}bytebabe terminal zsh"
+    echo -e "  ${CYBER_YELLOW}bytebabe terminal zsh${RESET} ou ${CYBER_YELLOW}bytebabe devtools t z"
+    echo -e "  ${CYBER_YELLOW}bytebabe terminal atuin${RESET} ou ${CYBER_YELLOW}bytebabe devtools t at"
     echo -e "  ${CYBER_YELLOW}bytebabe terminal all"
     echo -e "  ${CYBER_YELLOW}bytebabe terminal plugins"
     echo -e "  ${CYBER_YELLOW}bytebabe terminal help${RESET}"
@@ -353,10 +453,10 @@ show_help() {
 
 main() {
     case $1 in
-        "zsh"|"ohmyzsh"|"spaceship"|"plugins"|"all")
+        "zsh"|"z"|"ohmyzsh"|"omz"|"oh-my-zsh"|"spaceship"|"sp"|"space"|"atuin"|"altuin"|"at"|"plugins"|"p"|"all"|"a")
             process_installation "$1"
             ;;
-        "help"|"--help"|"-h")
+        "help"|"--help"|"-h"|"h")
             show_help
             ;;
         *)
@@ -370,16 +470,17 @@ main() {
                     1) process_installation "zsh" ;;
                     2) process_installation "ohmyzsh" ;;
                     3) process_installation "spaceship" ;;
-                    4) process_installation "all" ;;
-                    5) process_installation "plugins" ;;
-                    6) show_help ;;
+                    4) process_installation "atuin" ;;
+                    5) process_installation "all" ;;
+                    6) process_installation "plugins" ;;
+                    7) show_help ;;
                     0) break ;;
                     *)
                         echo -e "${CYBER_RED}✘ Opção inválida!${RESET}"
                         sleep 1
                         ;;
                 esac
-                [[ "$choice" != "6" && "$choice" != "0" ]] && read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
+                [[ "$choice" != "7" && "$choice" != "0" ]] && read -p $'\e[1;36m  Pressione ENTER para continuar...\e[0m'
             done
             ;;
     esac

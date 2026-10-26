@@ -253,6 +253,7 @@ As ferramentas disponíveis incluem:
 #### 3.2.1 Terminal Tools
 - Zsh + Oh My Zsh
 - Spaceship Prompt
+- Atuin (histórico de shell)
 - Plugins (autosuggestions, syntax highlighting, etc)
 
 #### 3.2.2 Database Tools

@@ -24,6 +24,7 @@ bytebabe devtools terminal all
 bytebabe devtools terminal zsh
 bytebabe devtools terminal ohmyzsh
 bytebabe devtools terminal spaceship
+bytebabe devtools terminal atuin
 bytebabe devtools terminal plugins
 ```
 

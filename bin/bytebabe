@@ -1,7 +1,13 @@
 #!/bin/bash
 
-# Carrega o diretório base
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Resolve o diretório base seguindo symlinks (ex: /usr/local/bin/bytebabe)
+SOURCE_PATH="${BASH_SOURCE[0]:-$0}"
+while [ -L "$SOURCE_PATH" ]; do
+    SOURCE_DIR="$(cd -P "$(dirname "$SOURCE_PATH")" && pwd)"
+    SOURCE_PATH="$(readlink "$SOURCE_PATH")"
+    [[ "$SOURCE_PATH" != /* ]] && SOURCE_PATH="${SOURCE_DIR}/${SOURCE_PATH}"
+done
+BASE_DIR="$(cd -P "$(dirname "$SOURCE_PATH")/.." && pwd)"
 
 # Carrega as dependências
 source "$BASE_DIR/lib/core/colors.sh"
@@ -36,6 +42,66 @@ show_version() {
     echo -e "╚════════════════════════════════════════════════╝${RESET}"
 }
 
+# Show help information
+show_help() {
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CORE COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}hello${RESET}         Receba uma mensagem cyberpunk aleatória"
+    echo -e "  ${CYBER_GREEN}init${RESET}          Inicializa o ambiente de desenvolvimento"
+    echo -e "  ${CYBER_GREEN}edit${RESET}, ${CYBER_GREEN}byteedit${RESET}  Edita arquivos de configuração"
+    echo -e "  ${CYBER_GREEN}alias${RESET}         Gerencia aliases (add/list/search/remove/template...)"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT STACK:${RESET}"
+    echo -e "  ${CYBER_GREEN}frontend${RESET}      Ferramentas de frontend"
+    echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configura o ambiente frontend"
+    echo -e "  ${CYBER_GREEN}backend${RESET}       Ferramentas de backend"
+    echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configura o ambiente backend"
+    echo -e "    ${CYBER_GRAY}└─ install${RESET}   Instala uma tecnologia específica"
+    echo -e "    ${CYBER_GRAY}└─ list${RESET}      Lista tecnologias suportadas"
+    echo -e "  ${CYBER_GREEN}spring${RESET}        Ferramentas Spring Boot"
+    echo -e "    ${CYBER_GRAY}└─ new${RESET}       Cria um novo projeto Spring Boot"
+    echo -e "    ${CYBER_GRAY}└─ generate${RESET}  Gera componentes Spring"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT TOOLS:${RESET}"
+    echo -e "  ${CYBER_GREEN}ide${RESET}           Gerenciamento de IDEs"
+    echo -e "    ${CYBER_GRAY}└─ vscode${RESET}    Configuração do VS Code"
+    echo -e "    ${CYBER_GRAY}└─ intellij${RESET}  Configuração do IntelliJ IDEA"
+    echo -e "    ${CYBER_GRAY}└─ install/run/status/list${RESET}"
+    echo -e "  ${CYBER_GREEN}devtools${RESET}      Ferramentas de desenvolvimento"
+    echo -e "    ${CYBER_GRAY}└─ terminal${RESET}  Zsh/OhMyZsh/Spaceship/Atuin (alias: t)"
+    echo -e "    ${CYBER_GRAY}└─ database${RESET}  TablePlus/DBeaver/Compass/pgAdmin (alias: d)"
+    echo -e "    ${CYBER_GRAY}└─ browser${RESET}   Chrome/Firefox/Brave/Edge/Vivaldi (alias: b)"
+    echo -e "    ${CYBER_GRAY}└─ api${RESET}       curl/httpie/jq/yq/grpcurl/websocat (alias: a)"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}VERSION CONTROL:${RESET}"
+    echo -e "  ${CYBER_GREEN}git${RESET}           Operações avançadas de Git"
+    echo -e "  ${CYBER_GREEN}gh${RESET}, ${CYBER_GREEN}github${RESET}    Ferramentas e atalhos do GitHub"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
+    echo -e "  ${CYBER_GREEN}servers${RESET}       Gerenciamento de servidores"
+    echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Inicia/para servidores"
+    echo -e "    ${CYBER_GRAY}└─ status${RESET}    Verifica o status"
+    echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Gera configuração Docker Compose"
+    echo -e "  ${CYBER_GREEN}docker${RESET}        Operações Docker (containers, imagens, volumes, compose)"
+    echo -e "  ${CYBER_GREEN}db${RESET}            Operações de banco de dados"
+    echo -e "    ${CYBER_GRAY}└─ setup/install/start/stop/status${RESET}"
+    echo -e "  ${CYBER_GREEN}datavision${RESET}, ${CYBER_GREEN}dv${RESET}  Gerenciador de bancos (tipo DBeaver)"
+    echo -e "    ${CYBER_GRAY}└─ connect/add/list/remove${RESET}"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}API TOOLS:${RESET}"
+    echo -e "  ${CYBER_GREEN}flux${RESET}          Terminal API Studio 🌊"
+    echo -e "  ${CYBER_GREEN}prime${RESET}, ${CYBER_GREEN}pm${RESET}     Ferramentas Prime API"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}ALIASES GLOBAIS:${RESET}"
+    echo -e "  ${CYBER_GREEN}dev${RESET}  → ${CYBER_CYAN}devtools${RESET}          ${CYBER_GREEN}dt${RESET}  → ${CYBER_CYAN}devtools terminal${RESET}"
+    echo -e "  ${CYBER_GREEN}term${RESET} → ${CYBER_CYAN}devtools terminal${RESET}  ${CYBER_GREEN}atuin${RESET} → ${CYBER_CYAN}devtools terminal atuin${RESET}"
+    echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}SYSTEM:${RESET}"
+    echo -e "  ${CYBER_GREEN}--version${RESET}, ${CYBER_GREEN}-v${RESET}  Mostra a versão da CLI"
+    echo -e "  ${CYBER_GREEN}help${RESET}, ${CYBER_GREEN}--help${RESET}, ${CYBER_GREEN}-h${RESET}  Mostra esta ajuda"
+    echo -e ""
+    echo -e "${CYBER_PURPLE}╰┈➤ ${CYBER_GRAY}Para ajuda detalhada, use: ${CYBER_CYAN}bytebabe <comando> --help${RESET}"
+}
+
 show_cyberpunk_header
 
 # Process commands
@@ -48,13 +114,15 @@ case "$1" in
         source "${BASE_DIR}/commands/hello.sh" "${@:2}"
         ;;
     init)
-        source "${BASE_DIR}/commands/init.sh" "${@:2}"
+        source "${BASE_DIR}/commands/init.sh"
+        main "${@:2}"
         ;;
     git)
         source "${BASE_DIR}/commands/git/main.sh"
         ;;
     frontend)
-        source "${BASE_DIR}/commands/frontend.sh" "${@:2}"
+        source "${BASE_DIR}/commands/frontend.sh"
+        main "${@:2}"
         ;;
     backend)
         source "${BASE_DIR}/commands/backend.sh" "${@:2}"
@@ -97,64 +165,11 @@ case "$1" in
         show_version
         exit 0
         ;;
-    --help|-h)
+    help|h|--help|-h)
         show_help
         exit 0
         ;;
     *)
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}CORE COMMANDS:${RESET}"
-        echo -e "  ${CYBER_GREEN}hello${RESET}         Receba uma mensagem cyberpunk aleatória"
-        echo -e "  ${CYBER_GREEN}init${RESET}          Initialize development environment"
-        echo -e "  ${CYBER_GREEN}edit${RESET}          Edit ByteBabe configuration files"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT STACK:${RESET}"
-        echo -e "  ${CYBER_GREEN}frontend${RESET}      Frontend development tools"
-        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure frontend environment"
-        echo -e "  ${CYBER_GREEN}backend${RESET}       Backend development tools"
-        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure backend environment"
-        echo -e "    ${CYBER_GRAY}└─ install${RESET}   Install specific technology"
-        echo -e "  ${CYBER_GREEN}spring${RESET}        Spring Boot development tools"
-        echo -e "    ${CYBER_GRAY}└─ new${RESET}       Create new Spring Boot project"
-        echo -e "    ${CYBER_GRAY}└─ generate${RESET}  Generate Spring components"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DEVELOPMENT TOOLS:${RESET}"
-        echo -e "  ${CYBER_GREEN}ide${RESET}           IDE management"
-        echo -e "    ${CYBER_GRAY}└─ vscode${RESET}    VSCode setup and extensions"
-        echo -e "    ${CYBER_GRAY}└─ intellij${RESET}  IntelliJ IDEA setup"
-        echo -e "  ${CYBER_GREEN}devtools${RESET}      Development utilities"
-        echo -e "    ${CYBER_GRAY}└─ terminal${RESET}  Terminal configuration (Zsh/OhMyZsh)"
-        echo -e "    ${CYBER_GRAY}└─ database${RESET}  Database tools (DBeaver/Compass)"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}VERSION CONTROL:${RESET}"
-        echo -e "  ${CYBER_GREEN}git${RESET}           Advanced Git operations"
-        echo -e "  ${CYBER_GREEN}gh${RESET}, ${CYBER_GREEN}github${RESET}    GitHub CLI tools and shortcuts"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
-        echo -e "  ${CYBER_GREEN}servers${RESET}       Server management"
-        echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Start/stop servers"
-        echo -e "    ${CYBER_GRAY}└─ status${RESET}    Check server status"
-        echo -e "  ${CYBER_GREEN}docker${RESET}        Docker operations"
-        echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Container management"
-        echo -e "    ${CYBER_GRAY}└─ logs${RESET}      Container logs"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}DATABASE TOOLS:${RESET}"
-        echo -e "  ${CYBER_GREEN}db${RESET}            Database operations"
-        echo -e "    ${CYBER_GRAY}└─ setup${RESET}     Configure databases"
-        echo -e "    ${CYBER_GRAY}└─ install${RESET}   Install specific database"
-        echo -e "  ${CYBER_GREEN}datavision${RESET}, ${CYBER_GREEN}dv${RESET}  Database manager (like DBeaver)"
-        echo -e "    ${CYBER_GRAY}└─ connect${RESET}   Connect to database"
-        echo -e "    ${CYBER_GRAY}└─ add${RESET}       Add new connection"
-        echo -e "    ${CYBER_GRAY}└─ list${RESET}      List saved connections"
-        echo -e "    ${CYBER_GRAY}└─ remove${RESET}    Remove connection"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}API TOOLS:${RESET}"
-        echo -e "  ${CYBER_GREEN}flux${RESET}          Terminal API Studio 🌊"
-        echo -e "  ${CYBER_GREEN}prime${RESET}, ${CYBER_GREEN}pm${RESET}     Prime API tools"
-        echo -e ""
-        echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}SYSTEM:${RESET}"
-        echo -e "  ${CYBER_GREEN}--version${RESET}, ${CYBER_GREEN}-v${RESET}  Show CLI version"
-        echo -e "  ${CYBER_GREEN}--help${RESET}, ${CYBER_GREEN}-h${RESET}     Show this help message"
-        echo -e ""
-        echo -e "${CYBER_PURPLE}╰┈➤ ${CYBER_GRAY}For detailed command help, use: ${CYBER_CYAN}bytebabe <command> --help${RESET}"
+        show_help
         ;;
 esac
