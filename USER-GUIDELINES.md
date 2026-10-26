@@ -35,11 +35,10 @@ bytebabe/
 │   ├── core/           # Essential commands
 │   ├── flux/           # API client module
 │   └── ...             # Other modules
-├── lib/                # Shared libraries
-│   ├── core/           # Core functions
-│   ├── ui/             # UI components
-│   └── utils/          # Utilities
-└── docs/               # Documentation
+└── lib/                # Shared libraries
+    ├── core/           # Core functions
+    ├── ui/             # UI components
+    └── utils/          # Utilities
 ```
 
 ### Code Standards

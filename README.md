@@ -387,7 +387,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 💬 Support
 
-- 📖 [Documentation](docs/)
 - 📐 [Product & Module Specs](spec/README.md)
 - 🧪 [Testing Guide](tests/README.md)
 - 🐛 [Issues](https://github.com/mrpunkdasilva/bytebabe-cli/issues)
