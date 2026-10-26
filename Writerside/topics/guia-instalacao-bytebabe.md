@@ -152,7 +152,7 @@ bytebabe --version
 
 Se a instalação foi bem-sucedida, você verá uma mensagem como:
 ```
-ByteBabe CLI v1.0.0 (⌐■_■)
+ByteBabe CLI v1.4.0 (⌐■_■)
 ```
 
 ![Verificação da Instalação](https://exemplo.com/imagens/verificacao-instalacao.png)
@@ -168,7 +168,7 @@ Este comando realizará uma verificação completa do sistema e mostrará um rel
 ```
 🩺 ByteBabe System Check 🩺
 ---------------------------
-✓ Versão do ByteBabe: v1.0.0
+✓ Versão do ByteBabe: v1.4.0
 ✓ Sistema operacional: Ubuntu 22.04
 ✓ Bash: 5.1.16
 ✓ Git: 2.34.1

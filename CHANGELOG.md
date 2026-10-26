@@ -6,6 +6,23 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## Latest Changes
 
+## [1.4.0] - 2026-10-26
+
+### Added
+- Suporte a Atuin no módulo de terminal (`bytebabe devtools terminal atuin`)
+- Aliases globais para `devtools`, `dev`, `dt`, `term` e `atuin`
+- Nova lista de comandos no help global e comandos `help`/`h`
+- Instalação de dependências por gerenciador de pacotes (apt, dnf, yum, pacman, zypper, apk)
+
+### Fixed
+- Resolução do `BASE_DIR` quando o CLI é executado via symlink
+- Instalação local e extração de tarball com diretório raiz no `install.sh`
+- Roteamento dos comandos `init` e `frontend`
+- Cores ausentes (`CYBER_GRAY`) no help
+
+### Changed
+- Versão do CLI atualizada para 1.4.0
+- Repositório e URLs apontando para `bytebabe-cli`
 
 ### 2025-04-04 
 -  Atualização automática do repositório - 2025-04-04 16:57:21

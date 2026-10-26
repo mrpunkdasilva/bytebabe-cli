@@ -25,7 +25,7 @@ show_cyberpunk_header() {
            --backtitle "$DIALOG_BACKTITLE" \
            --title "[ ByteBabe CLI ]" \
            --msgbox "\Z1╔══════════════════════════════════════════════╗
-║  \Z2ByteBabe CLI v1.0.0\Z1                        ║
+║  \Z2ByteBabe CLI v1.4.0\Z1                        ║
 ║  \Z3Cyberpunk Development Tools\Z1                 ║
 ║                                              ║
 ║  \Z4⚡ Power up your development workflow\Z1        ║

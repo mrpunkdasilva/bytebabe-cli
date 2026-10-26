@@ -1,6 +1,6 @@
 {
   "name": "bytebabe-cli",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "A cyberpunk-themed developer toolkit for supercharged workflows 🚀",
   "bin": {
     "bytebabe": "bin/bytebabe"
@@ -23,10 +23,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrpunkdasilva/bytebabe.git"
+    "url": "git+https://github.com/mrpunkdasilva/bytebabe-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/mrpunkdasilva/bytebabe/issues"
+    "url": "https://github.com/mrpunkdasilva/bytebabe-cli/issues"
   },
-  "homepage": "https://github.com/mrpunkdasilva/bytebabe#readme"
+  "homepage": "https://github.com/mrpunkdasilva/bytebabe-cli#readme"
 }

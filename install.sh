@@ -8,8 +8,8 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configurações
-VERSION="1.0.0"
-REPO_URL="https://github.com/mrpunkdasilva/bytebabe"
+VERSION="1.4.0"
+REPO_URL="https://github.com/mrpunkdasilva/bytebabe-cli"
 TARBALL_URL="${REPO_URL}/releases/download/v${VERSION}/bytebabe-${VERSION}.tar.gz"
 TEMP_DIR="/tmp/bytebabe-install"
 INSTALL_DIR="/opt/bytebabe"
@@ -44,7 +44,7 @@ else
         exit 1
     fi
 
-    # O tarball pode conter um diretório raiz (ex: bytebabe-1.0.0/)
+    # O tarball pode conter um diretório raiz (ex: bytebabe-1.4.0/)
     EXEC_PATH=$(find "$TEMP_DIR" -type f -path '*/bin/bytebabe' | head -n 1)
     if [ -z "$EXEC_PATH" ]; then
         echo -e "${RED}Erro: executável bin/bytebabe não encontrado no pacote${NC}"
