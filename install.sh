@@ -63,6 +63,7 @@ echo -e "${BLUE}📂 Copiando arquivos para ${INSTALL_DIR}...${NC}"
 sudo rm -rf "$INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
 sudo cp -a "${SOURCE_DIR}/." "$INSTALL_DIR/"
+sudo rm -rf "${INSTALL_DIR}/archive"
 sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
 
 # Cria link simbólico

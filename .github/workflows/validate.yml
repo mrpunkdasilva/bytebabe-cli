@@ -1,0 +1,34 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Bash syntax and unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Bash syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find bin commands lib tests \
+            -type f \
+            \( -name '*.sh' -o -path 'bin/bytebabe' \) \
+            -not -path '*/archive/*' \
+            -print0 \
+            | xargs -0 -r -n 1 bash -n
+
+      - name: Run unit tests
+        shell: bash
+        run: bash tests/scripts/run_unit_tests.sh

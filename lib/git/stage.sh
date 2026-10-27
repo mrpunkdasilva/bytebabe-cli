@@ -36,16 +36,6 @@ show_file_status() {
     esac
 }
 
-show_loading() {
-    local message=$1
-    echo -n "${CYBER_CYAN}${message}"
-    for i in {1..3}; do
-        echo -n "."
-        sleep 0.5
-    done
-    echo "${RESET}"
-}
-
 # Custom menu selector function for staging
 function choose_staging_option() {
     local prompt="$1" outvar="$2"

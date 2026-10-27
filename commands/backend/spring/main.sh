@@ -8,27 +8,31 @@ source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/backend/spring/help.sh"
 source "$BASE_DIR/lib/backend/spring/config.sh"
-source "$BASE_DIR/lib/backend/spring/generators.sh"
+source "$BASE_DIR/lib/backend/spring/generators/main.sh"
 source "$BASE_DIR/lib/backend/spring/project.sh"
 source "$BASE_DIR/lib/backend/spring/commands.sh"
-source "$BASE_DIR/lib/backend/spring/templates.sh"
+source "$BASE_DIR/lib/backend/spring/generators/templates.sh"
 source "$BASE_DIR/lib/backend/spring/dependency.sh"
 source "$BASE_DIR/lib/backend/spring/profile.sh"
+source "$BASE_DIR/lib/backend/spring/security.sh"
+source "$BASE_DIR/lib/backend/spring/monitoring.sh"
+source "$BASE_DIR/lib/backend/spring/deployment.sh"
 
 # Verifica se Java e Maven estão instalados
 check_requirements() {
     if ! command -v java &> /dev/null; then
         echo -e "${CYBER_RED}✘ Java não encontrado! Por favor, instale o Java JDK${RESET}"
-        exit 1
+        return 1
     fi
 
     if ! command -v mvn &> /dev/null; then
         echo -e "${CYBER_RED}✘ Maven não encontrado! Por favor, instale o Maven${RESET}"
-        exit 1
+        return 1
     fi
 }
 
 # Handler principal de comandos
+main() {
 case "$1" in
     new|create)
         shift
@@ -37,7 +41,7 @@ case "$1" in
                 show_spring_new_help
                 ;;
             *)
-                check_requirements
+                check_requirements || return $?
                 create_spring_project "$@"
                 ;;
         esac
@@ -166,6 +170,14 @@ case "$1" in
                 shift
                 generate_crud "$@"
                 ;;
+            mapper|map)
+                shift
+                generate_mapper "$@"
+                ;;
+            exception-handler|exception)
+                shift
+                generate_exception_handler "$@"
+                ;;
             security)
                 shift
                 generate_security_config "$@"
@@ -175,19 +187,20 @@ case "$1" in
                 local name="$1"
                 if [[ -z "$name" ]]; then
                     echo -e "${CYBER_RED}✘ Nome da entidade é obrigatório${RESET}"
-                    exit 1
+                    return 1
                 fi
                 generate_entity "$name"
                 generate_repository "$name"
                 generate_service "$name"
                 generate_controller "$name"
                 generate_dto "$name"
+                generate_mapper "$name"
                 echo -e "${CYBER_GREEN}✔ Todos os componentes foram gerados para ${name}${RESET}"
                 ;;
             *)
                 echo -e "${CYBER_RED}✘ Gerador não encontrado: $1${RESET}"
                 echo -e "Use ${CYBER_YELLOW}bytebabe spring generator list${RESET} para ver os geradores disponíveis"
-                exit 1
+                return 1
                 ;;
         esac
         ;;
@@ -199,7 +212,7 @@ case "$1" in
                 show_spring_run_help
                 ;;
             *)
-                check_requirements
+                check_requirements || return $?
                 mvn spring-boot:run "$@"
                 ;;
         esac
@@ -212,7 +225,7 @@ case "$1" in
                 show_spring_build_help
                 ;;
             *)
-                check_requirements
+                check_requirements || return $?
                 mvn clean package "$@"
                 ;;
         esac
@@ -243,7 +256,8 @@ case "$1" in
         shift
         case "$1" in
             setup)
-                setup_swagger
+                shift
+                setup_swagger "$@"
                 ;;
             *)
                 show_spring_docs_help
@@ -255,16 +269,20 @@ case "$1" in
         shift
         case "$1" in
             setup)
-                generate_docker_files
+                shift
+                generate_docker_files "$@"
                 ;;
             build)
-                docker-compose build
+                shift
+                docker-compose build "$@"
                 ;;
             up)
-                docker-compose up -d
+                shift
+                docker-compose up -d "$@"
                 ;;
             down)
-                docker-compose down
+                shift
+                docker-compose down "$@"
                 ;;
             *)
                 show_spring_docker_help
@@ -279,7 +297,7 @@ case "$1" in
                 show_spring_clean_help
                 ;;
             *)
-                check_requirements
+                check_requirements || return $?
                 mvn clean "$@"
                 ;;
         esac
@@ -292,12 +310,15 @@ case "$1" in
                 shift
                 case "$1" in
                     run)
+                        shift
                         run_security_audit "$@"
                         ;;
                     fix)
+                        shift
                         fix_security_issues "$@"
                         ;;
                     report)
+                        shift
                         generate_security_report "$@"
                         ;;
                     *)
@@ -309,12 +330,15 @@ case "$1" in
                 shift
                 case "$1" in
                     deps)
+                        shift
                         scan_dependencies "$@"
                         ;;
                     code)
+                        shift
                         scan_code_vulnerabilities "$@"
                         ;;
                     docker)
+                        shift
                         scan_docker_security "$@"
                         ;;
                     *)
@@ -326,12 +350,15 @@ case "$1" in
                 shift
                 case "$1" in
                     oauth)
+                        shift
                         setup_oauth_security "$@"
                         ;;
                     jwt)
+                        shift
                         setup_jwt_security "$@"
                         ;;
                     keycloak)
+                        shift
                         setup_keycloak_integration "$@"
                         ;;
                     *)
@@ -352,12 +379,15 @@ case "$1" in
                 shift
                 case "$1" in
                     prometheus)
+                        shift
                         setup_prometheus_monitoring "$@"
                         ;;
                     grafana)
+                        shift
                         setup_grafana_dashboard "$@"
                         ;;
                     elk)
+                        shift
                         setup_elk_stack "$@"
                         ;;
                     *)
@@ -369,12 +399,15 @@ case "$1" in
                 shift
                 case "$1" in
                     enable)
+                        shift
                         enable_application_metrics "$@"
                         ;;
                     custom)
+                        shift
                         add_custom_metrics "$@"
                         ;;
                     export)
+                        shift
                         export_metrics_data "$@"
                         ;;
                     *)
@@ -386,12 +419,15 @@ case "$1" in
                 shift
                 case "$1" in
                     setup)
+                        shift
                         setup_log_aggregation "$@"
                         ;;
                     analyze)
+                        shift
                         analyze_log_patterns "$@"
                         ;;
                     export)
+                        shift
                         export_log_data "$@"
                         ;;
                     *)
@@ -403,12 +439,15 @@ case "$1" in
                 shift
                 case "$1" in
                     setup)
+                        shift
                         setup_alert_rules "$@"
                         ;;
                     add)
+                        shift
                         add_custom_alert "$@"
                         ;;
                     list)
+                        shift
                         list_alert_rules "$@"
                         ;;
                     *)
@@ -429,12 +468,15 @@ case "$1" in
                 shift
                 case "$1" in
                     setup)
+                        shift
                         setup_kubernetes_deployment "$@"
                         ;;
                     apply)
+                        shift
                         apply_k8s_manifests "$@"
                         ;;
                     rollback)
+                        shift
                         rollback_deployment "$@"
                         ;;
                     *)
@@ -446,12 +488,15 @@ case "$1" in
                 shift
                 case "$1" in
                     aws)
+                        shift
                         deploy_to_aws "$@"
                         ;;
                     gcp)
+                        shift
                         deploy_to_gcp "$@"
                         ;;
                     azure)
+                        shift
                         deploy_to_azure "$@"
                         ;;
                     *)
@@ -473,3 +518,8 @@ case "$1" in
         show_spring_help
         ;;
 esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

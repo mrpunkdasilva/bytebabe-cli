@@ -121,6 +121,34 @@ test_backend_structure() {
     run_test "backend has dependency management" \
         "grep -q 'npm\|maven\|gradle' '$backend_file'" \
         "gerenciamento de dependências encontrado"
+
+    local spring_file="$BASE_DIR/commands/backend/spring/main.sh"
+    local spring_dir="$BASE_DIR/lib/backend/spring"
+
+    # Teste 10: Carregador canônico de generators existe
+    run_test "spring has canonical generators loader" \
+        "test -f '$spring_dir/generators/main.sh'" \
+        "carregador canônico de generators existe"
+
+    # Teste 11: Generator de mapper existe
+    run_test "spring has mapper generator" \
+        "test -f '$spring_dir/generators/mapper.sh'" \
+        "generator mapper existe"
+
+    # Teste 12: Entry point usa o carregador canônico
+    run_test "spring command uses canonical generator loader" \
+        "grep -q 'generators/main.sh' '$spring_file'" \
+        "entry point carrega generators/main.sh"
+
+    # Teste 13: Duplicatas foram arquivadas
+    run_test "spring duplicate generators are archived" \
+        "test -f '$BASE_DIR/archive/legacy/spring/generators/controller_generator.sh'" \
+        "duplicatas de generators arquivadas"
+
+    # Teste 14: Entry point não encerra o processo
+    run_test "spring command has no exit" \
+        "! grep -qE '^[[:space:]]*exit\\b' '$spring_file'" \
+        "entry point Spring não usa exit"
 }
 
 # Função para mostrar resumo

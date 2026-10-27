@@ -126,6 +126,34 @@ test_frontend_structure() {
     run_test "frontend has component generation" \
         "grep -q 'generate\|component' '$frontend_file'" \
         "geração de componentes encontrada"
+
+    local frontend_main="$BASE_DIR/lib/frontend/main.sh"
+    local frontend_generators="$BASE_DIR/lib/frontend/generators.sh"
+
+    # Teste 11: Dispatcher canônico existe
+    run_test "frontend has canonical generator dispatcher" \
+        "test -f '$frontend_generators'" \
+        "dispatcher canônico existe"
+
+    # Teste 12: Adaptadores por framework existem
+    run_test "frontend has framework adapters" \
+        "test -f '$BASE_DIR/lib/frontend/react/generators.sh' && test -f '$BASE_DIR/lib/frontend/vue/generators.sh' && test -f '$BASE_DIR/lib/frontend/angular/generators.sh'" \
+        "adaptadores React, Vue e Angular existem"
+
+    # Teste 13: Entry point e lib não usam exit
+    run_test "frontend has no exit in command or main" \
+        "! grep -qE '^[[:space:]]*exit\b' '$frontend_file' '$frontend_main'" \
+        "comando e main propagam retorno"
+
+    # Teste 14: Duplicatas arquivadas e não carregadas
+    run_test "frontend duplicates are archived" \
+        "test -f '$BASE_DIR/archive/legacy/frontend/generators/duplicated-generators.sh' && ! grep -q 'archive/legacy/frontend' '$frontend_file'" \
+        "duplicatas arquivadas e fora do fluxo ativo"
+
+    # Teste 15: Detecção de package manager vem do core
+    run_test "frontend uses core package manager detection" \
+        "grep -q 'detect_node_pkg_manager' '$BASE_DIR/lib/core/pkg.sh' && grep -q 'detect_node_pkg_manager' '$frontend_main'" \
+        "detecção de package manager centralizada no core"
 }
 
 # Função para mostrar resumo

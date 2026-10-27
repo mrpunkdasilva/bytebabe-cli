@@ -8,7 +8,7 @@ setup_swagger() {
     # Cria arquivo de configuração do Swagger
     local config_file="src/main/java/$(find_package_path)/config/SwaggerConfig.java"
     
-    mkdir -p "$(dirname "$config_file")"
+    mkdir -p "$(dirname "$config_file")" "src/main/resources"
 
     cat > "$config_file" << EOF
 package $(get_package_name).config;

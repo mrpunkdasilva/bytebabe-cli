@@ -193,13 +193,13 @@ analyze_item() {
 
 # Função principal
 run_quarantine() {
-    setup_quarantine_env
-    
-    if [ $# -eq 0 ]; then
+    if [ $# -eq 0 ] || [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
         show_quarantine_help
-        return
+        return 0
     fi
-    
+
+    setup_quarantine_env
+
     local command="$1"
     shift
     

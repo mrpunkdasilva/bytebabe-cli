@@ -46,22 +46,22 @@ show_devtools_menu() {
 
 call_terminal_services() {
     echo -e "${CYBER_YELLOW}⚡ Iniciando Terminal Tools...${RESET}"
-    source "$BASE_DIR/lib/devtools/terminal_services.sh" "$@"
+    ( source "$BASE_DIR/lib/devtools/terminal_services.sh"; terminal_services_main "$@" )
 }
 
 call_database_tools() {
     echo -e "${CYBER_YELLOW}⚡ Iniciando Database Tools...${RESET}"
-    source "$BASE_DIR/lib/devtools/database_services.sh" "$@"
+    ( source "$BASE_DIR/lib/devtools/database_services.sh"; database_services_main "$@" )
 }
 
 call_browser_tools() {
     echo -e "${CYBER_YELLOW}⚡ Iniciando Browser Tools...${RESET}"
-    source "$BASE_DIR/lib/devtools/browser_services.sh" "$@"
+    ( source "$BASE_DIR/lib/devtools/browser_services.sh"; browser_services_main "$@" )
 }
 
 call_api_tools() {
     echo -e "${CYBER_YELLOW}⚡ Iniciando API Tools...${RESET}"
-    source "$BASE_DIR/lib/devtools/api_services.sh" "${@:1}"
+    ( source "$BASE_DIR/lib/devtools/api_services.sh"; api_services_main "$@" )
 }
 
 # ==========================================
@@ -143,4 +143,6 @@ main() {
 # INICIALIZAÇÃO
 # ==========================================
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

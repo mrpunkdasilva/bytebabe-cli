@@ -32,6 +32,9 @@ show_spring_help() {
     echo -e "  ${CYBER_GREEN}entity${RESET}         Generate JPA entity"
     echo -e "  ${CYBER_GREEN}dto${RESET}            Generate DTO class"
     echo -e "  ${CYBER_GREEN}crud${RESET}           Generate complete CRUD"
+    echo -e "  ${CYBER_GREEN}mapper${RESET}         Generate MapStruct mapper"
+    echo -e "  ${CYBER_GREEN}exception-handler${RESET} Generate global exception handler"
+    echo -e "  ${CYBER_GREEN}security${RESET}       Generate security configuration"
     
     echo -e "\n${CYBER_BLUE}OPTIONS:${RESET}"
     echo -e "  ${CYBER_YELLOW}-n, --name${RESET}        Name of component/project"
@@ -67,6 +70,9 @@ show_spring_generate_help() {
     echo -e "  ${CYBER_GREEN}entity${RESET}         JPA entity with basic fields"
     echo -e "  ${CYBER_GREEN}dto${RESET}            Data Transfer Object"
     echo -e "  ${CYBER_GREEN}crud${RESET}           Complete CRUD (all above components)"
+    echo -e "  ${CYBER_GREEN}mapper${RESET}         MapStruct mapper"
+    echo -e "  ${CYBER_GREEN}exception-handler${RESET} Global exception handler"
+    echo -e "  ${CYBER_GREEN}security${RESET}       Security configuration"
     
     echo -e "\n${CYBER_BLUE}OPTIONS:${RESET}"
     echo -e "  ${CYBER_YELLOW}-n, --name${RESET}        Component name (required)"
@@ -144,4 +150,146 @@ show_deploy_help() {
     echo -e "\n${CYBER_BLUE}EXAMPLES:${RESET}"
     echo -e "  ${CYBER_YELLOW}bytebabe spring deploy k8s setup${RESET}"
     echo -e "  ${CYBER_YELLOW}bytebabe spring deploy cloud aws${RESET}"
+}
+
+show_spring_new_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}NEW PROJECT USAGE:${RESET}"
+    echo -e "  bytebabe spring new ${CYBER_YELLOW}[-n nome] [-p pacote] [-d deps]${RESET}"
+}
+
+show_spring_template_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}TEMPLATE COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}list${RESET}   Lista templates disponíveis"
+    echo -e "  ${CYBER_GREEN}add${RESET}    Adiciona um template"
+}
+
+show_spring_dependency_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}DEPENDENCY COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}list${RESET}    Lista dependências"
+    echo -e "  ${CYBER_GREEN}add${RESET}     Adiciona uma dependência"
+    echo -e "  ${CYBER_GREEN}remove${RESET}  Remove uma dependência"
+}
+
+show_spring_profile_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}PROFILE COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}list${RESET}         Lista profiles"
+    echo -e "  ${CYBER_GREEN}create${RESET}       Cria um profile"
+    echo -e "  ${CYBER_GREEN}set-active${RESET}   Define o profile ativo"
+}
+
+show_spring_run_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}RUN USAGE:${RESET}"
+    echo -e "  bytebabe spring run ${CYBER_YELLOW}[argumentos do Maven]${RESET}"
+}
+
+show_spring_build_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}BUILD USAGE:${RESET}"
+    echo -e "  bytebabe spring build ${CYBER_YELLOW}[argumentos do Maven]${RESET}"
+}
+
+show_spring_test_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}TEST COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}service${RESET}      Gera testes de service"
+    echo -e "  ${CYBER_GREEN}controller${RESET}   Gera testes de controller"
+    echo -e "  ${CYBER_GREEN}run${RESET}          Executa mvn test"
+}
+
+show_spring_clean_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}CLEAN USAGE:${RESET}"
+    echo -e "  bytebabe spring clean ${CYBER_YELLOW}[argumentos do Maven]${RESET}"
+}
+
+show_spring_docs_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}DOCS COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}   Configura Swagger/OpenAPI"
+}
+
+show_spring_docker_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}DOCKER COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}   Gera Dockerfile e docker-compose"
+    echo -e "  ${CYBER_GREEN}build${RESET}   Executa docker-compose build"
+    echo -e "  ${CYBER_GREEN}up${RESET}      Sobe os containers"
+    echo -e "  ${CYBER_GREEN}down${RESET}    Derruba os containers"
+}
+
+show_security_audit_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}SECURITY AUDIT COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}run${RESET}      Executa auditoria"
+    echo -e "  ${CYBER_GREEN}fix${RESET}      Aplica correções"
+    echo -e "  ${CYBER_GREEN}report${RESET}   Gera relatório"
+}
+
+show_security_scan_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}SECURITY SCAN COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}deps${RESET}     Escaneia dependências"
+    echo -e "  ${CYBER_GREEN}code${RESET}     Escaneia código"
+    echo -e "  ${CYBER_GREEN}docker${RESET}   Escaneia Dockerfile"
+}
+
+show_security_setup_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}SECURITY SETUP COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}oauth${RESET}     Configura OAuth2"
+    echo -e "  ${CYBER_GREEN}jwt${RESET}       Configura JWT"
+    echo -e "  ${CYBER_GREEN}keycloak${RESET}  Configura Keycloak"
+}
+
+show_monitor_setup_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}MONITOR SETUP COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}prometheus${RESET}   Configura Prometheus"
+    echo -e "  ${CYBER_GREEN}grafana${RESET}      Configura Grafana"
+    echo -e "  ${CYBER_GREEN}elk${RESET}          Configura ELK"
+}
+
+show_metrics_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}METRICS COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}enable${RESET}   Habilita métricas"
+    echo -e "  ${CYBER_GREEN}custom${RESET}   Adiciona métrica customizada"
+    echo -e "  ${CYBER_GREEN}export${RESET}   Exporta métricas"
+}
+
+show_logs_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}LOG COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}     Configura agregação"
+    echo -e "  ${CYBER_GREEN}analyze${RESET}   Analisa padrões"
+    echo -e "  ${CYBER_GREEN}export${RESET}    Exporta logs"
+}
+
+show_alerts_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}ALERT COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}   Configura regras"
+    echo -e "  ${CYBER_GREEN}add${RESET}     Adiciona alerta"
+    echo -e "  ${CYBER_GREEN}list${RESET}    Lista alertas"
+}
+
+show_k8s_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}KUBERNETES COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}setup${RESET}      Gera manifestos"
+    echo -e "  ${CYBER_GREEN}apply${RESET}      Aplica manifestos"
+    echo -e "  ${CYBER_GREEN}rollback${RESET}   Reverte deployment"
+}
+
+show_cloud_deploy_help() {
+    show_spring_header
+    echo -e "\n${CYBER_BLUE}CLOUD DEPLOY COMMANDS:${RESET}"
+    echo -e "  ${CYBER_GREEN}aws${RESET}     Deploy na AWS"
+    echo -e "  ${CYBER_GREEN}gcp${RESET}     Deploy na GCP"
+    echo -e "  ${CYBER_GREEN}azure${RESET}   Deploy na Azure"
 }

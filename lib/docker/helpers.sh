@@ -1,103 +1,108 @@
 #!/bin/bash
 
-# Verifica se Docker está rodando
-check_docker_daemon() {
-    # Mensagem inicial explicativa
-    echo -e "\n${CYBER_BLUE}🔍 Verificando o status do Docker...${RESET}"
-    echo -e "${CYBER_YELLOW}▶ Esta operação requer privilégios de root para verificar/iniciar o serviço Docker.${RESET}"
-    echo -e "${CYBER_YELLOW}▶ Você pode precisar digitar sua senha de administrador.${RESET}\n"
+# Configuração e validação do ambiente Docker. Não executa nada no source.
 
-    # Verifica se o Docker está respondendo (sem sudo primeiro)
-    if docker ps >/dev/null 2>&1; then
-        echo -e "${CYBER_GREEN}✔ Docker está rodando e acessível sem privilégios root!${RESET}"
-        return 0
+if [[ -z "${CYBER_BLUE:-}" ]]; then
+    if [[ "${BASH_SOURCE[0]}" == */* ]]; then
+        _bytebabe_docker_helpers_dir="${BASH_SOURCE[0]%/*}"
+    else
+        _bytebabe_docker_helpers_dir="."
+    fi
+    _bytebabe_docker_helpers_dir="$(cd -P -- "$_bytebabe_docker_helpers_dir" && pwd)"
+    source "$_bytebabe_docker_helpers_dir/../core/helpers.sh"
+    unset _bytebabe_docker_helpers_dir
+fi
+
+cmd_docker="${cmd_docker:-docker}"
+cmd_docker_compose="${cmd_docker_compose:-}"
+COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.yml}"
+
+configure_docker() {
+    local docker_bin="${DOCKER_BIN:-docker}"
+
+    if ! command -v "$docker_bin" &>/dev/null; then
+        echo -e "${CYBER_RED}✖ Docker não instalado!${RESET}"
+        echo -e "${CYBER_BLUE}▶ Instale em: https://docs.docker.com/engine/install/${RESET}"
+        return 1
     fi
 
-    # Verifica com sudo se necessário
-    if sudo docker ps >/dev/null 2>&1; then
-        echo -e "${CYBER_GREEN}✔ Docker está rodando (acesso requer privilégios root).${RESET}"
-        echo -e "${CYBER_YELLOW}⚠ Dica: Adicione seu usuário ao grupo docker para evitar usar sudo:"
-        echo -e "  sudo usermod -aG docker \$USER${RESET}"
-        return 0
+    if "$docker_bin" ps &>/dev/null; then
+        cmd_docker="$docker_bin"
+        echo -e "${CYBER_GREEN}✔ Docker acessível sem sudo${RESET}"
+    elif command -v sudo &>/dev/null && sudo "$docker_bin" ps &>/dev/null; then
+        cmd_docker="sudo $docker_bin"
+        echo -e "${CYBER_YELLOW}⚠ Docker requer sudo${RESET}"
+        echo -e "${CYBER_BLUE}▶ Para evitar sudo:${RESET}"
+        echo -e "   ${CYBER_CYAN}sudo usermod -aG docker \$USER${RESET}"
+        echo -e "   ${CYBER_YELLOW}(Reinicie a sessão depois)${RESET}"
+    else
+        echo -e "${CYBER_RED}✖ Não foi possível conectar ao Docker!${RESET}"
+        echo -e "${CYBER_YELLOW}▶ Verifique se o daemon está ativo e se você tem permissão.${RESET}"
+        return 1
     fi
 
-    echo -e "${CYBER_RED}⚡️ Docker não está respondendo!${RESET}"
-
-    # Verifica se está instalado
-    if ! command -v docker &>/dev/null; then
-        echo -e "${CYBER_RED}✖ Docker não está instalado no sistema!${RESET}"
-        echo -e "${CYBER_BLUE}▶ Por favor instale o Docker antes de continuar.${RESET}"
-        exit 1
-    fi
-
-    # Verifica status do serviço
-    local service_status="unknown"
-    if command -v systemctl &>/dev/null; then
-        echo -e "${CYBER_BLUE}▶ Verificando status do serviço...${RESET}"
-        service_status=$(sudo systemctl is-active docker 2>/dev/null || echo "inactive")
-    fi
-
-    case $service_status in
-        active)
-            echo -e "${CYBER_YELLOW}⚠ Docker está ativo mas não responde. Tentando reiniciar...${RESET}"
-            sudo systemctl restart docker
-            sleep 3
-            ;;
-        inactive)
-            echo -e "${CYBER_YELLOW}▶ O serviço Docker está parado.${RESET}"
-            read -p "${CYBER_BLUE}? Deseja iniciar o serviço Docker agora? (Y/n): ${RESET}" choice
-            if [[ "$choice" =~ ^[Nn] ]]; then
-                echo -e "${CYBER_YELLOW}▶ Operação cancelada. O Docker precisa estar rodando.${RESET}"
-                exit 1
-            fi
-            echo -e "${CYBER_YELLOW}▶ Iniciando Docker...${RESET}"
-            sudo systemctl start docker
-            sleep 5  # Dá mais tempo para inicialização
-            ;;
-        *)
-            echo -e "${CYBER_RED}✖ Não foi possível verificar o status do serviço.${RESET}"
-            ;;
-    esac
-
-    # Verificação final
-    echo -e "${CYBER_BLUE}▶ Verificando conexão com Docker...${RESET}"
-    if docker ps >/dev/null 2>&1 || sudo docker ps >/dev/null 2>&1; then
-        echo -e "${CYBER_GREEN}✔ Docker está respondendo com sucesso!${RESET}"
-        return 0
-    fi
-
-    # Mensagens de erro detalhadas
-    echo -e "\n${CYBER_RED}✖ Falha ao conectar ao Docker!${RESET}"
-    echo -e "${CYBER_YELLOW}Possíveis causas e soluções:"
-    echo -e "1. Serviço não iniciou corretamente:"
-    echo -e "   sudo systemctl status docker"
-    echo -e "2. Problemas de permissão:"
-    echo -e "   sudo usermod -aG docker \$USER"
-    echo -e "   (você precisará fazer logout e login após)"
-    echo -e "3. Problema na instalação:"
-    echo -e "   Consulte https://docs.docker.com/engine/install/${RESET}"
-
-    exit 1
+    export cmd_docker
+    return 0
 }
 
-# Formata saida do docker ps
-format_container_info() {
-    local container=$1
-    local status=$(docker inspect --format '{{.State.Status}}' "$container")
-    local color
+configure_docker_compose() {
+    if [[ -z "${cmd_docker:-}" ]]; then
+        configure_docker || return 1
+    fi
 
-    case $status in
-        running) color="${CYBER_GREEN}" ;;
-        exited) color="${CYBER_RED}" ;;
-        paused) color="${CYBER_YELLOW}" ;;
-        *) color="${CYBER_BLUE}" ;;
-    esac
+    if $cmd_docker compose version &>/dev/null; then
+        cmd_docker_compose="$cmd_docker compose"
+    elif command -v docker-compose &>/dev/null; then
+        if [[ "$cmd_docker" == sudo\ * ]]; then
+            cmd_docker_compose="sudo docker-compose"
+        else
+            cmd_docker_compose="docker-compose"
+        fi
+        echo -e "${CYBER_YELLOW}⚠ Usando versão legada docker-compose${RESET}"
+    else
+        echo -e "${CYBER_RED}✖ Docker Compose não instalado!${RESET}"
+        echo -e "${CYBER_BLUE}▶ Instale o plugin docker compose.${RESET}"
+        return 1
+    fi
 
-    echo "${color}${container}${RESET}"
+    export cmd_docker_compose
+    return 0
 }
 
-# Filtra containers por status
+check_docker_dependencies() {
+    local missing=()
+
+    if ! command -v jq &>/dev/null; then
+        missing+=("jq")
+    fi
+
+    if ! command -v less &>/dev/null; then
+        missing+=("less")
+    fi
+
+    if [ ${#missing[@]} -eq 0 ]; then
+        return 0
+    fi
+
+    echo -e "${CYBER_YELLOW}⚠ Dependências faltando:${RESET}"
+    for dep in "${missing[@]}"; do
+        echo -e " - ${CYBER_RED}$dep${RESET}"
+    done
+    echo -e "${CYBER_BLUE}▶ Instale com:${RESET}"
+    if command -v apt &>/dev/null; then
+        echo -e "   ${CYBER_CYAN}sudo apt install ${missing[*]}${RESET}"
+    elif command -v dnf &>/dev/null; then
+        echo -e "   ${CYBER_CYAN}sudo dnf install ${missing[*]}${RESET}"
+    elif command -v yum &>/dev/null; then
+        echo -e "   ${CYBER_CYAN}sudo yum install ${missing[*]}${RESET}"
+    else
+        echo -e "   ${CYBER_CYAN}Instale: ${missing[*]}${RESET}"
+    fi
+    echo
+    read -n 1 -s -r -p "Pressione qualquer tecla para continuar..."
+}
+
 filter_containers_by_status() {
     local status=$1
-    docker ps --filter "status=$status" --format "{{.Names}}" | sort
+    $cmd_docker ps --filter "status=$status" --format "{{.Names}}" | sort
 }

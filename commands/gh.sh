@@ -49,6 +49,7 @@ show_cyber_message() {
 }
 
 # Processa comandos do GitHub
+main() {
 case $1 in
     # Comandos básicos
     clone)
@@ -306,4 +307,10 @@ if [ $? -eq 0 ] && [ "$1" != "" ] && [ "$1" != "help" ]; then
     echo -e "${CYBER_PINK}╔══════════════════════════════════════════════════╗"
     echo -e "║${CYBER_CYAN}       ▓▓▓ CONEXÃO ENCERRADA COM SUCESSO ▓▓▓     ${CYBER_PINK}"
     echo -e "╚══════════════════════════════════════════════════╝${RESET}"
+fi
+
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
 fi

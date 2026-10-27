@@ -20,6 +20,7 @@
 ## Estrutura de arquivos
 
 - `commands/<modulo>.sh`: parsing de argumentos e dispatch do módulo.
+- Todo comando MUST ser seguro para `source`, expor `main` e executá-lo apenas sob guarda `[[ "${BASH_SOURCE[0]}" == "$0" ]]`.
 - `lib/<dominio>/*.sh`: implementação, instalação e UI específica.
 - `bin/bytebabe`: somente resolução de caminho, bootstrap, help/version e tabela de dispatch.
 - Novas dependências de um módulo MUST ser carregadas no próprio módulo, não no `bin/bytebabe`.
@@ -32,6 +33,14 @@
 - Modo não interativo MUST evitar `clear`, animações e `read` quando possível.
 - ENTER de confirmação SHOULD ser omitido em execução direta.
 
+## Retorno e source
+
+- Bibliotecas MUST usar `return` para erros recuperáveis; `exit` MUST ficar restrito a entrypoints de topo.
+- Bibliotecas MUST NOT executar menus, `clear` ou `read` no carregamento; interação pertence ao comando.
+- `bin/bytebabe` MUST carregar comandos sem argumentos e chamar o entrypoint com `"$@"`.
+- Dispatchers de domínio MUST validar e detectar contexto uma única vez; adaptadores MUST NOT duplicar essa lógica.
+- Código em `archive/legacy/` MUST NOT ser carregado nem incluído no runtime.
+
 ## Códigos de saída
 
 | Código | Uso |
@@ -43,6 +52,7 @@
 ## Gerenciamento de pacotes
 
 - Detectar com `detect_pkg_manager`.
+- Para projetos JavaScript, detectar com `detect_node_pkg_manager` (npm, pnpm, yarn, bun; fallback npm).
 - Instalar com `pkg_install`, atualizar com `pkg_update`/`pkg_upgrade`.
 - Privilegios MUST ser aplicados por `_run_privileged`.
 - `sudo` MUST NOT ser usado se o processo já roda como root.

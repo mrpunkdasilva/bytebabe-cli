@@ -17,7 +17,7 @@ check_json_server() {
             echo -e "${CYBER_RED}[✗] Falha ao instalar json-server${RESET}"
             echo -e "${CYBER_YELLOW}[i] Tente instalar manualmente:${RESET}"
             echo -e "${CYBER_CYAN}    npm install -g json-server${RESET}"
-            exit 1
+            return 1
         fi
     fi
 }
@@ -80,9 +80,11 @@ EOF
 main() {
     local port=${1:-3000}
     
-    check_json_server
+    check_json_server || return 1
     start_json_server "$port"
 }
 
 # Executa o script
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

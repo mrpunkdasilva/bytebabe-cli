@@ -101,3 +101,67 @@ export const use${name} = () => {
 };
 EOF
 }
+# Gera página React
+generate_react_page() {
+    local name="$1"
+    local dir="src/pages/$name"
+
+    mkdir -p "$dir"
+
+    cat > "$dir/index.tsx" << TEMPLATE
+import React from 'react';
+import './styles.scss';
+
+export const ${name}Page: React.FC = () => {
+    return (
+        <div className="${name}Page">
+            <h1>${name}</h1>
+        </div>
+    );
+};
+
+export default ${name}Page;
+TEMPLATE
+
+    cat > "$dir/styles.scss" << TEMPLATE
+.${name}Page {
+    // Your styles here
+}
+TEMPLATE
+}
+
+# Gera serviço de API React
+generate_api_service() {
+    local name="$1"
+    local dir="src/services"
+
+    mkdir -p "$dir"
+
+    cat > "$dir/${name}Service.ts" << TEMPLATE
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL;
+
+export class ${name}Service {
+    static async getAll() {
+        return axios.get(\`\${API_URL}/${name.toLowerCase()}\`);
+    }
+
+    static async getById(id: string) {
+        return axios.get(\`\${API_URL}/${name.toLowerCase()}/\${id}\`);
+    }
+
+    static async create(data: any) {
+        return axios.post(\`\${API_URL}/${name.toLowerCase()}\`, data);
+    }
+
+    static async update(id: string, data: any) {
+        return axios.put(\`\${API_URL}/${name.toLowerCase()}/\${id}\`, data);
+    }
+
+    static async delete(id: string) {
+        return axios.delete(\`\${API_URL}/${name.toLowerCase()}/\${id}\`);
+    }
+}
+TEMPLATE
+}

@@ -84,7 +84,7 @@ declare -A DB_TEMPLATES=(
 create_db_directories() {
     mkdir -p "$DB_DIR" || {
         echo -e "${CYBER_RED}✘ Falha ao criar diretório principal!${RESET}"
-        exit 1
+        return 1
     }
 
     for db in "$@"; do
@@ -176,7 +176,7 @@ db_setup() {
     fi
 
     # Cria diretórios e configura
-    create_db_directories "${selected[@]}"
+    create_db_directories "${selected[@]}" || return 1
     save_db_config "${selected[@]}"
     generate_db_compose "${selected[@]}"
 
@@ -206,7 +206,7 @@ db_install() {
     if ! printf '%s\n' "${current_config[@]}" | grep -qx "$target_db"; then
         current_config+=("$target_db")
         save_db_config "${current_config[@]}"
-        create_db_directories "$target_db"
+        create_db_directories "$target_db" || return 1
         generate_db_compose "${current_config[@]}"
         echo -e "${CYBER_GREEN}✔ ${target_db} instalado com sucesso!${RESET}"
     else

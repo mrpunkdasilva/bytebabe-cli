@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/git/ui.sh"
 
 source "$BASE_DIR/lib/git/profile.sh"
@@ -11,85 +12,6 @@ source "$BASE_DIR/lib/git/push_controller.sh"
 source "$BASE_DIR/lib/git/show_time_machine.sh"
 source "$BASE_DIR/lib/git/repo_settings.sh"
 
-
-# Enhanced spinner with smooth animation
-show_spinner() {
-    local pid=$!
-    local message=$1
-    local delay=0.1
-    local spin_chars=('⣾' '⣽' '⣻' '⢿' '⡿' '⣟' '⣯' '⣷')
-    local i=0
-
-    printf "${CYBER_CYAN}${message}${RESET} "
-    while kill -0 $pid 2>/dev/null; do
-        printf "\b${spin_chars[i]}"
-        i=$(( (i+1) % 8 ))
-        sleep $delay
-    done
-    printf "\b \b\n"
-}
-
-# Robust menu selector with keyboard handling
-choose_from_menu() {
-    local prompt="$1" outvar="$2"
-    shift
-    shift
-    local options=("$@") cur=0 count=${#options[@]} index=0
-    local key
-    local esc=$'\e'
-
-    # Print styled prompt
-    echo -e "${BOLD}${CYBER_PURPLE}$prompt${RESET}"
-    echo
-
-    while true; do
-        # Display options
-        index=0
-        for o in "${options[@]}"; do
-            if [ "$index" == "$cur" ]; then
-                echo -e "${CYBER_GREEN} > ${CYBER_CYAN}${BOLD}${o}${RESET}"
-            else
-                echo -e "   ${CYBER_YELLOW}${o}${RESET}"
-            fi
-            ((index++))
-        done
-
-        # Read key input
-        IFS= read -rsn1 key
-        if [[ "$key" == "$esc" ]]; then
-            read -rsn2 -t 0.1 key
-        fi
-
-        case "$key" in
-            '[A')  # Up arrow
-                ((cur--))
-                [[ $cur -lt 0 ]] && cur=0
-                ;;
-            '[B')  # Down arrow
-                ((cur++))
-                [[ $cur -ge $count ]] && cur=$((count-1))
-                ;;
-            '')    # Enter key
-                break
-                ;;
-            [1-9]) # Number selection
-                if (( key > 0 && key <= count )); then
-                    ((cur=key-1))
-                    break
-                fi
-                ;;
-            q|Q)   # Quit
-                return 1
-                ;;
-        esac
-
-        # Move cursor up
-        printf "\033[%dA" "$count"
-    done
-
-    # Return selection
-    printf -v "$outvar" "${options[$cur]}"
-}
 
 setup_repository() {
     clear
@@ -103,7 +25,7 @@ setup_repository() {
 
         if [[ "$choice" =~ ^[Nn]$ ]]; then
             echo "${CYBER_YELLOW}▶ Operation canceled${RESET}"
-            exit 1
+            return 1
         fi
 
         git init && echo "${CYBER_GREEN}✔ Repository initialized${RESET}"
@@ -180,9 +102,11 @@ show_main_menu() {
             echo "  ║                                                    "
             echo "  ╚══════════════════════════════════════════════╝${RESET}"
             echo
-            exit 0
+            return 10
             ;;
     esac
+
+    return 0
 }
 
 show_quick_actions() {
@@ -224,12 +148,21 @@ show_quick_actions() {
 }
 
 main_navigation() {
+    local status
     while true; do
         show_main_menu
+        status=$?
+        [[ $status -eq 10 ]] && return 0
+        [[ $status -ne 0 ]] && return "$status"
         show_quick_actions
     done
 }
 
-# Start application
-setup_repository
-main_navigation
+main() {
+    setup_repository || return 1
+    main_navigation
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

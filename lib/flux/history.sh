@@ -1,20 +1,17 @@
 #!/bin/bash
 
-# Cores e estilos
-CYBER_PINK='\033[38;5;198m'
-CYBER_BLUE='\033[38;5;45m'
-CYBER_GREEN='\033[38;5;118m'
-CYBER_YELLOW='\033[38;5;227m'
-CYBER_RED='\033[38;5;196m'
-CYBER_PURPLE='\033[38;5;93m'
-CYBER_CYAN='\033[38;5;51m'
-RESET='\033[0m'
-BOLD='\033[1m'
-HEADER_STYLE="${BOLD}${CYBER_PURPLE}"
+if [[ -z "${CYBER_BLUE:-}" ]]; then
+    _flux_history_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    # shellcheck source=../core/colors.sh
+    source "$_flux_history_dir/../core/colors.sh"
+    unset _flux_history_dir
+fi
 
-# Configurações
-FLUX_CONFIG_DIR="$HOME/bytebabe/flux"
-HISTORY_FILE="$FLUX_CONFIG_DIR/request_history.json"
+HEADER_STYLE="${BOLD:-}${CYBER_PURPLE:-}"
+
+# Configurações resolvidas no uso para respeitar HOME definido após o source
+FLUX_CONFIG_DIR="${FLUX_CONFIG_DIR:-}"
+HISTORY_FILE="${HISTORY_FILE:-}"
 
 # ASCII art para o histórico
 show_history_header() {
@@ -44,6 +41,13 @@ EOF
 
 # Inicializa estrutura de histórico
 init_history() {
+    if [[ -z "$FLUX_CONFIG_DIR" ]]; then
+        FLUX_CONFIG_DIR="$HOME/bytebabe/flux"
+    fi
+    if [[ -z "$HISTORY_FILE" ]]; then
+        HISTORY_FILE="$FLUX_CONFIG_DIR/request_history.json"
+    fi
+
     mkdir -p "$FLUX_CONFIG_DIR"
     if [ ! -f "$HISTORY_FILE" ] || ! jq empty "$HISTORY_FILE" 2>/dev/null; then
         echo -e "${CYBER_YELLOW}[!] Arquivo de histórico inválido ou não encontrado. Criando novo...${RESET}"
@@ -424,25 +428,27 @@ generate_curl_command() {
     local headers="$3"
     local body="$4"
     
-    local curl_cmd="curl -X $method"
-    
+    local -a curl_parts=(curl -X "$method")
+    local header
+    local curl_cmd
+
     # Adiciona headers
     if [ -n "$headers" ] && [ "$headers" != "null" ]; then
-        # Divide os headers por linha e adiciona cada um
-        echo "$headers" | while IFS= read -r header; do
+        while IFS= read -r header; do
             if [ -n "$header" ]; then
-                curl_cmd="$curl_cmd -H \"$header\""
+                curl_parts+=(-H "$header")
             fi
-        done
+        done <<< "$headers"
     fi
-    
+
     # Adiciona body se existir
     if [ -n "$body" ] && [ "$body" != "null" ]; then
-        curl_cmd="$curl_cmd -d '$body'"
+        curl_parts+=(-d "$body")
     fi
-    
+
     # Adiciona URL
-    curl_cmd="$curl_cmd \"$url\""
+    curl_parts+=("$url")
+    curl_cmd=$(printf '%q ' "${curl_parts[@]}")
     
     # Exibe o comando
     echo -e "\n${CYBER_GREEN}Comando curl:${RESET}"
@@ -477,28 +483,26 @@ reexecute_request() {
     # Mostra uma animação de carregamento
     echo -e "\n${CYBER_CYAN}Enviando requisição...${RESET}"
     
-    # Prepara os headers para o curl
-    local header_args=""
+    # Prepara os argumentos do curl como array
+    local -a curl_args=(curl -s -X "$method")
+    local header
     if [ -n "$headers" ] && [ "$headers" != "null" ]; then
         while IFS= read -r header; do
             if [ -n "$header" ]; then
-                header_args="$header_args -H \"$header\""
+                curl_args+=(-H "$header")
             fi
         done <<< "$headers"
     fi
-    
-    # Prepara o body para o curl
-    local body_arg=""
+
     if [ -n "$body" ] && [ "$body" != "null" ]; then
-        body_arg="-d '$body'"
+        curl_args+=(-d "$body")
     fi
-    
-    # Constrói o comando curl
-    local curl_cmd="curl -s -X $method $header_args $body_arg \"$url\""
-    
+    curl_args+=("$url")
+
     # Executa o comando curl
-    local response=$(eval $curl_cmd)
-    local status=$?
+    local response status
+    response=$("${curl_args[@]}")
+    status=$?
     
     if [ $status -eq 0 ]; then
         echo -e "${CYBER_GREEN}[✓] Requisição executada com sucesso${RESET}"
@@ -665,6 +669,3 @@ analyze_history_stats() {
         echo -e "${CYBER_CYAN}$line${RESET}"
     done
 }
-
-# Inicializa o histórico ao carregar o script
-init_history

@@ -5,7 +5,7 @@ CONFIG_FILE=".bytebabe/spring-config.json"
 
 # Inicializa ou lê configuração
 init_spring_config() {
-    mkdir -p .bytebabe.sh
+    mkdir -p .bytebabe
     
     if [[ ! -f "$CONFIG_FILE" ]]; then
         # Tenta detectar package base do projeto
@@ -26,18 +26,21 @@ init_spring_config() {
         "service": "service",
         "repository": "repository",
         "entity": "model",
-        "dto": "dto"
+        "dto": "dto",
+        "mapper": "mapper",
+        "exception": "exception",
+        "config": "config"
     }
 }
 EOF
-        echo -e "${CYBER_GREEN}✓ Configuração Spring inicializada${NC}"
+        echo -e "${CYBER_GREEN}✓ Configuração Spring inicializada${RESET}"
     fi
 }
 
 # Obtém package completo baseado no tipo
 get_package() {
-    local type="$1"
-    local custom_package="$2"
+    local type="${1:-}"
+    local custom_package="${2:-}"
     
     # Se fornecido package customizado, usa ele
     if [[ -n "$custom_package" ]]; then
@@ -46,10 +49,62 @@ get_package() {
     fi
     
     # Lê configuração
-    local base_package=$(jq -r '.basePackage' "$CONFIG_FILE")
-    local default_subpackage=$(jq -r ".defaultPackages.$type" "$CONFIG_FILE")
-    
-    echo "${base_package}.${default_subpackage}"
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        return 0
+    fi
+
+    local base_package
+    local default_subpackage
+    base_package=$(jq -r '.basePackage // empty' "$CONFIG_FILE" 2>/dev/null)
+    default_subpackage=$(jq -r ".defaultPackages.$type // empty" "$CONFIG_FILE" 2>/dev/null)
+
+    if [[ -z "$default_subpackage" ]]; then
+        case "$type" in
+            controller) default_subpackage="controller" ;;
+            service) default_subpackage="service" ;;
+            repository) default_subpackage="repository" ;;
+            entity) default_subpackage="model" ;;
+            dto) default_subpackage="dto" ;;
+            mapper) default_subpackage="mapper" ;;
+            exception) default_subpackage="exception" ;;
+            config) default_subpackage="config" ;;
+            *) return 0 ;;
+        esac
+    fi
+
+    if [[ -z "$base_package" ]]; then
+        echo "$default_subpackage"
+    else
+        echo "${base_package}.${default_subpackage}"
+    fi
+}
+
+# Helpers de compatibilidade para geradores que usam caminhos de package
+get_base_package() {
+    [[ -f "$CONFIG_FILE" ]] || return 0
+    jq -r '.basePackage // empty' "$CONFIG_FILE" 2>/dev/null
+}
+
+get_package_name() {
+    get_base_package
+}
+
+find_package_path() {
+    local base_package
+    base_package=$(get_base_package)
+    echo "${base_package//./\/}"
+}
+
+get_base_package_path() {
+    find_package_path
+}
+
+get_default_package() {
+    get_package "$1"
+}
+
+get_project_name() {
+    basename "$PWD"
 }
 
 # Configura package base

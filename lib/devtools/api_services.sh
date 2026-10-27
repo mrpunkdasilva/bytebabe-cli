@@ -2,29 +2,6 @@
 source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 
-echo -e "${CYBER_GREEN}⚡ Configurando DevTools para APIs${RESET}"
-
-# ==========================================
-# FUNÇÃO PARA DETECTAR O GERENCIADOR DE PACOTES
-# ==========================================
-detect_pkg_manager() {
-    if command -v apt-get &> /dev/null; then
-        echo "apt"
-    elif command -v dnf &> /dev/null; then
-        echo "dnf"
-    elif command -v yum &> /dev/null; then
-        echo "yum"
-    elif command -v pacman &> /dev/null; then
-        echo "pacman"
-    elif command -v brew &> /dev/null; then
-        echo "brew"
-    elif command -v apk &> /dev/null; then
-        echo "apk"
-    else
-        echo "unknown"
-    fi
-}
-
 # ==========================================
 # FUNÇÃO UNIVERSAL DE INSTALAÇÃO
 # ==========================================
@@ -369,7 +346,7 @@ show_main_menu() {
                     read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
                     break
                     ;;
-                6) exit 0 ;;
+                6) return 0 ;;
                 *) echo -e "${CYBER_RED}Opção inválida!${RESET}"; sleep 1; break ;;
             esac
         done
@@ -379,29 +356,40 @@ show_main_menu() {
 # ==========================================
 # EXECUÇÃO PRINCIPAL
 # ==========================================
-if [[ $# -gt 0 ]]; then
-    case $1 in
-        --test) 
-            if [[ $# -eq 1 ]]; then
-                # Se apenas --test foi passado, instalar todas as ferramentas de teste
-                echo -e "${CYBER_YELLOW}⚡ Instalando todas as ferramentas de teste de API...${RESET}"
-                install_multiple_tools curl httpie jq yq grpcurl websocat
-            else
-                # Se há argumentos adicionais, instalar apenas eles
-                install_multiple_tools "${@:2}"
-            fi
-            ;;
-        --docs)
-            if [[ "$2" == "all" ]]; then
-                install_multiple_tools swagger-cli openapi-generator-cli redoc-cli spectral
-            else
-                install_openapi_generator
-            fi
-            ;;
-        --proxy) install_multiple_tools "${@:2}" ;;
-        --gui) install_multiple_tools "${@:2}" ;;
-        *) echo -e "${CYBER_RED}Opção desconhecida!${RESET}"; exit 1 ;;
-    esac
-else
-    show_main_menu
+api_services_main() {
+    echo -e "${CYBER_GREEN}⚡ Configurando DevTools para APIs${RESET}"
+
+    if [[ $# -gt 0 ]]; then
+        case $1 in
+            --test)
+                if [[ $# -eq 1 ]]; then
+                    # Se apenas --test foi passado, instalar todas as ferramentas de teste
+                    echo -e "${CYBER_YELLOW}⚡ Instalando todas as ferramentas de teste de API...${RESET}"
+                    install_multiple_tools curl httpie jq yq grpcurl websocat
+                else
+                    # Se há argumentos adicionais, instalar apenas eles
+                    install_multiple_tools "${@:2}"
+                fi
+                ;;
+            --docs)
+                if [[ "${2:-}" == "all" ]]; then
+                    install_multiple_tools swagger-cli openapi-generator-cli redoc-cli spectral
+                else
+                    install_openapi_generator
+                fi
+                ;;
+            --proxy) install_multiple_tools "${@:2}" ;;
+            --gui) install_multiple_tools "${@:2}" ;;
+            *)
+                echo -e "${CYBER_RED}Opção desconhecida!${RESET}"
+                return 1
+                ;;
+        esac
+    else
+        show_main_menu
+    fi
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    api_services_main "$@"
 fi

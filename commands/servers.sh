@@ -10,6 +10,7 @@ source "${BASE_DIR}/lib/server/servers_services.sh"
 # HANDLER DE COMANDOS
 # ======================
 
+main() {
 case "$1" in
     up|start)
         if [ -n "$2" ]; then
@@ -47,6 +48,11 @@ case "$1" in
         echo -e "│ ${CYBER_GREEN}bytebabe servers setup${RESET}  - Configuração     "
         echo -e "╰─────────────────────────────────────────────╯${RESET}"
         echo -e "${CYBER_PINK}═════════════════════════════════════════════════${RESET}"
-        exit 1
+        return 1
         ;;
 esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

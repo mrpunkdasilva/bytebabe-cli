@@ -1,6 +1,10 @@
-8
+#!/bin/bash
 
-cle#!/bin/bash
+if [[ -z "${BASE_DIR:-}" ]]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
 
 # ==========================================
 # DATABASE TOOLS INSTALLER - UNIVERSAL EDITION
@@ -72,33 +76,6 @@ show_progress() {
     printf "    \b\b\b\b"
 }
 
-# ==========================================
-# DETECÇÃO DE SISTEMA
-# ==========================================
-
-detect_pkg_manager() {
-    declare -A managers=(
-        ["apt"]="/etc/debian_version"
-        ["dnf"]="/etc/redhat-release"
-        ["yum"]="/etc/redhat-release"
-        ["pacman"]="/etc/arch-release"
-        ["zypper"]="/etc/SuSE-release"
-        ["apk"]="/etc/alpine-release"
-    )
-
-    for manager in "${!managers[@]}"; do
-        if [[ -f "${managers[$manager]}" ]] || command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    echo "unknown"
-}
-
-PKG_MANAGER=$(detect_pkg_manager)
-OS_ARCH=$(uname -m)
-DISTRO=$(lsb_release -si 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | cut -d= -f2)
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO GENÉRICAS
@@ -362,32 +339,42 @@ show_menu() {
 # EXECUÇÃO PRINCIPAL
 # ==========================================
 
-case $1 in
-    tableplus) install_tableplus ;;
-    dbeaver) install_dbeaver ;;
-    compass) install_mongodb_compass ;;
-    pgadmin) install_pgadmin ;;
-    mysql) install_mysql_workbench ;;
-    all) install_all_tools ;;
-    list) list_installed_tools ;;
-    *)
-        while true; do
-            show_menu
-            read -p $'\e[1;35m  ⌘ Selecione uma opção: \e[0m' choice
+database_services_main() {
+    PKG_MANAGER=$(detect_pkg_manager)
+    OS_ARCH=$(uname -m)
+    DISTRO=$(lsb_release -si 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | cut -d= -f2)
 
-            case $choice in
-                1) install_tableplus ;;
-                2) install_dbeaver ;;
-                3) install_mongodb_compass ;;
-                4) install_pgadmin ;;
-                5) install_mysql_workbench ;;
-                6) install_all_tools ;;
-                7) list_installed_tools ;;
-                8) exit 0 ;;
-                *) echo -e "${CYBER_RED}Opção inválida!${CYBER_RESET}" ;;
-            esac
+    case ${1:-} in
+        tableplus) install_tableplus ;;
+        dbeaver) install_dbeaver ;;
+        compass) install_mongodb_compass ;;
+        pgadmin) install_pgadmin ;;
+        mysql) install_mysql_workbench ;;
+        all) install_all_tools ;;
+        list) list_installed_tools ;;
+        *)
+            while true; do
+                show_menu
+                read -p $'\e[1;35m  ⌘ Selecione uma opção: \e[0m' choice
 
-            read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
-        done
-        ;;
-esac
+                case $choice in
+                    1) install_tableplus ;;
+                    2) install_dbeaver ;;
+                    3) install_mongodb_compass ;;
+                    4) install_pgadmin ;;
+                    5) install_mysql_workbench ;;
+                    6) install_all_tools ;;
+                    7) list_installed_tools ;;
+                    8) return 0 ;;
+                    *) echo -e "${CYBER_RED}Opção inválida!${CYBER_RESET}" ;;
+                esac
+
+                read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
+            done
+            ;;
+    esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    database_services_main "$@"
+fi

@@ -10,6 +10,7 @@ source "${BASE_DIR}/lib/utils/headers.sh"
 ### █▓▒░ MAIN DISPATCHER ░▒▓█
 ### █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
 
+main() {
 case $1 in
   # 📦 PACKAGE MANAGEMENT
   upgrade|up)
@@ -54,11 +55,10 @@ case $1 in
     run_firewall "$@"
     ;;
 
-  # TODO: FALTA SÓ ESSE
   quarantine|q)
     shift
     source "$BASE_DIR/lib/pkg/quarantine/main.sh"
-    show_header_custom "MALWARE QUARANTINE" "☣️" "${CYBER_RED}"
+    run_quarantine "$@"
     ;;
 
   # 🛠️ SYSTEM UTILITIES
@@ -76,6 +76,7 @@ case $1 in
   backup)
     shift
     source "$BASE_DIR/lib/pkg/backup/main.sh"
+    run_backup "$@"
     ;;
 
   # 🌐 NETWORK MODULE
@@ -89,36 +90,44 @@ case $1 in
   log)
     shift
     source "$BASE_DIR/lib/pkg/log/main.sh"
+    run_log "$@"
     ;;
 
   # ⚙️ SERVICE CONTROL
   service|svc)
     shift
     source "$BASE_DIR/lib/pkg/service/main.sh"
+    if [[ $# -eq 0 ]]; then
+      interactive_mode
+    else
+      direct_mode "$@"
+    fi
     ;;
 
   # ℹ️ SYSTEM INFO
   list|ls)
     shift
     source "$BASE_DIR/lib/pkg/list/main.sh"
+    run_list "$@"
     ;;
 
   info)
     shift
     source "$BASE_DIR/lib/pkg/info/main.sh"
+    run_info "$@"
     ;;
 
   stats)
     shift
     source "$BASE_DIR/lib/pkg/stats/main.sh"
     show_header_custom "SYSTEM VITALS" "📊" "${CYBER_PURPLE}"
+    run_stats "$@"
     ;;
 
   # 🆘 HELP SYSTEM
   help|--help|-h)
     show_help
     ;;
-  # TODO: FALTA SÓ ESSE
 
   # 🎮 EASTER EGG
   neo)
@@ -133,8 +142,14 @@ case $1 in
     ;;
 
   *)
-    show_invalid_command_prime
+    show_invalid_command_prime "$1"
+    return 1
     ;;
 esac
 
-exit 0
+return 0
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

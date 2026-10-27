@@ -187,3 +187,136 @@ EOF
 
     echo -e "${CYBER_GREEN}✔ Alerta ${alert_name} adicionado${RESET}"
 }
+generate_default_dashboard() {
+    local dashboard_dir="grafana/dashboards"
+
+    mkdir -p "$dashboard_dir"
+    cat > "${dashboard_dir}/spring-app.json" << 'EOF'
+{
+  "title": "Spring App",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Requisições por segundo",
+      "targets": [
+        {
+          "expr": "rate(http_server_requests_seconds_count[1m])"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latência média",
+      "targets": [
+        {
+          "expr": "rate(http_server_requests_seconds_sum[1m]) / rate(http_server_requests_seconds_count[1m])"
+        }
+      ]
+    }
+  ]
+}
+EOF
+
+    echo -e "${CYBER_GREEN}✔ Dashboard padrão criado em ${dashboard_dir}/spring-app.json${RESET}"
+}
+
+generate_logback_config() {
+    local resources_dir="src/main/resources"
+
+    mkdir -p "$resources_dir"
+    cat > "${resources_dir}/logback-spring.xml" << 'EOF'
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+EOF
+
+    echo -e "${CYBER_GREEN}✔ Configuração de logs criada em ${resources_dir}/logback-spring.xml${RESET}"
+}
+
+export_metrics_data() {
+    local url="${SPRING_ACTUATOR_URL:-http://localhost:8080/actuator/metrics}"
+    local output="${1:-metrics-export-$(date +%Y%m%d-%H%M%S).json}"
+
+    if ! command -v curl &>/dev/null; then
+        echo -e "${CYBER_RED}✘ curl não encontrado${RESET}"
+        return 1
+    fi
+
+    if ! curl -fsS "$url" -o "$output"; then
+        echo -e "${CYBER_RED}✘ Não foi possível exportar métricas de ${url}${RESET}"
+        rm -f "$output"
+        return 1
+    fi
+
+    echo -e "${CYBER_GREEN}✔ Métricas exportadas para ${output}${RESET}"
+}
+
+setup_log_aggregation() {
+    generate_logback_config
+    echo -e "${CYBER_YELLOW}Envie logs/application.log para o agregador configurado${RESET}"
+}
+
+analyze_log_patterns() {
+    local log_dir="${1:-logs}"
+    local errors warnings
+
+    if [[ ! -d "$log_dir" ]]; then
+        echo -e "${CYBER_RED}✘ Diretório de logs não encontrado: ${log_dir}${RESET}"
+        return 1
+    fi
+
+    errors=$(grep -RhiE 'ERROR|Exception' "$log_dir" 2>/dev/null | wc -l)
+    warnings=$(grep -RhiE 'WARN' "$log_dir" 2>/dev/null | wc -l)
+
+    echo -e "${CYBER_BLUE}Análise de logs em ${log_dir}${RESET}"
+    echo -e "  ${CYBER_RED}Erros: ${errors}${RESET}"
+    echo -e "  ${CYBER_YELLOW}Alertas: ${warnings}${RESET}"
+}
+
+export_log_data() {
+    local log_dir="${1:-logs}"
+    local output="${2:-logs-export-$(date +%Y%m%d-%H%M%S).tar.gz}"
+
+    if [[ ! -d "$log_dir" ]]; then
+        echo -e "${CYBER_RED}✘ Diretório de logs não encontrado: ${log_dir}${RESET}"
+        return 1
+    fi
+
+    if ! tar -czf "$output" -C "$log_dir" .; then
+        echo -e "${CYBER_RED}✘ Falha ao exportar logs${RESET}"
+        return 1
+    fi
+
+    echo -e "${CYBER_GREEN}✔ Logs exportados para ${output}${RESET}"
+}
+
+list_alert_rules() {
+    local rules_file="alert-rules.yml"
+
+    if [[ ! -f "$rules_file" ]]; then
+        echo -e "${CYBER_RED}✘ Arquivo de regras não encontrado: ${rules_file}${RESET}"
+        return 1
+    fi
+
+    grep -E '^[[:space:]]*- alert:' "$rules_file" | sed 's/^[[:space:]]*- alert:[[:space:]]*//'
+}

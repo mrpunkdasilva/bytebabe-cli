@@ -163,4 +163,6 @@ run_info() {
 }
 
 
-run_info "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  run_info "$@"
+fi

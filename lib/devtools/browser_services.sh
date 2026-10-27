@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ -z "${BASE_DIR:-}" ]]; then
+    BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+source "$BASE_DIR/lib/core/colors.sh"
+source "$BASE_DIR/lib/core/helpers.sh"
+
 # ==========================================
 # BROWSER SERVICES - CYBERPUNK EDITION
 # ==========================================
@@ -70,33 +76,6 @@ show_progress() {
     printf "    \b\b\b\b"
 }
 
-# ==========================================
-# DETECÇÃO DE SISTEMA
-# ==========================================
-
-detect_pkg_manager() {
-    declare -A managers=(
-        ["apt"]="/etc/debian_version"
-        ["dnf"]="/etc/redhat-release"
-        ["yum"]="/etc/redhat-release"
-        ["pacman"]="/etc/arch-release"
-        ["zypper"]="/etc/SuSE-release"
-        ["apk"]="/etc/alpine-release"
-    )
-
-    for manager in "${!managers[@]}"; do
-        if [[ -f "${managers[$manager]}" ]] || command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    echo "unknown"
-}
-
-PKG_MANAGER=$(detect_pkg_manager)
-OS_ARCH=$(uname -m)
-DISTRO=$(lsb_release -si 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | cut -d= -f2)
 
 # ==========================================
 # FUNÇÕES DE INSTALAÇÃO GENÉRICAS
@@ -353,32 +332,42 @@ show_menu() {
 # EXECUÇÃO PRINCIPAL
 # ==========================================
 
-case $1 in
-    chrome) install_chrome ;;
-    firefox) install_firefox ;;
-    brave) install_brave ;;
-    edge) install_edge ;;
-    vivaldi) install_vivaldi ;;
-    all) install_all_browsers ;;
-    list) list_installed_browsers ;;
-    *)
-        while true; do
-            show_menu
-            read -p $'\e[1;35m  ⌘ Selecione uma opção: \e[0m' choice
+browser_services_main() {
+    PKG_MANAGER=$(detect_pkg_manager)
+    OS_ARCH=$(uname -m)
+    DISTRO=$(lsb_release -si 2>/dev/null || cat /etc/*release 2>/dev/null | head -n1 | cut -d= -f2)
 
-            case $choice in
-                1) install_chrome ;;
-                2) install_firefox ;;
-                3) install_brave ;;
-                4) install_edge ;;
-                5) install_vivaldi ;;
-                6) install_all_browsers ;;
-                7) list_installed_browsers ;;
-                8) exit 0 ;;
-                *) echo -e "${CYBER_RED}Opção inválida!${CYBER_RESET}" ;;
-            esac
+    case ${1:-} in
+        chrome) install_chrome ;;
+        firefox) install_firefox ;;
+        brave) install_brave ;;
+        edge) install_edge ;;
+        vivaldi) install_vivaldi ;;
+        all) install_all_browsers ;;
+        list) list_installed_browsers ;;
+        *)
+            while true; do
+                show_menu
+                read -p $'\e[1;35m  ⌘ Selecione uma opção: \e[0m' choice
 
-            read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
-        done
-        ;;
-esac
+                case $choice in
+                    1) install_chrome ;;
+                    2) install_firefox ;;
+                    3) install_brave ;;
+                    4) install_edge ;;
+                    5) install_vivaldi ;;
+                    6) install_all_browsers ;;
+                    7) list_installed_browsers ;;
+                    8) return 0 ;;
+                    *) echo -e "${CYBER_RED}Opção inválida!${CYBER_RESET}" ;;
+                esac
+
+                read -p $'\e[1;36mPressione ENTER para continuar...\e[0m'
+            done
+            ;;
+    esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    browser_services_main "$@"
+fi

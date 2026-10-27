@@ -2,7 +2,10 @@
 
 # Cores Cyberpunk
 CYBER_BLUE="\033[38;5;45m"
+CYBER_CYAN="\033[38;5;51m"
 CYBER_PINK="\033[38;5;201m"
+CYBER_MAGENTA="\033[38;5;165m"
+CYBER_WHITE="\033[38;5;255m"
 CYBER_GREEN="\033[38;5;118m"
 CYBER_YELLOW="\033[38;5;227m"
 CYBER_ORANGE="\033[38;5;208m"
@@ -18,6 +21,7 @@ CYBER_RED="\033[38;5;196m"         # Vermelho alerta
 CYBER_GLITCH="\033[38;5;45;5m"     # Efeito glitch piscante
 CYBER_BLINK="\033[5m"              # Piscamento
 CYBER_BOLD="\033[1m"               # Negrito
+BOLD="${CYBER_BOLD}"               # Compatibilidade com consumidores legados
 CYBER_UNDERLINE="\033[4m"          # Sublinhado
 
 # Fundos

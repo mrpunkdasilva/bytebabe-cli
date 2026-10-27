@@ -1,142 +1,88 @@
 #!/bin/bash
 
-# Gera componente React
-generate_react_component() {
-    local name="$1"
-    local dir="src/components/$name"
-    
-    mkdir -p "$dir"
-    
-    # Componente
-    cat > "$dir/$name.tsx" << EOF
-import React from 'react';
-import './$name.scss';
+# Dispatcher canônico dos geradores frontend.
+# Adaptadores específicos ficam em react/, vue/ e angular/.
 
-interface ${name}Props {
-    // Define your props here
+source "$BASE_DIR/lib/frontend/react/generators.sh"
+source "$BASE_DIR/lib/frontend/vue/generators.sh"
+source "$BASE_DIR/lib/frontend/angular/generators.sh"
+
+# Detecta o framework do projeto atual.
+detect_framework() {
+    if [[ ! -f "package.json" ]]; then
+        echo ""
+        return 0
+    fi
+
+    if grep -q '"@angular/core"' package.json; then
+        echo "angular"
+    elif grep -q '"vue"' package.json; then
+        echo "vue"
+    elif grep -q '"react"' package.json || grep -q '"next"' package.json; then
+        echo "react"
+    else
+        echo ""
+    fi
 }
 
-export const $name: React.FC<${name}Props> = (props) => {
-    return (
-        <div className="${name}">
-            {/* Your component content */}
-        </div>
-    );
-};
-EOF
+# Gera componente baseado no framework detectado.
+generate_component() {
+    local name="${1:-}"
 
-    # Estilos
-    cat > "$dir/$name.scss" << EOF
-.${name} {
-    // Your styles here
-}
-EOF
+    if [[ -z "$name" ]]; then
+        echo -e "${CYBER_RED}✘ Nome do componente é obrigatório${RESET}"
+        return 1
+    fi
 
-    # Testes
-    cat > "$dir/$name.test.tsx" << EOF
-import { render } from '@testing-library/react';
-import { $name } from './$name';
+    local framework
+    framework=$(detect_framework)
 
-describe('$name', () => {
-    it('should render successfully', () => {
-        const { baseElement } = render(<$name />);
-        expect(baseElement).toBeTruthy();
-    });
-});
-EOF
+    case "$framework" in
+        "react")
+            generate_react_component "$name"
+            ;;
+        "vue")
+            generate_vue_component "$name"
+            ;;
+        "angular")
+            generate_angular_component "$name"
+            ;;
+        *)
+            echo -e "${CYBER_RED}✘ Framework não detectado ou não suportado${RESET}"
+            return 1
+            ;;
+    esac
 
     echo -e "${CYBER_GREEN}✔ Componente $name gerado com sucesso${RESET}"
 }
 
-# Gera página React
-generate_react_page() {
-    local name="$1"
-    local dir="src/pages/$name"
-    
-    mkdir -p "$dir"
-    
-    # Página
-    cat > "$dir/index.tsx" << EOF
-import React from 'react';
-import './styles.scss';
+# Gera serviço baseado no framework detectado.
+generate_service() {
+    local name="${1:-}"
 
-export const ${name}Page: React.FC = () => {
-    return (
-        <div className="${name}Page">
-            <h1>${name}</h1>
-        </div>
-    );
-};
+    if [[ -z "$name" ]]; then
+        echo -e "${CYBER_RED}✘ Nome do serviço é obrigatório${RESET}"
+        return 1
+    fi
 
-export default ${name}Page;
-EOF
+    local framework
+    framework=$(detect_framework)
 
-    # Estilos
-    cat > "$dir/styles.scss" << EOF
-.${name}Page {
-    // Your styles here
-}
-EOF
+    case "$framework" in
+        "react")
+            generate_api_service "$name"
+            ;;
+        "vue")
+            generate_vue_store "$name"
+            ;;
+        "angular")
+            generate_angular_service "$name"
+            ;;
+        *)
+            echo -e "${CYBER_RED}✘ Framework não detectado ou não suportado${RESET}"
+            return 1
+            ;;
+    esac
 
-    echo -e "${CYBER_GREEN}✔ Página $name gerada com sucesso${RESET}"
-}
-
-# Gera hook personalizado
-generate_react_hook() {
-    local name="$1"
-    local dir="src/hooks"
-    
-    mkdir -p "$dir"
-    
-    cat > "$dir/use$name.ts" << EOF
-import { useState, useEffect } from 'react';
-
-export const use$name = () => {
-    // Your hook logic here
-    
-    return {
-        // Return values here
-    };
-};
-EOF
-
-    echo -e "${CYBER_GREEN}✔ Hook use$name gerado com sucesso${RESET}"
-}
-
-# Gera serviço de API
-generate_api_service() {
-    local name="$1"
-    local dir="src/services"
-    
-    mkdir -p "$dir"
-    
-    cat > "$dir/${name}Service.ts" << EOF
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL;
-
-export class ${name}Service {
-    static async getAll() {
-        return axios.get(\`\${API_URL}/${name.toLowerCase()}\`);
-    }
-    
-    static async getById(id: string) {
-        return axios.get(\`\${API_URL}/${name.toLowerCase()}/\${id}\`);
-    }
-    
-    static async create(data: any) {
-        return axios.post(\`\${API_URL}/${name.toLowerCase()}\`, data);
-    }
-    
-    static async update(id: string, data: any) {
-        return axios.put(\`\${API_URL}/${name.toLowerCase()}/\${id}\`, data);
-    }
-    
-    static async delete(id: string) {
-        return axios.delete(\`\${API_URL}/${name.toLowerCase()}/\${id}\`);
-    }
-}
-EOF
-
-    echo -e "${CYBER_GREEN}✔ Serviço ${name}Service gerado com sucesso${RESET}"
+    echo -e "${CYBER_GREEN}✔ Serviço $name gerado com sucesso${RESET}"
 }

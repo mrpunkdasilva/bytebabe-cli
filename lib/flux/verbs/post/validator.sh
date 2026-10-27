@@ -1,18 +1,12 @@
 #!/bin/bash
 
+# Adaptador da validação compartilhada para POST.
+
+_flux_validator_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../../validation.sh
+source "$_flux_validator_dir/../../validation.sh"
+unset _flux_validator_dir
+
 validate_url() {
-    local url="$1"
-    
-    if [[ -z "$url" ]]; then
-        echo -e "${CYBER_RED}Error: URL is required${RESET}"
-        show_post_help
-        return 1
-    fi
-
-    if [[ ! "$url" =~ ^https?:// ]]; then
-        echo -e "${CYBER_RED}Error: URL must start with http:// or https://${RESET}"
-        return 1
-    fi
-
-    return 0
+    flux_validate_url "$1" show_post_help
 }

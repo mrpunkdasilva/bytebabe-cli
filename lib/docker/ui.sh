@@ -1,6 +1,16 @@
 #!/bin/bash
 
-# Header ASCII Art
+if [[ -z "${CYBER_BLUE:-}" ]]; then
+    if [[ "${BASH_SOURCE[0]}" == */* ]]; then
+        _bytebabe_docker_ui_dir="${BASH_SOURCE[0]%/*}"
+    else
+        _bytebabe_docker_ui_dir="."
+    fi
+    _bytebabe_docker_ui_dir="$(cd -P -- "$_bytebabe_docker_ui_dir" && pwd)"
+    source "$_bytebabe_docker_ui_dir/../core/helpers.sh"
+    unset _bytebabe_docker_ui_dir
+fi
+
 show_docker_header() {
     clear
     echo -e "${CYBER_BLUE}"
@@ -13,7 +23,6 @@ show_docker_header() {
     echo "  ╚══════════════════════════════════════════════╝"
     echo -e "${RESET}"
 }
-
 
 show_poseidon_header() {
     echo -e "$CYBER_BLUE
@@ -40,7 +49,7 @@ show_docker_help() {
     echo
 
     echo -e "${BOLD}${CYBER_GREEN}TRIDENTE DE COMANDOS:${RESET}"
-    echo -e "  ${CYBER_GREEN}containers${RESET}    🐳  Domine seus containers"
+    echo -e "  ${CYBER_GREEN}containers${RESET}    🐳  Domine seus containers (ls/start/stop/rm/logs/inspect/shell)"
     echo -e "  ${CYBER_GREEN}images${RESET}       📦  Controle as imagens como ondas"
     echo -e "  ${CYBER_GREEN}volumes${RESET}      💾  Profundezas do armazenamento"
     echo -e "  ${CYBER_GREEN}compose${RESET}      🌊  Comande frotas de serviços"
@@ -50,8 +59,9 @@ show_docker_help() {
     echo
 
     echo -e "${BOLD}${CYBER_GREEN}SACRIFÍCIOS (EXEMPLOS):${RESET}"
-    echo -e "  ${CYBER_YELLOW}bytebabe docker containers${RESET}    # Domine seus containers"
-    echo -e "  ${CYBER_YELLOW}bytebabe docker compose up${RESET}   # Libere a fúria dos mares"
+    echo -e "  ${CYBER_YELLOW}bytebabe docker containers${RESET}       # Menu interativo"
+    echo -e "  ${CYBER_YELLOW}bytebabe docker c ls -a${RESET}          # Lista sem menu"
+    echo -e "  ${CYBER_YELLOW}bytebabe docker compose up${RESET}       # Libere a fúria dos mares"
     echo
 
     echo -e "${BOLD}${CYBER_GREEN}PROFECIAS (DICAS):${RESET}"
@@ -60,25 +70,26 @@ show_docker_help() {
     echo -e "  ${CYBER_BLUE}•${RESET} ${CYBER_YELLOW}Ctrl+C${RESET} para acalmar as tempestades (sair)"
 }
 
-# Animação temática
-show_docker_loading() {
-    local pid=$!
-    local message=$1
-    local delay=0.15
-    local spin_chars=('🌊 ' '🐚 ' '⚡ ' '🔱 ' '🌪️ ' '🌀 ' '🐋 ' '⚓ ')
-    local i=0
+format_container_info() {
+    local full_line="$1"
+    local status
+    local color
+    local container_name
 
-    printf "${CYBER_BLUE}${message}${RESET} "
-    while kill -0 $pid 2>/dev/null; do
-        printf "\b${spin_chars[i]}"
-        i=$(( (i+1) % 8 ))
-        sleep $delay
-    done
-    printf "\b\b\b   \b\b\b\n"
+    status=$(echo "$full_line" | awk '{print $2}')
+    container_name=$(echo "$full_line" | awk '{print $1}')
+
+    case $status in
+        *running*) color="${CYBER_GREEN}" ;;
+        *exited*) color="${CYBER_RED}" ;;
+        *paused*) color="${CYBER_YELLOW}" ;;
+        *Created*) color="${CYBER_BLUE}" ;;
+        *) color="${CYBER_PURPLE}" ;;
+    esac
+
+    echo -e "${color}${container_name}${RESET} (${full_line#* })"
 }
 
-
-# Menu principal
 show_main_menu() {
     local selections=(
         "${BOLD}${CYBER_GREEN}1) 🐳 Container Commander   ${CYBER_YELLOW}» Manage running containers${RESET}"
@@ -101,7 +112,7 @@ show_main_menu() {
         *"Docker Stats"*) docker_stats ;;
         *"Exit"*)
             echo -e "${CYBER_BLUE}🐳 Happy sailing! ${RESET}"
-            exit 0
+            return 0
             ;;
     esac
 }

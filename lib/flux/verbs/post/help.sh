@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Definição das cores se ainda não estiverem definidas
-: ${CYBER_RED:='\033[1;31m'}
-: ${CYBER_GREEN:='\033[1;32m'}
-: ${CYBER_BLUE:='\033[1;34m'}
-: ${CYBER_YELLOW:='\033[1;33m'}
-: ${RESET:='\033[0m'}
-
 show_post_help() {
     echo -e "\n${CYBER_BLUE}╭─────────── FLUX POST ───────────╮${RESET}"
     echo -e "${CYBER_BLUE}│${RESET} HTTP POST Request Client"

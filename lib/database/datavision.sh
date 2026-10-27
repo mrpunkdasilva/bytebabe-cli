@@ -20,6 +20,8 @@ init_config() {
 
 # Função principal do DataVision
 datavision_main() {
+    init_config
+
     local command="$1"
     shift
 
@@ -561,6 +563,3 @@ show_query_history() {
     
     read -n 1 -s -r -p "Press any key to continue..."
 }
-
-# Inicializa configurações
-init_config

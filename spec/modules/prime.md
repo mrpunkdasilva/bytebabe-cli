@@ -47,6 +47,5 @@ Centralizar gerenciamento de pacotes, segurança, serviços e utilitários do si
 
 ## Gaps conhecidos
 
-- `quarantine` apenas carrega o módulo e exibe cabeçalho; execução não está conectada.
 - Alguns subcomandos dependem de ferramentas externas e privilégios de root.
-- Cobertura de testes atual valida estrutura/dispatch, não operações reais no sistema.
+- Cobertura de testes atual valida estrutura/dispatch e source-safety, não operações reais no sistema.

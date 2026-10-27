@@ -1,22 +1,31 @@
 #!/bin/bash
 
-# Cores para melhor visualização
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+if [[ -z "${CYBER_BLUE:-}" ]]; then
+    if [[ "${BASH_SOURCE[0]}" == */* ]]; then
+        _bytebabe_docker_compose_dir="${BASH_SOURCE[0]%/*}"
+    else
+        _bytebabe_docker_compose_dir="."
+    fi
+    _bytebabe_docker_compose_dir="$(cd -P -- "$_bytebabe_docker_compose_dir" && pwd)"
+    source "$_bytebabe_docker_compose_dir/../core/helpers.sh"
+    source "$_bytebabe_docker_compose_dir/helpers.sh"
+    unset _bytebabe_docker_compose_dir
+fi
 
-# Configuração
-ALWAYS_USE_SUDO=true
-COMPOSE_FILE="docker-compose.yml"
+RED="$CYBER_RED"
+GREEN="$CYBER_GREEN"
+YELLOW="$CYBER_YELLOW"
+BLUE="$CYBER_BLUE"
+PURPLE="$CYBER_PURPLE"
+CYAN="$CYBER_CYAN"
+NC="$RESET"
+
+COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.yml}"
 
 # Função para mostrar ajuda
 show_help() {
     echo -e "\n${BLUE}Docker Compose Manager${NC}"
-    echo -e "Uso: $0 [comando] [opções]"
+    echo -e "Uso: bytebabe docker compose [comando] [opções]"
     echo -e "\nComandos básicos:"
     echo -e "  ${GREEN}up${NC}        - Inicia serviços (opções: -d para detached)"
     echo -e "  ${GREEN}down${NC}      - Para e remove serviços"
@@ -38,31 +47,22 @@ show_help() {
     echo -e "  ${GREEN}help${NC}      - Mostra esta ajuda"
 
     echo -e "\nExemplos:"
-    echo -e "  $0 up -d"
-    echo -e "  $0 logs -f mysql"
-    echo -e "  $0 shell php"
-    echo -e "  $0 exec php php -v"
+    echo -e "  bytebabe docker compose up -d"
+    echo -e "  bytebabe docker compose logs -f mysql"
+    echo -e "  bytebabe docker compose shell php"
+    echo -e "  bytebabe docker compose exec php php -v"
 }
 
 # Função para inicializar o comando docker-compose
 init_compose() {
-    # Verifica se docker-compose está instalado
-    if command -v docker-compose &> /dev/null; then
-        echo -e "${GREEN}Usando docker-compose standalone${NC}"
-        COMPOSE_CMD="docker-compose"
-    elif command -v docker &> /dev/null && docker compose version &> /dev/null; then
-        echo -e "${GREEN}Usando docker compose plugin${NC}"
-        COMPOSE_CMD="docker compose"
-    else
-        echo -e "${RED}Docker Compose não encontrado!${NC}"
-        exit 1
+    if [[ -n "${cmd_docker_compose:-}" ]] && $cmd_docker_compose version &>/dev/null; then
+        COMPOSE_CMD="$cmd_docker_compose"
+        return 0
     fi
 
-    # Sempre usa sudo se configurado para isso
-    if [ "$ALWAYS_USE_SUDO" = true ]; then
-        echo -e "${BLUE}Usando sudo para comandos Docker${NC}"
-        COMPOSE_CMD="sudo $COMPOSE_CMD"
-    fi
+    configure_docker_compose || return 1
+    COMPOSE_CMD="$cmd_docker_compose"
+    return 0
 }
 
 # Função para mostrar status detalhado dos containers
@@ -238,11 +238,20 @@ validate_compose() {
 
 # Função principal
 handle_compose_command() {
-    # Inicializa o comando docker-compose
-    init_compose
+    local cmd="${1:-}"
 
-    local cmd="$1"
-    shift || true
+    if (($# > 0)); then
+        shift
+    fi
+
+    case "$cmd" in
+        help|--help|-h|"")
+            show_help
+            return 0
+            ;;
+    esac
+
+    init_compose || return 1
 
     case "$cmd" in
         # Comandos básicos
@@ -300,13 +309,10 @@ handle_compose_command() {
         validate)
             validate_compose
             ;;
-        help|--help|-h|"")
-            show_help
-            ;;
         *)
             echo -e "${RED}Comando desconhecido: $cmd${NC}"
             show_help
-            exit 1
+            return 1
             ;;
     esac
 }

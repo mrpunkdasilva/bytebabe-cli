@@ -146,7 +146,7 @@ interactive_menu() {
       3) show_disk_stats ;;
       4) show_network_stats ;;
       5) show_system_stats ;;
-      6) exit 0 ;;
+      6) return 0 ;;
       *) echo -e "${CYBER_RED}Invalid option!${NC}" ;;
     esac
 
@@ -173,4 +173,6 @@ run_stats() {
   fi
 }
 
-run_stats "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  run_stats "$@"
+fi

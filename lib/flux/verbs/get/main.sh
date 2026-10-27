@@ -1,36 +1,18 @@
 #!/bin/bash
 
-# Importa os módulos necessários
-source "$BASE_DIR/lib/flux/display.sh"
-source "$BASE_DIR/lib/flux/verbs/get/executor.sh"
-source "$BASE_DIR/lib/flux/verbs/get/parser.sh"
-source "$BASE_DIR/lib/flux/verbs/get/validator.sh"
-source "$BASE_DIR/lib/flux/verbs/get/help.sh"
+# Entry point do verbo GET do Flux.
+
+_flux_main_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=executor.sh
+source "$_flux_main_dir/executor.sh"
+# shellcheck source=parser.sh
+source "$_flux_main_dir/parser.sh"
+# shellcheck source=validator.sh
+source "$_flux_main_dir/validator.sh"
+# shellcheck source=help.sh
+source "$_flux_main_dir/help.sh"
+unset _flux_main_dir
 
 execute_get() {
-    # Primeiro verifica se é pedido de help
-    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
-        show_get_help
-        return 0
-    fi
-
-    # Verifica se tem URL
-    local url="$1"
-    if [[ -z "$url" ]]; then
-        echo -e "${CYBER_RED}Error: URL is required${RESET}"
-        show_get_help
-        return 1
-    fi
-    shift
-
-    if ! validate_url "$url"; then
-        return 1
-    fi
-
-    local params
-    if ! params=$(parse_get_args "$@"); then
-        return 1
-    fi
-
-    perform_get_request "$url" "$params"
+    flux_execute_request GET "$@"
 }

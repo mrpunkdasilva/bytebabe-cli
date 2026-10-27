@@ -5,12 +5,12 @@ CONFIG_FILE="$(dirname "${BASH_SOURCE[0]}")/config.json"
 load_config() {
     if ! command -v jq &> /dev/null; then
         echo -e "${CYBER_RED}Error: jq is required for Neo mode${NC}"
-        exit 1
+        return 1
     fi
     
     if [[ ! -f "$CONFIG_FILE" ]]; then
         echo -e "${CYBER_RED}Error: Neo configuration file not found${NC}"
-        exit 1
+        return 1
     fi
 }
 
@@ -33,7 +33,8 @@ matrix_rain() {
     tput civis
 
     # Restaura o cursor quando o script for interrompido
-    trap 'tput cnorm; exit 0' INT TERM
+    local interrupted=0
+    trap 'tput cnorm; interrupted=1' INT TERM
 
     # Arrays para controlar as posições das gotas
     declare -a drops
@@ -44,6 +45,8 @@ matrix_rain() {
     done
 
     while true; do
+        [[ "$interrupted" -eq 1 ]] && break
+
         # Move o cursor para o topo
         tput cup 0 0
         
@@ -71,6 +74,8 @@ matrix_rain() {
         
         sleep "$speed"
     done
+
+    tput cnorm
 }
 
 # Efeito glitch
@@ -129,8 +134,8 @@ show_neo_help() {
 
 # Main Neo mode function
 run_neo_mode() {
-    load_config
-    
+    load_config || return 1
+
     case "$1" in
         "rain"|"digital-rain"|"code-rain")
             clear

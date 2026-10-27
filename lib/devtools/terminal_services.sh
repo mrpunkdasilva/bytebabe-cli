@@ -9,39 +9,6 @@ source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 
 # ==========================================
-# DETECÇÃO DE SISTEMA E PKG MANAGER
-# ==========================================
-
-detect_pkg_manager() {
-    declare -A pkg_managers=(
-        ["apt"]="/etc/debian_version"
-        ["dnf"]="/etc/redhat-release"
-        ["yum"]="/etc/redhat-release"
-        ["pacman"]="/etc/arch-release"
-        ["zypper"]="/etc/SuSE-release"
-        ["brew"]="$HOME/.linuxbrew"
-    )
-
-    for manager in "${!pkg_managers[@]}"; do
-        if [[ -f "${pkg_managers[$manager]}" ]] || command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    for manager in apt dnf yum pacman zypper brew; do
-        if command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    echo "unknown"
-}
-
-PKG_MANAGER=$(detect_pkg_manager)
-
-# ==========================================
 # FUNÇÕES DE INSTALAÇÃO UNIVERSAL
 # ==========================================
 
@@ -451,8 +418,10 @@ show_help() {
 # FUNÇÃO PRINCIPAL
 # ==========================================
 
-main() {
-    case $1 in
+terminal_services_main() {
+    PKG_MANAGER=$(detect_pkg_manager)
+
+    case ${1:-} in
         "zsh"|"z"|"ohmyzsh"|"omz"|"oh-my-zsh"|"spaceship"|"sp"|"space"|"atuin"|"altuin"|"at"|"plugins"|"p"|"all"|"a")
             process_installation "$1"
             ;;
@@ -490,4 +459,6 @@ main() {
 # INICIALIZAÇÃO
 # ==========================================
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    terminal_services_main "$@"
+fi

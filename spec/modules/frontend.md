@@ -6,9 +6,11 @@ Configurar ambiente frontend, criar projetos e gerar artefatos para frameworks m
 
 ## Entry point
 
-- `commands/frontend.sh`: parsing e dispatch.
-- `lib/frontend/main.sh`: comandos.
-- `lib/frontend/templates.sh`, `generators.sh`, `config.sh`, `help.sh`.
+- `commands/frontend.sh`: parsing, criação de projeto, scripts e features.
+- `lib/frontend/main.sh`: requisitos, detecção de package manager e helpers de execução.
+- `lib/frontend/generators.sh`: dispatcher canônico de geração.
+- `lib/frontend/{react,vue,angular}/generators.sh`: adaptadores por framework.
+- `lib/frontend/templates.sh`, `config.sh`, `help.sh`, `features/`.
 
 ## Comandos
 
@@ -31,10 +33,13 @@ Configurar ambiente frontend, criar projetos e gerar artefatos para frameworks m
 
 ## Geração
 
+`lib/frontend/generators.sh` é o único ponto que detecta o framework e valida
+nomes. Os adaptadores apenas escrevem os arquivos específicos.
+
 | Comando | Escopo |
 |---------|--------|
 | `g component <nome>` | React/Vue/Angular/Next/Svelte |
-| `g service <nome>` | Projeto atual |
+| `g service <nome>` | React API service, Vue store ou Angular service |
 | `g store <nome>` | React Context ou Vue store |
 | `g hook <nome>` | React |
 | `g guard <nome>` | Angular |
@@ -43,9 +48,10 @@ Configurar ambiente frontend, criar projetos e gerar artefatos para frameworks m
 
 - `new` MUST validar framework e nome do projeto.
 - `new` SHOULD usar o package manager disponível (`npm`, `yarn`, `pnpm`, `bun`) com fallback para `npm`.
+- A detecção de package manager JS MUST vir de `detect_node_pkg_manager` no core.
 - `g component` MUST detectar o framework pelo projeto atual.
 - `install`/`test`/`build`/`serve` MUST delegar aos scripts do `package.json`.
-- `setup` MUST exigir Node.js/npm e instalar os package managers e frameworks selecionados.
+- `setup` MUST exigir Node.js e um package manager e instalar os gerenciadores/frameworks selecionados.
 - Comando desconhecido MUST exibir ajuda e sair com código `1`.
 
 ## Critérios de aceite
@@ -57,8 +63,7 @@ Configurar ambiente frontend, criar projetos e gerar artefatos para frameworks m
 
 ## Gaps conhecidos
 
-- `new` usa `npm`/`npx` diretamente; a detecção de `yarn`/`pnpm`/`bun` ainda não está implementada.
-- `install`/`test`/`build`/`serve` também usam `npm` diretamente.
 - `setup` não instala Node.js: retorna erro e orienta `bytebabe backend install node`.
 - Detecção de framework depende da estrutura do projeto e pode falhar em monorepos.
 - `add` cobre apenas Tailwind, Redux, Router e i18n.
+- Criação remota ainda depende de rede e do CLI de cada framework.

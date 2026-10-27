@@ -14,13 +14,6 @@ source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 source "$BASE_DIR/lib/core/alias_manager.sh"
 
-# Função para mostrar o header cyberpunk
-show_cyberpunk_header() {
-    echo -e "${CYBER_PINK}╔════════════════════════════════════════════════╗"
-    echo -e "║             BYTEBABE CLI                     ║"
-    echo -e "╚════════════════════════════════════════════════╝${RESET}"
-}
-
 # Expande aliases se necessário
 if [ $# -gt 0 ]; then
     expanded=$(expand_alias "$1")
@@ -102,6 +95,26 @@ show_help() {
     echo -e "${CYBER_PURPLE}╰┈➤ ${CYBER_GRAY}Para ajuda detalhada, use: ${CYBER_CYAN}bytebabe <comando> --help${RESET}"
 }
 
+run_command() {
+    local module="$1"
+    local entrypoint="$2"
+    shift 2
+
+    if [[ ! -f "$module" ]]; then
+        echo "Módulo não encontrado: $module" >&2
+        return 1
+    fi
+
+    source "$module" || return $?
+
+    if ! declare -F "$entrypoint" >/dev/null 2>&1; then
+        echo "Entrypoint '$entrypoint' não encontrado em $module" >&2
+        return 1
+    fi
+
+    "$entrypoint" "$@"
+}
+
 show_cyberpunk_header
 
 # Process commands
@@ -111,55 +124,52 @@ case "$1" in
         main "$@"
         ;;
     hello)
-        source "${BASE_DIR}/commands/hello.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/hello.sh" main "${@:2}"
         ;;
     init)
-        source "${BASE_DIR}/commands/init.sh"
-        main "${@:2}"
+        run_command "${BASE_DIR}/commands/init.sh" main "${@:2}"
         ;;
     git)
-        source "${BASE_DIR}/commands/git/main.sh"
+        run_command "${BASE_DIR}/commands/git/main.sh" main "${@:2}"
         ;;
     frontend)
-        source "${BASE_DIR}/commands/frontend.sh"
-        main "${@:2}"
+        run_command "${BASE_DIR}/commands/frontend.sh" main "${@:2}"
         ;;
     backend)
-        source "${BASE_DIR}/commands/backend.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/backend.sh" main "${@:2}"
         ;;
     spring)
-        source "${BASE_DIR}/commands/backend/spring/main.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/backend/spring/main.sh" main "${@:2}"
         ;;
     servers)
-        source "${BASE_DIR}/commands/servers.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/servers.sh" main "${@:2}"
         ;;
     db)
-        source "${BASE_DIR}/commands/db.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/db.sh" main "${@:2}"
         ;;
     datavision|dv)
-        source "${BASE_DIR}/lib/database/datavision.sh"
-        datavision_main "${@:2}"
+        run_command "${BASE_DIR}/lib/database/datavision.sh" datavision_main "${@:2}"
         ;;
     edit|byteedit)
-         source "${BASE_DIR}/commands/byteedit.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/byteedit.sh" main "${@:2}"
         ;;
     ide)
-        source "${BASE_DIR}/commands/ide.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/ide.sh" main "${@:2}"
         ;;
     devtools)
-        source "${BASE_DIR}/commands/devtools.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/devtools.sh" main "${@:2}"
         ;;
     docker)
-        source "${BASE_DIR}/commands/docker.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/docker.sh" main "${@:2}"
         ;;
     prime|pm)
-        source "${BASE_DIR}/commands/prime.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/prime.sh" main "${@:2}"
         ;;
     gh|github)
-        source "${BASE_DIR}/commands/gh.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/gh.sh" main "${@:2}"
         ;;
     flux)
-        source "${BASE_DIR}/commands/flux.sh" "${@:2}"
+        run_command "${BASE_DIR}/commands/flux.sh" main "${@:2}"
         ;;
     --version|-v)
         show_version
@@ -173,3 +183,5 @@ case "$1" in
         show_help
         ;;
 esac
+
+exit $?

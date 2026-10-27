@@ -1,53 +1,6 @@
 #!/bin/bash
 source "$(dirname "${BASH_SOURCE[0]}")/ui.sh"
 
-show_loading() {
-    local message=$1
-    echo -n "${CYBER_CYAN}${message}"
-    for i in {1..3}; do
-        echo -n "."
-        sleep 0.5
-    done
-    echo "${RESET}"
-}
-
-choose_from_menu() {
-    local prompt="$1" outvar="$2"
-    shift
-    shift
-    local options=("$@") cur=0 count=${#options[@]} index=0
-    local esc=$(echo -en "\e")
-
-    while true; do
-        index=0
-        for o in "${options[@]}"; do
-            if [ "$index" == "$cur" ]; then
-                echo -e "${CYBER_GREEN} > ${CYBER_CYAN}${BOLD}${o}${RESET}"
-            else
-                echo -e "   ${CYBER_YELLOW}${o}${RESET}"
-            fi
-            ((index++))
-        done
-
-        read -s -n3 key
-        readonly ESC=$'\033'
-        readonly UP="${ESC}[A"
-        readonly DOWN="${ESC}[B"
-
-        if [[ $key == $UP ]]; then
-            ((cur--))
-            [[ $cur -lt 0 ]] && cur=0
-        elif [[ $key == $DOWN ]]; then
-            ((cur++))
-            [[ $cur -ge $count ]] && cur=$((count-1))
-        elif [[ $key == "" ]]; then
-            break
-        fi
-        echo -en "\e[${count}A"
-    done
-    printf -v "$outvar" "${options[$cur]}"
-}
-
 show_commit_wizard() {
     clear
     echo "${BOLD}${CYBER_PURPLE}  ╔══════════════════════════════════════════════╗"

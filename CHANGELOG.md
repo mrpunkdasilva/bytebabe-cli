@@ -16,6 +16,17 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ### Changed
 - README com link para as specs do produto e módulos
+- Refatoração incremental para centralizar helpers em `lib/core/` e padronizar o contrato de source/dispatch dos comandos
+- Docker, Flux, Spring e Frontend passam a usar um único dispatcher canônico, com duplicatas arquivadas em `archive/legacy/`
+- Frontend detecta npm, pnpm, yarn e bun via `detect_node_pkg_manager`
+- Suíte ampliada para 240 testes em 19 arquivos, com CI de sintaxe e testes
+- TUI antiga em `dialog` arquivada em `archive/legacy/core/` por não ter chamadores
+- Criação de containers/imagens Docker sem `eval`, usando arrays de argumentos
+- Gerenciamento de volumes Docker (`ls`, `create`, `inspect`, `rm`, `prune`) com menu e comandos diretos
+- Módulos Spring de segurança, monitoramento e deploy conectados ao entrypoint, com relatórios, scans e exportação de logs/métricas
+- Módulos de `pkg` e `devtools` passam a ser source-safe; `prime` despacha backup/log/service/list/info/quarantine/stats e retorna `1` em comando inválido
+- Entrypoints `db`, `servers`, `json-server`, `git` e `datavision` não usam mais `exit` em funções reutilizáveis
+- Falhas em `servers_services`, `db_services`, `clean`, `neo` e `check_root` propagam status sem encerrar o shell
 
 ## [1.4.0] - 2026-10-26
 

@@ -113,7 +113,7 @@ interactive_menu() {
   case $choice in
     1) basic_clean ;;
     2) deep_clean ;;
-    3) exit 0 ;;
+    3) return 0 ;;
     *) echo -e "${CYBER_RED}Invalid option!${NC}" ;;
   esac
 }
@@ -131,7 +131,7 @@ direct_mode() {
       echo -e "${CYBER_RED}Usage:"
       echo -e "  clean basic"
       echo -e "  clean deep${NC}"
-      exit 1
+      return 1
       ;;
   esac
 }

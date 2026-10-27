@@ -284,8 +284,8 @@ bytebabe --version
 | `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` | 🔄 Pending |
 | `devtools` | Development tools | `terminal`, `database`, `api`, `browser` | 🔄 Pending |
 | `prime` | System management | `install`, `upgrade`, `firewall`, `scan` | ✅ 12/12 |
-| `backend` | Backend development | `install`, `setup`, `generate` | ✅ 9/9 |
-| `frontend` | Frontend development | `setup`, `new`, `generate` | ✅ 10/10 |
+| `backend` | Backend development | `install`, `setup`, `generate` | ✅ 14/14 |
+| `frontend` | Frontend development | `setup`, `new`, `generate` | ✅ 15/15 |
 | `flux` | API development | `get`, `post`, `put`, `delete`, `server` | 🔄 Pending |
 | `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` | 🔄 Pending |
 | `servers` | Server management | `up`, `down`, `status`, `setup` | 🔄 Pending |
@@ -306,7 +306,7 @@ ByteBabe includes a comprehensive testing framework to ensure code quality and r
 
 ### Unit Tests
 ```bash
-# Run the complete suite (91 tests)
+# Run the complete suite (240 tests)
 bash tests/scripts/run_unit_tests.sh
 
 # Run a specific module
@@ -321,17 +321,10 @@ bash tests/unit/commands/git.test.sh
 ```
 
 ### Test Coverage
-- ✅ **backend** - 9/9 tests passing
-- ✅ **byteedit** - 10/10 tests passing
-- ✅ **db** - 10/10 tests passing
-- ✅ **docker** - 10/10 tests passing
-- ✅ **frontend** - 10/10 tests passing
-- ✅ **git** - 12/12 tests passing
-- ✅ **hello** - 10/10 tests passing
-- ✅ **init** - 8/8 tests passing
-- ✅ **prime** - 12/12 tests passing
-
-**Total: 91/91 tests passing.**
+- ✅ **240/240 testes passando** em 19 arquivos.
+- **101 testes estruturais** em `tests/unit/commands/`.
+- **139 testes de caracterização** em `tests/unit/lib/` (core, entrypoint, Flux, Docker, Spring, Frontend e source-safety).
+- CI executa `bash -n` e a suíte completa em push e pull request.
 
 ### Test Structure
 Each test follows a consistent pattern:

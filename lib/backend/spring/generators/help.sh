@@ -74,6 +74,44 @@ show_generator_help() {
             echo -e "  ${CYBER_YELLOW}bytebabe spring g dto -n ProductDTO -p com.example.api.dto -e Product${RESET}"
             ;;
             
+        "mapper")
+            echo -e "\n${CYBER_BLUE}Mapper Generator Usage:${RESET}"
+            echo -e "  bytebabe spring g mapper ${CYBER_YELLOW}[options]${RESET}\n"
+
+            echo -e "${CYBER_BLUE}Options:${RESET}"
+            echo -e "  ${CYBER_GREEN}-n, --name${RESET}     Mapper name (required)"
+            echo -e "  ${CYBER_GREEN}-p, --package${RESET}  Package name (required)"
+            echo -e "  ${CYBER_GREEN}-e, --entity${RESET}   Entity name (optional)"
+            echo -e "  ${CYBER_GREEN}-d, --dto${RESET}      DTO name (optional)\n"
+
+            echo -e "${CYBER_BLUE}Examples:${RESET}"
+            echo -e "  ${CYBER_YELLOW}bytebabe spring g mapper -n UserMapper -p com.example.api.mapper${RESET}"
+            echo -e "  ${CYBER_YELLOW}bytebabe spring g mapper -n ProductMapper -e Product -d ProductDTO${RESET}"
+            ;;
+
+        "exception-handler")
+            echo -e "\n${CYBER_BLUE}Exception Handler Generator Usage:${RESET}"
+            echo -e "  bytebabe spring g exception-handler ${CYBER_YELLOW}[options]${RESET}\n"
+
+            echo -e "${CYBER_BLUE}Options:${RESET}"
+            echo -e "  ${CYBER_GREEN}-p, --package${RESET}  Package name (optional)\n"
+
+            echo -e "${CYBER_BLUE}Examples:${RESET}"
+            echo -e "  ${CYBER_YELLOW}bytebabe spring g exception-handler -p com.example.api.exception${RESET}"
+            ;;
+
+        "security")
+            echo -e "\n${CYBER_BLUE}Security Generator Usage:${RESET}"
+            echo -e "  bytebabe spring g security ${CYBER_YELLOW}[options]${RESET}\n"
+
+            echo -e "${CYBER_BLUE}Options:${RESET}"
+            echo -e "  ${CYBER_GREEN}-p, --package${RESET}  Package name (optional)"
+            echo -e "  ${CYBER_GREEN}-t, --type${RESET}     Auth type: jwt or basic (default: jwt)\n"
+
+            echo -e "${CYBER_BLUE}Examples:${RESET}"
+            echo -e "  ${CYBER_YELLOW}bytebabe spring g security -p com.example.api.config -t jwt${RESET}"
+            ;;
+
         "crud")
             echo -e "\n${CYBER_BLUE}CRUD Generator Usage:${RESET}"
             echo -e "  bytebabe spring g crud ${CYBER_YELLOW}[options]${RESET}\n"
@@ -105,7 +143,10 @@ show_generator_help() {
             echo -e "  ${CYBER_GREEN}repository${RESET}   Generate JPA repository"
             echo -e "  ${CYBER_GREEN}entity${RESET}       Generate JPA entity"
             echo -e "  ${CYBER_GREEN}dto${RESET}          Generate DTO class"
-            echo -e "  ${CYBER_GREEN}crud${RESET}         Generate complete CRUD\n"
+            echo -e "  ${CYBER_GREEN}crud${RESET}         Generate complete CRUD"
+            echo -e "  ${CYBER_GREEN}mapper${RESET}       Generate MapStruct mapper"
+            echo -e "  ${CYBER_GREEN}exception-handler${RESET} Generate global exception handler"
+            echo -e "  ${CYBER_GREEN}security${RESET}     Generate security configuration\n"
             
             echo -e "${CYBER_BLUE}For detailed help on each type:${RESET}"
             echo -e "  ${CYBER_YELLOW}bytebabe spring g <type> --help${RESET}"

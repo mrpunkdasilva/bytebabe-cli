@@ -14,6 +14,7 @@ source "${BASE_DIR}/lib/database/db_services.sh"
 # HANDLER DE COMANDOS
 # ======================
 
+main() {
 case "$1" in
     setup)
         db_setup
@@ -45,6 +46,11 @@ case "$1" in
         echo -e "│ ${CYBER_GREEN}bytebabe db stop${RESET}    - Para bancos          "
         echo -e "│ ${CYBER_GREEN}bytebabe db status${RESET}  - Mostra status        "
         echo -e "╰─────────────────────────────────────────────╯${RESET}"
-        exit 1
+        return 1
         ;;
 esac
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

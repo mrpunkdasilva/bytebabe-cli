@@ -48,10 +48,11 @@ show_response() {
     local duration="$4"
 
     # Determina a cor baseada no status code
-    local status_color
-    if [[ $status_code -ge 200 && $status_code -lt 300 ]]; then
+    local status_color status_number
+    status_number=$((10#${status_code:-0}))
+    if (( status_number >= 200 && status_number < 300 )); then
         status_color=$CYBER_GREEN
-    elif [[ $status_code -ge 300 && $status_code -lt 400 ]]; then
+    elif (( status_number >= 300 && status_number < 400 )); then
         status_color=$CYBER_YELLOW
     else
         status_color=$CYBER_RED
@@ -86,21 +87,6 @@ show_error() {
     echo -e "\n${CYBER_RED}╭─────────── ERROR ───────────╮${RESET}"
     echo -e "${CYBER_RED}│${RESET} ${message}"
     echo -e "${CYBER_RED}╰───────────────────────────────╯${RESET}\n"
-}
-
-# Exibe barra de progresso durante a requisição
-show_loading() {
-    local pid=$1
-    local message="${2:-Making request...}"
-    local spin=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
-    local i=0
-
-    while kill -0 $pid 2>/dev/null; do
-        echo -ne "\r${CYBER_BLUE}${spin[$i]} ${message}${RESET}"
-        i=$(( (i+1) % 10 ))
-        sleep 0.1
-    done
-    echo -ne "\r\033[K"  # Limpa a linha
 }
 
 # Mostra a ajuda do Flux

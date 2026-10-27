@@ -149,9 +149,8 @@ process_setup() {
     show_frontend_header
     echo -e "${CYBER_PINK}⚡ CONFIGURAÇÃO FRONTEND ⚡${RESET}"
 
-    # Verificar Node.js
-    if ! command -v node &> /dev/null; then
-        echo -e "${CYBER_RED}✘ Node.js não encontrado! Instale primeiro com:${RESET}"
+    # Verificar Node.js e package manager
+    if ! check_frontend_requirements; then
         echo -e "${CYBER_PINK}bytebabe backend install node${RESET}"
         return 1
     fi
@@ -214,74 +213,79 @@ create_frontend_project() {
     local name=$2
     local template=$3
 
+    if [[ -z "$name" ]]; then
+        echo -e "${CYBER_RED}✘ Nome do projeto é obrigatório${RESET}"
+        return 1
+    fi
+
     case $framework in
         "react")
             if [[ "$template" == "vite" ]]; then
-                npm create vite@latest "$name" -- --template react-ts
+                frontend_create_vite "$name" "react-ts" || return $?
             else
-                npx create-react-app "$name" --template typescript
+                frontend_exec create-react-app "$name" --template typescript || return $?
             fi
             ;;
         "vue")
             if [[ "$template" == "vite" ]]; then
-                npm create vite@latest "$name" -- --template vue-ts
+                frontend_create_vite "$name" "vue-ts" || return $?
             else
-                npm create vue@latest "$name"
+                frontend_create_vue "$name" || return $?
             fi
             ;;
         "angular")
-            npx @angular/cli new "$name" --style=scss --routing=true --strict
+            frontend_exec @angular/cli new "$name" --style=scss --routing=true --strict || return $?
             ;;
         "next")
-            npx create-next-app@latest "$name" --typescript --tailwind --eslint
+            frontend_exec create-next-app@latest "$name" --typescript --tailwind --eslint || return $?
             ;;
         "svelte")
-            npm create vite@latest "$name" -- --template svelte-ts
+            frontend_create_vite "$name" "svelte-ts" || return $?
             ;;
         *)
             echo -e "${CYBER_RED}✘ Framework não suportado: $framework${RESET}"
-            exit 1
+            return 1
             ;;
     esac
 
     # Configuração pós-criação
-    cd "$name" || exit
+    cd "$name" || return 1
     
     # Inicializa configuração ByteBabe
     init_frontend_config
 
     # Instala dependências comuns
-    npm install --save-dev \
+    frontend_install dev \
         @testing-library/jest-dom \
         @testing-library/user-event \
         prettier \
         eslint \
         husky \
-        lint-staged
+        lint-staged || return $?
 
     # Configurações específicas por framework
     case $framework in
         "react"|"next")
-            npm install --save-dev \
+            frontend_install dev \
                 @testing-library/react \
-                @types/react-test-renderer
+                @types/react-test-renderer || return $?
             ;;
         "vue")
-            npm install --save-dev \
+            frontend_install dev \
                 @vue/test-utils \
-                @vitejs/plugin-vue
+                @vitejs/plugin-vue || return $?
             ;;
         "angular")
-            npm install --save-dev \
+            frontend_install dev \
                 @types/jasmine \
-                karma-coverage
+                karma-coverage || return $?
             ;;
     esac
 
     echo -e "${CYBER_GREEN}✔ Projeto $name criado com sucesso!${RESET}"
     echo -e "${CYBER_BLUE}Para começar:${RESET}"
     echo -e "  cd $name"
-    echo -e "  npm run dev"
+    echo -e "  $(detect_node_pkg_manager) run dev"
 }
 
 # Função para adicionar funcionalidades
@@ -292,46 +296,56 @@ add_feature() {
 
     case $feature in
         "tailwind")
-            npm install -D tailwindcss postcss autoprefixer
-            npx tailwindcss init -p
+            frontend_install dev tailwindcss postcss autoprefixer || return $?
+            frontend_exec tailwindcss init -p || return $?
             setup_tailwind
             ;;
         "redux")
-            npm install @reduxjs/toolkit react-redux
+            frontend_install prod @reduxjs/toolkit react-redux || return $?
             generate_redux_store
             ;;
         "router")
-            local framework=$(detect_framework)
+            local framework
+            framework=$(detect_framework)
             case $framework in
                 "react")
-                    npm install react-router-dom
+                    frontend_install prod react-router-dom || return $?
                     generate_react_router
                     ;;
                 "vue")
-                    npm install vue-router@4
+                    frontend_install prod vue-router@4 || return $?
                     generate_vue_router
+                    ;;
+                *)
+                    echo -e "${CYBER_RED}✘ Router não suportado para este framework${RESET}"
+                    return 1
                     ;;
             esac
             ;;
         "i18n")
-            local framework=$(detect_framework)
+            local framework
+            framework=$(detect_framework)
             case $framework in
                 "react")
-                    npm install react-i18next i18next
+                    frontend_install prod react-i18next i18next || return $?
                     generate_i18n_setup
                     ;;
                 "vue")
-                    npm install vue-i18n@9
+                    frontend_install prod vue-i18n@9 || return $?
                     generate_vue_i18n
                     ;;
                 "angular")
                     ng add @angular/localize
                     ;;
+                *)
+                    echo -e "${CYBER_RED}✘ i18n não suportado para este framework${RESET}"
+                    return 1
+                    ;;
             esac
             ;;
         *)
             echo -e "${CYBER_RED}✘ Funcionalidade não suportada: $feature${RESET}"
-            exit 1
+            return 1
             ;;
     esac
 }
@@ -356,7 +370,7 @@ run_frontend_command() {
                 *)
                     echo -e "${CYBER_RED}✘ Framework não especificado ou não suportado${RESET}"
                     [ "$(type -t show_frontend_new_help)" = "function" ] && show_frontend_new_help || show_frontend_help
-                    exit 1
+                    return 1
                     ;;
             esac
             ;;
@@ -375,7 +389,7 @@ run_frontend_command() {
                 *)
                     echo -e "${CYBER_RED}✘ Funcionalidade não especificada ou não suportada${RESET}"
                     [ "$(type -t show_frontend_add_help)" = "function" ] && show_frontend_add_help || show_frontend_help
-                    exit 1
+                    return 1
                     ;;
             esac
             ;;
@@ -403,6 +417,7 @@ run_frontend_command() {
                             ;;
                         *)
                             echo -e "${CYBER_RED}✘ Store não suportada para este framework${RESET}"
+                            return 1
                             ;;
                     esac
                     ;;
@@ -413,6 +428,7 @@ run_frontend_command() {
                         generate_react_hook "$1"
                     else
                         echo -e "${CYBER_RED}✘ Hooks são específicos do React${RESET}"
+                        return 1
                     fi
                     ;;
                 guard)
@@ -422,11 +438,13 @@ run_frontend_command() {
                         generate_angular_guard "$1"
                     else
                         echo -e "${CYBER_RED}✘ Guards são específicos do Angular${RESET}"
+                        return 1
                     fi
                     ;;
                 *)
                     echo -e "${CYBER_RED}✘ Tipo de geração não especificado ou inválido${RESET}"
                     echo -e "Tipos disponíveis: component, service, store, hook, guard"
+                    return 1
                     ;;
             esac
             ;;
@@ -435,14 +453,18 @@ run_frontend_command() {
             shift
             case "$1" in
                 deps)
-                    npm install
+                    frontend_install_deps
                     ;;
                 dev)
                     shift
-                    npm install --save-dev "$@"
+                    frontend_install dev "$@"
                     ;;
                 *)
-                    npm install "$@"
+                    if [[ $# -eq 0 ]]; then
+                        frontend_install_deps
+                    else
+                        frontend_install prod "$@"
+                    fi
                     ;;
             esac
             ;;
@@ -451,13 +473,13 @@ run_frontend_command() {
             shift
             case "$1" in
                 watch)
-                    npm run test:watch
+                    frontend_run_script test:watch
                     ;;
                 coverage)
-                    npm run test:coverage
+                    frontend_run_script test:coverage
                     ;;
                 *)
-                    npm test "$@"
+                    frontend_run_script test "$@"
                     ;;
             esac
             ;;
@@ -466,10 +488,10 @@ run_frontend_command() {
             shift
             case "$1" in
                 prod)
-                    npm run build:prod
+                    frontend_run_script build:prod
                     ;;
                 *)
-                    npm run build
+                    frontend_run_script build
                     ;;
             esac
             ;;
@@ -478,10 +500,10 @@ run_frontend_command() {
             shift
             case "$1" in
                 prod)
-                    npm run serve:prod
+                    frontend_run_script serve:prod
                     ;;
                 *)
-                    npm run start
+                    frontend_run_script start
                     ;;
             esac
             ;;
@@ -497,7 +519,7 @@ run_frontend_command() {
         *)
             echo -e "${CYBER_RED}✘ Comando não reconhecido: $1${RESET}"
             show_frontend_help
-            exit 1
+            return 1
             ;;
     esac
 }

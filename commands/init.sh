@@ -136,7 +136,7 @@ install_docker() {
 }
 
 main() {
-    show_cyberpunk_header
+    show_cyberpunk_banner
     load_config
 
     echo -e "\n${CYBER_PINK}⚡ INICIALIZANDO BYTEBABE CLI ⚡${RESET}"

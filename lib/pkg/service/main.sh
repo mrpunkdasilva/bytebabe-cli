@@ -115,7 +115,7 @@ interactive_mode() {
         echo -e "${CYBER_RED}⚠ WARNING: EXITING THE SYSTEM... ⚠${NC}"
         echo -e "${CYBER_PURPLE}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${NC}"
         sleep 1
-        exit 0
+        return 0
         ;;
       *)
         echo -e "\n${CYBER_RED}▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓${NC}"
@@ -154,14 +154,16 @@ direct_mode() {
       echo -e " ${CYBER_GREEN}$0 activate|terminate|reboot|diagnose <service>${NC}"
       echo -e "\n${CYBER_YELLOW}EXAMPLE:${NC}"
       echo -e " ${CYBER_GREEN}$0 activate nginx${NC}"
-      exit 1
+      return 1
       ;;
   esac
 }
 
 # Main
-if [ $# -eq 0 ]; then
-  interactive_mode
-else
-  direct_mode "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  if [ $# -eq 0 ]; then
+    interactive_mode
+  else
+    direct_mode "$@"
+  fi
 fi

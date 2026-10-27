@@ -5,7 +5,7 @@ FRONTEND_CONFIG_FILE=".bytebabe/frontend-config.json"
 
 # Inicializa ou lê configuração
 init_frontend_config() {
-    mkdir -p .bytebabe.sh
+    mkdir -p .bytebabe
     
     if [[ ! -f "$FRONTEND_CONFIG_FILE" ]]; then
         # Detecta framework usado (React, Vue, Angular)

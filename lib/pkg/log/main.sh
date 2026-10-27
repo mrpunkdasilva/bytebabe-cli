@@ -154,4 +154,6 @@ run_log() {
   esac
 }
 
-run_log "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  run_log "$@"
+fi

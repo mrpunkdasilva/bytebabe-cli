@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# Cores
-CYBER_CYAN=$(tput setaf 6)
-CYBER_PURPLE=$(tput setaf 5)
-CYBER_GREEN=$(tput setaf 2)
-CYBER_YELLOW=$(tput setaf 3)
-CYBER_RED=$(tput setaf 1)
-CYBER_BLUE=$(tput setaf 4)
-RESET=$(tput sgr0)
-BOLD=$(tput bold)
+if [[ "${BASH_SOURCE[0]}" == */* ]]; then
+    _bytebabe_git_ui_dir="${BASH_SOURCE[0]%/*}"
+else
+    _bytebabe_git_ui_dir="."
+fi
+_bytebabe_git_ui_dir="$(cd -P -- "$_bytebabe_git_ui_dir" && pwd)"
+source "$_bytebabe_git_ui_dir/../core/colors.sh"
+unset _bytebabe_git_ui_dir
 
 show_header_git_nexus() {
     clear

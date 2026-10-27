@@ -17,7 +17,7 @@ readonly RESET='\033[0m'
 # Diretórios
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly TESTS_DIR="$(dirname "$SCRIPT_DIR")"
-readonly UNIT_TESTS_DIR="$TESTS_DIR/unit/commands"
+readonly UNIT_TESTS_DIR="$TESTS_DIR/unit"
 
 # Contadores globais
 TOTAL_TESTS=0
@@ -73,7 +73,10 @@ list_tests() {
         return 1
     fi
     
-    local test_files=($(find "$UNIT_TESTS_DIR" -name "*.test.sh" -type f | sort))
+    local test_files=()
+    while IFS= read -r test_file; do
+        test_files+=("$test_file")
+    done < <(find "$UNIT_TESTS_DIR" -name "*.test.sh" -type f | sort)
     
     if [ ${#test_files[@]} -eq 0 ]; then
         log "WARNING" "Nenhum teste encontrado em: $UNIT_TESTS_DIR"
@@ -159,7 +162,10 @@ run_all_tests() {
         exit 1
     fi
     
-    local test_files=($(find "$UNIT_TESTS_DIR" -name "*.test.sh" -type f | sort))
+    local test_files=()
+    while IFS= read -r test_file; do
+        test_files+=("$test_file")
+    done < <(find "$UNIT_TESTS_DIR" -name "*.test.sh" -type f | sort)
     
     if [ ${#test_files[@]} -eq 0 ]; then
         log "WARNING" "Nenhum teste encontrado em: $UNIT_TESTS_DIR"
@@ -250,8 +256,21 @@ if [ "$LIST_TESTS" = true ]; then
 fi
 
 if [ -n "$SPECIFIC_TEST" ]; then
-    test_file="$UNIT_TESTS_DIR/${SPECIFIC_TEST}.test.sh"
-    if [ ! -f "$test_file" ]; then
+    test_file=""
+    while IFS= read -r candidate; do
+        test_file="$candidate"
+        break
+    done < <(find "$UNIT_TESTS_DIR" -name "${SPECIFIC_TEST##*/}.test.sh" -type f | sort)
+
+    if [ -z "$test_file" ] && [ -f "$TESTS_DIR/${SPECIFIC_TEST}.test.sh" ]; then
+        test_file="$TESTS_DIR/${SPECIFIC_TEST}.test.sh"
+    fi
+
+    if [ -z "$test_file" ] && [ -f "$UNIT_TESTS_DIR/${SPECIFIC_TEST}.test.sh" ]; then
+        test_file="$UNIT_TESTS_DIR/${SPECIFIC_TEST}.test.sh"
+    fi
+
+    if [ -z "$test_file" ]; then
         log "ERROR" "Teste não encontrado: $SPECIFIC_TEST"
         log "INFO" "Use --list para ver testes disponíveis"
         exit 1

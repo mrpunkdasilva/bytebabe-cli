@@ -178,4 +178,10 @@ byte_edit() {
 }
 
 # Executa o editor com o arquivo especificado
-byte_edit "$1"
+main() {
+    byte_edit "$1"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi

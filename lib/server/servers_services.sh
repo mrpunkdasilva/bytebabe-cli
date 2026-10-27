@@ -39,7 +39,7 @@ check_docker_compose() {
         echo -e "  Linux: sudo apt install docker-compose"
         echo -e "  Mac: brew install docker-compose"
         echo -e "  Ou consulte: https://docs.docker.com/compose/install/"
-        exit 1
+        return 1
     fi
 }
 
@@ -57,7 +57,7 @@ check_docker_installed() {
     if ! command -v docker &> /dev/null; then
         echo -e "${CYBER_RED}✘ Docker não está instalado!${RESET}"
         echo -e "${CYBER_YELLOW}Execute o comando 'bytebabe install docker' primeiro.${RESET}"
-        exit 1
+        return 1
     fi
     check_docker_compose
 }
@@ -71,7 +71,7 @@ check_compose_file() {
     if [ ! -f "$COMPOSE_FILE" ]; then
         echo -e "${CYBER_YELLOW}⚠ Arquivo docker-compose.yml não encontrado!${RESET}"
         echo -e "${CYBER_GREEN}Execute 'bytebabe servers setup' para configurar.${RESET}"
-        exit 1
+        return 1
     fi
 }
 
@@ -243,8 +243,8 @@ EOF
 start_servers() {
     local server_to_start="$1"
 
-    check_docker_installed
-    check_compose_file
+    check_docker_installed || return 1
+    check_compose_file || return 1
 
     echo -e "\n${CYBER_BLUE}▶ Iniciando servidor Docker '$server_to_start'...${RESET}"
 
@@ -254,13 +254,13 @@ start_servers() {
         echo -e "\n${CYBER_RED}✘ Erro ao iniciar servidor '$server_to_start'!${RESET}"
         echo -e "${CYBER_YELLOW}▶ Verificando logs...${RESET}"
         $COMPOSE_CMD -f "$COMPOSE_FILE" logs "$server_to_start"
-        exit 1
+        return 1
     fi
 }
 
 # Esta função para um servidor Docker (Apache ou Nginx) ou todos os servidores usando o Docker Compose.
 stop_servers() {
-    check_docker_installed
+    check_docker_installed || return 1
 
     local server_to_stop="$1"
 
@@ -293,7 +293,7 @@ stop_servers() {
 server_status() {
     local server_to_check="$1"
 
-    check_docker_installed
+    check_docker_installed || return 1
 
     echo -e "\n${CYBER_BLUE}▶ Status dos servidores:${RESET}"
 

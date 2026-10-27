@@ -2,64 +2,69 @@
 
 Esta pasta contém todos os testes automatizados para o ByteBabe CLI.
 
-## 📁 Estrutura Atual
+## Estrutura Atual
 
-```
+```text
 tests/
-├── unit/                 # Testes unitários
-│   └── commands/        # Testes dos comandos principais
-│       ├── hello.test.sh
-│       ├── init.test.sh
-│       ├── backend.test.sh
-│       ├── frontend.test.sh
-│       ├── byteedit.test.sh
-│       ├── db.test.sh
-│       └── docker.test.sh
+├── lib/                   # Helpers compartilhados
+│   └── test_helpers.sh
+├── scripts/
+│   └── run_unit_tests.sh  # Runner de todos os testes
+└── unit/
+    ├── commands/          # Testes estruturais dos comandos
+    └── lib/               # Testes de caracterização de lib/entrypoint
+        ├── core_helpers.test.sh
+        ├── core_modules.test.sh
+        ├── docker_modules.test.sh
+        ├── entrypoint.test.sh
+        ├── flux_parser.test.sh
+        ├── frontend_generators.test.sh
+        ├── pkg_consumers.test.sh
+        ├── source_safety.test.sh
+        ├── spring_generators.test.sh
+        └── ui_consumers.test.sh
 ```
 
-## 🚀 Como Executar
+## Como Executar
 
-### Testes Unitários Individuais
+### Suíte completa
+
 ```bash
-# Executar testes específicos
+bash tests/scripts/run_unit_tests.sh
+```
+
+### Opções do runner
+
+```bash
+bash tests/scripts/run_unit_tests.sh --list
+bash tests/scripts/run_unit_tests.sh --test hello
+bash tests/scripts/run_unit_tests.sh --test core_helpers
+bash tests/scripts/run_unit_tests.sh --verbose
+```
+
+### Testes individuais
+
+```bash
+bash tests/unit/lib/core_helpers.test.sh
+bash tests/unit/lib/entrypoint.test.sh
+bash tests/unit/lib/flux_parser.test.sh
 bash tests/unit/commands/hello.test.sh
-bash tests/unit/commands/init.test.sh
-bash tests/unit/commands/backend.test.sh
-bash tests/unit/commands/frontend.test.sh
-bash tests/unit/commands/byteedit.test.sh
-bash tests/unit/commands/db.test.sh
-bash tests/unit/commands/docker.test.sh
 ```
 
-### Executar Todos os Testes
-```bash
-# Executar todos os testes unitários
-for test_file in tests/unit/commands/*.test.sh; do
-    echo "Executando: $test_file"
-    bash "$test_file"
-    echo "---"
-done
-```
+## Status dos Testes
 
-## 📊 Status dos Testes
+Estado em 2026-10-26:
 
-### ✅ Testes Implementados
-- **hello** - 10/10 testes passando
-- **init** - 10/10 testes passando
-- **backend** - 9/10 testes passando
-- **frontend** - 10/10 testes passando
-- **byteedit** - 10/10 testes passando
-- **db** - 10/10 testes passando
-- **docker** - 10/10 testes passando
+- 19 arquivos de teste.
+- 240 testes, todos passando.
+- 101 testes estruturais em `tests/unit/commands/`.
+- 139 testes de caracterização em `tests/unit/lib/`.
 
-### 🔄 Testes Pendentes
-- **git** - Testes de controle de versão
-- **gh** - Testes do GitHub CLI
-- **devtools** - Testes de ferramentas de desenvolvimento
-- **prime** - Testes de gerenciamento de sistema
-- **flux** - Testes de API
-- **ide** - Testes de gerenciamento de IDE
-- **servers** - Testes de gerenciamento de servidores
+Cobertura atual por arquivo:
+
+- **commands**: backend, byteedit, db, docker, frontend, git, hello, init, prime.
+- **lib**: core helpers, módulos de core, Docker não interativo, entrypoint, parser/validador Flux, geradores Spring/Frontend, consumidores de pacotes, consumidores de UI e source-safety.
+- **CI**: `.github/workflows/validate.yml` executa `bash -n` e a suíte em push e pull request.
 
 ## 🏗️ Estrutura dos Testes
 
@@ -85,6 +90,21 @@ readonly HOME="$TEST_TEMP_DIR"
 - Verificação de comandos e subcomandos
 - Verificação de ajuda integrada
 
+### Testes de Caracterização
+
+Os testes em `tests/unit/lib/` usam `tests/lib/test_helpers.sh`:
+
+```bash
+source "$TEST_DIR/../../lib/test_helpers.sh"
+
+run_test_case "descrição" minha_funcao_de_teste
+show_test_summary
+```
+
+Helpers disponíveis: `setup_test_env`, `cleanup_test_env`, `stub_command`,
+`assert_eq`, `assert_contains`, `assert_not_contains`, `assert_matches`,
+`assert_success`, `assert_failure`, `run_test_case` e `show_test_summary`.
+
 ### Cleanup
 ```bash
 # Limpeza após cada teste
@@ -99,19 +119,22 @@ echo "Passou: $PASSED_TESTS"
 echo "Falhou: $FAILED_TESTS"
 ```
 
-## 🛠️ Ferramentas Utilizadas
+## Ferramentas Utilizadas
 
-- **Bash**: Scripts de teste nativos
-- **grep**: Busca de padrões nos arquivos
-- **test**: Verificações de arquivos e permissões
-- **mktemp**: Criação de diretórios temporários
+- **Bash**: Scripts de teste nativos.
+- **grep**: Busca de padrões nos arquivos.
+- **test**: Verificações de arquivos e permissões.
+- **mktemp**: Criação de diretórios temporários.
+- **timeout**: Limite de execução para smoke tests do entrypoint.
+- **GitHub Actions**: CI de sintaxe e suíte completa.
 
-## 📝 Convenções
+## Convenções
 
 ### Nomenclatura
-- Arquivos de teste: `[comando].test.sh`
-- Funções de teste: `test_[comando]_structure()`
-- Variáveis: `TOTAL_TESTS`, `PASSED_TESTS`, `FAILED_TESTS`
+- Arquivos de teste: `[comando].test.sh`.
+- Funções de teste: `test_[comando]_structure()` ou `test_[comportamento]()`.
+- Variáveis: `TOTAL_TESTS`, `PASSED_TESTS`, `FAILED_TESTS`.
+- Helpers compartilhados ficam em `tests/lib/`; testes de lib em `tests/unit/lib/`.
 
 ### Estrutura de Teste
 ```bash
@@ -200,10 +223,9 @@ git commit -m "test: add unit test for [comando] command
 - [Shell Script Testing](https://www.shellscript.sh/test.html)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 
-## 🎯 Próximos Passos
+## Próximos Passos
 
-1. **Completar testes pendentes** para todos os comandos
-2. **Criar script runner** para executar todos os testes
-3. **Adicionar testes de integração** para fluxos completos
-4. **Implementar relatórios** de cobertura
-5. **Configurar CI/CD** com GitHub Actions 
+1. Ampliar testes de caracterização durante a refatoração de core, Docker, Flux, Spring e Frontend.
+2. Adicionar testes de integração para fluxos completos sem depender de rede, Docker ou Flatpak.
+3. Avaliar cobertura por módulo e relatório de testes.
+4. Manter o CI de sintaxe e suíte como portão obrigatório em pull requests.

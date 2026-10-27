@@ -4,13 +4,16 @@
 source "$BASE_DIR/lib/core/colors.sh"
 source "$BASE_DIR/lib/core/helpers.sh"
 
-# Docker command with proper permissions
-cmd_docker="docker"
-if ! docker ps >/dev/null 2>&1; then
-    cmd_docker="sudo docker"
-fi
+cmd_docker="${cmd_docker:-docker}"
 
 image_harbor() {
+    case "${1:-}" in
+        help|--help|-h)
+            show_image_help
+            return 0
+            ;;
+    esac
+
     # Verify Docker is accessible
     if ! $cmd_docker ps >/dev/null 2>&1; then
         echo -e "${CYBER_RED}Error: Cannot connect to Docker daemon${RESET}"
@@ -104,11 +107,6 @@ list_images_menu() {
                 ;;
         esac
     done
-}
-
-search_images_menu() {
-    echo "Search functionality will be implemented here"
-    read -n 1 -s -r -p "Press any key to continue..."
 }
 
 show_image_stats() {
@@ -1273,14 +1271,16 @@ run_image() {
     read -p "Enter ports to expose (e.g., 8080:80): " ports
     read -p "Enter volume mounts (e.g., /local:/container): " volumes
 
-    local cmd="$cmd_docker run -d"
-    [ -n "$name" ] && cmd+=" --name $name"
-    [ -n "$ports" ] && cmd+=" -p $ports"
-    [ -n "$volumes" ] && cmd+=" -v $volumes"
-    cmd+=" $1"
+    local -a run_args
+    read -r -a run_args <<< "$cmd_docker"
+    run_args+=(run -d)
+    [ -n "$name" ] && run_args+=(--name "$name")
+    [ -n "$ports" ] && run_args+=(-p "$ports")
+    [ -n "$volumes" ] && run_args+=(-v "$volumes")
+    run_args+=("$1")
 
-    echo -e "${CYBER_BLUE}Executing:${RESET} ${CYBER_CYAN}$cmd${RESET}"
-    eval "$cmd"
+    echo -e "${CYBER_BLUE}Executing:${RESET} ${CYBER_CYAN}${run_args[*]}${RESET}"
+    "${run_args[@]}"
 }
 
 tag_image() {

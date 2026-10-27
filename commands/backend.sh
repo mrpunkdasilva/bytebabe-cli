@@ -8,37 +8,6 @@
 source "${BASE_DIR}/lib/core/colors.sh"
 source "${BASE_DIR}/lib/core/helpers.sh"
 
-# ==========================================
-# DETECÇÃO DE SISTEMA E PKG MANAGER
-# ==========================================
-
-detect_pkg_manager() {
-    declare -A pkg_managers=(
-        ["apt"]="/etc/debian_version"
-        ["dnf"]="/etc/redhat-release"
-        ["yum"]="/etc/redhat-release"
-        ["pacman"]="/etc/arch-release"
-        ["zypper"]="/etc/SuSE-release"
-        ["brew"]="$HOME/.linuxbrew"
-    )
-
-    for manager in "${!pkg_managers[@]}"; do
-        if [[ -f "${pkg_managers[$manager]}" ]] || command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    for manager in apt dnf yum pacman zypper brew; do
-        if command -v $manager &> /dev/null; then
-            echo "$manager"
-            return
-        fi
-    done
-
-    echo "unknown"
-}
-
 PKG_MANAGER=$(detect_pkg_manager)
 
 # ==========================================
@@ -564,4 +533,6 @@ main() {
 # INICIALIZAÇÃO
 # ==========================================
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi
