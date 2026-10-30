@@ -124,52 +124,52 @@ case "$1" in
         main "$@"
         ;;
     hello)
-        run_command "${BASE_DIR}/commands/hello.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/hello/main.sh" main "${@:2}"
         ;;
     init)
-        run_command "${BASE_DIR}/commands/init.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/init/main.sh" main "${@:2}"
         ;;
     git)
         run_command "${BASE_DIR}/commands/git/main.sh" main "${@:2}"
         ;;
     frontend)
-        run_command "${BASE_DIR}/commands/frontend.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/frontend/main.sh" main "${@:2}"
         ;;
     backend)
-        run_command "${BASE_DIR}/commands/backend.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/backend/main.sh" main "${@:2}"
         ;;
     spring)
         run_command "${BASE_DIR}/commands/backend/spring/main.sh" main "${@:2}"
         ;;
     servers)
-        run_command "${BASE_DIR}/commands/servers.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/servers/main.sh" main "${@:2}"
         ;;
     db)
-        run_command "${BASE_DIR}/commands/db.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/db/main.sh" main "${@:2}"
         ;;
     datavision|dv)
         run_command "${BASE_DIR}/lib/database/datavision.sh" datavision_main "${@:2}"
         ;;
     edit|byteedit)
-        run_command "${BASE_DIR}/commands/byteedit.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/byteedit/main.sh" main "${@:2}"
         ;;
     ide)
-        run_command "${BASE_DIR}/commands/ide.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/ide/main.sh" main "${@:2}"
         ;;
     devtools)
-        run_command "${BASE_DIR}/commands/devtools.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/devtools/main.sh" main "${@:2}"
         ;;
     docker)
-        run_command "${BASE_DIR}/commands/docker.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/docker/main.sh" main "${@:2}"
         ;;
     prime|pm)
-        run_command "${BASE_DIR}/commands/prime.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/prime/main.sh" main "${@:2}"
         ;;
     gh|github)
-        run_command "${BASE_DIR}/commands/gh.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/gh/main.sh" main "${@:2}"
         ;;
     flux)
-        run_command "${BASE_DIR}/commands/flux.sh" main "${@:2}"
+        run_command "${BASE_DIR}/commands/flux/main.sh" main "${@:2}"
         ;;
     --version|-v)
         show_version

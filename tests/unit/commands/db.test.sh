@@ -75,7 +75,7 @@ cleanup() {
 test_db_structure() {
     log "INFO" "Executando testes de estrutura do comando db..."
     
-    local db_file="$BASE_DIR/commands/db.sh"
+    local db_file="$BASE_DIR/commands/db/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "db command exists" \

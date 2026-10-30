@@ -75,7 +75,7 @@ cleanup() {
 test_init_structure() {
     log "INFO" "Executando testes de estrutura do comando init..."
     
-    local init_file="$BASE_DIR/commands/init.sh"
+    local init_file="$BASE_DIR/commands/init/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "init command exists" \

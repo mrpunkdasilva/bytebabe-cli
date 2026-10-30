@@ -11,7 +11,7 @@ source "${BASE_DIR}/lib/core/helpers.sh"
 source "${BASE_DIR}/lib/utils/config.sh"
 source "${BASE_DIR}/lib/utils/headers.sh"
 source "${BASE_DIR}/lib/utils/nvm.sh"
-source "${BASE_DIR}/commands/neovim_tools.sh"
+source "${BASE_DIR}/commands/neovim_tools/main.sh"
 
 # ======================
 # CONFIGURAÇÕES BÁSICAS

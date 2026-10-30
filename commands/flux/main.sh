@@ -42,7 +42,7 @@ main() {
             show_history_menu
             ;;
         "server")
-            local server_script="${BASE_DIR}/commands/json-server.sh"
+            local server_script="${BASE_DIR}/commands/json-server/main.sh"
             if [[ ! -x "$server_script" ]]; then
                 echo -e "${CYBER_YELLOW}[i] Corrigindo permissões do script json-server.sh...${RESET}"
                 if ! chmod +x "$server_script"; then

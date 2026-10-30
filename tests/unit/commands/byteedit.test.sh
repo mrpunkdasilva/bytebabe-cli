@@ -75,7 +75,7 @@ cleanup() {
 test_byteedit_structure() {
     log "INFO" "Executando testes de estrutura do comando byteedit..."
     
-    local byteedit_file="$BASE_DIR/commands/byteedit.sh"
+    local byteedit_file="$BASE_DIR/commands/byteedit/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "byteedit command exists" \

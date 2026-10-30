@@ -75,7 +75,7 @@ cleanup() {
 test_backend_structure() {
     log "INFO" "Executando testes de estrutura do comando backend..."
     
-    local backend_file="$BASE_DIR/commands/backend.sh"
+    local backend_file="$BASE_DIR/commands/backend/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "backend command exists" \

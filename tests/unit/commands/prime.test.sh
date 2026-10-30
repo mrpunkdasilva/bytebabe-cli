@@ -73,7 +73,7 @@ cleanup() {
 test_prime_structure() {
     log "INFO" "Executando testes de estrutura do comando prime..."
     
-    local prime_file="$BASE_DIR/commands/prime.sh"
+    local prime_file="$BASE_DIR/commands/prime/main.sh"
     
     # Teste 1: Arquivo prime.sh existe
     run_test "prime.sh exists" \

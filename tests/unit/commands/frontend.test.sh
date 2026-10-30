@@ -75,7 +75,7 @@ cleanup() {
 test_frontend_structure() {
     log "INFO" "Executando testes de estrutura do comando frontend..."
     
-    local frontend_file="$BASE_DIR/commands/frontend.sh"
+    local frontend_file="$BASE_DIR/commands/frontend/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "frontend command exists" \

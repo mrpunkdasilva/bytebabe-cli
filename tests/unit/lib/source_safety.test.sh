@@ -69,7 +69,7 @@ test_devtools_modules_expose_entrypoints() {
 }
 
 test_devtools_command_calls_modules_in_subshells() {
-    local command_file="$BASE_DIR/commands/devtools.sh"
+    local command_file="$BASE_DIR/commands/devtools/main.sh"
     local item module entry
     for item in "${DEVTOOLS_MODULES[@]}"; do
         module="${item%%:*}"
@@ -80,7 +80,7 @@ test_devtools_command_calls_modules_in_subshells() {
 }
 
 test_prime_dispatches_module_runners() {
-    local command_file="$BASE_DIR/commands/prime.sh"
+    local command_file="$BASE_DIR/commands/prime/main.sh"
     local call
     for call in "run_quarantine" "run_backup" "run_log" "run_list" "run_info" "run_stats" "direct_mode"; do
         assert_success "prime deve chamar $call" grep -qF "$call \"\$@\"" "$command_file"
@@ -89,14 +89,14 @@ test_prime_dispatches_module_runners() {
 
 test_prime_has_no_exit() {
     assert_failure "prime não deve usar exit" \
-        grep -qE '\bexit\b' "$BASE_DIR/commands/prime.sh"
+        grep -qE '\bexit\b' "$BASE_DIR/commands/prime/main.sh"
 }
 
 test_prime_invalid_command_returns_failure() {
     local status
     if env -i PATH="$PATH" HOME="$HOME" BASE_DIR="$BASE_DIR" \
         /bin/bash --noprofile --norc -c \
-        'source "$1"; main comando-invalido' _ "$BASE_DIR/commands/prime.sh" >/dev/null 2>&1; then
+        'source "$1"; main comando-invalido' _ "$BASE_DIR/commands/prime/main.sh" >/dev/null 2>&1; then
         status=0
     else
         status=$?
@@ -106,7 +106,7 @@ test_prime_invalid_command_returns_failure() {
 
 test_legacy_command_entrypoints_have_no_exit() {
     local relative
-    for relative in commands/db.sh commands/servers.sh commands/json-server.sh commands/git/main.sh; do
+    for relative in commands/db/main.sh commands/servers/main.sh commands/json-server/main.sh commands/git/main.sh; do
         assert_failure "$relative não deve usar exit" \
             grep -qE '\bexit\b' "$BASE_DIR/$relative"
     done

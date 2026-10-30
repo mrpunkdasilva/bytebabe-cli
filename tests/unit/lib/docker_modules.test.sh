@@ -9,7 +9,7 @@ TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=../../lib/test_helpers.sh
 source "$TEST_DIR/../../lib/test_helpers.sh"
 
-DOCKER_COMMAND="$BASE_DIR/commands/docker.sh"
+DOCKER_COMMAND="$BASE_DIR/commands/docker/main.sh"
 DOCKER_HELPERS="$BASE_DIR/lib/docker/helpers.sh"
 DOCKER_UI="$BASE_DIR/lib/docker/ui.sh"
 DOCKER_CONTAINERS="$BASE_DIR/lib/docker/containers.sh"
@@ -155,7 +155,7 @@ test_container_list_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         container_commander ls -a
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-list.log" 2>&1)
@@ -171,7 +171,7 @@ test_container_running_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         container_commander running
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-running.log" >/dev/null 2>&1
@@ -187,7 +187,7 @@ test_container_action_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         container_commander stop web
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-stop.log" >/dev/null 2>&1
@@ -201,7 +201,7 @@ test_container_invalid_action_returns_one() {
     if run_isolated_bash '
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         container_commander acao_invalida
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-invalid.log" >/dev/null 2>&1; then
@@ -217,7 +217,7 @@ test_compose_help_does_not_require_compose() {
     local output status
     if output=$(run_isolated_bash '
         set -euo pipefail
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         handle_compose_command help
     ' "$BASE_DIR" 2>&1); then
         status=0
@@ -235,7 +235,7 @@ test_compose_dispatch_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         handle_compose_command up -d
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-compose.log" >/dev/null 2>&1
@@ -251,7 +251,7 @@ test_compose_missing_returns_one() {
         export DOCKER_LOG="$3"
         export PATH="$2"
         export FAKE_COMPOSE_MISSING=1
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         handle_compose_command up
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-no-compose.log" >/dev/null 2>&1; then
@@ -269,7 +269,7 @@ test_volume_list_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         volume_commander list
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-volume-list.log" >/dev/null 2>&1
@@ -284,7 +284,7 @@ test_volume_lifecycle_non_interactive() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         volume_commander create data
         volume_commander rm data -f
@@ -302,7 +302,7 @@ test_volume_invalid_name_returns_one() {
     if run_isolated_bash '
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         volume_commander create "nome invalido"
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-volume-invalid.log" >/dev/null 2>&1; then
@@ -335,7 +335,7 @@ test_run_image_builds_arguments_without_eval() {
         set -euo pipefail
         export DOCKER_LOG="$3"
         export PATH="$2"
-        source "$1/commands/docker.sh"
+        source "$1/commands/docker/main.sh"
         configure_docker >/dev/null
         printf "web-check\n8080:80\n\n" | run_image nginx
     ' "$BASE_DIR" "$TEST_STUB_DIR" "$TEST_TMP_DIR/docker-run.log" >/dev/null 2>&1

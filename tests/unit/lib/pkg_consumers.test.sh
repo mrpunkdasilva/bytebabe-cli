@@ -15,7 +15,7 @@ CORE_PKG_FILE="$BASE_DIR/lib/core/pkg.sh"
 HELPERS_FILE="$BASE_DIR/lib/core/helpers.sh"
 
 PACKAGE_CONSUMERS=(
-    "commands/backend.sh"
+    "commands/backend/main.sh"
     "lib/devtools/api_services.sh"
     "lib/devtools/browser_services.sh"
     "lib/devtools/database_services.sh"

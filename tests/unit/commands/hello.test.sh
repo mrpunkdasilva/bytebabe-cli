@@ -75,7 +75,7 @@ cleanup() {
 test_hello_structure() {
     log "INFO" "Executando testes de estrutura do comando hello..."
     
-    local hello_file="$BASE_DIR/commands/hello.sh"
+    local hello_file="$BASE_DIR/commands/hello/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "hello command exists" \

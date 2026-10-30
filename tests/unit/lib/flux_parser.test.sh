@@ -45,12 +45,12 @@ test_flux_files_are_source_safe() {
         assert_eq 0 "$status" "source de ${file#$BASE_DIR/} deve retornar 0"
         assert_eq "" "$output" "source de ${file#$BASE_DIR/} não deve produzir saída"
     done < <(find "$FLUX_DIR" -name '*.sh' -type f | sort)
-    assert_success "commands/flux.sh deve ser source-safe" \
-        /bin/bash --noprofile --norc -c 'BASE_DIR="$1"; source "$2"' _ "$BASE_DIR" "$BASE_DIR/commands/flux.sh"
+    assert_success "commands/flux/main.sh deve ser source-safe" \
+        /bin/bash --noprofile --norc -c 'BASE_DIR="$1"; source "$2"' _ "$BASE_DIR" "$BASE_DIR/commands/flux/main.sh"
 }
 
 test_flux_has_no_eval_or_legacy_source() {
-    local files=("$FLUX_DIR" "$BASE_DIR/commands/flux.sh")
+    local files=("$FLUX_DIR" "$BASE_DIR/commands/flux/main.sh")
     assert_success "Flux não deve usar eval" \
         bash -c '! grep -RInE "\beval\b" "$@"' _ "${files[@]}"
     assert_success "Flux não deve referenciar postFeature/main.sh" \
@@ -304,7 +304,7 @@ test_history_source_has_no_side_effects() {
 test_flux_help_returns_zero() {
     local output status
     if output=$(timeout 5 /bin/bash --noprofile --norc -c \
-        'BASE_DIR="$1"; source "$BASE_DIR/commands/flux.sh"; main help' _ "$BASE_DIR" 2>&1); then
+        'BASE_DIR="$1"; source "$BASE_DIR/commands/flux/main.sh"; main help' _ "$BASE_DIR" 2>&1); then
         status=0
     else
         status=$?

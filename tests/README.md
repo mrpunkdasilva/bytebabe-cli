@@ -184,13 +184,13 @@ bash tests/unit/commands/hello.test.sh
 ### Verificar Estrutura
 ```bash
 # Verificar se arquivo existe
-test -f commands/hello.sh
+test -f commands/hello/main.sh
 
 # Verificar se é executável
-test -x commands/hello.sh
+test -x commands/hello/main.sh
 
 # Verificar conteúdo
-grep -q "main()" commands/hello.sh
+grep -q "main()" commands/hello/main.sh
 ```
 
 ## 🤝 Contribuindo

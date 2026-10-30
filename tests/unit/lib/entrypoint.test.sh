@@ -77,22 +77,22 @@ test_unknown_command_falls_back_to_help() {
 test_source_guards_exist() {
     local relative file
     local commands=(
-        commands/backend.sh
+        commands/backend/main.sh
         commands/backend/spring/main.sh
-        commands/byteedit.sh
-        commands/db.sh
-        commands/devtools.sh
-        commands/docker.sh
-        commands/flux.sh
-        commands/frontend.sh
-        commands/gh.sh
+        commands/byteedit/main.sh
+        commands/db/main.sh
+        commands/devtools/main.sh
+        commands/docker/main.sh
+        commands/flux/main.sh
+        commands/frontend/main.sh
+        commands/gh/main.sh
         commands/git/main.sh
-        commands/hello.sh
-        commands/ide.sh
-        commands/init.sh
-        commands/json-server.sh
-        commands/prime.sh
-        commands/servers.sh
+        commands/hello/main.sh
+        commands/ide/main.sh
+        commands/init/main.sh
+        commands/json-server/main.sh
+        commands/prime/main.sh
+        commands/servers/main.sh
     )
 
     for relative in "${commands[@]}"; do
@@ -105,22 +105,22 @@ test_source_guards_exist() {
 test_command_modules_expose_main() {
     local relative file
     local commands=(
-        commands/backend.sh
+        commands/backend/main.sh
         commands/backend/spring/main.sh
-        commands/byteedit.sh
-        commands/db.sh
-        commands/devtools.sh
-        commands/docker.sh
-        commands/flux.sh
-        commands/frontend.sh
-        commands/gh.sh
+        commands/byteedit/main.sh
+        commands/db/main.sh
+        commands/devtools/main.sh
+        commands/docker/main.sh
+        commands/flux/main.sh
+        commands/frontend/main.sh
+        commands/gh/main.sh
         commands/git/main.sh
-        commands/hello.sh
-        commands/ide.sh
-        commands/init.sh
-        commands/json-server.sh
-        commands/prime.sh
-        commands/servers.sh
+        commands/hello/main.sh
+        commands/ide/main.sh
+        commands/init/main.sh
+        commands/json-server/main.sh
+        commands/prime/main.sh
+        commands/servers/main.sh
     )
 
     for relative in "${commands[@]}"; do
@@ -142,22 +142,22 @@ test_dispatch_does_not_pass_args_to_source() {
 test_commands_source_without_side_effects() {
     local relative file output status
     local commands=(
-        commands/backend.sh
+        commands/backend/main.sh
         commands/backend/spring/main.sh
-        commands/byteedit.sh
-        commands/db.sh
-        commands/devtools.sh
-        commands/docker.sh
-        commands/flux.sh
-        commands/frontend.sh
-        commands/gh.sh
+        commands/byteedit/main.sh
+        commands/db/main.sh
+        commands/devtools/main.sh
+        commands/docker/main.sh
+        commands/flux/main.sh
+        commands/frontend/main.sh
+        commands/gh/main.sh
         commands/git/main.sh
-        commands/hello.sh
-        commands/ide.sh
-        commands/init.sh
-        commands/json-server.sh
-        commands/prime.sh
-        commands/servers.sh
+        commands/hello/main.sh
+        commands/ide/main.sh
+        commands/init/main.sh
+        commands/json-server/main.sh
+        commands/prime/main.sh
+        commands/servers/main.sh
     )
 
     for relative in "${commands[@]}"; do

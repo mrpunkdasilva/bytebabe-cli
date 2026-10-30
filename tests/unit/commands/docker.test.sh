@@ -75,7 +75,7 @@ cleanup() {
 test_docker_structure() {
     log "INFO" "Executando testes de estrutura do comando docker..."
     
-    local docker_file="$BASE_DIR/commands/docker.sh"
+    local docker_file="$BASE_DIR/commands/docker/main.sh"
     
     # Teste 1: Arquivo existe
     run_test "docker command exists" \
