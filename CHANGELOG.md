@@ -8,6 +8,8 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-30
+
 ### Added
 - Pasta `spec/` com PRD, arquitetura, specs dos 11 módulos, cenários BDD e templates SDD/OpenSpec
 
@@ -27,6 +29,8 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 - Módulos de `pkg` e `devtools` passam a ser source-safe; `prime` despacha backup/log/service/list/info/quarantine/stats e retorna `1` em comando inválido
 - Entrypoints `db`, `servers`, `json-server`, `git` e `datavision` não usam mais `exit` em funções reutilizáveis
 - Falhas em `servers_services`, `db_services`, `clean`, `neo` e `check_root` propagam status sem encerrar o shell
+- Todos os comandos reorganizados em pastas com `main.sh` (`commands/<nome>/main.sh`), seguindo o padrão de `backend` e `git`
+- `bin/bytebabe` atualizado com novos caminhos de entrypoint e versão 1.5.0
 
 ## [1.4.0] - 2026-10-26
 

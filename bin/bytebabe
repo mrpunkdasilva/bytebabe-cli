@@ -23,7 +23,7 @@ if [ $# -gt 0 ]; then
     fi
 fi
 
-VERSION="1.4.0"
+VERSION="1.5.0"
 
 # Show version information
 show_version() {
