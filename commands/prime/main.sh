@@ -124,6 +124,12 @@ case $1 in
     run_stats "$@"
     ;;
 
+  sysinfo|sys)
+    shift
+    source "$BASE_DIR/lib/pkg/sysinfo/main.sh"
+    run_sysinfo "$@"
+    ;;
+
   # 🆘 HELP SYSTEM
   help|--help|-h)
     show_help
