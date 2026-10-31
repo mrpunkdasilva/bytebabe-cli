@@ -132,6 +132,14 @@ case $1 in
         echo -e "╚══════════════════════════════════════════════════╝${RESET}"
         gh_prs
         ;;
+    merge)
+        show_github_header
+        show_cyber_message
+        echo -e "${CYBER_PINK}╔══════════════════════════════════════════════════╗"
+        echo -e "║${CYBER_CYAN}  FUNDINDO REALIDADES NA LINHA TEMPORAL PRINCIPAL...  ${CYBER_PINK}"
+        echo -e "╚══════════════════════════════════════════════════╝${RESET}"
+        gh_merge "${@:2}"
+        ;;
     status)
         show_github_header
         show_cyber_message
@@ -247,6 +255,7 @@ case $1 in
         echo -e "  ${CYBER_GREEN}checkout${RESET}        - Altera para uma dimensão paralela de código"
         echo -e "  ${CYBER_GREEN}pr${RESET}              - Inicia protocolo de fusão de realidades"
                 echo -e "  ${CYBER_GREEN}prs${RESET}             - Escaneia portais interdimensionais abertos"
+        echo -e "  ${CYBER_GREEN}merge${RESET}           - Funde um pull request na linha principal"
         echo -e "  ${CYBER_GREEN}status${RESET}          - Analisa o estado quântico do repositório"
         echo
         echo -e "${CYBER_BLUE}[${CYBER_PINK}⚡${CYBER_BLUE}] ${CYBER_YELLOW}PROTOCOLOS AVANÇADOS:${RESET}"
@@ -283,23 +292,25 @@ case $1 in
         echo -e "╚══════════════════════════════════════════════════╝${RESET}"
         ;;
 esac
+local cmd_status=$?
 
 # Função para exibir uma barra de progresso cyberpunk
 cyber_progress() {
     local duration=$1
     local steps=20
-    local delay=$(echo "$duration/$steps" | bc -l)
+    local delay
+    delay=$(awk -v d="$duration" -v s="$steps" 'BEGIN {printf "%.3f", d / s}')
 
     echo -ne "${CYBER_BLUE}["
     for ((i=0; i<steps; i++)); do
         echo -ne "${CYBER_PINK}▓"
-        sleep $delay
+        sleep "$delay"
     done
     echo -e "${CYBER_BLUE}] ${CYBER_GREEN}100%${RESET}"
 }
 
 # Exibe uma mensagem de encerramento se o comando foi bem-sucedido
-if [ $? -eq 0 ] && [ "$1" != "" ] && [ "$1" != "help" ]; then
+if [ "$cmd_status" -eq 0 ] && [ "$1" != "" ] && [ "$1" != "help" ]; then
     echo
     echo -e "${CYBER_BLUE}[${CYBER_PINK}⚡${CYBER_BLUE}] ${CYBER_GREEN}Operação concluída com sucesso.${RESET}"
     echo -e "${CYBER_BLUE}[${CYBER_PINK}⚡${CYBER_BLUE}] ${CYBER_GREEN}Desconectando da matriz GitHub...${RESET}"
@@ -309,6 +320,7 @@ if [ $? -eq 0 ] && [ "$1" != "" ] && [ "$1" != "help" ]; then
     echo -e "╚══════════════════════════════════════════════════╝${RESET}"
 fi
 
+return "$cmd_status"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
