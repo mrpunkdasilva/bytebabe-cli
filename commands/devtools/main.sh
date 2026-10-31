@@ -34,7 +34,8 @@ show_devtools_menu() {
     echo -e "2) Database Tools (DBeaver/MongoDB Compass/pgAdmin/MySQL)"
     echo -e "3) Browser Tools (Chrome/Firefox/Brave/Edge/Vivaldi)"
     echo -e "4) API Tools (curl/httpie/jq/yq/grpcurl/websocat)"
-    echo -e "5) Ajuda"
+    echo -e "5) Instalar Docker"
+    echo -e "6) Ajuda"
     echo -e "0) Voltar${RESET}"
     echo ""
     cyber_divider
@@ -64,6 +65,29 @@ call_api_tools() {
     ( source "$BASE_DIR/lib/devtools/api_services.sh"; api_services_main "$@" )
 }
 
+call_docker_install() {
+    echo -e "${CYBER_BLUE}${CYBER_BOLD}  🐳 INSTALADOR DO DOCKER${RESET}"
+    echo -e "${CYBER_GRAY}  Requer privilégios de administrador (sudo).${RESET}"
+    cyber_divider
+    read -r -p $'\e[1;35m  ⌘ DESEJA CONTINUAR? (s/n): \e[0m' resposta
+
+    if [[ ! "$resposta" =~ ^[Ss]$ ]]; then
+        echo -e "${CYBER_YELLOW}  ⚠ Instalação do Docker ignorada.${RESET}"
+        return 0
+    fi
+
+    echo -e "${CYBER_PINK}  ⚡ Executando instalador upstream...${RESET}"
+    cyber_divider
+    if env -u VERSION bash "$BASE_DIR/lib/utils/get_docker.sh"; then
+        cyber_divider
+        echo -e "${CYBER_ICON_SUCCESS} ${CYBER_GREEN}${CYBER_BOLD}Docker instalado com sucesso!${RESET}"
+    else
+        cyber_divider
+        echo -e "${CYBER_ICON_ERROR} ${CYBER_RED}${CYBER_BOLD}Falha na instalação do Docker.${RESET}"
+        return 1
+    fi
+}
+
 # ==========================================
 # PROCESSAMENTO DE COMANDOS
 # ==========================================
@@ -85,6 +109,9 @@ process_command() {
         "api"|"api-tools"|"a")
             call_api_tools "${@:2}"
             ;;
+        "docker"|"install-docker")
+            call_docker_install
+            ;;
         *)
             echo -e "${CYBER_RED}✘ Comando inválido! Use 'help' para ver as opções${RESET}"
             ;;
@@ -99,6 +126,7 @@ show_help() {
     echo -e "  ${CYBER_PINK}database, db, d${RESET}     - Ferramentas de banco de dados (DBeaver, MongoDB Compass, pgAdmin, MySQL)"
     echo -e "  ${CYBER_PINK}browser, bwsr, b${RESET}    - Ferramentas de navegador (Chrome, Firefox, Brave, Edge, Vivaldi)"
     echo -e "  ${CYBER_PINK}api, api-tools, a${RESET}   - Ferramentas de API (curl, httpie, jq, yq, grpcurl, websocat)"
+    echo -e "  ${CYBER_PINK}docker, install-docker${RESET} - Instala o Docker"
     echo -e "  ${CYBER_PINK}help, h${RESET}             - Mostra esta ajuda"
     echo -e "\nEXEMPLOS:"
     echo -e "  ${CYBER_YELLOW}bytebabe devtools terminal all${RESET}  ou  ${CYBER_YELLOW}bytebabe devtools t all"
@@ -124,7 +152,8 @@ main() {
                 2) call_database_tools ;;
                 3) call_browser_tools ;;
                 4) call_api_tools ;;
-                5) show_help ;;
+                5) call_docker_install ;;
+                6) show_help ;;
                 0) break ;;
                 *)
                     echo -e "${CYBER_RED}✘ Opção inválida!${RESET}"
