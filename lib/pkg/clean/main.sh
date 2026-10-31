@@ -94,6 +94,14 @@ deep_clean() {
       echo -e "${CYBER_GREEN}✔ Docker cleanup complete${NC}"
     fi
 
+    # Limpeza de flatpak (se instalado)
+    if command -v flatpak &>/dev/null; then
+      echo -e "\n${CYBER_YELLOW}📦 CLEANING FLATPAK...${NC}"
+      flatpak uninstall --unused -y 2>/dev/null
+      rm -rf ~/.var/app/*/cache/* 2>/dev/null
+      echo -e "${CYBER_GREEN}✔ Flatpak cleanup complete${NC}"
+    fi
+
     echo -e "\n${CYBER_GREEN}✅ DEEP PURGE COMPLETE!${NC}"
   else
     echo -e "\n${CYBER_BLUE}🚫 PURGE SEQUENCE ABORTED!${NC}"
