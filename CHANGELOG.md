@@ -21,7 +21,7 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 - Refatoração incremental para centralizar helpers em `lib/core/` e padronizar o contrato de source/dispatch dos comandos
 - Docker, Flux, Spring e Frontend passam a usar um único dispatcher canônico, com duplicatas arquivadas em `archive/legacy/`
 - Frontend detecta npm, pnpm, yarn e bun via `detect_node_pkg_manager`
-- Suíte ampliada para 240 testes em 19 arquivos, com CI de sintaxe e testes
+- Suíte ampliada para 244 testes em 20 arquivos, com CI de sintaxe e testes
 - TUI antiga em `dialog` arquivada em `archive/legacy/core/` por não ter chamadores
 - Criação de containers/imagens Docker sem `eval`, usando arrays de argumentos
 - Gerenciamento de volumes Docker (`ls`, `create`, `inspect`, `rm`, `prune`) com menu e comandos diretos
