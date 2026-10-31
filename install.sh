@@ -8,13 +8,14 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configurações
-VERSION="1.4.0"
+VERSION="1.5.0"
 REPO_URL="https://github.com/mrpunkdasilva/bytebabe-cli"
 TARBALL_URL="${REPO_URL}/releases/download/v${VERSION}/bytebabe-${VERSION}.tar.gz"
 TEMP_DIR="/tmp/bytebabe-install"
 INSTALL_DIR="/opt/bytebabe"
 BIN_DIR="/usr/local/bin"
 EXECUTABLE="bytebabe"
+SHORT_EXECUTABLE="bb"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd)"
 
 echo -e "${BLUE}⚡ Instalando ByteBabe CLI v${VERSION}...${NC}"
@@ -69,11 +70,12 @@ sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
 # Cria link simbólico
 echo -e "${BLUE}🔗 Criando link simbólico...${NC}"
 sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
+sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${SHORT_EXECUTABLE}"
 hash -r 2>/dev/null || true
 
 # Limpa arquivos temporários
 [ -d "$TEMP_DIR" ] && rm -rf "$TEMP_DIR"
 
 echo -e "${GREEN}✔ ByteBabe CLI instalado com sucesso!${NC}"
-echo -e "${BLUE}➜ Execute 'bytebabe --version' para testar${NC}"
+echo -e "${BLUE}➜ Execute 'bytebabe --version' ou 'bb --version' para testar${NC}"
 echo -e "${BLUE}➜ Execute 'bytebabe init' para começar${NC}"
