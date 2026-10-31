@@ -52,9 +52,16 @@ fi
 exec "$@"
 SCRIPT
 
-    cat > "$TEST_STUB_DIR/jq" <<'SCRIPT'
+    local real_jq
+    real_jq="$(PATH="${TEST_ORIGINAL_PATH:-$PATH}" command -v jq 2>/dev/null || true)"
+    cat > "$TEST_STUB_DIR/jq" <<SCRIPT
 #!/bin/bash
-cat
+if [[ -n "$real_jq" && -x "$real_jq" ]]; then
+    exec "$real_jq" "\$@"
+fi
+if [[ -p /dev/stdin ]]; then
+    cat
+fi
 SCRIPT
 
     cat > "$TEST_STUB_DIR/less" <<'SCRIPT'
