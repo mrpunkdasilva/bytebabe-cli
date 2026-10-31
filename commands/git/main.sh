@@ -158,7 +158,20 @@ main_navigation() {
     done
 }
 
+show_status_only() {
+    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "${CYBER_RED}✗ No Git repository found${RESET}"
+        return 1
+    fi
+    git status
+}
+
 main() {
+    if [[ "${1:-}" == "status" ]]; then
+        show_status_only
+        return
+    fi
+
     setup_repository || return 1
     main_navigation
 }
