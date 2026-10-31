@@ -122,14 +122,16 @@ install_docker() {
     
     if [[ "$resposta" =~ ^[Ss]$ ]]; then
         echo -e "${CYBER_BLUE}Instalando Docker...${RESET}"
-        source "$BASE_DIR/lib/utils/get_docker.sh"
+        if env -u VERSION bash "$BASE_DIR/lib/utils/get_docker.sh"; then
+            # Configura usuário
+            sudo usermod -aG docker "$USER" 2>/dev/null || true
+            echo -e "${CYBER_GREEN}✔ Docker instalado${RESET}"
+            echo -e "${CYBER_ORANGE}⚠ Reinicie o terminal para usar Docker sem sudo${RESET}"
 
-        # Configura usuário
-        sudo usermod -aG docker $USER
-        echo -e "${CYBER_GREEN}✔ Docker instalado"
-        echo -e "${CYBER_ORANGE}⚠ Reinicie o terminal para usar Docker sem sudo${RESET}"
-
-        save_config "DOCKER_INSTALLED" "true"
+            save_config "DOCKER_INSTALLED" "true"
+        else
+            echo -e "${CYBER_RED}✖ Falha ao instalar o Docker.${RESET}"
+        fi
     else
         echo -e "${CYBER_YELLOW}Instalação do Docker ignorada.${RESET}"
     fi

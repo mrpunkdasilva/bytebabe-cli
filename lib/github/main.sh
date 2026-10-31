@@ -489,12 +489,45 @@ gh_pr() {
     fi
 
     echo -e "${BLUE}Criando pull request de $current_branch para $base...${NC}"
-    gh pr create --title "$title" --base "$base"
+    local body
+    body=$(git log --format='- %s' "origin/$base..HEAD" 2>/dev/null || git log --format='- %s' "$base..HEAD" 2>/dev/null)
+    gh pr create --title "$title" --base "$base" --body "${body:-$title}"
 
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}Pull request criado com sucesso!${NC}"
     else
         echo -e "${RED}Falha ao criar pull request!${NC}"
+        return 1
+    fi
+}
+
+# Faz merge de um pull request (padrão: PR da branch atual)
+gh_merge() {
+    if ! check_gh_cli; then
+        return 1
+    fi
+
+    local target=${1:-}
+    local method=${2:-merge}
+
+    case "$method" in
+        merge|squash|rebase) ;;
+        *)
+            echo -e "${RED}Método inválido: $method${NC}"
+            echo -e "Uso: bytebabe gh merge [número|branch] [merge|squash|rebase]"
+            return 1
+            ;;
+    esac
+
+    local args=(pr merge)
+    [ -n "$target" ] && args+=("$target")
+    args+=("--$method")
+
+    echo -e "${BLUE}Fazendo merge (${method}) do pull request ${target:-da branch atual}...${NC}"
+    if gh "${args[@]}"; then
+        echo -e "${GREEN}Merge concluído com sucesso!${NC}"
+    else
+        echo -e "${RED}Falha ao fazer merge do pull request!${NC}"
         return 1
     fi
 }
@@ -542,5 +575,6 @@ gh_help() {
     echo -e "  ${GREEN}checkout${NC}  - Troca para outra branch (ex: bytebabe gh checkout branch)"
     echo -e "  ${GREEN}pr${NC}        - Cria um pull request (ex: bytebabe gh pr \"título\" [base])"
     echo -e "  ${GREEN}prs${NC}       - Lista pull requests abertos"
+    echo -e "  ${GREEN}merge${NC}     - Faz merge de um PR (ex: bytebabe gh merge [número|branch] [merge|squash|rebase])"
     echo -e "  ${GREEN}status${NC}    - Mostra o status do repositório"
 }

@@ -137,6 +137,11 @@ test_git_structure() {
     run_test "git has quick actions" \
         "grep -q 'show_quick_actions' '$git_main_file'" \
         "ações rápidas encontradas"
+
+    # Teste 13: Subcomando status não passa pelo menu interativo
+    run_test "git has status subcommand" \
+        "grep -q 'show_status_only' '$git_main_file'" \
+        "subcomando status encontrado"
 }
 
 # Função para mostrar resumo

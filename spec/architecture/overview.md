@@ -144,7 +144,7 @@ Implementação real por domínio:
 - Runner: `tests/scripts/run_unit_tests.sh`.
 - Testes por comando em `tests/unit/commands/*.test.sh`.
 - Estrutura: setup, testes estruturais, testes funcionais, cleanup e relatório.
-- Cobertura atual: 19 arquivos, 240 testes (101 estruturais e 139 de caracterização).
+- Cobertura atual: 20 arquivos, 244 testes (105 estruturais e 139 de caracterização).
 
 ## Restrições e riscos arquiteturais
 

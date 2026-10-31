@@ -55,9 +55,9 @@ bash tests/unit/commands/hello.test.sh
 
 Estado em 2026-10-26:
 
-- 19 arquivos de teste.
-- 240 testes, todos passando.
-- 101 testes estruturais em `tests/unit/commands/`.
+- 20 arquivos de teste.
+- 244 testes, todos passando.
+- 105 testes estruturais em `tests/unit/commands/`.
 - 139 testes de caracterização em `tests/unit/lib/`.
 
 Cobertura atual por arquivo:

@@ -53,9 +53,9 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 ### ⚙️ System Management (Prime Module)
 - Package management (install, upgrade, remove)
 - Security tools (firewall, scan, quarantine)
-- System utilities (clean, backup, network)
+- System utilities (clean, backup, network); deep clean also removes unused Flatpak runtimes and cache
 - Service control and monitoring
-- System information and stats
+- System overview with `prime sysinfo`: OS, CPU, RAM/disk usage bars, environment and network
 
 ### 🌐 Backend Development
 - Multi-language runtime support (Node.js, Python, Java, Go, Rust, PHP)
@@ -91,12 +91,13 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 
 ### Prerequisites
 - 🐧 Linux/Unix or WSL (Windows Subsystem for Linux)
-- 🐚 Bash 4+
+- 🐚 Bash 5+
 - 📦 Git
-- 🌐 curl or wget
-- 🐳 Docker (optional)
+- 🌐 curl or wget (required when installing from the release)
+- 🔑 `sudo` (the installer copies files to `/opt` and creates a symlink in `/usr/local/bin`)
+- 🐳 Docker (optional; can also be installed later with `bytebabe devtools docker`)
 
-### Quick Install (release v1.4.0)
+### Quick Install (release v1.5.0)
 ```bash
 # Using curl
 curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
@@ -105,31 +106,57 @@ curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/ins
 wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
 ```
 
+The script downloads `bytebabe-1.5.0.tar.gz` from the GitHub release and installs it.
+
 ### Manual Installation (recommended for development)
 ```bash
 # Clone the repository
 git clone https://github.com/mrpunkdasilva/bytebabe-cli.git
 cd bytebabe-cli
 
-# Run the installer
+# Run the installer (asks for sudo password)
 ./install.sh
+
+# Refresh the shell command cache and check the version
+hash -r
+bytebabe --version
 ```
 
-The installer copies the CLI to `/opt/bytebabe` and creates the global symlink at
-`/usr/local/bin/bytebabe`. When run inside the clone, it installs the local code
-instead of downloading the release.
+When `install.sh` runs inside the clone, it installs the local code instead of downloading the release.
+
+### What the installer does
+1. Copies the CLI files to `/opt/bytebabe`, replacing any previous installation.
+2. Removes `archive/` from the installed copy.
+3. Makes `bin/bytebabe` executable.
+4. Creates the global symlinks `/usr/local/bin/bytebabe` and `/usr/local/bin/bb` pointing to `/opt/bytebabe/bin/bytebabe`.
+
+### Updating an existing installation
+The global `bytebabe` command runs the copy in `/opt/bytebabe`, not the clone. After pulling new changes, run `./install.sh` again inside the clone; otherwise the global command keeps the old code.
+
+To check which copy your shell runs:
+```bash
+command -v bytebabe
+readlink -f "$(command -v bytebabe)"
+```
+
+To run the clone directly without reinstalling:
+```bash
+bash /path/to/bytebabe-cli/bin/bytebabe devtools
+```
 
 ## 💻 Usage
+
+> `bb` is a short alias for `bytebabe`, created by the installer (e.g. `bb prime sys`).
 
 ### 🐳 Docker Operations
 ```bash
 # Verbose style
 bytebabe docker containers list --all
-bytebabe docker images pull nginx
+bytebabe docker images --list
 
 # Short style (cyberpunk)
 bytebabe docker c ls -a
-bytebabe docker i p nginx
+bytebabe docker i --prune
 ```
 
 ### 🗄️ Database Operations
@@ -146,13 +173,13 @@ bytebabe db status
 
 ### 🔧 Git & GitHub Operations
 ```bash
-# Interactive git status
-bytebabe git status
+# Interactive git menu
+bytebabe git
 
 # GitHub repository operations
 bytebabe gh clone username/repo
 bytebabe gh create my-new-repo
-bytebabe gh pr create
+bytebabe gh pr "My feature" main
 ```
 
 ### 🛠️ Development Tools
@@ -166,6 +193,9 @@ bytebabe devtools database dbeaver
 
 # Install API tools
 bytebabe devtools api --test
+
+# Install Docker
+bytebabe devtools docker
 
 # Short aliases
 bytebabe devtools t all      # terminal
@@ -188,8 +218,13 @@ bytebabe prime firewall status
 bytebabe prime scan system
 
 # System utilities
-bytebabe prime clean temp
+bytebabe prime clean basic
+bytebabe prime clean deep    # also cleans unused Flatpak runtimes and cache
 bytebabe prime backup create
+
+# System overview (OS, hardware, disk, environment, network)
+bytebabe prime sysinfo
+bb prime sys
 ```
 
 ### 🌐 Backend Development
@@ -199,9 +234,9 @@ bytebabe backend install node
 bytebabe backend install python
 bytebabe backend install java
 
-# Setup framework
-bytebabe backend spring setup
-bytebabe backend express setup
+# Install framework
+bytebabe backend install spring
+bytebabe backend install express
 ```
 
 ### 🎨 Frontend Development
@@ -212,6 +247,10 @@ bytebabe frontend setup
 # Create new project
 bytebabe frontend new react my-app
 bytebabe frontend new vue my-app
+
+# Add features and generate code
+bytebabe frontend add tailwind
+bytebabe frontend g component Button
 ```
 
 ### 🔌 API Development
@@ -282,10 +321,10 @@ bytebabe --version
 | `db` | Database operations | `setup`, `start`, `stop`, `status` | ✅ 10/10 |
 | `git` | Git operations | `status`, `stage`, `commit`, `push` | ✅ 12/12 |
 | `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` | 🔄 Pending |
-| `devtools` | Development tools | `terminal`, `database`, `api`, `browser` | 🔄 Pending |
-| `prime` | System management | `install`, `upgrade`, `firewall`, `scan` | ✅ 12/12 |
+| `devtools` | Development tools | `terminal`, `database`, `api`, `browser`, `docker` | 🔄 Pending |
+| `prime` | System management | `install`, `upgrade`, `firewall`, `scan`, `clean`, `sysinfo` | ✅ 12/12 |
 | `backend` | Backend development | `install`, `setup`, `generate` | ✅ 14/14 |
-| `frontend` | Frontend development | `setup`, `new`, `generate` | ✅ 15/15 |
+| `frontend` | Frontend development | `setup`, `new`, `add`, `generate`, `install`, `test`, `build`, `serve` | ✅ 15/15 |
 | `flux` | API development | `get`, `post`, `put`, `delete`, `server` | 🔄 Pending |
 | `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` | 🔄 Pending |
 | `servers` | Server management | `up`, `down`, `status`, `setup` | 🔄 Pending |
@@ -306,7 +345,7 @@ ByteBabe includes a comprehensive testing framework to ensure code quality and r
 
 ### Unit Tests
 ```bash
-# Run the complete suite (240 tests)
+# Run the complete suite (244 tests)
 bash tests/scripts/run_unit_tests.sh
 
 # Run a specific module
@@ -321,8 +360,8 @@ bash tests/unit/commands/git.test.sh
 ```
 
 ### Test Coverage
-- ✅ **240/240 testes passando** em 19 arquivos.
-- **101 testes estruturais** em `tests/unit/commands/`.
+- ✅ **244/244 testes passando** em 20 arquivos.
+- **105 testes estruturais** em `tests/unit/commands/`.
 - **139 testes de caracterização** em `tests/unit/lib/` (core, entrypoint, Flux, Docker, Spring, Frontend e source-safety).
 - CI executa `bash -n` e a suíte completa em push e pull request.
 
