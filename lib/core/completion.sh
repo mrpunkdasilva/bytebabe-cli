@@ -8,7 +8,7 @@ _bytebabe_completion() {
     _init_completion || return
 
     # Comandos principais
-    local commands="spring docker git devtools terminal db"
+    local commands="spring docker git devtools terminal db azure"
 
     # Subcomandos para cada comando principal
     local spring_subcmds="new template dependency profile config generator generate run build test docs docker clean"
@@ -17,6 +17,7 @@ _bytebabe_completion() {
     local devtools_subcmds="terminal term t database db d api a browser bwsr b docker install-docker help h"
     local terminal_subcmds="zsh z ohmyzsh omz oh-my-zsh spaceship sp space atuin altuin at plugins p all a help h"
     local db_subcmds="setup start backup restore"
+    local azure_subcmds="install setup pr prs search-pr projects branches tags merge project repo pr-manage pipeline boards artifacts devops cli help"
 
     # Se estamos no primeiro argumento
     if [[ $cword -eq 1 ]]; then
@@ -43,6 +44,9 @@ _bytebabe_completion() {
             ;;
         db)
             COMPREPLY=($(compgen -W "$db_subcmds" -- "$cur"))
+            ;;
+        azure|ado|az)
+            COMPREPLY=($(compgen -W "$azure_subcmds" -- "$cur"))
             ;;
     esac
 }

@@ -77,6 +77,8 @@ show_help() {
     echo -e "    ${CYBER_GRAY}└─ status${RESET}    Mostra o status do repositório"
     echo -e "  ${CYBER_GREEN}gh${RESET}, ${CYBER_GREEN}github${RESET}    Ferramentas e atalhos do GitHub"
     echo -e "    ${CYBER_GRAY}└─ clone/create/pr/prs/issues/release/status${RESET}"
+    echo -e "  ${CYBER_GREEN}azure${RESET}, ${CYBER_GREEN}ado${RESET}    Pull requests no Azure DevOps"
+    echo -e "    ${CYBER_GRAY}└─ setup/pr/prs/merge${RESET}"
     echo -e ""
     echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
     echo -e "  ${CYBER_GREEN}servers${RESET}       Gerenciamento de servidores"
@@ -178,6 +180,9 @@ case "$1" in
         ;;
     gh|github)
         run_command "${BASE_DIR}/commands/gh/main.sh" main "${@:2}"
+        ;;
+    azure|ado|az|azdo|azuredevops|azdevops|azuredev|azdev|azuredevop|azdevop|azuredevopshelp|azdevopshelp)
+        run_command "${BASE_DIR}/commands/azure/main.sh" main "${@:2}"
         ;;
     flux)
         run_command "${BASE_DIR}/commands/flux/main.sh" main "${@:2}"
