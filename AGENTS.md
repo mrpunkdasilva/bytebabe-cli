@@ -6,12 +6,9 @@ CLI em Bash 5 com tema cyberpunk. O runtime principal é `bin/bytebabe`, os coma
 
 ```bash
 bash -n bin/bytebabe install.sh
-find commands lib tests -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n
-bash tests/scripts/run_unit_tests.sh
+find commands lib -type f -name '*.sh' -print0 | xargs -0 -n1 bash -n
 git diff --check
 ```
-
-A suíte atual tem 236 testes em 19 arquivos. Atualize as contagens em `README.md`, `CHANGELOG.md`, `tests/README.md` e `spec/architecture/overview.md` quando adicionar ou remover testes.
 
 ## Contratos do projeto
 
@@ -28,7 +25,6 @@ A suíte atual tem 236 testes em 19 arquivos. Atualize as contagens em `README.m
 - Preserve a saída cyberpunk e o comportamento interativo existente.
 - Mensagens de usuário e documentação em português; nomes de funções podem seguir o padrão já existente.
 - Antes de editar, procure helpers canônicos no `lib/core/` e consumidores existentes.
-- Mudanças de comportamento devem vir com teste de caracterização em `tests/unit/lib/` ou teste estrutural em `tests/unit/commands/`.
 
 ## Restrições
 

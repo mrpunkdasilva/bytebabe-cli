@@ -32,4 +32,4 @@ Funcionalidade: Nome curto
 
 ## Execução
 
-Os cenários são especificação viva. A automação atual está nos testes unitários em `tests/unit/commands/`; quando um runner BDD for adotado, ele MUST usar estes arquivos como fonte.
+Os cenários são especificação viva. Quando um runner BDD for adotado, ele MUST usar estes arquivos como fonte.

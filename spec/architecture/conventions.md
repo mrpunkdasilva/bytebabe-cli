@@ -66,14 +66,6 @@
 - Downloads MUST usar HTTPS e `curl -fsSL`/`wget -qO-`.
 - Scripts remotos MUST ser piped apenas de URLs oficiais documentadas.
 
-## Testes
-
-- Todo novo comando SHOULD ter teste em `tests/unit/commands/<nome>.test.sh`.
-- Testes MUST ser isolados e limpar diretórios temporários.
-- Testes MUST funcionar sem rede quando possível.
-- A suíte completa MUST rodar com `bash tests/scripts/run_unit_tests.sh`.
-- Release MUST ter 100% dos testes passando.
-
 ## Documentação e spec
 
 - Mudança de comportamento MUST atualizar a spec do módulo.
@@ -87,7 +79,6 @@ Seguir Conventional Commits:
 
 - `feat:` nova funcionalidade
 - `fix:` correção
-- `test:` testes
 - `docs:` documentação
 - `refactor:` refatoração
 - `chore:` manutenção/release

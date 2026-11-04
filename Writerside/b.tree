@@ -112,7 +112,6 @@
     <toc-element topic="contributing.md">
         <toc-element topic="development-setup.md"/>
         <toc-element topic="coding-standards.md"/>
-        <toc-element topic="testing-guidelines.md"/>
         <toc-element topic="documentation-guidelines.md"/>
     </toc-element>
 </instance-profile>

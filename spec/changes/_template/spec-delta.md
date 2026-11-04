@@ -34,6 +34,6 @@
 
 ## Rastreabilidade
 
-| Requisito | Teste | Cenário BDD |
-|-----------|-------|-------------|
-| `R-<id>` | `tests/unit/commands/<arquivo>.test.sh` | `<arquivo>.feature` |
+| Requisito | Cenário BDD |
+|-----------|-------------|
+| `R-<id>` | `<arquivo>.feature` |

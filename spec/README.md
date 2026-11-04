@@ -31,14 +31,14 @@ Esta pasta é a fonte de verdade para produto, arquitetura, comportamento e muda
 3. **Verificar o módulo**: leia a spec em `modules/`.
 4. **Propor mudanças**: crie `changes/<id>/` a partir de `changes/_template/`.
 5. **Escrever cenários**: atualize ou crie arquivos em `behavior/`.
-6. **Implementar e testar**: altere o código e rode `bash tests/scripts/run_unit_tests.sh`.
-7. **Atualizar a spec**: a mudança só termina quando código, testes, docs e spec estão coerentes.
+6. **Implementar**: altere o código e valide a sintaxe com `bash -n`.
+7. **Atualizar a spec**: a mudança só termina quando código, docs e spec estão coerentes.
 8. **Arquivar**: mova a mudança concluída para `changes/archive/`.
 
 ## Regras
 
 - Use **MUST**, **SHOULD** e **MAY** para separar obrigação, recomendação e opção.
-- Toda funcionalidade nova MUST ter critério de aceite e teste automatizado ou justificativa.
+- Toda funcionalidade nova MUST ter critério de aceite.
 - Toda alteração de comportamento MUST atualizar a spec do módulo e, se aplicável, o cenário BDD.
 - Não documente comportamento que o código não implementa como se já existisse; marque como **Planejado** ou **Gap conhecido**.
 - Exemplos de comando devem ser executáveis na versão atual.

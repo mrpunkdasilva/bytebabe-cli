@@ -169,9 +169,8 @@ Before considering a feature complete, verify:
 1. **Planning**: Define scope, requirements, and acceptance criteria
 2. **Design**: Create UI mockups and diagram the architecture
 3. **Implementation**: Follow the code and UI guidelines
-4. **Testing**: Test manually and with automated scripts
-5. **Documentation**: Update the documentation with examples
-6. **Review**: Check against the quality checklist
-7. **Release**: Integrate into the main system
+4. **Documentation**: Update the documentation with examples
+5. **Review**: Check against the quality checklist
+6. **Release**: Integrate into the main system
 
 Remember: ByteBabe CLI is a serious tool with a fun aesthetic. Never sacrifice functionality for style, but do not ignore the positive impact a good visual experience can have on productivity and user satisfaction.

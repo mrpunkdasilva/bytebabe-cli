@@ -8,6 +8,10 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## [Unreleased]
 
+### Added
+- Resultado dos grupos completos do Azure (ex.: `bytebabe az project show`) exibido em tabela em vez de JSON cru: objetos aparecem como CAMPO/VALOR achatado com notação de ponto, listas como tabela colunar e nulos como `—`
+- Comando `bytebabe az branches` (alias `br`/`refs`): branchs de um repositório em tabela compacta (branch, commit, autor), ordenada e paginada com `less`
+
 ## [1.5.0] - 2026-10-30
 
 ### Added

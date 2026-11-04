@@ -48,4 +48,3 @@ Centralizar gerenciamento de pacotes, segurança, serviços e utilitários do si
 ## Gaps conhecidos
 
 - Alguns subcomandos dependem de ferramentas externas e privilégios de root.
-- Cobertura de testes atual valida estrutura/dispatch e source-safety, não operações reais no sistema.

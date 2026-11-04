@@ -91,10 +91,8 @@ Pontos |
 
 ### O que pode melhorar
 - Estimativas de tarefas complexas ainda estão imprecisas
-- Alguns testes automatizados estão falhando intermitentemente
 - Comunicação sobre dependências entre tarefas
 
 ### Ações para o próximo Sprint
 - Revisar processo de estimativa para tarefas complexas
-- Melhorar a estabilidade dos testes automatizados
 - Implementar reuniões diárias mais focadas em dependências

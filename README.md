@@ -81,6 +81,14 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 - Status monitoring
 - Quick launch capabilities
 
+### ☁️ Azure DevOps (ADO Module)
+- Pull request creation from the current branch (`pr`)
+- PR search, filters, grouping and stats dashboard (`prs`)
+- Merge workflows with squash support (`merge`)
+- Projects, repos, branches and tags listing
+- Full passthrough groups (pipelines, boards, artifacts, devops)
+- One-shot setup: installs CLI + extension, logs in and saves org/project
+
 ### 🚀 Server Management
 - Docker-based server orchestration
 - Multi-service management
@@ -276,6 +284,36 @@ bytebabe ide run code
 bytebabe ide status zed
 ```
 
+### ☁️ Azure DevOps
+```bash
+# One-shot setup (CLI + extension + login + org/project defaults)
+bytebabe azure setup minha-org 'Meu Projeto'
+
+# Create a PR from the current branch
+bytebabe azure pr "Minha alteração" main
+
+# List, search and group pull requests
+bytebabe azure prs
+bytebabe azure prs --mine
+bytebabe azure prs --type fix
+bytebabe azure prs --stats
+
+# Merge a PR (merge or squash)
+bytebabe azure merge 20 squash
+
+# Projects, branches and tags
+bytebabe azure projects minha-org
+bytebabe azure branches meu-repo
+bytebabe azure tags meu-repo
+
+# Full passthrough groups
+bytebabe azure pipeline list --output table
+bytebabe azure boards work-item show --id 123
+
+# Short alias
+bytebabe az prs
+```
+
 ### 🚀 Server Management
 ```bash
 # Start servers
@@ -315,22 +353,23 @@ bytebabe --version
 
 ## 📦 Module Overview
 
-| Module | Description | Commands | Test Status |
-|--------|-------------|----------|-------------|
-| `docker` | Container management | `containers`, `images`, `volumes`, `compose` | ✅ 10/10 |
-| `db` | Database operations | `setup`, `start`, `stop`, `status` | ✅ 10/10 |
-| `git` | Git operations | `status`, `stage`, `commit`, `push` | ✅ 12/12 |
-| `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` | 🔄 Pending |
-| `devtools` | Development tools | `terminal`, `database`, `api`, `browser`, `docker` | 🔄 Pending |
-| `prime` | System management | `install`, `upgrade`, `firewall`, `scan`, `clean`, `sysinfo` | ✅ 12/12 |
-| `backend` | Backend development | `install`, `setup`, `generate` | ✅ 14/14 |
-| `frontend` | Frontend development | `setup`, `new`, `add`, `generate`, `install`, `test`, `build`, `serve` | ✅ 15/15 |
-| `flux` | API development | `get`, `post`, `put`, `delete`, `server` | 🔄 Pending |
-| `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` | 🔄 Pending |
-| `servers` | Server management | `up`, `down`, `status`, `setup` | 🔄 Pending |
-| `init` | Environment setup | Complete development environment | ✅ 8/8 |
-| `edit` | Text editor | Simple file editing | ✅ 10/10 |
-| `hello` | Greeting | Cyberpunk welcome message | ✅ 10/10 |
+| Module | Description | Commands |
+|--------|-------------|----------|
+| `docker` | Container management | `containers`, `images`, `volumes`, `compose` |
+| `db` | Database operations | `setup`, `start`, `stop`, `status` |
+| `git` | Git operations | `status`, `stage`, `commit`, `push` |
+| `gh` | GitHub operations | `clone`, `create`, `pr`, `issues` |
+| `devtools` | Development tools | `terminal`, `database`, `api`, `browser`, `docker` |
+| `prime` | System management | `install`, `upgrade`, `firewall`, `scan`, `clean`, `sysinfo` |
+| `backend` | Backend development | `install`, `setup`, `generate` |
+| `frontend` | Frontend development | `setup`, `new`, `add`, `generate`, `install`, `test`, `build`, `serve` |
+| `flux` | API development | `get`, `post`, `put`, `delete`, `server` |
+| `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` |
+| `servers` | Server management | `up`, `down`, `status`, `setup` |
+| `azure` | Azure DevOps operations | `setup`, `pr`, `prs`, `merge`, `projects`, `branches`, `tags` |
+| `init` | Environment setup | Complete development environment |
+| `edit` | Text editor | Simple file editing |
+| `hello` | Greeting | Cyberpunk welcome message |
 
 ## 🛠️ Configuration
 
@@ -338,43 +377,6 @@ ByteBabe can be customized through:
 - `~/.config/bytebabe/config.json` - General settings
 - `~/.config/bytebabe/themes/` - Custom themes
 - `~/.config/bytebabe/plugins/` - User plugins
-
-## 🧪 Testing
-
-ByteBabe includes a comprehensive testing framework to ensure code quality and reliability:
-
-### Unit Tests
-```bash
-# Run the complete suite (244 tests)
-bash tests/scripts/run_unit_tests.sh
-
-# Run a specific module
-bash tests/scripts/run_unit_tests.sh --test hello
-bash tests/scripts/run_unit_tests.sh --test prime
-
-# List available tests
-bash tests/scripts/run_unit_tests.sh --list
-
-# Run a single test file directly
-bash tests/unit/commands/git.test.sh
-```
-
-### Test Coverage
-- ✅ **244/244 testes passando** em 20 arquivos.
-- **105 testes estruturais** em `tests/unit/commands/`.
-- **139 testes de caracterização** em `tests/unit/lib/` (core, entrypoint, Flux, Docker, Spring, Frontend e source-safety).
-- CI executa `bash -n` e a suíte completa em push e pull request.
-
-### Test Structure
-Each test follows a consistent pattern:
-- **Setup**: Creates temporary environment
-- **Structural Tests**: Verifies file existence, executability, functions, imports
-- **Functional Tests**: Checks command-specific features
-- **Cleanup**: Removes temporary files
-- **Reporting**: Shows pass/fail summary
-
-### Testing Documentation
-For detailed testing information, see [tests/README.md](tests/README.md).
 
 ## 🤝 Contributing
 
@@ -384,34 +386,20 @@ For detailed testing information, see [tests/README.md](tests/README.md).
 git clone https://github.com/mrpunkdasilva/bytebabe-cli.git
 cd bytebabe-cli
 
-# Run tests before making changes
-bash tests/scripts/run_unit_tests.sh
-
-# Make your changes and add tests
+# Make your changes
 # Follow Conventional Commits for commit messages
 git commit -m "feat: add new feature"
 git commit -m "fix: resolve bug in module"
-git commit -m "test: add unit tests for command"
-
-# Run tests again
-bash tests/scripts/run_unit_tests.sh
 ```
 
 ### Commit Guidelines
 We follow [Conventional Commits](https://www.conventionalcommits.org/):
 - `feat:` - New features
 - `fix:` - Bug fixes
-- `test:` - Adding or updating tests
 - `docs:` - Documentation changes
 - `refactor:` - Code refactoring
 - `style:` - Code style changes
 - `perf:` - Performance improvements
-
-### Testing Requirements
-- All new features must include unit tests
-- Maintain test coverage above 80%
-- Run tests before submitting PRs
-- Follow existing test patterns
 
 ## 📝 License
 
@@ -420,7 +408,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 💬 Support
 
 - 📐 [Product & Module Specs](spec/README.md)
-- 🧪 [Testing Guide](tests/README.md)
 - 🐛 [Issues](https://github.com/mrpunkdasilva/bytebabe-cli/issues)
 - 💡 [Discussions](https://github.com/mrpunkdasilva/bytebabe-cli/discussions)
 
@@ -429,7 +416,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - Built with cyberpunk aesthetics in mind
 - Powered by the open source community
 - Inspired by modern developer workflows
-- Quality-driven development with comprehensive testing
+- Quality-driven development
 
 ---
 

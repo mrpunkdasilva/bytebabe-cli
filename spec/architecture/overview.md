@@ -74,6 +74,7 @@ Comandos com muitos subcomandos delegam para um único dispatcher de domínio:
 | Flux | `lib/flux/engine.sh` | `lib/flux/verbs/{get,post,put,delete}` finos |
 | Spring | `lib/backend/spring/generators/main.sh` | um generator por tipo |
 | Frontend | `lib/frontend/generators.sh` | `lib/frontend/{react,vue,angular}/generators.sh` |
+| Azure | `commands/azure/main.sh` | `lib/azure/{prs,pr_render,repos,render,install,helpers,help}` com coordinator |
 
 Validadores de domínio não repetem detecção, parsing ou dispatch; adaptadores
 apenas executam a parte específica do framework ou verbo.
@@ -107,6 +108,7 @@ Implementação real por domínio:
 - `lib/backend/`: runtimes, frameworks e Spring, com um generator ativo por tipo.
 - `lib/ide/`, `lib/docker/`, `lib/database/`, `lib/server/`, `lib/flux/`, `lib/pkg/`.
 - `lib/git/`, `lib/github/`: operações assistidas de versionamento.
+- `lib/azure/`: PRs (lógica separada de renderização), repos/branchs/tags, render genérico do `az`, instalação e ajuda.
 
 ## Archive legado
 
@@ -138,13 +140,6 @@ Implementação real por domínio:
 - O tarball MUST conter um diretório raiz `bytebabe-<versao>/` com `bin/` e `lib/`.
 - A instalação substitui `/opt/bytebabe`, cria o symlink e limpa arquivos temporários.
 - A versão deve ser consistente em `bin/bytebabe`, `install.sh`, `package.json` e CHANGELOG.
-
-## Testes
-
-- Runner: `tests/scripts/run_unit_tests.sh`.
-- Testes por comando em `tests/unit/commands/*.test.sh`.
-- Estrutura: setup, testes estruturais, testes funcionais, cleanup e relatório.
-- Cobertura atual: 20 arquivos, 244 testes (105 estruturais e 139 de caracterização).
 
 ## Restrições e riscos arquiteturais
 

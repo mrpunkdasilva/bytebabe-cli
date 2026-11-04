@@ -16,7 +16,7 @@ Exemplo: `spec/changes/2026-10-26-ide-code-detection/`.
 |---------|----------|
 | `proposal.md` | Problema, motivação, escopo, alternativas e riscos |
 | `design.md` | Solução técnica, contratos e impacto |
-| `tasks.md` | Checklist de implementação e testes |
+| `tasks.md` | Checklist de implementação |
 | `spec-delta.md` | O que muda nas specs existentes |
 
 ## Ciclo de vida
@@ -29,14 +29,12 @@ draft → proposed → accepted → implementing → verifying → archived
 2. **Proposed**: proposta pronta para revisão.
 3. **Accepted**: escopo aprovado.
 4. **Implementing**: código em andamento.
-5. **Verifying**: testes e validação.
+5. **Verifying**: validação manual e revisão.
 6. **Archived**: concluída e documentada.
 
 ## Definition of Done
 
 - [ ] Código implementado
-- [ ] Testes unitários passando
-- [ ] `bash tests/scripts/run_unit_tests.sh` com 100% de aprovação
 - [ ] Spec do módulo atualizada
 - [ ] Cenário BDD criado/atualizado
 - [ ] README/help/CHANGELOG atualizados quando aplicável

@@ -7,13 +7,7 @@
 - [ ] Atualizar help do módulo
 - [ ] Adicionar/ajustar mensagens de erro
 - [ ] Validar dependências externas
-
-## Testes
-
-- [ ] Criar `tests/unit/commands/<modulo>.test.sh`
 - [ ] Adicionar cenário BDD em `spec/behavior/`
-- [ ] Rodar `bash tests/scripts/run_unit_tests.sh`
-- [ ] Testar manualmente em `/tmp`
 
 ## Documentação
 

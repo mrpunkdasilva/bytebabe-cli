@@ -56,7 +56,6 @@ bytebabe doctor --report
 ### 📝 Guidelines
 - Coding Standards
 - Documentation
-- Testing
 - Review Process
 
 ## Contato

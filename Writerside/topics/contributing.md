@@ -39,5 +39,4 @@ bytebabe/
 ## Recursos
 - [Development Setup](development-setup.md)
 - [Coding Standards](coding-standards.md)
-- [Testing Guidelines](testing-guidelines.md)
 - [Documentation Guidelines](documentation-guidelines.md)

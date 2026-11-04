@@ -30,7 +30,7 @@ Ser um toolkit de terminal unificado e modular que configure e opere o ambiente 
 - Instalar e atualizar o CLI de forma reproduzível em Linux e WSL.
 - Detectar a distribuição e usar o gerenciador de pacotes correto.
 - Oferecer menus interativos e comandos diretos para automação.
-- Manter módulos desacoplados com especificação e testes.
+- Manter módulos desacoplados com especificação.
 - Publicar releases com tarball versionado e instalação via `curl`.
 
 ### Não objetivos
@@ -80,10 +80,9 @@ Ser um toolkit de terminal unificado e modular que configure e opere o ambiente 
 | NF-02 | Nenhum segredo em log, saída ou repositório |
 | NF-03 | Operações privilegiadas MUST usar `sudo` apenas quando necessário |
 | NF-04 | Mensagens de erro MUST indicar causa provável e próximo passo |
-| NF-05 | Testes unitários MUST rodar com `bash tests/scripts/run_unit_tests.sh` |
-| NF-06 | Instalação MUST ser idempotente e substituir versão anterior |
-| NF-07 | Comandos interativos MUST aceitar modo direto quando possível |
-| NF-08 | Mudanças de comportamento MUST atualizar `spec/` e docs |
+| NF-05 | Instalação MUST ser idempotente e substituir versão anterior |
+| NF-06 | Comandos interativos MUST aceitar modo direto quando possível |
+| NF-07 | Mudanças de comportamento MUST atualizar `spec/` e docs |
 
 ## 8. Métricas de sucesso
 

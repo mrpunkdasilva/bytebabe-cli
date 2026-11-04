@@ -78,4 +78,4 @@ Oferecer um cliente HTTP de terminal e um servidor JSON para testes de API.
 - O menu de histórico é interativo; a automação cobre source, persistência e comandos não interativos.
 - O histórico fica em `$HOME/bytebabe/flux/request_history.json` e depende de `jq`; os caminhos são resolvidos no uso (após `HOME` estar definido), não no source.
 - `--loading-style` é aceito, mas todos os estilos usam a animação canônica de `lib/core/feedback.sh`.
-- Não há cenário BDD dedicado ao Flux; a cobertura está em `tests/unit/lib/flux_parser.test.sh`.
+- Não há cenário BDD dedicado ao Flux.
