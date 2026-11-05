@@ -80,6 +80,10 @@ show_help() {
     echo -e "  ${CYBER_GREEN}azure${RESET}, ${CYBER_GREEN}ado${RESET}    Pull requests no Azure DevOps"
     echo -e "    ${CYBER_GRAY}└─ setup/pr/prs/merge${RESET}"
     echo -e ""
+    echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}AI ASSISTANTS:${RESET}"
+    echo -e "  ${CYBER_GREEN}agent${RESET}         Instala knowledge pack da CLI para IAs (.bytebabe/SKILL.md)"
+    echo -e "    ${CYBER_GRAY}└─ init/update/status/remove [--claude] [--opencode]${RESET}"
+    echo -e ""
     echo -e "${CYBER_YELLOW}⚡ ${CYBER_BLUE}INFRASTRUCTURE:${RESET}"
     echo -e "  ${CYBER_GREEN}servers${RESET}       Gerenciamento de servidores"
     echo -e "    ${CYBER_GRAY}└─ up/down${RESET}   Inicia/para servidores (alias: start/stop)"
@@ -183,6 +187,9 @@ case "$1" in
         ;;
     azure|ado|az|azdo|azuredevops|azdevops|azuredev|azdev|azuredevop|azdevop|azuredevopshelp|azdevopshelp)
         run_command "${BASE_DIR}/commands/azure/main.sh" main "${@:2}"
+        ;;
+    agent)
+        run_command "${BASE_DIR}/commands/agent/main.sh" main "${@:2}"
         ;;
     flux)
         run_command "${BASE_DIR}/commands/flux/main.sh" main "${@:2}"

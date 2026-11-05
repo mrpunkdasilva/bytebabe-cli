@@ -95,6 +95,12 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 - Status monitoring
 - Automated setup and configuration
 
+### 🤖 AI Knowledge Pack (Agent Module)
+- Installs a universal AI skill (`.bytebabe/SKILL.md`) describing the whole CLI in English
+- Lets AI coding assistants (Claude Code, opencode, etc.) know and use ByteBabe correctly
+- Regenerate / status / remove subcommands keep the pack in sync with the CLI
+- Generated files live only inside `.bytebabe/`
+
 ## 🚀 Installation
 
 ### Prerequisites
@@ -105,7 +111,7 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 - 🔑 `sudo` (the installer copies files to `/opt` and creates a symlink in `/usr/local/bin`)
 - 🐳 Docker (optional; can also be installed later with `bytebabe devtools docker`)
 
-### Quick Install (release v1.5.0)
+### Quick Install (release v1.6.0)
 ```bash
 # Using curl
 curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
@@ -114,7 +120,7 @@ curl -fsSL https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/ins
 wget -qO- https://raw.githubusercontent.com/mrpunkdasilva/bytebabe-cli/main/install.sh | bash
 ```
 
-The script downloads `bytebabe-1.5.0.tar.gz` from the GitHub release and installs it.
+The script downloads `bytebabe-1.6.0.tar.gz` from the GitHub release and installs it.
 
 ### Manual Installation (recommended for development)
 ```bash
@@ -326,6 +332,21 @@ bytebabe servers status
 bytebabe servers down
 ```
 
+### 🤖 AI Knowledge Pack
+```bash
+# Install the pack in the current project (.bytebabe/SKILL.md + README.md)
+bytebabe agent init
+
+# Regenerate after evolving the CLI
+bytebabe agent update
+
+# Check whether the pack exists
+bytebabe agent status
+
+# Remove the pack (asks for confirmation)
+bytebabe agent remove
+```
+
 ### 🛠️ Utilities
 ```bash
 # Initialize environment
@@ -367,6 +388,7 @@ bytebabe --version
 | `ide` | IDE management | `vscode`, `zed`, `sublime`, `run` |
 | `servers` | Server management | `up`, `down`, `status`, `setup` |
 | `azure` | Azure DevOps operations | `setup`, `pr`, `prs`, `merge`, `projects`, `branches`, `tags` |
+| `agent` | AI knowledge pack | `init`, `update`, `status`, `remove` |
 | `init` | Environment setup | Complete development environment |
 | `edit` | Text editor | Simple file editing |
 | `hello` | Greeting | Cyberpunk welcome message |

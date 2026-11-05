@@ -6,6 +6,11 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## Latest Changes
 
+## [Unreleased]
+
+### Added
+- Módulo `bytebabe agent`: gera knowledge pack de IA em `.bytebabe/SKILL.md` (inglês, formato de skill universal) com o mapa de comandos da CLI, procedures e contratos de segurança; subcomandos `init/update/status/remove`
+
 ## [1.6.0] - 2026-11-05
 
 ### Added
