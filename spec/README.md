@@ -17,12 +17,13 @@ Esta pasta é a fonte de verdade para produto, arquitetura, comportamento e muda
 
 | Área | Versão | Estado |
 |------|--------|--------|
-| CLI | `1.4.0` | Estável |
+| CLI | `1.6.0` | Estável |
 | Instalação local/remota | `1.4.0` | Estável |
 | DevTools + Atuin | `1.4.0` | Estável |
 | Frontend/Backend | `1.4.0` | Estável |
 | Flux | `1.4.0` | Beta (dependências de verbos incompletas) |
 | Docker volumes | `1.4.0` | Planejado |
+| Azure | `1.6.0` | Beta |
 
 ## Fluxo de trabalho
 

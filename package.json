@@ -1,6 +1,6 @@
 {
   "name": "bytebabe-cli",
-  "version": "1.4.0",
+  "version": "1.6.0",
   "description": "A cyberpunk-themed developer toolkit for supercharged workflows 🚀",
   "bin": {
     "bytebabe": "bin/bytebabe"

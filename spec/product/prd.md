@@ -97,7 +97,8 @@ Ser um toolkit de terminal unificado e modular que configure e opere o ambiente 
 |--------|------|--------|
 | `1.0.0` | Fundação e módulos principais | Concluído |
 | `1.4.0` | Multi-distro, Atuin, instalação e help | Concluído |
-| `1.5.0` | Flux estável, DevTools e UX | Em andamento |
+| `1.5.0` | Flux estável, DevTools e UX | Concluído |
+| `1.6.0` | Azure DevOps e docs públicas | Em andamento |
 | `2.0.0` | Segurança, firewall e scanning | Planejado |
 | `2.5.0` | Monitoramento e cloud | Planejado |
 

@@ -6,7 +6,7 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## Latest Changes
 
-## [Unreleased]
+## [1.6.0] - 2026-11-05
 
 ### Added
 - Resultado dos grupos completos do Azure (ex.: `bytebabe az project show`) exibido em tabela em vez de JSON cru: objetos aparecem como CAMPO/VALOR achatado com notação de ponto, listas como tabela colunar e nulos como `—`

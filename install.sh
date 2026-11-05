@@ -8,7 +8,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Configurações
-VERSION="1.5.0"
+VERSION="1.6.0"
 REPO_URL="https://github.com/mrpunkdasilva/bytebabe-cli"
 TARBALL_URL="${REPO_URL}/releases/download/v${VERSION}/bytebabe-${VERSION}.tar.gz"
 TEMP_DIR="/tmp/bytebabe-install"
