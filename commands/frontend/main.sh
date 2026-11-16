@@ -209,6 +209,180 @@ show_frontend_help() {
     echo -e "  ${CYBER_YELLOW}bytebabe frontend g service Auth${RESET}"
 }
 
+# Ajuda específica de um subcomando. Chamada por <comando> --help/-h.
+frontend_command_help() {
+    local cmd="$1"
+    local foot="${CYBER_GRAY}Ajuda geral: bytebabe frontend help${RESET}"
+
+    echo -e "${CYBER_CYAN}━━━ bytebabe frontend ${CYBER_BOLD}${cmd}${RESET}${CYBER_CYAN} ━━━${RESET}"
+    echo ""
+
+    case "$cmd" in
+        setup)
+            echo -e "${CYBER_YELLOW}Assistente interativo de ambiente frontend: escolhe gerenciadores de${RESET}"
+            echo -e "${CYBER_YELLOW}pacote (npm/yarn/pnpm/bun) e frameworks (React/Vue/Angular/Next) e instala${RESET}"
+            echo -e "${CYBER_YELLOW}cada um globalmente com sudo. Exige Node.js já instalado.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend setup"
+            echo ""
+            echo -e "${CYBER_YELLOW}O que acontece:${RESET}"
+            echo -e "  ${CYBER_GREEN}1.${RESET} Confere Node.js e um package manager (${CYBER_GRAY}check_frontend_requirements${RESET})"
+            echo -e "  ${CYBER_GREEN}2.${RESET} Menu de gerenciadores: escolha por números (ex.: ${CYBER_GREEN}1,3${RESET} ou ${CYBER_GREEN}5${RESET} = todos)"
+            echo -e "  ${CYBER_GREEN}3.${RESET} Menu de frameworks: mesma mecânica (${CYBER_GREEN}5${RESET} = todos)"
+            echo ""
+            echo -e "${CYBER_YELLOW}Aviso:${RESET}"
+            echo -e "  ${CYBER_RED}Cada item escolhido é instalado com sudo (npm install -g ou instalador oficial).${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend setup${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+            new|create)
+            echo -e "${CYBER_YELLOW}Cria um novo projeto frontend de forma não interativa e já preparado:${RESET}"
+            echo -e "${CYBER_GRAY}Após criar, inicializa .bytebabe/frontend-config.json, instala dependências${RESET}"
+            echo -e "${CYBER_GRAY}de qualidade (prettier, eslint, husky, lint-staged, testing-library) e mostra${RESET}"
+            echo -e "${CYBER_GRAY}o comando de dev do package manager detectado.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend new ${CYBER_BOLD}<framework>${RESET} ${CYBER_BOLD}<nome>${RESET} ${CYBER_GRAY}[template]${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Frameworks:${RESET}"
+            echo -e "  ${CYBER_GREEN}react${RESET}     create-react-app com TypeScript (ou Vite react-ts com template vite)"
+            echo -e "  ${CYBER_GREEN}vue${RESET}       create-vue oficial (ou Vite vue-ts com template vite)"
+            echo -e "  ${CYBER_GREEN}angular${RESET}   @angular/cli new com SCSS, routing e strict"
+            echo -e "  ${CYBER_GREEN}next${RESET}      create-next-app com TypeScript + Tailwind + ESLint"
+            echo -e "  ${CYBER_GREEN}svelte${RESET}    Vite svelte-ts"
+            echo ""
+            echo -e "${CYBER_YELLOW}Argumentos:${RESET}"
+            echo -e "  ${CYBER_GREEN}framework${RESET}  Obrigatório: react, vue, angular, next ou svelte"
+            echo -e "  ${CYBER_GREEN}nome${RESET}       Obrigatório: nome da pasta do projeto"
+            echo -e "  ${CYBER_GREEN}template${RESET}   Opcional: ${CYBER_GREEN}default${RESET} (padrão) ou ${CYBER_GREEN}vite${RESET} (react/vue)"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend new react my-app${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend new vue my-app vite${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend create next admin${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        add)
+            echo -e "${CYBER_YELLOW}Instala e configura uma funcionalidade no projeto atual (detecta o framework${RESET}"
+            echo -e "${CYBER_GRAY}pelo package.json para router e i18n).${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend add ${CYBER_BOLD}<feature>${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Funcionalidades:${RESET}"
+            echo -e "  ${CYBER_GREEN}tailwind${RESET}  tailwindcss + postcss + autoprefixer, init -p e setup do config"
+            echo -e "  ${CYBER_GREEN}redux${RESET}     @reduxjs/toolkit + react-redux e store de exemplo gerada"
+            echo -e "  ${CYBER_GREEN}router${RESET}    react-router-dom (React) ou vue-router@4 (Vue) com rotas geradas"
+            echo -e "  ${CYBER_GREEN}i18n${RESET}      react-i18next (React), vue-i18n@9 (Vue) ou @angular/localize"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend add tailwind${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend add router${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        generate|g)
+            echo -e "${CYBER_YELLOW}Gera código dentro do projeto atual, detectando o framework pelo package.json${RESET}"
+            echo -e "${CYBER_GRAY}(@angular/core → angular, vue → vue, react/next → react).${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend generate ${CYBER_BOLD}<tipo>${RESET} ${CYBER_BOLD}<nome>${RESET}   ${CYBER_GRAY}(atalho: g)${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Tipos:${RESET}"
+            echo -e "  ${CYBER_GREEN}component${RESET}, ${CYBER_GREEN}c${RESET}    Componente no padrão do framework detectado"
+            echo -e "  ${CYBER_GREEN}service${RESET}, ${CYBER_GREEN}s${RESET}      Serviço: API service (React), store (Vue) ou service (Angular)"
+            echo -e "  ${CYBER_GREEN}store${RESET}          Store de estado: Context (React) ou store (Vue)"
+            echo -e "  ${CYBER_GREEN}hook${RESET}           Hook customizado — ${CYBER_RED}somente React${RESET}"
+            echo -e "  ${CYBER_GREEN}guard${RESET}          Guard de rota — ${CYBER_RED}somente Angular${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend g component UserProfile${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend generate service Auth${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        install|i)
+            echo -e "${CYBER_YELLOW}Instala dependências com o package manager detectado (npm/pnpm/yarn/bun).${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend install ${CYBER_GRAY}[dev] [pacotes...]${RESET}   ${CYBER_GRAY}(atalho: i)${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Modos:${RESET}"
+            echo -e "  ${CYBER_GREEN}install${RESET}          Instala as dependências já declaradas no package.json"
+            echo -e "  ${CYBER_GREEN}install deps${RESET}     Igual ao anterior (install das dependências existentes)"
+            echo -e "  ${CYBER_GREEN}install dev${RESET} <pkgs>  Instala como dependências de desenvolvimento (-D)"
+            echo -e "  ${CYBER_GREEN}install${RESET} <pkgs>   Instala como dependências de produção"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend install${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend i dev vitest${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend i axios${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        test|t)
+            echo -e "${CYBER_YELLOW}Executa os testes do projeto via script do package.json.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend test ${CYBER_GRAY}[watch|coverage]${RESET}   ${CYBER_GRAY}(atalho: t)${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Modos:${RESET}"
+            echo -e "  ${CYBER_GREEN}test${RESET}             Script ${CYBER_GREEN}test${RESET} do package.json (padrão)"
+            echo -e "  ${CYBER_GREEN}test watch${RESET}       Script ${CYBER_GREEN}test:watch${RESET} (re-executa ao salvar)"
+            echo -e "  ${CYBER_GREEN}test coverage${RESET}    Script ${CYBER_GREEN}test:coverage${RESET} (relatório de cobertura)"
+            echo -e "  Argumentos extras são repassados ao script.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend t${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend test coverage${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        build|b)
+            echo -e "${CYBER_YELLOW}Compila o projeto via script build do package.json.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend build ${CYBER_GRAY}[prod]${RESET}   ${CYBER_GRAY}(atalho: b)${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Modos:${RESET}"
+            echo -e "  ${CYBER_GREEN}build${RESET}        Script ${CYBER_GREEN}build${RESET} do package.json (padrão)"
+            echo -e "  ${CYBER_GREEN}build prod${RESET}   Script ${CYBER_GREEN}build:prod${RESET} (build de produção)"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend b${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend build prod${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        serve|s)
+            echo -e "${CYBER_YELLOW}Inicia o servidor de desenvolvimento do projeto atual.${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Uso:${RESET}"
+            echo -e "  bytebabe frontend serve ${CYBER_GRAY}[prod]${RESET}   ${CYBER_GRAY}(atalho: s)${RESET}"
+            echo ""
+            echo -e "${CYBER_YELLOW}Modos:${RESET}"
+            echo -e "  ${CYBER_GREEN}serve${RESET}        Script ${CYBER_GREEN}start${RESET} do package.json (dev server)"
+            echo -e "  ${CYBER_GREEN}serve prod${RESET}   Script ${CYBER_GREEN}serve:prod${RESET} (servir o build pronto)"
+            echo ""
+            echo -e "${CYBER_YELLOW}Exemplos:${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend s${RESET}"
+            echo -e "  ${CYBER_GREEN}bytebabe frontend serve prod${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+        *)
+            echo -e "${CYBER_YELLOW}Sem ajuda específica para este comando.${RESET}"
+            echo ""
+            echo -e "$foot"
+            ;;
+    esac
+}
+
 # Função para criar novo projeto
 create_frontend_project() {
     local framework=$1
@@ -354,6 +528,16 @@ add_feature() {
 
 # Handler principal de comandos
 run_frontend_command() {
+    # -h/--help junto ao subcomando mostra o help específico e não executa nada
+    if [[ "$#" -ge 2 && ( "$2" == "-h" || "$2" == "--help" ) ]]; then
+        case "$1" in
+            new|create|add|generate|g|install|i|test|t|build|b|serve|s|setup)
+                frontend_command_help "$1"
+                return 0
+                ;;
+        esac
+    fi
+
     case "$1" in
         new|create)
             shift

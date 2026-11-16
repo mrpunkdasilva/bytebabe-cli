@@ -59,18 +59,29 @@ if [ ! -f "${SOURCE_DIR}/bin/bytebabe" ] || [ ! -d "${SOURCE_DIR}/lib" ]; then
     exit 1
 fi
 
+# sudo apenas quando necessário (como root, os comandos já têm permissão)
+SUDO=""
+if [ "$(id -u)" != "0" ]; then
+    if command -v sudo >/dev/null 2>&1; then
+        SUDO="sudo"
+    else
+        echo -e "${RED}Erro: root sem sudo e sem permissões para instalar em ${INSTALL_DIR}${NC}"
+        exit 1
+    fi
+fi
+
 # Substitui instalação anterior
 echo -e "${BLUE}📂 Copiando arquivos para ${INSTALL_DIR}...${NC}"
-sudo rm -rf "$INSTALL_DIR"
-sudo mkdir -p "$INSTALL_DIR"
-sudo cp -a "${SOURCE_DIR}/." "$INSTALL_DIR/"
-sudo rm -rf "${INSTALL_DIR}/archive"
-sudo chmod +x "${INSTALL_DIR}/bin/bytebabe"
+$SUDO rm -rf "$INSTALL_DIR"
+$SUDO mkdir -p "$INSTALL_DIR"
+$SUDO cp -a "${SOURCE_DIR}/." "$INSTALL_DIR/"
+$SUDO rm -rf "${INSTALL_DIR}/archive"
+$SUDO chmod +x "${INSTALL_DIR}/bin/bytebabe"
 
 # Cria link simbólico
 echo -e "${BLUE}🔗 Criando link simbólico...${NC}"
-sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
-sudo ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${SHORT_EXECUTABLE}"
+$SUDO ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${EXECUTABLE}"
+$SUDO ln -sf "${INSTALL_DIR}/bin/bytebabe" "${BIN_DIR}/${SHORT_EXECUTABLE}"
 hash -r 2>/dev/null || true
 
 # Limpa arquivos temporários
