@@ -8,7 +8,7 @@ _bytebabe_completion() {
     _init_completion || return
 
     # Comandos principais
-    local commands="spring docker git devtools terminal db azure agent"
+    local commands="spring docker git devtools terminal db azure agent sonar"
 
     # Subcomandos para cada comando principal
     local spring_subcmds="new template dependency profile config generator generate run build test docs docker clean"
@@ -19,6 +19,7 @@ _bytebabe_completion() {
     local db_subcmds="setup start backup restore"
     local azure_subcmds="install setup pr prs search-pr projects branches tags merge project repo pr-manage pipeline boards artifacts devops cli help"
     local agent_subcmds="init update status remove help h"
+    local sonar_subcmds="login project proj pr pull overview resumo painel ov issues show issue rule rules metrics gate hotspots version help h"
 
     # Se estamos no primeiro argumento
     if [[ $cword -eq 1 ]]; then
@@ -51,6 +52,9 @@ _bytebabe_completion() {
             ;;
         agent)
             COMPREPLY=($(compgen -W "$agent_subcmds" -- "$cur"))
+            ;;
+        sonar|sq|sonarqube)
+            COMPREPLY=($(compgen -W "$sonar_subcmds" -- "$cur"))
             ;;
     esac
 }

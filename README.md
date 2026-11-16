@@ -101,6 +101,13 @@ ByteBabe is a modular CLI toolkit that brings cyberpunk aesthetics to your devel
 - Regenerate / status / remove subcommands keep the pack in sync with the CLI
 - Generated files live only inside `.bytebabe/`
 
+### 📊 Code Quality (Sonar Module)
+- Quality dashboard: gate status, coverage, duplication and open issues
+- Issue list with rule explanations translated to the terminal
+- Quality gate conditions and security hotspots
+- Metrics (coverage, duplication, complexity, new code) per project or PR
+- Rule search and details; PR-oriented queries saved via `login`
+
 ## 🚀 Installation
 
 ### Prerequisites
@@ -347,6 +354,71 @@ bytebabe agent status
 bytebabe agent remove
 ```
 
+### 📊 Code Quality (SonarQube)
+Credentials are required for every query: run `bytebabe sonar login` once
+(interactive, token validated and saved with `600` in
+`~/.config/bytebabe/sonar.json`). Running `bytebabe sonar` with no arguments
+shows the styled module help — including this reminder — and
+`bytebabe sonar --version` prints the module version.
+
+Multi-project friendly: inside a repository, the project key is auto-detected
+from `sonar-project.properties` / `.sonarcloud.properties` (walking up parent
+directories), overriding the global default. Override per command with
+`-p/--projeto <key>` or positional args.
+
+```bash
+# Interactive setup: validates token and saves ~/.config/bytebabe/sonar.json
+bytebabe sonar login
+
+# Quality dashboard + open issues (with rule explanations)
+bytebabe sonar issues
+bytebabe sonar issues 42           # scope to a pull request
+bytebabe sonar issues --somente-resumo
+
+# Day-to-day overview: gate, coverage, duplication,
+# open issues (type/severity counts) and security hotspots
+bytebabe sonar overview            # aliases: resumo, painel, ov
+
+# Explicit project override (multi-project workflows)
+bytebabe sonar gate -p proj_backend
+bytebabe sonar issues 42 proj_frontend
+
+# Project list: keys in projects[], active in activeProject (sonar.json);
+# add only appends to the list, use/set/next/prev switch the active one
+bytebabe sonar project                     # list (marks the active one)
+bytebabe sonar project add proj_front      # append to the list only
+bytebabe sonar project next                # cycle to the next project
+bytebabe sonar project prev                # cycle to the previous one
+bytebabe sonar project search proj         # interactive pick from the list
+bytebabe sonar project set                 # use auto-detected key from cwd
+bytebabe sonar proj use proj_back
+bytebabe sonar project validate proj_front
+
+# Pull requests, scoped to the active project
+bytebabe sonar pr                          # help
+bytebabe sonar pr add 42                   # append to the list only
+bytebabe sonar pr use 42                   # switch (number joins the list)
+bytebabe sonar pr search                   # interactive pick from the list
+bytebabe sonar gate                        # analyzes the active PR
+
+# Details of one issue / rule metadata / rule search
+bytebabe sonar show <issue-key>
+bytebabe sonar rule <rule-key>
+bytebabe sonar rules security
+
+# Metrics, quality gate and security hotspots
+bytebabe sonar metrics
+bytebabe sonar gate
+bytebabe sonar hotspots
+
+# Module help and version
+bytebabe sonar
+bytebabe sonar --version
+
+# Short alias
+bytebabe sq issues
+```
+
 ### 🛠️ Utilities
 ```bash
 # Initialize environment
@@ -389,6 +461,7 @@ bytebabe --version
 | `servers` | Server management | `up`, `down`, `status`, `setup` |
 | `azure` | Azure DevOps operations | `setup`, `pr`, `prs`, `merge`, `projects`, `branches`, `tags` |
 | `agent` | AI knowledge pack | `init`, `update`, `status`, `remove` |
+| `sonar` | SonarQube quality queries | `login`, `issues`, `show`, `rule`, `rules`, `metrics`, `gate`, `hotspots` |
 | `init` | Environment setup | Complete development environment |
 | `edit` | Text editor | Simple file editing |
 | `hello` | Greeting | Cyberpunk welcome message |

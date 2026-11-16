@@ -1,14 +1,26 @@
 # Development Tools
 
-O módulo DevTools do ByteBabe oferece instalação e configuração automatizada de ferramentas essenciais para desenvolvimento.
+> Batteries for your terminal, browsers, databases and APIs — installed with cyberpunk flair.
 
-## Categorias de Ferramentas
+## Command Matrix
+
+| Command | Aliases | What it installs |
+|---------|---------|------------------|
+| `bytebabe devtools terminal` | `term`, `t` | Zsh, Oh My Zsh, Spaceship Prompt, Atuin, Zsh plugins |
+| `bytebabe devtools database` | `db`, `d` | TablePlus, DBeaver, MongoDB Compass, pgAdmin, MySQL Workbench |
+| `bytebabe devtools browser` | `bwsr`, `b` | Google Chrome, Firefox, Brave, Microsoft Edge, Vivaldi |
+| `bytebabe devtools api` | `api-tools`, `a` | curl, httpie, jq, yq, grpcurl, websocat plus docs and proxy/debug tools |
+| `bytebabe devtools docker` | `install-docker` | Docker itself (asks for confirmation, requires sudo) |
+| `bytebabe devtools help` | `h` | Module help screen |
+
+Run `bytebabe devtools` with no arguments to open the interactive cyberpunk menu.
 
 ### Terminal Tools
 - Zsh + Oh My Zsh
 - Spaceship Prompt
-- Atuin (histórico de shell)
-- Plugins (autosuggestions, syntax highlighting, etc)
+- Atuin (shell history)
+
+<!-- PLANNED: more plugin tooling, see `bytebabe devtools t all` list -->
 
 ### Database Tools
 - TablePlus
@@ -18,10 +30,9 @@ O módulo DevTools do ByteBabe oferece instalação e configuração automatizad
 - MySQL Workbench
 
 ### API Tools
-- Ferramentas de Teste (curl, httpie, jq, yq, grpcurl, websocat)
-- Documentação (Swagger CLI, OpenAPI Generator, Redoc CLI, Spectral)
-- Proxy/Debug (mitmproxy, ngrok, wireshark)
-- GUI (Postman, Insomnia, Bruno)
+- Test tools (curl, httpie, jq, yq, grpcurl, websocat)
+
+<!-- PLANNED: documentation tooling (OpenAPI/Spectral), proxy/debug (mitmproxy, ngrok) and GUI clients are selectable in the interactive menu when their installers land -->
 
 ### Browser Tools
 - Google Chrome
@@ -30,32 +41,36 @@ O módulo DevTools do ByteBabe oferece instalação e configuração automatizad
 - Microsoft Edge
 - Vivaldi
 
-## Uso
+## Usage
 
 ```bash
-# Modo interativo
+# Interactive mode
 bytebabe devtools
 
-# Instalação direta
-bytebabe devtools [categoria] [ferramenta]
+# Direct installation
+bytebabe devtools [category] [tool]
 
-# Exemplos:
-bytebabe devtools terminal all      # Instala todas as ferramentas de terminal
-bytebabe devtools database dbeaver  # Instala apenas o DBeaver
-bytebabe devtools api --test        # Instala ferramentas de teste de API
+# Examples:
+bytebabe devtools terminal all      # Installs every terminal tool
+bytebabe devtools database dbeaver  # Installs only DBeaver
+bytebabe devtools api --test        # Installs API test tools
 
 # Aliases
-bytebabe devtools t all             # Mesmo que "terminal all"
-bytebabe devtools d dbeaver         # Mesmo que "database dbeaver"
-bytebabe devtools b chrome          # Mesmo que "browser chrome"
-bytebabe devtools a --test          # Mesmo que "api --test"
-bytebabe dt at                      # Mesmo que "devtools terminal atuin"
-bytebabe atuin                      # Instala o Atuin
+bytebabe devtools t all             # Same as "terminal all"
+bytebabe devtools d dbeaver         # Same as "database dbeaver"
+bytebabe devtools b chrome          # Same as "browser chrome"
+bytebabe devtools a --test          # Same as "api --test"
+
+# Global aliases
+bytebabe dev                        # Same as "devtools"
+bytebabe dt                         # Same as "devtools terminal"
+bytebabe term                       # Same as "devtools terminal"
+bytebabe atuin                      # Same as "devtools terminal atuin"
 ```
 
-## Características
+## Features
 
-- Instalação automatizada
-- Detecção do gerenciador de pacotes (apt, dnf, pacman)
-- Configuração pré-otimizada
-- Interface cyberpunk interativa
+- Automated installation pipelines
+- Package manager detection (apt, dnf/yum, pacman, plus zypper and apk fallbacks)
+- Pre-tuned configuration for each tool
+- Interactive cyberpunk interface with ASCII headers and neon dividers

@@ -15,6 +15,7 @@
 | Prime | `commands/prime.sh` | [prime.md](prime.md) | Estável |
 | Azure | `commands/azure/main.sh` | [azure.md](azure.md) | Beta |
 | Agent | `commands/agent/main.sh` | [agent.md](agent.md) | Estável |
+| Sonar | `commands/sonar/main.sh` | [sonar.md](sonar.md) | Beta |
 
 ## Como interpretar
 

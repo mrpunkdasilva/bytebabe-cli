@@ -6,10 +6,11 @@ All notable changes to ByteBabe CLI will be documented in this cyberpunk-styled 
 
 ## Latest Changes
 
-## [Unreleased]
+## [1.7.0] - 2026-11-16
 
 ### Added
 - Módulo `bytebabe agent`: gera knowledge pack de IA em `.bytebabe/SKILL.md` (inglês, formato de skill universal) com o mapa de comandos da CLI, procedures e contratos de segurança; subcomandos `init/update/status/remove`
+- Módulo `bytebabe sonar` (alias `sq`): consultas somente leitura ao SonarQube — `login` (token validado e salvo em `~/.config/bytebabe/sonar.json`, JSON com 600 e escrita atômica, parseado com `jq`; config antigo em key=value é ignorado com aviso único), `overview` (TUI do painel geral do dia a dia: portão, cobertura/duplicação, LOC, score de saúde, apontamentos por tipo/severidade e hotspots por risco, com atalhos interativos `[1]` apontamentos, `[2]` hotspots, `[3]` métricas, `r` atualizar e `q` sair; aliases `resumo`/`painel`/`ov`), `issues` (dashboard de portão/coverage/duplicação + apontamentos com explicação das regras), `show`, `rule`, `rules`, `metrics`, `gate` e `hotspots`; opções `--somente-resumo` e `--sem-cores`; banner por subcomando, limpeza do terminal no momento da renderização dos dashboards (sem resíduo de banner/spinners), tabelas coloridas por severidade/status, barras de percentual em `metrics` e `bytebabe sonar` sem argumentos exibe o helper com versão e aviso de login; multi-projeto com autodetecção de `sonar-project.properties`/`.sonarcloud.properties` (sobe diretórios pais), override `-p/--projeto`, gestão de projetos em lista (`project`/`proj`: `list`, `next`/`prev` para alternar o ativo, `current`, `search`, `add` (só lista), `remove`, `use`/`set` (troca o ativo, com autodetecção quando sem chave) e `validate`; `projects[]` e `activeProject` no `sonar.json`) e pull requests por projeto (`pr`/`pull`: `list`, `add`, `remove`, `search` interativo e `use <numero>`; `prs[]` e `activePr` por projeto no `sonar.json`, fallback `defaultPullRequest`)
 
 ## [1.6.0] - 2026-11-05
 
